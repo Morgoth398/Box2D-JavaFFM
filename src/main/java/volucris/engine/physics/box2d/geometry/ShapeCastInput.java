@@ -69,14 +69,7 @@ public final class ShapeCastInput {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float maxFraction = (float) MAX_FRACTION.get(memorySegment);
-		boolean canEncroach = (boolean) CAN_ENCROACH.get(memorySegment);
-
-		setMaxFraction(maxFraction);
-		setCanEncroach(canEncroach);
-
-		proxy.set(memorySegment.asSlice(PROXY_OFFSET, ShapeProxy.LAYOUT()));
-		translation.set(memorySegment.asSlice(TRANSLATION_OFFSET, Vec2.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2ShapeCastInput, 0, LAYOUT.byteSize());
 	}
 
 	public ShapeProxy getProxy() {

@@ -245,7 +245,7 @@ public final class WheelJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2WheelJointDef.asReadOnly();
+		return b2WheelJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

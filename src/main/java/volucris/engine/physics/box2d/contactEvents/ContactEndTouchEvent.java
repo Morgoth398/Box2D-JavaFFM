@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.contactEvents;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.StructLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
@@ -25,9 +26,13 @@ public final class ContactEndTouchEvent {
 	private static final long SHAPE_ID_A_OFFSET;
 	private static final long SHAPE_ID_B_OFFSET;
 
-	private Shape shapeA;
-	private Shape shapeB;
+	private final MemorySegment b2ContactEndTouchEvent;
 
+	private final MemorySegment shapeIdA;
+	private final MemorySegment shapeIdB;
+	
+	private World world;
+	
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -41,38 +46,50 @@ public final class ContactEndTouchEvent {
 	}
 
 	public ContactEndTouchEvent() {
+		this(Arena.ofAuto());
+	}
+	
+	public ContactEndTouchEvent(Arena arena) {
+		b2ContactEndTouchEvent = arena.allocate(LAYOUT);
+		
+		shapeIdA = b2ContactEndTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactEndTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
 	}
 
 	public ContactEndTouchEvent(MemorySegment memorySegment, World world) {
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
+		this.b2ContactEndTouchEvent = memorySegment;
+		this.world = world;
+		
+		shapeIdA = b2ContactEndTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactEndTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
+		MemorySegment.copy(memorySegment, 0, b2ContactEndTouchEvent, 0, LAYOUT.byteSize());
 	}
 
 	/**
 	 * The first shape.
 	 */
 	public Shape getShapeA() {
-		return shapeA;
+		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
 	}
 
 	/**
 	 * The second shape.
 	 */
 	public Shape getShapeB() {
-		return shapeB;
+		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
 	}
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
+	public MemorySegment memorySegment() {
+		return b2ContactEndTouchEvent;
+	}
+	
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

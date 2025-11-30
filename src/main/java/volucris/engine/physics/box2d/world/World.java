@@ -728,6 +728,8 @@ public final class World {
 
 	/**
 	 * Set the internal user data for the body.
+	 * <p>
+	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
 		this.internalUserData = internalUserData;
@@ -840,7 +842,7 @@ public final class World {
 	}
 	
 	public MemorySegment memorySegment() {
-		return b2WorldId.asReadOnly();
+		return b2WorldId;
 	}
 
 	public WorldId getWorldId() {

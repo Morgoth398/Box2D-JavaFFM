@@ -150,7 +150,7 @@ public final class MotorJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2MotorJointDef.asReadOnly();
+		return b2MotorJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

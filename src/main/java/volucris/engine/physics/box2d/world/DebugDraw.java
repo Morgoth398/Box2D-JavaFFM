@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryLayout;
@@ -136,15 +137,17 @@ public abstract class DebugDraw {
 			throw new VolucrisRuntimeException("Cannot create private lookup.");
 		}
 
-		DRAW_POLYGON_DESCR = functionDescrVoid(ADDRESS, JAVA_INT, JAVA_INT, ADDRESS);
-		DRAW_SOLID_POLYGON_DESCR = functionDescrVoid(Transform.LAYOUT(), ADDRESS, JAVA_INT, JAVA_FLOAT, JAVA_INT, ADDRESS);
+		AddressLayout UNBOUNDED_ADDRESS = ADDRESS.withTargetLayout(MemoryLayout.sequenceLayout(Long.MAX_VALUE, JAVA_BYTE));
+		
+		DRAW_POLYGON_DESCR = functionDescrVoid(UNBOUNDED_ADDRESS, JAVA_INT, JAVA_INT, ADDRESS);
+		DRAW_SOLID_POLYGON_DESCR = functionDescrVoid(Transform.LAYOUT(), UNBOUNDED_ADDRESS, JAVA_INT, JAVA_FLOAT, JAVA_INT, ADDRESS);
 		DRAW_CIRCLE_DESCR = functionDescrVoid(Vec2.LAYOUT(), JAVA_FLOAT, JAVA_INT, ADDRESS);
 		DRAW_SOLID_CIRCLE_DESCR = functionDescrVoid(Transform.LAYOUT(), JAVA_FLOAT, JAVA_INT, ADDRESS);
 		DRAW_SOLID_CAPSULE_DESCR = functionDescrVoid(Vec2.LAYOUT(), Vec2.LAYOUT(), JAVA_FLOAT, JAVA_INT, ADDRESS);
 		DRAW_SEGMENT_DESCR = functionDescrVoid(Vec2.LAYOUT(), Vec2.LAYOUT(), JAVA_INT, ADDRESS);
 		DRAW_TRANSFORM_DESCR = functionDescrVoid(Transform.LAYOUT(), ADDRESS);
 		DRAW_POINT_DESCR = functionDescrVoid(Vec2.LAYOUT(), JAVA_FLOAT, JAVA_INT, ADDRESS);
-		DRAW_STRING_DESCR = functionDescrVoid(Vec2.LAYOUT(), ADDRESS, JAVA_INT, ADDRESS);
+		DRAW_STRING_DESCR = functionDescrVoid(Vec2.LAYOUT(), UNBOUNDED_ADDRESS, JAVA_INT, ADDRESS);
 		
 		DRAW_POLYGON_FCN = varHandle(LAYOUT, "DrawPolygonFcn");
 		DRAW_SOLID_POLYGON_FCN = varHandle(LAYOUT, "DrawSolidPolygonFcn");
@@ -188,22 +191,24 @@ public abstract class DebugDraw {
 	}
 
 	public DebugDraw() {
+		Arena arena = Arena.ofAuto();
+		
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
+			SegmentAllocator allocator = arena;
 			b2DebugDraw = (MemorySegment) B2_DEFAULT_DEBUG_DRAW.invokeExact(allocator);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create debug draw.");
 		}
 
-		drawPolygonAddress = upcallStub(this, DRAW_POLYGON_HANDLE, DRAW_POLYGON_DESCR);
-		drawSolidPolygonAddress = upcallStub(this, DRAW_SOLID_POLYGON_HANDLE, DRAW_SOLID_POLYGON_DESCR);
-		drawCircleAddress = upcallStub(this, DRAW_CIRCLE_HANDLE, DRAW_CIRCLE_DESCR);
-		drawSolidCircleAddress = upcallStub(this, DRAW_SOLID_CIRCLE_HANDLE, DRAW_SOLID_CIRCLE_DESCR);
-		drawSolidCapsuleAddress = upcallStub(this, DRAW_SOLID_CAPSULE_HANDLE, DRAW_SOLID_CAPSULE_DESCR);
-		drawSegmentAddress = upcallStub(this, DRAW_SEGMENT_HANDLE, DRAW_SEGMENT_DESCR);
-		drawTransformAddress = upcallStub(this, DRAW_TRANSFORM_HANDLE, DRAW_TRANSFORM_DESCR);
-		drawPointAddress = upcallStub(this, DRAW_POINT_HANDLE, DRAW_POINT_DESCR);
-		drawStringAddress = upcallStub(this, DRAW_STRING_HANDLE, DRAW_STRING_DESCR);
+		drawPolygonAddress = upcallStub(this, DRAW_POLYGON_HANDLE, DRAW_POLYGON_DESCR, arena);
+		drawSolidPolygonAddress = upcallStub(this, DRAW_SOLID_POLYGON_HANDLE, DRAW_SOLID_POLYGON_DESCR, arena);
+		drawCircleAddress = upcallStub(this, DRAW_CIRCLE_HANDLE, DRAW_CIRCLE_DESCR, arena);
+		drawSolidCircleAddress = upcallStub(this, DRAW_SOLID_CIRCLE_HANDLE, DRAW_SOLID_CIRCLE_DESCR, arena);
+		drawSolidCapsuleAddress = upcallStub(this, DRAW_SOLID_CAPSULE_HANDLE, DRAW_SOLID_CAPSULE_DESCR, arena);
+		drawSegmentAddress = upcallStub(this, DRAW_SEGMENT_HANDLE, DRAW_SEGMENT_DESCR, arena);
+		drawTransformAddress = upcallStub(this, DRAW_TRANSFORM_HANDLE, DRAW_TRANSFORM_DESCR, arena);
+		drawPointAddress = upcallStub(this, DRAW_POINT_HANDLE, DRAW_POINT_DESCR, arena);
+		drawStringAddress = upcallStub(this, DRAW_STRING_HANDLE, DRAW_STRING_DESCR, arena);
 
 		DRAW_POLYGON_FCN.set(b2DebugDraw, drawPolygonAddress);
 		DRAW_SOLID_POLYGON_FCN.set(b2DebugDraw, drawSolidPolygonAddress);
@@ -229,12 +234,10 @@ public abstract class DebugDraw {
 
 	@SuppressWarnings("unused")
 	private void drawPolygon(MemorySegment vertices, int vertexCount, int color, MemorySegment context) {
-		MemorySegment verticesArray = vertices.reinterpret(vertexCount * Vec2.LAYOUT().byteSize());
-
 		int counter = 0;
 		for (int i = 0; i < vertexCount; i++) {
 			long offset = i * Vec2.LAYOUT().byteSize();
-			vec2Tmp.set(verticesArray.asSlice(offset, Vec2.LAYOUT()));
+			MemorySegment.copy(vertices, offset, vec2Tmp.memorySegment(), 0, Vec2.LAYOUT().byteSize());
 			this.vertices[counter++] = vec2Tmp.getX();
 			this.vertices[counter++] = vec2Tmp.getY();
 		}
@@ -246,12 +249,10 @@ public abstract class DebugDraw {
 			int color, MemorySegment context) {
 		transformTmp.set(transform);
 
-		MemorySegment verticesArray = vertices.reinterpret(vertexCount * Vec2.LAYOUT().byteSize());
-
 		int counter = 0;
 		for (int i = 0; i < vertexCount; i++) {
 			long offset = i * Vec2.LAYOUT().byteSize();
-			vec2Tmp.set(verticesArray.asSlice(offset, Vec2.LAYOUT()));
+			MemorySegment.copy(vertices, offset, vec2Tmp.memorySegment(), 0, Vec2.LAYOUT().byteSize());
 			this.vertices[counter++] = vec2Tmp.getX();
 			this.vertices[counter++] = vec2Tmp.getY();
 		}
@@ -260,7 +261,7 @@ public abstract class DebugDraw {
 
 	@SuppressWarnings("unused")
 	private void drawCircle(MemorySegment center, float radius, int color, MemorySegment context) {
-		vec2Tmp.set(context);
+		vec2Tmp.set(center);
 		vec2Tmp.get(vectorTmp);
 		drawCircle(vectorTmp, radius, this.color.set(color, false));
 	}
@@ -306,7 +307,7 @@ public abstract class DebugDraw {
 	private void drawString(MemorySegment p, MemorySegment string, int color, MemorySegment context) {
 		vec2Tmp.set(p);
 		vec2Tmp.get(vectorTmp);
-		String name = string.reinterpret(Integer.MAX_VALUE).getString(0);
+		String name = string.getString(0);
 		drawString(vectorTmp, name, this.color.set(color, false));
 	}
 

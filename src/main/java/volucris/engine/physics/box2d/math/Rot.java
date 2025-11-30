@@ -41,9 +41,13 @@ public final class Rot {
 	}
 
 	public Rot() {
-		b2Rot = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Rot(Arena arena) {
+		b2Rot = arena.allocate(LAYOUT);
 
-		cosSinTmp = new CosSin();
+		cosSinTmp = new CosSin(arena);
 	}
 
 	public Rot(MemorySegment memorySegment) {
@@ -106,7 +110,7 @@ public final class Rot {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Rot.asReadOnly();
+		return b2Rot;
 	}
 
 	public static StructLayout LAYOUT() {

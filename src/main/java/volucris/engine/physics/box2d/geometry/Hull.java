@@ -78,7 +78,7 @@ public final class Hull {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Hull.asReadOnly();
+		return b2Hull;
 	}
 
 	/**

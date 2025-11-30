@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.contactEvents;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.StructLayout;
@@ -30,14 +31,16 @@ public final class ContactHitEvent {
 	private static final long POINT_OFFSET;
 	private static final long NORMAL_OFFSET;
 
+	private final MemorySegment b2ContactHitEvent;
+	
+	private final MemorySegment shapeIdA;
+	private final MemorySegment shapeIdB;
+	
 	private final Vec2 point;
 	private final Vec2 normal;
 
-	private Shape shapeA;
-	private Shape shapeB;
-
-	private float approachSpeed;
-
+	private World world;
+	
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -58,43 +61,40 @@ public final class ContactHitEvent {
 	}
 
 	public ContactHitEvent() {
-		point = new Vec2();
-		normal = new Vec2();
+		this(Arena.ofAuto());
+	}
+	
+	public ContactHitEvent(Arena arena) {
+		b2ContactHitEvent = arena.allocate(LAYOUT);
+		
+		shapeIdA = b2ContactHitEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactHitEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
+		
+		point = new Vec2(b2ContactHitEvent.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
+		normal = new Vec2(b2ContactHitEvent.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}
 
 	public ContactHitEvent(MemorySegment memorySegment, World world) {
-		point = new Vec2();
-		point.set(memorySegment.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
-
-		normal = new Vec2();
-		normal.set(memorySegment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
-
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
+		this.b2ContactHitEvent = memorySegment;
+		this.world = world;
+		
+		shapeIdA = b2ContactHitEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactHitEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
+		
+		point = new Vec2(b2ContactHitEvent.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
+		normal = new Vec2(b2ContactHitEvent.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		approachSpeed = (float) APPROACH_SPEED.get(memorySegment);
-
-		point.set(memorySegment.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
-		normal.set(memorySegment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
-
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
+		MemorySegment.copy(memorySegment, 0, b2ContactHitEvent, 0, LAYOUT.byteSize());
 	}
 
 	public Shape getShapeA() {
-		return shapeA;
+		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
 	}
 
 	public Shape getShapeB() {
-		return shapeB;
+		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
 	}
 
 	/**
@@ -130,9 +130,17 @@ public final class ContactHitEvent {
 	 * per second.
 	 */
 	public float getApproachSpeed() {
-		return approachSpeed;
+		return (float) APPROACH_SPEED.get(b2ContactHitEvent);
 	}
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
+	public MemorySegment memorySegment() {
+		return b2ContactHitEvent;
+	}
+	
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

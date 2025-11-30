@@ -228,7 +228,7 @@ public final class Chain {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ChainId.asReadOnly();
+		return b2ChainId;
 	}
 
 	public static StructLayout LAYOUT() {

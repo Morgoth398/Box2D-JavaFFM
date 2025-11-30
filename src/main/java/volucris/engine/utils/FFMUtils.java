@@ -38,12 +38,26 @@ public final class FFMUtils {
 				layout.varHandle(PathElement.groupElement(name1), PathElement.groupElement(name2)), 1, 0L);
 	}
 
+	public static VarHandle varHandle(MemoryLayout layout, String name, int sequenceIndex) {
+		return MethodHandles.insertCoordinates(
+				layout.varHandle(PathElement.groupElement(name), PathElement.sequenceElement(sequenceIndex)), 1, 0L);
+	}
+
 	public static MethodHandle upcallHandleVoid(Lookup lookup, Class<?> clazz, String name,
 			MemoryLayout... argLayouts) {
 		try {
 			return lookup.findVirtual(clazz, name, FunctionDescriptor.ofVoid(argLayouts).toMethodType());
 		} catch (ReflectiveOperationException e) {
-			throw new VolucrisRuntimeException("Failed to create upcall handle.");
+			throw new RuntimeException("Failed to create upcall handle.");
+		}
+	}
+
+	public static MethodHandle upcallHandleStatic(Lookup lookup, Class<?> clazz, String name,
+			FunctionDescriptor descr) {
+		try {
+			return lookup.findStatic(clazz, name, descr.toMethodType());
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException("Failed to create upcall handle.");
 		}
 	}
 
@@ -51,7 +65,7 @@ public final class FFMUtils {
 		try {
 			return lookup.findVirtual(clazz, name, descr.toMethodType());
 		} catch (ReflectiveOperationException e) {
-			throw new VolucrisRuntimeException("Failed to create upcall handle.");
+			throw new RuntimeException("Failed to create upcall handle.");
 		}
 	}
 
@@ -60,7 +74,7 @@ public final class FFMUtils {
 		try {
 			return lookup.findVirtual(clazz, name, FunctionDescriptor.of(resLayout, argLayouts).toMethodType());
 		} catch (ReflectiveOperationException e) {
-			throw new VolucrisRuntimeException("Failed to create upcall handle.");
+			throw new RuntimeException("Failed to create upcall handle.");
 		}
 	}
 
@@ -76,4 +90,17 @@ public final class FFMUtils {
 		return LINKER.upcallStub(method.bindTo(object), descriptor, Arena.ofAuto());
 	}
 
+	public static MemorySegment upcallStub(Object object, MethodHandle method, FunctionDescriptor descriptor,
+			Arena arena) {
+		return LINKER.upcallStub(method.bindTo(object), descriptor, arena);
+	}
+
+	public static MemorySegment upcallStub(MethodHandle method, FunctionDescriptor descriptor) {
+		return LINKER.upcallStub(method, descriptor, Arena.ofAuto());
+	}
+
+	public static MemorySegment upcallStub(MethodHandle method, FunctionDescriptor descriptor, Arena arena) {
+		return LINKER.upcallStub(method, descriptor, arena);
+	}
+	
 }

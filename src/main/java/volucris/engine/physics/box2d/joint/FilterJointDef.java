@@ -70,7 +70,7 @@ public final class FilterJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2FilterJointDef.asReadOnly();
+		return b2FilterJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

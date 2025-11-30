@@ -64,9 +64,7 @@ public final class ChainSegment {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		segment.set(memorySegment.asSlice(SEGMENT_OFFSET, Segment.LAYOUT()));
-		ghost1.set(memorySegment.asSlice(GHOST1_OFFSET, Vec2.LAYOUT()));
-		ghost2.set(memorySegment.asSlice(GHOST2_OFFSET, Vec2.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2ChainSegment, 0, LAYOUT.byteSize());
 	}
 
 	/**
@@ -105,7 +103,7 @@ public final class ChainSegment {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ChainSegment.asReadOnly();
+		return b2ChainSegment;
 	}
 
 	public static StructLayout LAYOUT() {

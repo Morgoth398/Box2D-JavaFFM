@@ -3,6 +3,7 @@ package volucris.engine.utils;
 import java.util.Random;
 
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 public final class MathUtils {
 
@@ -208,6 +209,91 @@ public final class MathUtils {
 
 	public static float log10(float value) {
 		return (float) Math.log10(value);
+	}
+
+	public static boolean intersectLines(Vector4f line1, Vector4f line2) {
+		return intersectLines(line1.x, line1.y, line1.z, line1.w, line2.x, line2.y, line2.z, line2.w);
+	}
+
+	public static boolean intersectLines(Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4) {
+		return intersectLines(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
+	}
+
+	public static boolean intersectLines(float x, float y, float x2, float y2, float x3, float y3, float x4, float y4) {
+		float dx0 = x2 - x;
+		float dx1 = x4 - x3;
+
+		float dy0 = y2 - y;
+		float dy1 = y4 - y3;
+
+		float p0 = dy1 * (x4 - x) - dx1 * (y4 - y);
+		float p1 = dy1 * (x4 - x2) - dx1 * (y4 - y2);
+
+		float p2 = dy0 * (x2 - x3) - dx0 * (y - y3);
+		float p3 = dy0 * (x2 - x4) - dx0 * (y2 - y4);
+
+		return (p0 * p1 <= 0) & (p2 * p3 <= 0);
+	}
+
+	public static boolean intersectPolygon(Vector4f line, float[] polygon) {
+		return intersectPolygon(line.x, line.y, line.z, line.w, polygon);
+	}
+
+	public static boolean intersectPolygon(Vector2f p1, Vector2f p2, float[] polygon) {
+		return intersectPolygon(p1.x, p1.y, p2.x, p2.y, polygon);
+	}
+
+	public static boolean intersectPolygon(float x, float y, float x2, float y2, float[] polygon) {
+		int intersections = 0;
+
+		for (int i = 0; i < polygon.length; i += 2) {
+
+			if (i == polygon.length - 2) {
+
+				if (intersectLines(x, y, x2, y2, polygon[i], polygon[i + 1], polygon[0], polygon[1]))
+					intersections++;
+				continue;
+			}
+
+			if (intersectLines(x, y, x2, y2, polygon[i], polygon[i + 1], polygon[i + 2], polygon[i + 3]))
+				intersections++;
+
+		}
+
+		return intersections % 2 != 0;
+	}
+
+	public static boolean intersectPolygons(float[] polygon1, float[] polygon2) {
+
+		for (int i = 0; i < polygon1.length; i += 2) {
+
+			float p1x1 = polygon1[i];
+			float p1y1 = polygon1[i + 1];
+			float p1x2;
+			float p1y2;
+
+			if (i == polygon1.length - 2) {
+				p1x2 = polygon1[0];
+				p1y2 = polygon1[1];
+			} else {
+				p1x2 = polygon1[i + 2];
+				p1y2 = polygon1[i + 3];
+			}
+
+			for (int j = 0; j < polygon2.length; j += 2) {
+				if (j == polygon2.length - 2) {
+					if (intersectLines(p1x1, p1y1, p1x2, p1y2, polygon2[j], polygon2[j + 1], polygon2[0], polygon2[1]))
+						return true;
+					continue;
+				}
+
+				if (intersectLines(p1x1, p1y1, p1x2, p1y2, polygon2[j], polygon2[j + 1], polygon2[j + 2],
+						polygon2[j + 3]))
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 }

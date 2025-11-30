@@ -42,11 +42,7 @@ public final class TreeStats {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		int nodeVisits = (int) NODE_VISITS.get(memorySegment);
-		int leafVisits = (int) LEAF_VISITS.get(memorySegment);
-
-		NODE_VISITS.set(b2TreeStats, nodeVisits);
-		LEAF_VISITS.set(b2TreeStats, leafVisits);
+		MemorySegment.copy(memorySegment, 0, b2TreeStats, 0, LAYOUT.byteSize());
 	}
 
 	/**

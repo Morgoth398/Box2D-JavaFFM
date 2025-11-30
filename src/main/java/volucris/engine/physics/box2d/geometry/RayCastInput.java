@@ -66,12 +66,7 @@ public final class RayCastInput {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float maxFraction = (float) MAX_FRACTION.get(memorySegment);
-
-		MAX_FRACTION.set(b2RayCastInput, maxFraction);
-
-		origin.set(memorySegment.asSlice(ORIGIN_OFFSET, LAYOUT));
-		translation.set(memorySegment.asSlice(TRANSLATION_OFFSET, LAYOUT));
+		MemorySegment.copy(memorySegment, 0, b2RayCastInput, 0, LAYOUT.byteSize());
 	}
 
 	public boolean isValidRay() {

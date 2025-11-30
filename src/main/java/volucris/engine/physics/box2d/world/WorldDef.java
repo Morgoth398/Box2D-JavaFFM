@@ -226,7 +226,7 @@ public final class WorldDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2WorldDef.asReadOnly();
+		return b2WorldDef;
 	}
 
 	public static StructLayout LAYOUT() {

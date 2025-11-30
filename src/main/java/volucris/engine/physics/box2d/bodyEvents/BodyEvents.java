@@ -26,8 +26,6 @@ public final class BodyEvents {
 
 	private final MemorySegment b2BodyEvents;
 
-	private World world;
-
 	private BodyMoveEvent bodyMoveEvent;
 
 	static {
@@ -44,17 +42,23 @@ public final class BodyEvents {
 	}
 
 	public BodyEvents() {
-		b2BodyEvents = Arena.ofAuto().allocate(LAYOUT);
+		Arena arena = Arena.ofAuto();
+		
+		b2BodyEvents = arena.allocate(LAYOUT);
+		
+		bodyMoveEvent = new BodyMoveEvent(arena);
 	}
 
 	public BodyEvents(MemorySegment memorySegment, World world) {
 		this.b2BodyEvents = memorySegment;
-		this.world = world;
+		
+		bodyMoveEvent = new BodyMoveEvent();
+		bodyMoveEvent.setWorld(world);
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
 		MemorySegment.copy(memorySegment, 0L, b2BodyEvents, 0L, LAYOUT.byteSize());
-		this.world = world;
+		bodyMoveEvent.setWorld(world);
 	}
 
 	public void handleMoveEvents(BodyMoveHandler moveHandler) {
@@ -65,7 +69,7 @@ public final class BodyEvents {
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * BodyMoveEvent.LAYOUT().byteSize();
-			bodyMoveEvent.set(array.asSlice(offset, BodyMoveEvent.LAYOUT()), world);
+			MemorySegment.copy(array, offset, bodyMoveEvent.memorySegment(), 0, BodyMoveEvent.LAYOUT().byteSize());
 			moveHandler.bodyMove(bodyMoveEvent);
 		}
 	}

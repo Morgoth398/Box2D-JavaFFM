@@ -52,7 +52,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	private Object internalUserData;
 	private Object userData;
 
-	private Vec2 vecTmp;
+	protected Vec2 vecTmp;
 
 	static {
 		//@formatter:off
@@ -238,6 +238,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 
 	/**
 	 * Set the internal user data for the body.
+	 * <p>
+	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
 		this.internalUserData = internalUserData;
@@ -310,7 +312,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	}
 
 	public final MemorySegment memorySegment() {
-		return b2JointId.asReadOnly();
+		return b2JointId;
 	}
 
 	public static StructLayout LAYOUT() {

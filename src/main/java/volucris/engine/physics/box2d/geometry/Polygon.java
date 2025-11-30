@@ -267,7 +267,7 @@ public final class Polygon {
 
 		for (int i = 0; i < count; i++) {
 			long offset = i * Vec2.LAYOUT().byteSize();
-			vecTmp.set(vertices.asSlice(offset, Vec2.LAYOUT()));
+			MemorySegment.copy(vertices, offset, vecTmp.memorySegment(), 0, Vec2.LAYOUT().byteSize());
 			Vector2f targetVec = target[i];
 			if (targetVec == null)
 				target[i] = vecTmp.get();
@@ -283,7 +283,7 @@ public final class Polygon {
 
 		for (int i = 0; i < count; i++) {
 			long offset = i * Vec2.LAYOUT().byteSize();
-			vecTmp.set(normals.asSlice(offset, Vec2.LAYOUT()));
+			MemorySegment.copy(normals, offset, vecTmp.memorySegment(), 0, Vec2.LAYOUT().byteSize());
 			Vector2f targetVec = target[i];
 			if (targetVec == null)
 				target[i] = vecTmp.get();

@@ -190,7 +190,7 @@ public final class WeldJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2WeldJointDef.asReadOnly();
+		return b2WeldJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

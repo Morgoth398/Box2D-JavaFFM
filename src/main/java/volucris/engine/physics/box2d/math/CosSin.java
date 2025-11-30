@@ -38,6 +38,10 @@ public final class CosSin {
 		B2_COMPUTE_COS_SIN = downcallHandle("b2ComputeCosSin", LAYOUT, JAVA_FLOAT);
 	}
 
+	public CosSin(Arena arena) {
+		b2CosSin = arena.allocate(LAYOUT);
+	}
+
 	public CosSin() {
 		b2CosSin = Arena.ofAuto().allocate(LAYOUT);
 	}

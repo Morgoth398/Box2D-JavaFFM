@@ -120,7 +120,7 @@ public final class CastOutput {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2CastOutput.asReadOnly();
+		return b2CastOutput;
 	}
 
 	public static StructLayout LAYOUT() {

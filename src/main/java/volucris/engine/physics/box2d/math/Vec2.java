@@ -40,11 +40,19 @@ public final class Vec2 {
 	}
 
 	public Vec2(float x, float y) {
-		b2Vec2 = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto(), x, y);
+	}
+	
+	public Vec2(Arena arena, float x, float y) {
+		b2Vec2 = arena.allocate(LAYOUT);
 
 		set(x, y);
 	}
 
+	public Vec2(Arena arena) {
+		b2Vec2 = arena.allocate(LAYOUT);
+	}
+	
 	public Vec2(Vector2f vector) {
 		this(vector.x, vector.y);
 	}
@@ -66,10 +74,7 @@ public final class Vec2 {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float x = (float) X.get(memorySegment);
-		float y = (float) Y.get(memorySegment);
-		setX(x);
-		setY(y);
+		MemorySegment.copy(memorySegment, 0, b2Vec2, 0, LAYOUT.byteSize());
 	}
 
 	public void set(float x, float y) {
@@ -111,7 +116,7 @@ public final class Vec2 {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Vec2.asReadOnly();
+		return b2Vec2;
 	}
 
 	public static StructLayout LAYOUT() {

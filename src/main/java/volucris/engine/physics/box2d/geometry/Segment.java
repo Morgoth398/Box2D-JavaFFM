@@ -68,8 +68,7 @@ public final class Segment {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		point1.set(memorySegment.asSlice(POINT1_OFFSET, Vec2.LAYOUT()));
-		point2.set(memorySegment.asSlice(POINT2_OFFSET, Vec2.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2Segment, 0, LAYOUT.byteSize());
 	}
 
 	/**

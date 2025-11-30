@@ -29,8 +29,6 @@ public final class MotorJoint extends Joint {
 	private static final MethodHandle B2_MOTOR_JOINT_SET_CORRECTION_FACTOR;
 	private static final MethodHandle B2_MOTOR_JOINT_GET_CORRECTION_FACTOR;
 
-	private Vec2 vecTmp;
-
 	static {
 		//@formatter:off
 		B2_CREATE_MOTOR_JOINT = downcallHandle("b2CreateMotorJoint", JOINT_ID_LAYOUT, World.LAYOUT(), ADDRESS);
@@ -63,8 +61,6 @@ public final class MotorJoint extends Joint {
 			throw new VolucrisRuntimeException("Box2D: Cannot create motor joint.");
 		}
 		super(b2MotorJoint, world);
-
-		vecTmp = new Vec2();
 	}
 
 	/**

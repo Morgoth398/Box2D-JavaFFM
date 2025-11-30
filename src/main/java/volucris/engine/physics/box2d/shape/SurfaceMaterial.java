@@ -68,20 +68,7 @@ public final class SurfaceMaterial {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float friction = (float) FRICTION.get(memorySegment);
-		float restitution = (float) RESTITUTION.get(memorySegment);
-		float rollingResistance = (float) ROLLING_RESISTANCE.get(memorySegment);
-		float tangentSpeed = (float) TANGENT_SPEED.get(memorySegment);
-		int userMaterialId = (int) USER_MATERIAL_ID.get(memorySegment);
-		int customColor = (int) CUSTOM_COLOR.get(memorySegment);
-
-		setFriction(friction);
-		setRestitution(restitution);
-		setRollingResistance(rollingResistance);
-		setTangentSpeed(tangentSpeed);
-		setUserMaterialId(userMaterialId);
-
-		CUSTOM_COLOR.set(b2SurfaceMaterial, customColor);
+		MemorySegment.copy(memorySegment, 0, b2SurfaceMaterial, 0, LAYOUT.byteSize());
 	}
 
 	/**
@@ -179,7 +166,7 @@ public final class SurfaceMaterial {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2SurfaceMaterial.asReadOnly();
+		return b2SurfaceMaterial;
 	}
 
 	public static StructLayout LAYOUT() {

@@ -88,11 +88,7 @@ public final class Circle {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float radius = (float) RADIUS.get(memorySegment);
-
-		setRadius(radius);
-
-		center.set(memorySegment.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2Circle, 0, LAYOUT.byteSize());
 	}
 
 	/**

@@ -143,7 +143,7 @@ public final class MouseJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2MouseJointDef.asReadOnly();
+		return b2MouseJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

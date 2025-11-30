@@ -57,13 +57,7 @@ public final class MassData {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float mass = (float) MASS.get(memorySegment);
-		float rotationalInertia = (float) ROTATIONAL_INERTIA.get(memorySegment);
-
-		setMass(mass);
-		setRotationalInertia(rotationalInertia);
-
-		center.set(memorySegment.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2MassData, 0, LAYOUT.byteSize());
 	}
 
 	/**

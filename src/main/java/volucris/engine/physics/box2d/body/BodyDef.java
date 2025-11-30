@@ -45,6 +45,12 @@ public final class BodyDef {
 
 	private static final MethodHandle B2_DEFAULT_BODY_DEF;
 
+	private static final long POSITION_OFFSET;
+	private static final long LINEAR_VELOCITY_OFFSET;
+	private static final long ROTAION_OFFSET;
+
+	private final Arena arena;
+
 	private final MemorySegment b2BodyDef;
 
 	private final Rot rotation;
@@ -78,6 +84,10 @@ public final class BodyDef {
 				).withName("b2BodyDef");
 		//@formatter:on
 
+		POSITION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
+		LINEAR_VELOCITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
+		ROTAION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotation"));
+
 		TYPE = varHandle(LAYOUT, "type");
 		ANGULAR_VELOCITY = varHandle(LAYOUT, "angularVelocity");
 		LINEAR_DAMPING = varHandle(LAYOUT, "linearDamping");
@@ -97,20 +107,15 @@ public final class BodyDef {
 
 	public BodyDef() {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2BodyDef = (MemorySegment) B2_DEFAULT_BODY_DEF.invokeExact(allocator);
+			arena = Arena.ofAuto();
+			b2BodyDef = (MemorySegment) B2_DEFAULT_BODY_DEF.invokeExact((SegmentAllocator) arena);
 		} catch (Throwable e) {
 			throw new RuntimeException("Box2D: Cannot create body def.");
 		}
 
-		long positionOffset = LAYOUT.byteOffset(PathElement.groupElement("position"));
-		position = new Vec2(b2BodyDef.asSlice(positionOffset, Vec2.LAYOUT()));
-
-		long linearVelocityOffset = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
-		linearVelocity = new Vec2(b2BodyDef.asSlice(linearVelocityOffset, Vec2.LAYOUT()));
-
-		long rotOffset = LAYOUT.byteOffset(PathElement.groupElement("rotation"));
-		rotation = new Rot(b2BodyDef.asSlice(rotOffset, Rot.LAYOUT()));
+		position = new Vec2(b2BodyDef.asSlice(POSITION_OFFSET, Vec2.LAYOUT()));
+		linearVelocity = new Vec2(b2BodyDef.asSlice(LINEAR_VELOCITY_OFFSET, Vec2.LAYOUT()));
+		rotation = new Rot(b2BodyDef.asSlice(ROTAION_OFFSET, Rot.LAYOUT()));
 	}
 
 	/**
@@ -169,10 +174,8 @@ public final class BodyDef {
 	 * termination)
 	 */
 	public void setName(String name) {
-		try (Arena arena = Arena.ofConfined()) {
-			MemorySegment nativeString = arena.allocateFrom(name);
-			NAME.set(b2BodyDef, nativeString);
-		}
+		MemorySegment nativeString = arena.allocateFrom(name);
+		NAME.set(b2BodyDef, nativeString);
 	}
 
 	/**

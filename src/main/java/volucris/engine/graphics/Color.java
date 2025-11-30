@@ -77,7 +77,7 @@ public final class Color implements Cloneable {
 	}
 
 	/**
-	 * Creates a color with the given hex code.
+	 * Creates a rgba color with the given hex code.
 	 * 
 	 * @param hexCode The hex code, e.g. "#FFFFFF" or "#FFFFFFFF"
 	 */
@@ -86,7 +86,7 @@ public final class Color implements Cloneable {
 	}
 
 	/**
-	 * Creates a color from the given integer.
+	 * Creates a rgba color from the given integer.
 	 * 
 	 * @param color           The color number, e.g. 0xFFFFFFFF with alpha channel
 	 *                        and 0xFFFFFF without alpha channel.
@@ -127,7 +127,7 @@ public final class Color implements Cloneable {
 	}
 
 	/**
-	 * Sets this color's values to the rgba values of the passed hex code.
+	 * Sets this rgba color's values to the rgba values of the passed hex code.
 	 * 
 	 * @param hexCode The hex code, e.g. "#FFFFFF" or "#FFFFFFFF"
 	 * @return This color for chaining
@@ -138,7 +138,7 @@ public final class Color implements Cloneable {
 	}
 
 	/**
-	 * Creates a color from the given integer.
+	 * Creates a rgba color from the given integer.
 	 * 
 	 * @param color           The color number, e.g. 0xFFFFFFFF with alpha channel
 	 *                        and 0xFFFFFF without alpha channel.
@@ -147,14 +147,14 @@ public final class Color implements Cloneable {
 	 */
 	public Color set(int color, boolean hasAlphaChannel) {
 		if (hasAlphaChannel) {
-			r = ((color & 0xFF000000) >> 24) / 255f;
-			g = ((color & 0x00FF0000) >> 16) / 255f;
-			b = ((color & 0x0000FF00) >> 8) / 255f;
-			a = ((color & 0x000000FF) >> 0) / 255f;
+			r = ((color & 0xFF000000) >>> 24) / 255f;
+			g = ((color & 0x00FF0000) >>> 16) / 255f;
+			b = ((color & 0x0000FF00) >>> 8) / 255f;
+			a = ((color & 0x000000FF) >>> 0) / 255f;
 		} else {
-			r = ((color & 0xFF0000) >> 16) / 255f;
-			g = ((color & 0x00FF00) >> 8) / 255f;
-			b = ((color & 0x0000FF) >> 0) / 255f;
+			r = ((color & 0xFF0000) >>> 16) / 255f;
+			g = ((color & 0x00FF00) >>> 8) / 255f;
+			b = ((color & 0x0000FF) >>> 0) / 255f;
 			a = 1f;
 		}
 		clamp();
@@ -327,7 +327,7 @@ public final class Color implements Cloneable {
 	private void convertHexCode(String hexCode) {
 		if (hexCode == null || hexCode.length() < 6)
 			throw new VolucrisRuntimeException("Hex code is not in expected format!");
-		
+
 		this.r = Integer.valueOf(hexCode.substring(1, 3), 16) / 255f;
 		this.g = Integer.valueOf(hexCode.substring(3, 5), 16) / 255f;
 		this.b = Integer.valueOf(hexCode.substring(5, 7), 16) / 255f;
@@ -341,6 +341,8 @@ public final class Color implements Cloneable {
 
 	/**
 	 * Converts the color into hex code format, e.g. "#FFFFFFFF".
+	 * <p>
+	 * There may be some rounding errors due to the conversion of float to int.
 	 * 
 	 * @return hexCode
 	 */
@@ -364,6 +366,22 @@ public final class Color implements Cloneable {
 		if (builder.length() == 8)
 			builder.insert(7, '0');
 		return builder.toString().toUpperCase();
+	}
+
+	/**
+	 * Converts the color into hex code, e.g. 0xFFFFFFFF
+	 * <p>
+	 * There may be some rounding errors due to the conversion of float to int.
+	 * 
+	 * @return
+	 */
+	public int toInt() {
+		int r = (int) (this.r * 255);
+		int g = (int) (this.g * 255);
+		int b = (int) (this.b * 255);
+		int a = (int) (this.a * 255);
+
+		return (r << 24) | (g << 16) | (b << 8) | a;
 	}
 
 	//@formatter:off

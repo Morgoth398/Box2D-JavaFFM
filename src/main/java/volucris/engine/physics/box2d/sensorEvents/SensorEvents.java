@@ -29,8 +29,6 @@ public final class SensorEvents {
 
 	private final MemorySegment b2SensorEvents;
 
-	private World world;
-
 	private SensorBeginTouchEvent beginEvent;
 	private SensorEndTouchEvent endEvent;
 
@@ -51,28 +49,44 @@ public final class SensorEvents {
 	}
 
 	public SensorEvents() {
-		b2SensorEvents = Arena.ofAuto().allocate(LAYOUT);
+		Arena arena = Arena.ofAuto();
+
+		b2SensorEvents = arena.allocate(LAYOUT);
+
+		beginEvent = new SensorBeginTouchEvent(arena);
+		endEvent = new SensorEndTouchEvent(arena);
 	}
 
 	public SensorEvents(MemorySegment memorySegment, World world) {
 		this.b2SensorEvents = memorySegment;
-		this.world = world;
+
+		Arena arena = Arena.ofAuto();
+		beginEvent = new SensorBeginTouchEvent(arena);
+		endEvent = new SensorEndTouchEvent(arena);
+
+		beginEvent.setWorld(world);
+		endEvent.setWorld(world);
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
 		MemorySegment.copy(memorySegment, 0L, b2SensorEvents, 0L, LAYOUT.byteSize());
-		this.world = world;
+
+		beginEvent.setWorld(world);
+		endEvent.setWorld(world);
 	}
 
 	public void handleBeginEvents(SensorBeginHandler beginHandler) {
 		int elementCount = getBeginCount();
 
+		if (elementCount == 0)
+			return;
+		
 		long arraySize = elementCount * SensorBeginTouchEvent.LAYOUT().byteSize();
 		MemorySegment array = ((MemorySegment) BEGIN_EVENTS.get(b2SensorEvents)).reinterpret(arraySize);
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * SensorBeginTouchEvent.LAYOUT().byteSize();
-			beginEvent.set(array.asSlice(offset, SensorBeginTouchEvent.LAYOUT()), world);
+			MemorySegment.copy(array, offset, beginEvent.memorySegment(), 0, SensorBeginTouchEvent.LAYOUT().byteSize());
 			beginHandler.sensorBegin(beginEvent);
 		}
 	}
@@ -80,12 +94,15 @@ public final class SensorEvents {
 	public void handleEndEvents(SensorEndHandler endHandler) {
 		int elementCount = getEndCount();
 
+		if (elementCount == 0)
+			return;
+		
 		long arraySize = elementCount * SensorEndTouchEvent.LAYOUT().byteSize();
 		MemorySegment array = ((MemorySegment) END_EVENTS.get(b2SensorEvents)).reinterpret(arraySize);
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * SensorEndTouchEvent.LAYOUT().byteSize();
-			endEvent.set(array.asSlice(offset, SensorEndTouchEvent.LAYOUT()), world);
+			MemorySegment.copy(array, offset, endEvent.memorySegment(), 0, SensorEndTouchEvent.LAYOUT().byteSize());;
 			endHandler.sensorEnd(endEvent);
 		}
 

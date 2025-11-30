@@ -282,7 +282,7 @@ public final class RevoluteJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2RevoluteJointDef.asReadOnly();
+		return b2RevoluteJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

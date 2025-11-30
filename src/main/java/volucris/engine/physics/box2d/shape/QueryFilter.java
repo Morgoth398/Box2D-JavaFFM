@@ -94,7 +94,7 @@ public final class QueryFilter {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2QueryFilter.asReadOnly();
+		return b2QueryFilter;
 	}
 
 	public static StructLayout LAYOUT() {
