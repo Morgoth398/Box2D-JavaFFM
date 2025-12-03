@@ -9,6 +9,8 @@ Nevertheless, you can use these bindings for Mac if you provide your own .dylib 
 If you build your own dynamic library file for Box2D, make sure to additionally export the function 'b2Atan2' as the bindings make use of it.
 
 # Usage
+This project requires Java 25.
+
 Before using the bindings (and even loading the bindings classes), you need to call 'Box2D.init()' or load the native library yourself.
 My implementation of a native library loader makes use of some  [LWJGL](https://www.lwjgl.org/) configurations. To set the extract directory of
 the native library, change 'Configuration.SHARED _LIBRARY _EXTRACT _PATH'. 
