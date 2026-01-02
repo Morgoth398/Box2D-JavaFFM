@@ -45,7 +45,11 @@ public final class MassData {
 	}
 
 	public MassData() {
-		b2MassData = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public MassData(Arena arena) {
+		b2MassData = arena.allocate(LAYOUT);
 
 		center = new Vec2(b2MassData.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
 	}

@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.geometry;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -65,16 +64,24 @@ public final class Capsule {
 	}
 
 	public Capsule(Vector2f center1, Vector2f center2, float radius) {
-		this(center1.x, center1.y, center2.x, center2.y, radius);
+		this(center1, center2, radius, Arena.ofAuto());
+	}
+	
+	public Capsule(Vector2f center1, Vector2f center2, float radius, Arena arena) {
+		this(center1.x, center1.y, center2.x, center2.y, radius, arena);
 	}
 	
 	public Capsule(float x1, float y1, float x2, float y2, float radius) {
+		this(x1, y1, x2, y2, radius, Arena.ofAuto());
+	}
+	
+	public Capsule(float x1, float y1, float x2, float y2, float radius, Arena arena) {
 		b2Capsule = Arena.ofAuto().allocate(LAYOUT);
 
 		center1 = new Vec2(b2Capsule.asSlice(CENTER1_OFFSET, Vec2.LAYOUT()));
 		center2 = new Vec2(b2Capsule.asSlice(CENTER2_OFFSET, Vec2.LAYOUT()));
 
-		vecTmp = new Vec2();
+		vecTmp = new Vec2(arena);
 		
 		setCenter1(x1, y1);
 		setCenter2(x2, y2);
@@ -82,12 +89,16 @@ public final class Capsule {
 	}
 	
 	public Capsule() {
-		b2Capsule = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Capsule(Arena arena) {
+		b2Capsule = arena.allocate(LAYOUT);
 
 		center1 = new Vec2(b2Capsule.asSlice(CENTER1_OFFSET, Vec2.LAYOUT()));
 		center2 = new Vec2(b2Capsule.asSlice(CENTER2_OFFSET, Vec2.LAYOUT()));
 
-		vecTmp = new Vec2();
+		vecTmp = new Vec2(arena);
 	}
 
 	public Capsule(MemorySegment memorySegment) {
@@ -108,8 +119,7 @@ public final class Capsule {
 	 */
 	public MassData computeCapsuleMass(MassData target, float density) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_COMPUTE_CAPSULE_MASS.invokeExact(allocator, b2Capsule, density);
+			MemorySegment segment = (MemorySegment) B2_COMPUTE_CAPSULE_MASS.invoke(arena, b2Capsule, density);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -129,9 +139,8 @@ public final class Capsule {
 	 */
 	public AABB computeCapsuleAABB(AABB target, Transform transform) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_COMPUTE_CAPSULE_AABB;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2Capsule, transform.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2Capsule, transform.memorySegment());
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -164,9 +173,8 @@ public final class Capsule {
 	 */
 	public CastOutput rayCastCapsule(CastOutput target, RayCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_RAY_CAST_CAPSULE;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, input.memorySegment(), b2Capsule);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, input.memorySegment(), b2Capsule);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -187,9 +195,8 @@ public final class Capsule {
 	 */
 	public CastOutput shapeCastCapsule(CastOutput target, ShapeCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_SHAPE_CAST_CAPSULE;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, input.memorySegment(), b2Capsule);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, input.memorySegment(), b2Capsule);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {

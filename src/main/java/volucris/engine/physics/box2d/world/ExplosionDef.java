@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.world;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -61,9 +60,12 @@ public final class ExplosionDef {
 	}
 
 	public ExplosionDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public ExplosionDef(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2ExplosionDef = (MemorySegment) B2_DEFAULT_EXPLOSION_DEF.invokeExact(allocator);
+			b2ExplosionDef = (MemorySegment) B2_DEFAULT_EXPLOSION_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create explosion def.");
 		}

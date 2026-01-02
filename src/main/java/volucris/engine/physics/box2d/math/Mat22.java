@@ -33,7 +33,11 @@ public final class Mat22 {
 	}
 
 	public Mat22() {
-		b2Mat22 = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Mat22(Arena arena) {
+		b2Mat22 = arena.allocate(LAYOUT);
 
 		cx = new Vec2(b2Mat22.asSlice(CX_OFFSET, Vec2.LAYOUT()));
 		cy = new Vec2(b2Mat22.asSlice(CY_OFFSET, Vec2.LAYOUT()));

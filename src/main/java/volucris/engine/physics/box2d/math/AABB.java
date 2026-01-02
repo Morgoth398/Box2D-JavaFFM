@@ -43,7 +43,11 @@ public final class AABB {
 	}
 
 	public AABB() {
-		b2AABB = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public AABB(Arena arena) {
+		b2AABB = arena.allocate(LAYOUT);
 
 		lowerBound = new Vec2(b2AABB.asSlice(LOWER_BOUND_OFFSET, Vec2.LAYOUT()));
 		upperBound = new Vec2(b2AABB.asSlice(UPPER_BOUND_OFFSET, Vec2.LAYOUT()));

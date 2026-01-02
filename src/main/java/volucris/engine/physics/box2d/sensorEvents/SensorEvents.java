@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.sensorEvents;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -34,9 +35,11 @@ public final class SensorEvents {
 
 	static {
 		//@formatter:off
+		AddressLayout UNBOUNDED_ADDRESS = ADDRESS.withTargetLayout(MemoryLayout.sequenceLayout(Long.MAX_VALUE, JAVA_BYTE));
+		
 		LAYOUT = MemoryLayout.structLayout(
-		        ADDRESS.withName("beginEvents"),
-		        ADDRESS.withName("endEvents"),
+				UNBOUNDED_ADDRESS.withName("beginEvents"),
+				UNBOUNDED_ADDRESS.withName("endEvents"),
 		        JAVA_INT.withName("beginCount"),
 		        JAVA_INT.withName("endCount")
 			).withName("b2SensorEvents");
@@ -49,8 +52,10 @@ public final class SensorEvents {
 	}
 
 	public SensorEvents() {
-		Arena arena = Arena.ofAuto();
-
+		this(Arena.ofAuto());
+	}
+	
+	public SensorEvents(Arena arena) {
 		b2SensorEvents = arena.allocate(LAYOUT);
 
 		beginEvent = new SensorBeginTouchEvent(arena);
@@ -81,8 +86,7 @@ public final class SensorEvents {
 		if (elementCount == 0)
 			return;
 		
-		long arraySize = elementCount * SensorBeginTouchEvent.LAYOUT().byteSize();
-		MemorySegment array = ((MemorySegment) BEGIN_EVENTS.get(b2SensorEvents)).reinterpret(arraySize);
+		MemorySegment array = (MemorySegment) BEGIN_EVENTS.get(b2SensorEvents);
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * SensorBeginTouchEvent.LAYOUT().byteSize();
@@ -97,8 +101,7 @@ public final class SensorEvents {
 		if (elementCount == 0)
 			return;
 		
-		long arraySize = elementCount * SensorEndTouchEvent.LAYOUT().byteSize();
-		MemorySegment array = ((MemorySegment) END_EVENTS.get(b2SensorEvents)).reinterpret(arraySize);
+		MemorySegment array = (MemorySegment) END_EVENTS.get(b2SensorEvents);
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * SensorEndTouchEvent.LAYOUT().byteSize();

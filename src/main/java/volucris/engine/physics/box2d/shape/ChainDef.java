@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.shape;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -95,9 +94,13 @@ public final class ChainDef {
 	}
 
 	public ChainDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public ChainDef(Arena arena) {
 		try {
-			arena = Arena.ofAuto();
-			b2ChainDef = (MemorySegment) B2_DEFAULT_CHAIN_DEF.invokeExact((SegmentAllocator) arena);
+			this.arena = arena;
+			b2ChainDef = (MemorySegment) B2_DEFAULT_CHAIN_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create chain def.");
 		}

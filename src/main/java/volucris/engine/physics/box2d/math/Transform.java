@@ -36,7 +36,11 @@ public final class Transform {
 	}
 
 	public Transform() {
-		b2Transform = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Transform(Arena arena) {
+		b2Transform = arena.allocate(LAYOUT);
 		
 		p = new Vec2(b2Transform.asSlice(P_OFFSET, Vec2.LAYOUT()));
 		q = new Rot(b2Transform.asSlice(Q_OFFSET, Rot.LAYOUT()));

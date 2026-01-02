@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
@@ -60,22 +59,24 @@ public final class RevoluteJoint extends Joint {
 		//@formatter:on
 	}
 
+	public RevoluteJoint(World world, RevoluteJointDef revoluteJointDef) {
+		this(world, revoluteJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create the revolute joint.
 	 */
-	public RevoluteJoint(World world, RevoluteJointDef revoluteJointDef) {
+	public RevoluteJoint(World world, RevoluteJointDef revoluteJointDef, Arena arena) {
 		MemorySegment b2RevoluteJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = revoluteJointDef.memorySegment();
 
-			b2RevoluteJoint = (MemorySegment) B2_CREATE_REVOLUTE_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			b2RevoluteJoint = (MemorySegment) B2_CREATE_REVOLUTE_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create revolute joint.");
 		}
-		super(b2RevoluteJoint, world);
+		super(b2RevoluteJoint, world, arena);
 	}
 
 	/**

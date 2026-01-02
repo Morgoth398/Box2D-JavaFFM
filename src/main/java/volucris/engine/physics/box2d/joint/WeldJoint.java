@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
@@ -42,22 +41,24 @@ public final class WeldJoint extends Joint {
 		//@formatter:on
 	}
 
+	public WeldJoint(World world, WeldJointDef weldJointDef) {
+		this(world, weldJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create the weld joint.
 	 */
-	public WeldJoint(World world, WeldJointDef weldJointDef) {
+	public WeldJoint(World world, WeldJointDef weldJointDef, Arena arena) {
 		MemorySegment b2WeldJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = weldJointDef.memorySegment();
 
-			b2WeldJoint = (MemorySegment) B2_CREATE_WELD_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			b2WeldJoint = (MemorySegment) B2_CREATE_WELD_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create weld joint.");
 		}
-		super(b2WeldJoint, world);
+		super(b2WeldJoint, world, arena);
 	}
 
 	/**

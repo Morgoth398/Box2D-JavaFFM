@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.bodyEvents;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -30,8 +31,10 @@ public final class BodyEvents {
 
 	static {
 		//@formatter:off
+		AddressLayout UNBOUNDED_ADDRESS = ADDRESS.withTargetLayout(MemoryLayout.sequenceLayout(Long.MAX_VALUE, JAVA_BYTE));
+		
 		LAYOUT = MemoryLayout.structLayout(
-		        ADDRESS.withName("moveEvents"),
+		        UNBOUNDED_ADDRESS.withName("moveEvents"),
 		        JAVA_INT.withName("moveCount"),
 		        MemoryLayout.paddingLayout(4)
 			);
@@ -42,8 +45,10 @@ public final class BodyEvents {
 	}
 
 	public BodyEvents() {
-		Arena arena = Arena.ofAuto();
-		
+		this(Arena.ofAuto());
+	}
+	
+	public BodyEvents(Arena arena) {		
 		b2BodyEvents = arena.allocate(LAYOUT);
 		
 		bodyMoveEvent = new BodyMoveEvent(arena);
@@ -64,8 +69,7 @@ public final class BodyEvents {
 	public void handleMoveEvents(BodyMoveHandler moveHandler) {
 		int elementCount = getMoveCount();
 
-		long arraySize = elementCount * BodyMoveEvent.LAYOUT().byteSize();
-		MemorySegment array = ((MemorySegment) MOVE_EVENTS.get(b2BodyEvents)).reinterpret(arraySize);
+		MemorySegment array = (MemorySegment) MOVE_EVENTS.get(b2BodyEvents);
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * BodyMoveEvent.LAYOUT().byteSize();

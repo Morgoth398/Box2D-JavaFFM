@@ -4,7 +4,6 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 
@@ -54,7 +53,11 @@ public final class Segment {
 	}
 
 	public Segment() {
-		b2Segment = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Segment(Arena arena) {
+		b2Segment = arena.allocate(LAYOUT);
 
 		point1 = new Vec2(b2Segment.asSlice(POINT1_OFFSET, Vec2.LAYOUT()));
 		point2 = new Vec2(b2Segment.asSlice(POINT2_OFFSET, Vec2.LAYOUT()));
@@ -76,9 +79,8 @@ public final class Segment {
 	 */
 	public AABB computeSegmentAABB(AABB target, Transform transform) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_COMPUTE_SEGMENT_AABB;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2Segment, transform.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2Segment, transform.memorySegment());
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -98,9 +100,8 @@ public final class Segment {
 	 */
 	public CastOutput rayCastSegment(CastOutput target, RayCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_RAY_CAST_SEGMENT;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, input.memorySegment(), b2Segment);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, input.memorySegment(), b2Segment);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -120,9 +121,8 @@ public final class Segment {
 	 */
 	public CastOutput shapeCastSegment(CastOutput target, ShapeCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_SHAPE_CAST_SEGMENT;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, input.memorySegment(), b2Segment);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, input.memorySegment(), b2Segment);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -170,7 +170,7 @@ public final class Segment {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Segment.asReadOnly();
+		return b2Segment;
 	}
 
 	public static StructLayout LAYOUT() {

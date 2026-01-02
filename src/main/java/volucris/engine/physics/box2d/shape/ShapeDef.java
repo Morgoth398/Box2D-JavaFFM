@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.shape;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -79,9 +78,12 @@ public final class ShapeDef {
 	}
 
 	public ShapeDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public ShapeDef(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2ShapeDef = (MemorySegment) B2_DEFAULT_SHAPE_DEF.invokeExact(allocator);
+			b2ShapeDef = (MemorySegment) B2_DEFAULT_SHAPE_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create shape def.");
 		}

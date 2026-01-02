@@ -20,7 +20,7 @@ import static volucris.engine.utils.FFMUtils.*;
  * <li>return a value less than input->maxFraction to clip the ray
  * <li>return a value of input->maxFraction to continue the ray cast without
  * clipping
- * </ul> 
+ * </ul>
  */
 public abstract class TreeRayCastCallback {
 
@@ -43,16 +43,15 @@ public abstract class TreeRayCastCallback {
 		TREE_RAY_CAST_CALLBACK_DESCR = functionDescr(ADDRESS, JAVA_INT, JAVA_LONG, ADDRESS);
 		
 		TREE_RAY_CAST_CALLBACK_HANDLE = upcallHandle(LOOKUP, TreeRayCastCallback.class, "treeRayCastCallback", TREE_RAY_CAST_CALLBACK_DESCR);
-		//@formatter:on
 	}
 
 	public TreeRayCastCallback() {
 		treeRayCastCallbackAddress = upcallStub(this, TREE_RAY_CAST_CALLBACK_HANDLE, TREE_RAY_CAST_CALLBACK_DESCR);
 	}
 
-	protected abstract boolean treeRayCastCallback(MemorySegment imput, int proxyId, long userData,
-			MemorySegment context);
-
+	protected abstract boolean treeRayCastCallback(MemorySegment input, int proxyId, long userData, MemorySegment context);
+	//@formatter:on
+	
 	public MemorySegment memorySegment() {
 		return treeRayCastCallbackAddress;
 	}

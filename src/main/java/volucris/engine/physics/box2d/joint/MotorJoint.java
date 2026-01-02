@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import org.joml.Vector2f;
@@ -45,22 +44,24 @@ public final class MotorJoint extends Joint {
 		//@formatter:on
 	}
 
+	public MotorJoint(World world, MotorJointDef motorJointDef) {
+		this(world, motorJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create the motor joint.
 	 */
-	public MotorJoint(World world, MotorJointDef motorJointDef) {
+	public MotorJoint(World world, MotorJointDef motorJointDef, Arena arena) {
 		MemorySegment b2MotorJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = motorJointDef.memorySegment();
 
-			b2MotorJoint = (MemorySegment) B2_CREATE_MOTOR_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			b2MotorJoint = (MemorySegment) B2_CREATE_MOTOR_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create motor joint.");
 		}
-		super(b2MotorJoint, world);
+		super(b2MotorJoint, world, arena);
 	}
 
 	/**
@@ -80,8 +81,7 @@ public final class MotorJoint extends Joint {
 	 */
 	public Vector2f getLinearOffset(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_MOTOR_JOINT_GET_LINEAR_OFFSET.invokeExact(allocator, b2JointId);
+			MemorySegment segment = (MemorySegment) B2_MOTOR_JOINT_GET_LINEAR_OFFSET.invoke(arena, b2JointId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {

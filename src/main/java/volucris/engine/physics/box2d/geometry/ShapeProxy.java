@@ -54,7 +54,11 @@ public final class ShapeProxy {
 	}
 
 	public ShapeProxy() {
-		b2ShapeProxy = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public ShapeProxy(Arena arena) {
+		b2ShapeProxy = arena.allocate(LAYOUT);
 
 		points = new Vec2[8];
 		for (int i = 0; i < 8; i++)
@@ -111,7 +115,7 @@ public final class ShapeProxy {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ShapeProxy.asReadOnly();
+		return b2ShapeProxy;
 	}
 
 	public static StructLayout LAYOUT() {

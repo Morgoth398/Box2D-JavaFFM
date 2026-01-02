@@ -9,12 +9,26 @@ package volucris.engine.physics.box2d.body;
  * <ul>
  * <li>STATIC_BODY: zero mass, zero velocity, may be manually moved.
  * <li>KINMEATIC_BODY: zero mass, velocity set by user, moved by solver.
- * <li>DYNAMIC_BOdY: positive mass, velocity determined by forces, moved by
+ * <li>DYNAMIC_BODY: positive mass, velocity determined by forces, moved by
  * solver.
  * </ul>
  */
 public enum BodyType {
-	STATIC_BODY(0), KINEMATIC_BODY(1), DYNAMIC_BODY(2);
+
+	/**
+	 * zero mass, zero velocity, may be manually moved.
+	 */
+	STATIC_BODY(0),
+
+	/**
+	 * zero mass, velocity set by user, moved by solver.
+	 */
+	KINEMATIC_BODY(1),
+
+	/**
+	 * positive mass, velocity determined by forces, moved by solver.
+	 */
+	DYNAMIC_BODY(2);
 
 	private int id;
 

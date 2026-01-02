@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.callbacks;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -52,7 +53,11 @@ public abstract class EnqueueTaskCallback {
 	}
 
 	public EnqueueTaskCallback() {
-		enqueueTaskCallbackAddress = upcallStub(this, ENQUEUE_TASK_CALLBACK_HANDLE, ENQUEUE_TASK_CALLBACK_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public EnqueueTaskCallback(Arena arena) {
+		enqueueTaskCallbackAddress = upcallStub(this, ENQUEUE_TASK_CALLBACK_HANDLE, ENQUEUE_TASK_CALLBACK_DESCR, arena);
 	}
 
 	protected abstract MemorySegment enqueueTaskCallback(MemorySegment task, int itemCount, int minRange,

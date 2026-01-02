@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.callbacks;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -51,7 +52,11 @@ public abstract class TaskCallback {
 	}
 
 	public TaskCallback() {
-		taskCallbackAddress = upcallStub(this, TASK_CALLBACK_HANDLE, TASK_CALLBACK_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public TaskCallback(Arena arena) {
+		taskCallbackAddress = upcallStub(this, TASK_CALLBACK_HANDLE, TASK_CALLBACK_DESCR, arena);
 	}
 
 	protected abstract void taskCallback(int startIndex, int endIndex, int workerIndex, MemorySegment taskContext);

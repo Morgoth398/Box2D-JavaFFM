@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.functions;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -57,7 +58,11 @@ public abstract class CastResultFunction {
 	}
 
 	public CastResultFunction() {
-		customFilterFcnAddress = upcallStub(this, CUSTOM_FILTER_FCN_HANDLE, CUSTOM_FILTER_FCN_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public CastResultFunction(Arena arena) {
+		customFilterFcnAddress = upcallStub(this, CUSTOM_FILTER_FCN_HANDLE, CUSTOM_FILTER_FCN_DESCR, arena);
 	}
 
 	protected abstract float castResultFunction(MemorySegment shapeId, MemorySegment point, MemorySegment normal,

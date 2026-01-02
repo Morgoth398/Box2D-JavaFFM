@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.functions;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -53,7 +54,11 @@ public abstract class CustomFilterFunction {
 	}
 
 	public CustomFilterFunction() {
-		customFilterFcnAddress = upcallStub(this, CUSTOM_FILTER_FCN_HANDLE, CUSTOM_FILTER_FCN_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public CustomFilterFunction(Arena arena) {
+		customFilterFcnAddress = upcallStub(this, CUSTOM_FILTER_FCN_HANDLE, CUSTOM_FILTER_FCN_DESCR, arena);
 	}
 
 	protected abstract boolean customFilterFunction(MemorySegment shapeIdA, MemorySegment shapeIdB,

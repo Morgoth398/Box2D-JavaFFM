@@ -2,10 +2,7 @@ package volucris.engine.physics.box2d.geometry;
 
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
-import java.lang.foreign.SequenceLayout;
 import java.lang.foreign.StructLayout;
-import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.invoke.MethodHandle;
 
 import org.joml.Vector2f;
@@ -27,19 +24,21 @@ public final class Hull {
 
 	private static final StructLayout LAYOUT;
 
+	private static final MemoryLayout POINTS_ARRAY_LAYOUT;
+
 	private static final MethodHandle B2_VALIDATE_HULL;
 	private static final MethodHandle B2_COMPUTE_HULL;
 
-	private static final MemorySegment POINTS_ARRAY;
-
-	private static final Vec2[] POINTS;
+	private static final Vec2 VEC_TMP;
 
 	private final MemorySegment b2Hull;
 
 	static {
 		//@formatter:off
+		POINTS_ARRAY_LAYOUT = MemoryLayout.sequenceLayout(8, Vec2.LAYOUT());
+		
 		LAYOUT = MemoryLayout.structLayout(
-				MemoryLayout.sequenceLayout(8, Vec2.LAYOUT()).withName("points"),
+				POINTS_ARRAY_LAYOUT.withName("points"),
 		        JAVA_INT.withName("count")
 			).withName("b2Hull");
 		//@formatter:on
@@ -47,19 +46,15 @@ public final class Hull {
 		B2_VALIDATE_HULL = downcallHandle("b2ValidateHull", JAVA_BOOLEAN, ADDRESS);
 		B2_COMPUTE_HULL = downcallHandle("b2ComputeHull", LAYOUT, ADDRESS, JAVA_INT);
 
-		SequenceLayout arrayLayout = MemoryLayout.sequenceLayout(8, Vec2.LAYOUT());
-		POINTS_ARRAY = Arena.ofAuto().allocate(arrayLayout);
-		POINTS = new Vec2[8];
-
-		for (int i = 0; i < 8; i++) {
-			long offset = arrayLayout.byteOffset(PathElement.sequenceElement(i));
-			POINTS[i] = new Vec2(POINTS_ARRAY.asSlice(offset, Vec2.LAYOUT()));
-		}
-
+		VEC_TMP = new Vec2();
 	}
 
 	private Hull() {
-		b2Hull = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+
+	private Hull(Arena arena) {
+		b2Hull = arena.allocate(LAYOUT);
 	}
 
 	private Hull(MemorySegment memorySegmet) {
@@ -81,20 +76,26 @@ public final class Hull {
 		return b2Hull;
 	}
 
+	public static Hull computeHull(Vector2f[] points) {
+		return computeHull(Arena.ofAuto(), points);
+	}
+
 	/**
 	 * Compute the convex hull of a set of points.
 	 * <p>
 	 * Maximum are 8 points.
 	 */
-	public static Hull computeHull(Vector2f[] points) {
+	public static Hull computeHull(Arena arena, Vector2f[] points) {
 		int count = points.length > 8 ? 8 : points.length;
+		try (Arena confinedArena = Arena.ofConfined()) {
+			MemorySegment array = confinedArena.allocate(POINTS_ARRAY_LAYOUT);
+			for (int i = 0; i < count; i++) {
+				long offset = i * POINTS_ARRAY_LAYOUT.byteSize();
+				VEC_TMP.set(points[i]);
+				MemorySegment.copy(VEC_TMP.memorySegment(), 0, array, offset, Vec2.LAYOUT().byteSize());
+			}
 
-		for (int i = 0; i < count; i++)
-			POINTS[i].set(points[i]);
-
-		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			MemorySegment segment = (MemorySegment) B2_COMPUTE_HULL.invokeExact(allocator, POINTS_ARRAY, count);
+			MemorySegment segment = (MemorySegment) B2_COMPUTE_HULL.invoke(arena, array, count);
 			return new Hull(segment);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot compute hull.");

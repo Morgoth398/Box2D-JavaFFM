@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.joint;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.invoke.MethodHandle;
@@ -76,9 +75,12 @@ public final class MotorJointDef {
 	}
 
 	public MotorJointDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public MotorJointDef(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2MotorJointDef = (MemorySegment) B2_DEFAULT_MOTOR_JOINT_DEF.invokeExact(allocator);
+			b2MotorJointDef = (MemorySegment) B2_DEFAULT_MOTOR_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create motor joint def.");
 		}

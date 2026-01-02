@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.functions;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -44,7 +45,11 @@ public abstract class OverlapResultFunction {
 	}
 
 	public OverlapResultFunction() {
-		overlapResultFcnAddress = upcallStub(this, OVERLAP_RESULT_FCN_HANDLE, OVERLAP_RESULT_FCN_DESCR);
+		this(Arena.ofAuto());
+	}
+
+	public OverlapResultFunction(Arena arena) {
+		overlapResultFcnAddress = upcallStub(this, OVERLAP_RESULT_FCN_HANDLE, OVERLAP_RESULT_FCN_DESCR, arena);
 	}
 
 	protected abstract boolean overlapResultFunction(MemorySegment shapeIdA, MemorySegment context);

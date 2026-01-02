@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.shape;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -38,8 +37,6 @@ public final class Chain {
 
 	private final MemorySegment b2ChainId;
 
-	private ChainId chainId;
-
 	private Body body;
 
 	static {
@@ -69,37 +66,41 @@ public final class Chain {
 	}
 
 	/**
-	 * Create the chain Shape.
+	 * Create the chain shape.
 	 */
 	public Chain(Body body, ChainDef chainDef) {
+		this(body, chainDef, Arena.ofAuto());
+	}
+	
+	/**
+	 * Create the chain shape.
+	 */
+	public Chain(Body body, ChainDef chainDef, Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment bodyAddr = body.memorySegment();
 			MemorySegment chainDefAddr = chainDef.memorySegment();
 
-			b2ChainId = (MemorySegment) B2_CREATE_CHAIN.invokeExact(allocator, bodyAddr, chainDefAddr);
+			MemorySegment segment = (MemorySegment) B2_CREATE_CHAIN.invoke(arena, bodyAddr, chainDefAddr);
+			b2ChainId = segment.reinterpret(arena, s -> destroyChain(s, body.getWorld()));
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create chain.");
 		}
 
-		this.chainId = getChainId(b2ChainId);
 		this.body = body;
 
-		Box2D.addChain(this, chainId, body.getWorld());
+		Box2D.addChain(this, getChainId(b2ChainId), body.getWorld());
 	}
 
 	/**
 	 * Destroy a chain shape.
 	 */
-	public void destroyChain() {
+	private static void destroyChain(MemorySegment segment, World world) {
+		Box2D.removeChain(getChainId(segment), world);
 		try {
-			B2_DESTROY_CHAIN.invokeExact(b2ChainId);
+			B2_DESTROY_CHAIN.invokeExact(segment);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot destroy chain.");
 		}
-
-		Box2D.removeChain(chainId, body.getWorld());
 	}
 
 	/**
@@ -124,19 +125,25 @@ public final class Chain {
 	 * Fill a user array with chain segment shape ids up to the specified capacity.
 	 */
 	public int getSegments(Shape[] target) {
+		return getSegments(target, Arena.ofAuto());
+	}
+	
+	/**
+	 * Fill a user array with chain segment shape ids up to the specified capacity.
+	 */
+	public int getSegments(Shape[] target, Arena shapeArena) {
 		try (Arena arena = Arena.ofConfined()) {
 			MemorySegment array = arena.allocate(MemoryLayout.sequenceLayout(target.length, Shape.LAYOUT()));
 			int count = (int) B2_CHAIN_GET_SEGMENTS.invokeExact(b2ChainId, array, target.length);
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * Shape.LAYOUT().byteSize();
-				MemorySegment arraySegment = array.asSlice(offset, Shape.LAYOUT());
 
-				Shape shape = Box2D.getShape(Shape.getShapeId(arraySegment), body.getWorld());
+				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), body.getWorld());
 
 				if (shape == null) {
-					MemorySegment shapeSegment = Arena.ofAuto().allocate(Shape.LAYOUT());
-					MemorySegment.copy(arraySegment, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
+					MemorySegment shapeSegment = shapeArena.allocate(Shape.LAYOUT());
+					MemorySegment.copy(array, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
 					target[i] = new Shape(shapeSegment, body);
 				} else {
 					target[i] = shape;

@@ -126,7 +126,7 @@ public final class Manifold {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Manifold.asReadOnly();
+		return b2Manifold;
 	}
 
 	public static StructLayout LAYOUT() {
