@@ -25,7 +25,17 @@ public final class Box2D {
 	private static final HashMap<World, HashMap<ShapeId, Shape>> SHAPES;
 	private static final HashMap<World, HashMap<ChainId, Chain>> CHAINS;
 	private static final HashMap<World, HashMap<JointId, Joint>> JOINTS;
+	
+	private static final HashMap<World, HashMap<BodyId, Object>> BODY_USER_DATA;
+	private static final HashMap<World, HashMap<ShapeId, Object>> SHAPE_USER_DATA;
+	private static final HashMap<World, HashMap<JointId, Object>> JOINT_USER_DATA;
+	private static final HashMap<WorldId, Object> WORLD_USER_DATA;
+	private static final HashMap<WorldId, Object> WORLD_INTERNAL_USER_DATA;
 
+	private static final HashMap<World, HashMap<BodyId, Object>> BODY_INTERNAL_USER_DATA;
+	private static final HashMap<World, HashMap<ShapeId, Object>> SHAPE_INTERNAL_USER_DATA;
+	private static final HashMap<World, HashMap<JointId, Object>> JOINT_INTERNAL_USER_DATA;
+	
 	private static Version VERSION;
 
 	static {
@@ -35,6 +45,16 @@ public final class Box2D {
 		SHAPES = new HashMap<World, HashMap<ShapeId, Shape>>();
 		CHAINS = new HashMap<World, HashMap<ChainId, Chain>>();
 		JOINTS = new HashMap<World, HashMap<JointId, Joint>>();
+		
+		BODY_USER_DATA = new HashMap<World, HashMap<BodyId, Object>>();
+		SHAPE_USER_DATA = new HashMap<World, HashMap<ShapeId, Object>>();
+		JOINT_USER_DATA = new HashMap<World, HashMap<JointId, Object>>();
+		
+		BODY_INTERNAL_USER_DATA = new HashMap<World, HashMap<BodyId, Object>>();
+		SHAPE_INTERNAL_USER_DATA = new HashMap<World, HashMap<ShapeId, Object>>();
+		JOINT_INTERNAL_USER_DATA = new HashMap<World, HashMap<JointId, Object>>();
+		WORLD_USER_DATA = new HashMap<World.WorldId, Object>();
+		WORLD_INTERNAL_USER_DATA = new HashMap<World.WorldId, Object>();
 	}
 
 	private Box2D() {
@@ -46,7 +66,35 @@ public final class Box2D {
 
 		VERSION = new Version();
 	}
-
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static  void setUserData(WorldId worldId, Object userData) {
+		WORLD_USER_DATA.put(worldId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static  Object getUserData(WorldId worldId) {
+		return WORLD_USER_DATA.get(worldId);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static  void setInternalUserData(WorldId worldId, Object userData) {
+		WORLD_INTERNAL_USER_DATA.put(worldId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static  Object getInternalUserData(WorldId worldId) {
+		return WORLD_INTERNAL_USER_DATA.get(worldId);
+	}
+	
 	/**
 	 * DO NOT CALL. INTERNAL USE ONLY.
 	 */
@@ -57,6 +105,14 @@ public final class Box2D {
 		SHAPES.put(world, new HashMap<ShapeId, Shape>(100));
 		CHAINS.put(world, new HashMap<ChainId, Chain>());
 		JOINTS.put(world, new HashMap<JointId, Joint>());
+		
+		BODY_USER_DATA.put(world, new HashMap<BodyId, Object>());
+		SHAPE_USER_DATA.put(world, new HashMap<ShapeId, Object>());
+		JOINT_USER_DATA.put(world, new HashMap<JointId, Object>());
+		
+		BODY_INTERNAL_USER_DATA.put(world, new HashMap<BodyId, Object>());
+		SHAPE_INTERNAL_USER_DATA.put(world, new HashMap<ShapeId, Object>());
+		JOINT_INTERNAL_USER_DATA.put(world, new HashMap<JointId, Object>());
 	}
 
 	/**
@@ -75,8 +131,44 @@ public final class Box2D {
 		BODIES.remove(world);
 		SHAPES.remove(world);
 		CHAINS.remove(world);
+		
+		BODY_USER_DATA.remove(world);
+		SHAPE_USER_DATA.remove(world);
+		JOINT_USER_DATA.remove(world);
+		
+		BODY_INTERNAL_USER_DATA.remove(world);
+		SHAPE_INTERNAL_USER_DATA.remove(world);
+		JOINT_INTERNAL_USER_DATA.remove(world);
 	}
-
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static void setUserData(BodyId bodyId, World world, Object userData) {
+		BODY_USER_DATA.get(world).put(bodyId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static Object getUserData(BodyId bodyId, World world) {
+		return BODY_USER_DATA.get(world).get(bodyId);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static void setInternalUserData(BodyId bodyId, World world, Object userData) {
+		BODY_INTERNAL_USER_DATA.get(world).put(bodyId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static Object getInternalUserData(BodyId bodyId, World world) {
+		return BODY_INTERNAL_USER_DATA.get(world).get(bodyId);
+	}
+	
 	/**
 	 * DO NOT CALL. INTERNAL USE ONLY.
 	 */
@@ -98,6 +190,34 @@ public final class Box2D {
 		BODIES.get(world).remove(bodyId);
 	}
 
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static void setUserData(ShapeId bodyId, World world, Object userData) {
+		SHAPE_USER_DATA.get(world).put(bodyId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static Object getUserData(ShapeId bodyId, World world) {
+		return SHAPE_USER_DATA.get(world).get(bodyId);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static void setInternalUserData(ShapeId bodyId, World world, Object userData) {
+		SHAPE_INTERNAL_USER_DATA.get(world).put(bodyId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static Object getInternalUserData(ShapeId bodyId, World world) {
+		return SHAPE_INTERNAL_USER_DATA.get(world).get(bodyId);
+	}
+	
 	/**
 	 * DO NOT CALL. INTERNAL USE ONLY.
 	 */
@@ -140,6 +260,34 @@ public final class Box2D {
 		CHAINS.get(world).remove(chainId);
 	}
 
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static void setUserData(JointId bodyId, World world, Object userData) {
+		JOINT_USER_DATA.get(world).put(bodyId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static Object getUserData(JointId bodyId, World world) {
+		return JOINT_USER_DATA.get(world).get(bodyId);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static void setInternalUserData(JointId bodyId, World world, Object userData) {
+		JOINT_INTERNAL_USER_DATA.get(world).put(bodyId, userData);
+	}
+	
+	/**
+	 * DO NOT CALL. INTERNAL USE ONLY.
+	 */
+	public static Object getInternalUserData(JointId bodyId, World world) {
+		return JOINT_INTERNAL_USER_DATA.get(world).get(bodyId);
+	}
+	
 	/**
 	 * DO NOT CALL. INTERNAL USE ONLY.
 	 */

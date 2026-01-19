@@ -103,9 +103,6 @@ public final class Body {
 
 	private World world;
 
-	private Object internalUserData;
-	private Object userData;
-
 	private Vec2 vecTmp;
 	private Vec2 vecTmp2;
 	private Rot rotTmp;
@@ -338,14 +335,14 @@ public final class Body {
 	 * Set the internal user data for the body.
 	 */
 	public void setInternalUserData(Object internalUserData) {
-		this.internalUserData = internalUserData;
+		Box2D.setInternalUserData(getBodyId(b2BodyId), world, internalUserData);
 	}
 
 	/**
 	 * Get the internal user data stored in the body.
 	 */
 	public Object getInternalUserData() {
-		return internalUserData;
+		return Box2D.getInternalUserData(getBodyId(b2BodyId), world);
 	}
 
 	/**
@@ -354,14 +351,14 @@ public final class Body {
 	 * The implementation does not pass this object to the native code.
 	 */
 	public void setUserData(Object userData) {
-		this.userData = userData;
+		Box2D.setUserData(getBodyId(b2BodyId), world, userData);
 	}
 
 	/**
 	 * Get the user data stored in the body.
 	 */
 	public Object getUserData() {
-		return userData;
+		return Box2D.getUserData(getBodyId(b2BodyId), world);
 	}
 
 	/**

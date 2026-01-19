@@ -87,9 +87,6 @@ public final class World {
 	private SensorListener sensorListener;
 	private BodyEventListener bodyListener;
 
-	private Object internalUserData;
-	private Object userData;
-
 	private Vec2 vecTmp;
 	private Vec2 vecTmp2;
 
@@ -755,18 +752,16 @@ public final class World {
 
 	/**
 	 * Set the internal user data for the body.
-	 * <p>
-	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
-		this.internalUserData = internalUserData;
+		Box2D.setInternalUserData(getWorldId(b2WorldId), internalUserData);
 	}
 
 	/**
 	 * Get the internal user data stored in the body.
 	 */
 	public Object getInternalUserData() {
-		return internalUserData;
+		return Box2D.getInternalUserData(getWorldId(b2WorldId));
 	}
 
 	/**
@@ -775,14 +770,14 @@ public final class World {
 	 * The implementation does not pass this object to the native code.
 	 */
 	public void setUserData(Object userData) {
-		this.userData = userData;
+		Box2D.setUserData(getWorldId(b2WorldId), userData);
 	}
 
 	/**
 	 * Get the user data stored in the body.
 	 */
 	public Object getUserData() {
-		return userData;
+		return Box2D.getUserData(getWorldId(b2WorldId));
 	}
 
 	/**
