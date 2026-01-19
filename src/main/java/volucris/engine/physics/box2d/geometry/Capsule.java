@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -66,15 +66,15 @@ public final class Capsule {
 	public Capsule(Vector2f center1, Vector2f center2, float radius) {
 		this(center1, center2, radius, Arena.ofAuto());
 	}
-	
+
 	public Capsule(Vector2f center1, Vector2f center2, float radius, Arena arena) {
 		this(center1.x, center1.y, center2.x, center2.y, radius, arena);
 	}
-	
+
 	public Capsule(float x1, float y1, float x2, float y2, float radius) {
 		this(x1, y1, x2, y2, radius, Arena.ofAuto());
 	}
-	
+
 	public Capsule(float x1, float y1, float x2, float y2, float radius, Arena arena) {
 		b2Capsule = Arena.ofAuto().allocate(LAYOUT);
 
@@ -82,16 +82,16 @@ public final class Capsule {
 		center2 = new Vec2(b2Capsule.asSlice(CENTER2_OFFSET, Vec2.LAYOUT()));
 
 		vecTmp = new Vec2(arena);
-		
+
 		setCenter1(x1, y1);
 		setCenter2(x2, y2);
 		setRadius(radius);
 	}
-	
+
 	public Capsule() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Capsule(Arena arena) {
 		b2Capsule = arena.allocate(LAYOUT);
 
@@ -123,7 +123,8 @@ public final class Capsule {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute capsule mass.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute capsule mass: " + className);
 		}
 	}
 
@@ -144,7 +145,8 @@ public final class Capsule {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute capsule AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute capsule AABB: " + className);
 		}
 	}
 
@@ -163,7 +165,8 @@ public final class Capsule {
 			vecTmp.set(point);
 			return (boolean) B2_POINT_IN_CAPSULE.invokeExact(vecTmp.memorySegment(), b2Capsule);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if point is in capsule.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if point is in capsule: " + className);
 		}
 	}
 
@@ -178,7 +181,8 @@ public final class Capsule {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast capsule.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast capsule: " + className);
 		}
 	}
 
@@ -200,7 +204,8 @@ public final class Capsule {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot shape cast capsule.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot shape cast capsule: " + className);
 		}
 	}
 

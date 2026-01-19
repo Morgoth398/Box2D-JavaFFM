@@ -10,7 +10,7 @@ import java.lang.invoke.VarHandle;
 import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -54,7 +54,7 @@ public final class RayCastInput {
 	public RayCastInput() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public RayCastInput(Arena arena) {
 		b2RayCastInput = arena.allocate(LAYOUT);
 
@@ -77,7 +77,8 @@ public final class RayCastInput {
 		try {
 			return (boolean) B2_IS_VALID_RAY.invokeExact(b2RayCastInput);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate ray.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate ray: " + className);
 		}
 	}
 

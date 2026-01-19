@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandles.Lookup;
 
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.shape.Shape;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -24,13 +24,13 @@ import static volucris.engine.utils.FFMUtils.*;
  * <p>
  * Parameters
  * <ul>
- * <li> shapeId the shape hit by the ray
- * <li> point the point of initial intersection
- * <li> normal the normal vector at the point of intersection
- * <li> fraction the fraction along the ray at the point of intersection
- * <li> context the user context
- * </ul>>
- * Returns -1 to filter, 0 to terminate, fraction to clip the ray for closest
+ * <li>shapeId the shape hit by the ray
+ * <li>point the point of initial intersection
+ * <li>normal the normal vector at the point of intersection
+ * <li>fraction the fraction along the ray at the point of intersection
+ * <li>context the user context
+ * </ul>
+ * > Returns -1 to filter, 0 to terminate, fraction to clip the ray for closest
  * hit, 1 to continue
  */
 public abstract class CastResultFunction {
@@ -48,7 +48,8 @@ public abstract class CastResultFunction {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(CastResultFunction.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		CUSTOM_FILTER_FCN_DESCR = functionDescr(JAVA_FLOAT, Shape.LAYOUT(), Vec2.LAYOUT(), Vec2.LAYOUT(), JAVA_FLOAT, ADDRESS);
@@ -60,7 +61,7 @@ public abstract class CastResultFunction {
 	public CastResultFunction() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public CastResultFunction(Arena arena) {
 		customFilterFcnAddress = upcallStub(this, CUSTOM_FILTER_FCN_HANDLE, CUSTOM_FILTER_FCN_DESCR, arena);
 	}

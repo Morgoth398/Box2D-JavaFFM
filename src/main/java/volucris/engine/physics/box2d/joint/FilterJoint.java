@@ -5,7 +5,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -21,7 +21,7 @@ public final class FilterJoint extends Joint {
 	public FilterJoint(World world, FilterJointDef filterJointDef) {
 		this(world, filterJointDef, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Create a filter joint.
 	 */
@@ -33,7 +33,8 @@ public final class FilterJoint extends Joint {
 
 			filterJoint = (MemorySegment) B2_CREATE_FILTER_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create mouse joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create mouse joint: " + className);
 		}
 		super(filterJoint, world, arena);
 	}

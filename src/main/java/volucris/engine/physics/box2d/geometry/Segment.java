@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -55,7 +55,7 @@ public final class Segment {
 	public Segment() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Segment(Arena arena) {
 		b2Segment = arena.allocate(LAYOUT);
 
@@ -84,7 +84,8 @@ public final class Segment {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute segment AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute segment AABB: " + className);
 		}
 	}
 
@@ -105,7 +106,8 @@ public final class Segment {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast segment: " + className);
 		}
 	}
 
@@ -126,7 +128,8 @@ public final class Segment {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot shape cast segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot shape cast segment: " + className);
 		}
 	}
 

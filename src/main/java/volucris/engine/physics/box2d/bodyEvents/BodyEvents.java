@@ -47,16 +47,16 @@ public final class BodyEvents {
 	public BodyEvents() {
 		this(Arena.ofAuto());
 	}
-	
-	public BodyEvents(Arena arena) {		
+
+	public BodyEvents(Arena arena) {
 		b2BodyEvents = arena.allocate(LAYOUT);
-		
+
 		bodyMoveEvent = new BodyMoveEvent(arena);
 	}
 
 	public BodyEvents(MemorySegment memorySegment, World world) {
 		this.b2BodyEvents = memorySegment;
-		
+
 		bodyMoveEvent = new BodyMoveEvent();
 		bodyMoveEvent.setWorld(world);
 	}

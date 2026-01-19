@@ -22,7 +22,7 @@ import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.utils.MathUtils;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -210,7 +210,8 @@ public final class Body {
 			vecTmp2 = new Vec2(arena);
 			rotTmp = new Rot(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create body.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create body: " + className);
 		}
 
 		this.world = world;
@@ -234,19 +235,19 @@ public final class Body {
 
 	public Body(MemorySegment segment, long offset, World world) {
 		Arena arena = Arena.ofAuto();
-		
+
 		b2BodyId = arena.allocate(BODY_ID_LAYOUT);
 		MemorySegment.copy(segment, offset, b2BodyId, 0, BODY_ID_LAYOUT.byteSize());
-		
+
 		vecTmp = new Vec2(arena);
 		vecTmp2 = new Vec2(arena);
 		rotTmp = new Rot(arena);
-		
+
 		this.world = world;
 
 		Box2D.addBody(this, getBodyId(b2BodyId), world);
 	}
-	
+
 	/**
 	 * Destroy the rigid body..
 	 * <p>
@@ -259,7 +260,8 @@ public final class Body {
 		try {
 			B2_DESTROY_BODY.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot destroy body.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot destroy body: " + className);
 		}
 	}
 
@@ -271,7 +273,8 @@ public final class Body {
 		try {
 			return (boolean) B2_BODY_IS_VALID.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate body.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate body: " + className);
 		}
 	}
 
@@ -289,7 +292,8 @@ public final class Body {
 			else
 				return BodyType.DYNAMIC_BODY;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body type.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body type: " + className);
 		}
 	}
 
@@ -300,7 +304,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_TYPE.invokeExact(b2BodyId, type.id());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set body type.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set body type: " + className);
 		}
 	}
 
@@ -311,7 +316,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			B2_BODY_SET_NAME.invokeExact(b2BodyId, arena.allocateFrom(name));
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set body name.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set body name: " + className);
 		}
 	}
 
@@ -323,7 +329,8 @@ public final class Body {
 			MemorySegment segment = (MemorySegment) B2_BODY_GET_NAME.invokeExact(b2BodyId);
 			return segment.getString(0);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body name.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body name: " + className);
 		}
 	}
 
@@ -366,7 +373,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body position.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body position: " + className);
 		}
 	}
 
@@ -386,7 +394,8 @@ public final class Body {
 			rotTmp.set(segment);
 			return rotTmp.getAngleRadians();
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body rotation.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body rotation: " + className);
 		}
 	}
 
@@ -406,7 +415,8 @@ public final class Body {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body transform.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body transform: " + className);
 		}
 	}
 
@@ -440,7 +450,8 @@ public final class Body {
 			vecTmp.set(x, y);
 			B2_BODY_SET_TRANSFORM.invokeExact(b2BodyId, vecTmp.memorySegment(), rotTmp.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set body transform.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set body transform: " + className);
 		}
 	}
 
@@ -457,7 +468,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get local point.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get local point: " + className);
 		}
 	}
 
@@ -481,7 +493,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get world point.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get world point: " + className);
 		}
 	}
 
@@ -505,7 +518,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get local vector.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get local vector: " + className);
 		}
 	}
 
@@ -529,7 +543,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get world vector.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get world vector: " + className);
 		}
 	}
 
@@ -550,7 +565,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get linear velocity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get linear velocity: " + className);
 		}
 	}
 
@@ -569,7 +585,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_ANGULAR_VELOCITY.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get angular velocity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get angular velocity: " + className);
 		}
 	}
 
@@ -581,7 +598,8 @@ public final class Body {
 			vecTmp.set(linearVelocity);
 			B2_BODY_SET_LINEAR_VELOCITY.invokeExact(b2BodyId, vecTmp.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set linear velocity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set linear velocity: " + className);
 		}
 	}
 
@@ -592,7 +610,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_ANGULAR_VELOCITY.invokeExact(b2BodyId, angularVelocity);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set angular velocity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set angular velocity: " + className);
 		}
 	}
 
@@ -603,7 +622,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_TARGET_TRANSFORM.invokeExact(b2BodyId, transform.memorySegment(), timeStep);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set target transform.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set target transform: " + className);
 		}
 	}
 
@@ -628,7 +648,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get local point velocity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get local point velocity: " + className);
 		}
 	}
 
@@ -654,7 +675,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get world point velocity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get world point velocity: " + className);
 		}
 	}
 
@@ -675,7 +697,8 @@ public final class Body {
 			vecTmp2.set(point);
 			B2_BODY_APPLY_FORCE.invokeExact(b2BodyId, vecTmp.memorySegment(), vecTmp2.memorySegment(), wake);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply force.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply force: " + className);
 		}
 	}
 
@@ -687,7 +710,8 @@ public final class Body {
 			vecTmp.set(force);
 			B2_BODY_APPLY_FORCE_TO_CENTER.invokeExact(b2BodyId, vecTmp.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply force to center.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply force to center: " + className);
 		}
 	}
 
@@ -698,7 +722,8 @@ public final class Body {
 		try {
 			B2_BODY_APPLY_TORQUE.invokeExact(b2BodyId, torque, wake);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply torque: " + className);
 		}
 	}
 
@@ -711,7 +736,8 @@ public final class Body {
 			vecTmp2.set(point);
 			B2_BODY_APPLY_LINEAR_IMPULSE.invokeExact(b2BodyId, vecTmp.memorySegment(), vecTmp2.memorySegment(), wake);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply linear impulse.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply linear impulse: " + className);
 		}
 	}
 
@@ -723,7 +749,8 @@ public final class Body {
 			vecTmp.set(impulse);
 			B2_BODY_APPLY_LINEAR_IMPULSE_TO_CENTER.invokeExact(b2BodyId, vecTmp.memorySegment(), wake);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply linear impulse to center.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply linear impulse to center: " + className);
 		}
 	}
 
@@ -734,7 +761,8 @@ public final class Body {
 		try {
 			B2_BODY_APPLY_ANGULAR_IMPULSE.invokeExact(b2BodyId, impulse, wake);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply angular impulse.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply angular impulse: " + className);
 		}
 	}
 
@@ -745,7 +773,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_MASS.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get mass.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get mass: " + className);
 		}
 	}
 
@@ -756,7 +785,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_ROTATION_INERTIA.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get rotation inertia.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get rotation inertia: " + className);
 		}
 	}
 
@@ -769,7 +799,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get local center of mass.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get local center of mass: " + className);
 		}
 	}
 
@@ -789,7 +820,8 @@ public final class Body {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get world center of mass.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get world center of mass: " + className);
 		}
 	}
 
@@ -807,7 +839,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_MASS_DATA.invokeExact(b2BodyId, massData.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set mass data.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set mass data: " + className);
 		}
 	}
 
@@ -820,7 +853,8 @@ public final class Body {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get mass data.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get mass data: " + className);
 		}
 	}
 
@@ -839,7 +873,8 @@ public final class Body {
 		try {
 			B2_BODY_APPLY_MASS_FROM_SHAPES.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot apply mass from shapes.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot apply mass from shapes: " + className);
 		}
 	}
 
@@ -851,7 +886,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_LINEAR_DAMPING.invokeExact(b2BodyId, linearDamping);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set linear damping.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set linear damping: " + className);
 		}
 	}
 
@@ -862,7 +898,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_LINEAR_DAMPING.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get linear damping.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get linear damping: " + className);
 		}
 	}
 
@@ -874,7 +911,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_ANGULAR_DAMPING.invokeExact(b2BodyId, angularDamping);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set angular damping.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set angular damping: " + className);
 		}
 	}
 
@@ -885,7 +923,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_ANGULAR_DAMPING.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get angular damping.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get angular damping: " + className);
 		}
 	}
 
@@ -896,7 +935,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_GRAVITY_SCALE.invokeExact(b2BodyId, gravityScale);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set gravity scale.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set gravity scale: " + className);
 		}
 	}
 
@@ -907,7 +947,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_GRAVITY_SCALE.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get gravity scale.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get gravity scale: " + className);
 		}
 	}
 
@@ -918,7 +959,8 @@ public final class Body {
 		try {
 			return (boolean) B2_BODY_IS_AWAKE.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if body is awake.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if body is awake: " + className);
 		}
 	}
 
@@ -929,7 +971,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_AWAKE.invokeExact(b2BodyId, awake);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set awake.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set awake: " + className);
 		}
 	}
 
@@ -941,7 +984,8 @@ public final class Body {
 		try {
 			B2_BODY_ENABLE_SLEEP.invokeExact(b2BodyId, enableSleep);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable sleep.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable sleep: " + className);
 		}
 	}
 
@@ -952,7 +996,8 @@ public final class Body {
 		try {
 			return (boolean) B2_BODY_IS_SLEEP_ENABLED.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if sleep is enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if sleep is enabled: " + className);
 		}
 	}
 
@@ -963,7 +1008,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_SLEEP_THRESHOLD.invokeExact(b2BodyId, sleepThreshold);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D:  Cannot set sleep threshold.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D:  Cannot set sleep threshold: " + className);
 		}
 	}
 
@@ -974,7 +1020,8 @@ public final class Body {
 		try {
 			return (float) B2_BODY_GET_SLEEP_THRESHOLD.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get sleep threshold.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get sleep threshold: " + className);
 		}
 	}
 
@@ -985,7 +1032,8 @@ public final class Body {
 		try {
 			return (boolean) B2_BODY_IS_ENABLED.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if body is enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if body is enabled: " + className);
 		}
 	}
 
@@ -997,7 +1045,8 @@ public final class Body {
 		try {
 			B2_BODY_DISABLE.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot disable body.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot disable body: " + className);
 		}
 	}
 
@@ -1008,7 +1057,8 @@ public final class Body {
 		try {
 			B2_BODY_ENABLE.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable body.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable body: " + className);
 		}
 	}
 
@@ -1020,7 +1070,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_FIXED_ROTATION.invokeExact(b2BodyId, flag);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set fixed rotation.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set fixed rotation: " + className);
 		}
 	}
 
@@ -1031,7 +1082,8 @@ public final class Body {
 		try {
 			return (boolean) B2_BODY_IS_FIXED_ROTATION.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if body is fixed rotation.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if body is fixed rotation: " + className);
 		}
 	}
 
@@ -1042,7 +1094,8 @@ public final class Body {
 		try {
 			B2_BODY_SET_BULLET.invokeExact(b2BodyId, flag);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set bullet.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set bullet: " + className);
 		}
 	}
 
@@ -1053,7 +1106,8 @@ public final class Body {
 		try {
 			return (boolean) B2_BODY_IS_BULLET.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if body is bullet.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if body is bullet: " + className);
 		}
 	}
 
@@ -1064,7 +1118,8 @@ public final class Body {
 		try {
 			B2_BODY_ENABLE_CONTACT_EVENTS.invokeExact(b2BodyId, flag);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable contact events.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable contact events: " + className);
 		}
 	}
 
@@ -1075,7 +1130,8 @@ public final class Body {
 		try {
 			B2_BODY_ENABLE_HIT_EVENTS.invokeExact(b2BodyId, flag);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable hit events.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable hit events: " + className);
 		}
 	}
 
@@ -1093,7 +1149,8 @@ public final class Body {
 		try {
 			return (int) B2_BODY_GET_SHAPE_COUNT.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get shape count.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get shape count: " + className);
 		}
 	}
 
@@ -1127,7 +1184,8 @@ public final class Body {
 			}
 			return count;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get shapes.", e);
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get shapes: " + className);
 		}
 	}
 
@@ -1138,7 +1196,8 @@ public final class Body {
 		try {
 			return (int) B2_BODY_GET_JOINT_COUNT.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get joint count.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get joint count: " + className);
 		}
 	}
 
@@ -1172,7 +1231,8 @@ public final class Body {
 
 			return count;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get joints.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get joints: " + className);
 		}
 	}
 
@@ -1184,7 +1244,8 @@ public final class Body {
 		try {
 			return (int) B2_BODY_GET_CONTACT_CAPACITY.invokeExact(b2BodyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get contact capacity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get contact capacity: " + className);
 		}
 	}
 
@@ -1208,7 +1269,8 @@ public final class Body {
 
 			return count;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get contact data.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get contact data: " + className);
 		}
 	}
 
@@ -1221,7 +1283,8 @@ public final class Body {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute AABB: " + className);
 		}
 	}
 

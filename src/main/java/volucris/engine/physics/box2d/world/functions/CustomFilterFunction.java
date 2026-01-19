@@ -8,7 +8,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
 import volucris.engine.physics.box2d.shape.Shape;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -44,7 +44,8 @@ public abstract class CustomFilterFunction {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(CustomFilterFunction.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		CUSTOM_FILTER_FCN_DESCR = functionDescr(JAVA_BOOLEAN, Shape.LAYOUT(), Shape.LAYOUT(), ADDRESS);
@@ -56,7 +57,7 @@ public abstract class CustomFilterFunction {
 	public CustomFilterFunction() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public CustomFilterFunction(Arena arena) {
 		customFilterFcnAddress = upcallStub(this, CUSTOM_FILTER_FCN_HANDLE, CUSTOM_FILTER_FCN_DESCR, arena);
 	}

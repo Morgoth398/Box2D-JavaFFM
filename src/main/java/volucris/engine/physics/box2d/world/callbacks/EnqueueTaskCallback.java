@@ -7,7 +7,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -26,7 +26,7 @@ import static volucris.engine.utils.FFMUtils.*;
  * that your task system should split the work items among just two workers,
  * even if you have more available. In general the range [startIndex, endIndex)
  * send to {@link TaskCallback} should obey: endIndex - startIndex >= minRange
- * The exception of course is when {@code itemCount < minRange} 
+ * The exception of course is when {@code itemCount < minRange}
  */
 public abstract class EnqueueTaskCallback {
 
@@ -43,7 +43,8 @@ public abstract class EnqueueTaskCallback {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(EnqueueTaskCallback.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		ENQUEUE_TASK_CALLBACK_DESCR = functionDescr(ADDRESS, ADDRESS, JAVA_INT, JAVA_INT, ADDRESS, ADDRESS);
@@ -55,7 +56,7 @@ public abstract class EnqueueTaskCallback {
 	public EnqueueTaskCallback() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public EnqueueTaskCallback(Arena arena) {
 		enqueueTaskCallbackAddress = upcallStub(this, ENQUEUE_TASK_CALLBACK_HANDLE, ENQUEUE_TASK_CALLBACK_DESCR, arena);
 	}

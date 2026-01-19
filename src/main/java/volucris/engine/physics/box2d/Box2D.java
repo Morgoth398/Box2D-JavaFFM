@@ -43,7 +43,7 @@ public final class Box2D {
 
 	public static void init() {
 		NativeLibraryLoader.loadLibrary("natives/box2d", "box2d");
-		
+
 		VERSION = new Version();
 	}
 

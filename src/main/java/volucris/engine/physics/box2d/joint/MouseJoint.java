@@ -8,7 +8,7 @@ import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.world.World;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -42,7 +42,7 @@ public final class MouseJoint extends Joint {
 	public MouseJoint(World world, MouseJointDef mouseJointDef) {
 		this(world, mouseJointDef, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Create the mouse joint.
 	 */
@@ -54,7 +54,8 @@ public final class MouseJoint extends Joint {
 
 			b2MouseJoint = (MemorySegment) B2_CREATE_MOUSE_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create mouse joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create mouse joint: " + className);
 		}
 		super(b2MouseJoint, world, arena);
 	}
@@ -67,7 +68,8 @@ public final class MouseJoint extends Joint {
 			vecTmp.set(target);
 			B2_MOUSE_JOINT_SET_TARGET.invokeExact(b2JointId, vecTmp.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set target.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set target: " + className);
 		}
 	}
 
@@ -80,7 +82,8 @@ public final class MouseJoint extends Joint {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get target.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get target: " + className);
 		}
 	}
 
@@ -98,7 +101,8 @@ public final class MouseJoint extends Joint {
 		try {
 			B2_MOUSE_JOINT_SET_SPRING_HERTZ.invokeExact(b2JointId, springHertz);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set spring hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set spring hertz: " + className);
 		}
 	}
 
@@ -109,7 +113,8 @@ public final class MouseJoint extends Joint {
 		try {
 			return (float) B2_MOUSE_JOINT_GET_SPRING_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get spring hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get spring hertz: " + className);
 		}
 	}
 
@@ -120,7 +125,8 @@ public final class MouseJoint extends Joint {
 		try {
 			B2_MOUSE_JOINT_SET_SPRING_DAMPING_RATIO.invokeExact(b2JointId, dampingRatio);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set spring damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set spring damping ratio: " + className);
 		}
 	}
 
@@ -131,7 +137,8 @@ public final class MouseJoint extends Joint {
 		try {
 			return (float) B2_MOUSE_JOINT_GET_SPRING_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get spring damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get spring damping ratio: " + className);
 		}
 	}
 
@@ -142,7 +149,8 @@ public final class MouseJoint extends Joint {
 		try {
 			B2_MOUSE_JOINT_SET_MAX_FORCE.invokeExact(b2JointId, maxForce);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set max force.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set max force: " + className);
 		}
 	}
 
@@ -153,7 +161,8 @@ public final class MouseJoint extends Joint {
 		try {
 			return (float) B2_MOUSE_JOINT_GET_MAX_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get max force.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get max force: " + className);
 		}
 	}
 

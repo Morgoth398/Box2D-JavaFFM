@@ -199,7 +199,7 @@ public final class ManifoldPoint {
 	}
 
 	/**
-	 * Did this contact point exist the previous step? 
+	 * Did this contact point exist the previous step?
 	 */
 	public boolean persisted() {
 		return (boolean) PERSISTED.get(b2ManifoldPoint);

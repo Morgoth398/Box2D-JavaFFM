@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -112,12 +112,13 @@ public final class PrismaticJointDef {
 	public PrismaticJointDef() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public PrismaticJointDef(Arena arena) {
 		try {
 			b2PrismaticJointDef = (MemorySegment) B2_DEFAULT_PRISMATIC_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create prismatic joint def.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create prismatic joint def: " + className);
 		}
 
 		localAnchorA = new Vec2(b2PrismaticJointDef.asSlice(LOCAL_ANCHOR_A_OFFSET, Vec2.LAYOUT()));

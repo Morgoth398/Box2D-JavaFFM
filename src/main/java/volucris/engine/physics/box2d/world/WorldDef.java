@@ -14,7 +14,7 @@ import volucris.engine.physics.box2d.world.callbacks.EnqueueTaskCallback;
 import volucris.engine.physics.box2d.world.callbacks.FinishTaskCallback;
 import volucris.engine.physics.box2d.world.callbacks.FrictionCallback;
 import volucris.engine.physics.box2d.world.callbacks.RestitutionCallback;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -90,12 +90,13 @@ public final class WorldDef {
 	public WorldDef() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public WorldDef(Arena arena) {
 		try {
 			b2WorldDef = (MemorySegment) B2_DEFAULT_WORLD_DEF.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create world def.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create world def: " + className);
 		}
 	}
 

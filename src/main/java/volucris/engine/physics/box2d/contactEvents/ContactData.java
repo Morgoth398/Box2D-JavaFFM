@@ -33,7 +33,7 @@ public final class ContactData {
 
 	private final MemorySegment shapeIdA;
 	private final MemorySegment shapeIdB;
-	
+
 	private final Manifold manifold;
 
 	private World world;
@@ -61,7 +61,7 @@ public final class ContactData {
 
 		shapeIdA = b2ContactData.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactData.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		
+
 		manifold = new Manifold(b2ContactData.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
 	}
 
@@ -71,7 +71,7 @@ public final class ContactData {
 
 		shapeIdA = b2ContactData.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactData.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		
+
 		manifold = new Manifold(b2ContactData.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
 	}
 
@@ -94,7 +94,7 @@ public final class ContactData {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2ContactData;
 	}

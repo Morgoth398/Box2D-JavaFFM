@@ -6,7 +6,7 @@ import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.utils.MathUtils;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -44,7 +44,7 @@ public final class WeldJoint extends Joint {
 	public WeldJoint(World world, WeldJointDef weldJointDef) {
 		this(world, weldJointDef, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Create the weld joint.
 	 */
@@ -56,7 +56,8 @@ public final class WeldJoint extends Joint {
 
 			b2WeldJoint = (MemorySegment) B2_CREATE_WELD_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create weld joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create weld joint: " + className);
 		}
 		super(b2WeldJoint, world, arena);
 	}
@@ -68,7 +69,8 @@ public final class WeldJoint extends Joint {
 		try {
 			return (float) B2_WELD_JOINT_GET_REFERENCE_ANGLE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get reference angle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get reference angle: " + className);
 		}
 	}
 
@@ -86,7 +88,8 @@ public final class WeldJoint extends Joint {
 		try {
 			B2_WELD_JOINT_SET_REFERENCE_ANGLE.invokeExact(b2JointId, angleInRadians);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set reference angle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set reference angle: " + className);
 		}
 	}
 
@@ -104,7 +107,8 @@ public final class WeldJoint extends Joint {
 		try {
 			B2_WELD_JOINT_SET_LINEAR_HERTZ.invokeExact(b2JointId, hertz);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set linear hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set linear hertz: " + className);
 		}
 	}
 
@@ -115,7 +119,8 @@ public final class WeldJoint extends Joint {
 		try {
 			return (float) B2_WELD_JOINT_GET_LINEAR_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get linear hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get linear hertz: " + className);
 		}
 	}
 
@@ -126,7 +131,8 @@ public final class WeldJoint extends Joint {
 		try {
 			B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO.invokeExact(b2JointId, dampingRatio);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set linear damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set linear damping ratio: " + className);
 		}
 	}
 
@@ -137,7 +143,8 @@ public final class WeldJoint extends Joint {
 		try {
 			return (float) B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get linear damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get linear damping ratio: " + className);
 		}
 	}
 
@@ -148,7 +155,8 @@ public final class WeldJoint extends Joint {
 		try {
 			B2_WELD_JOINT_SET_ANGULAR_HERTZ.invokeExact(b2JointId, hertz);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set angular hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set angular hertz: " + className);
 		}
 	}
 
@@ -159,7 +167,8 @@ public final class WeldJoint extends Joint {
 		try {
 			return (float) B2_WELD_JOINT_GET_ANGULAR_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get angular hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get angular hertz: " + className);
 		}
 	}
 
@@ -170,7 +179,8 @@ public final class WeldJoint extends Joint {
 		try {
 			B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO.invokeExact(b2JointId, dampingRatio);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set angular damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set angular damping ratio: " + className);
 		}
 	}
 
@@ -181,7 +191,8 @@ public final class WeldJoint extends Joint {
 		try {
 			return (float) B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get angular damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get angular damping ratio: " + className);
 		}
 	}
 

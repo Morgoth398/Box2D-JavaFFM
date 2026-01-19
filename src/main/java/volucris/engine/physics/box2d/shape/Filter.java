@@ -11,7 +11,7 @@ import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.physics.box2d.world.functions.CastResultFunction;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -83,12 +83,13 @@ public final class Filter {
 	public Filter() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Filter(Arena arena) {
 		try {
 			b2Filter = (MemorySegment) B2_DEFAULT_FILTER.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create filter");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create filter: " + className);
 		}
 	}
 

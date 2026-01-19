@@ -50,7 +50,7 @@ public final class ChainSegment {
 	public ChainSegment() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ChainSegment(Arena arena) {
 		b2ChainSegment = arena.allocate(LAYOUT);
 

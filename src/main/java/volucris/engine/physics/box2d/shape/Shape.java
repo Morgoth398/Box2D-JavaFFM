@@ -24,7 +24,7 @@ import volucris.engine.physics.box2d.geometry.Segment;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.world.World;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -181,7 +181,8 @@ public final class Shape {
 			
 			b2ShapeId = (MemorySegment)  B2_CREATE_CIRCLE_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, circleAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create circle shape.");
+    String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create circle shape: " + className);
 		}
 		
 		this.body = body;
@@ -211,7 +212,8 @@ public final class Shape {
 			
 			b2ShapeId = (MemorySegment) B2_CREATE_SEGMENT_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, segmentAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create segment shape.");
+    String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create segment shape: " + className);
 		}
 		
 		this.body = body;
@@ -240,7 +242,8 @@ public final class Shape {
 			MemorySegment capsuleAddr = capsule.memorySegment();
 			b2ShapeId = (MemorySegment) B2_CREATE_CAPSULE_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, capsuleAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create capsule shape.");
+    String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create capsule shape: " + className);
 		}
 		
 		this.body = body;
@@ -270,7 +273,8 @@ public final class Shape {
 			
 			b2ShapeId = (MemorySegment) B2_CREATE_POLYGON_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, polygonAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create polygon shape.");
+    String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create polygon shape: " + className);
 		}
 		
 		this.body = body;
@@ -295,7 +299,8 @@ public final class Shape {
 		try {
 			B2_DESTROY_SHAPE.invokeExact(b2ShapeId, updateBodyMass);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot destroy shape.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot destroy shape: " + className);
 		}
 	}
 
@@ -306,7 +311,8 @@ public final class Shape {
 		try {
 			return (boolean) B2_SHAPE_IS_VALID.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate shape.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate shape: " + className);
 		}
 	}
 
@@ -327,7 +333,8 @@ public final class Shape {
 			else
 				return ShapeType.CHAIN_SEGMENT_SHAPE;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get type");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get type: " + className);
 		}
 	}
 
@@ -352,7 +359,8 @@ public final class Shape {
 		try {
 			return (boolean) B2_SHAPE_IS_SENSOR.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if shape is sensor.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if shape is sensor: " + className);
 		}
 	}
 
@@ -395,7 +403,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_DENSITY.invokeExact(b2ShapeId, density, updateBodyMass);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set density.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set density: " + className);
 		}
 	}
 
@@ -406,7 +415,8 @@ public final class Shape {
 		try {
 			return (float) B2_SHAPE_GET_DENSITY.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get density.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get density: " + className);
 		}
 	}
 
@@ -417,7 +427,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_FRICTION.invokeExact(b2ShapeId, friction);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set friction.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set friction: " + className);
 		}
 	}
 
@@ -428,7 +439,8 @@ public final class Shape {
 		try {
 			return (float) B2_SHAPE_GET_FRICTION.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get friction.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get friction: " + className);
 		}
 	}
 
@@ -439,7 +451,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_RESTITUTION.invokeExact(b2ShapeId, restitution);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set restitution.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set restitution: " + className);
 		}
 	}
 
@@ -450,7 +463,8 @@ public final class Shape {
 		try {
 			return (float) B2_SHAPE_GET_RESTITUTION.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get restitution.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get restitution: " + className);
 		}
 	}
 
@@ -461,7 +475,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_MATERIAL.invoke(b2ShapeId, material);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set material: " + className);
 		}
 	}
 
@@ -472,7 +487,8 @@ public final class Shape {
 		try {
 			return (int) B2_SHAPE_GET_MATERIAL.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get material: " + className);
 		}
 	}
 
@@ -483,7 +499,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_SURFACE_MATERIAL.invokeExact(b2ShapeId, surfaceMaterial.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set surface material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set surface material: " + className);
 		}
 	}
 
@@ -496,7 +513,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get surface material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get surface material: " + className);
 		}
 	}
 
@@ -516,7 +534,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get filter.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get filter: " + className);
 		}
 	}
 
@@ -527,7 +546,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_FILTER.invokeExact(b2ShapeId, filter.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set filter.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set filter: " + className);
 		}
 	}
 
@@ -545,7 +565,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_ENABLE_SENSOR_EVENTS.invokeExact(b2ShapeId, enableSensorEvents);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable sensor events.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable sensor events: " + className);
 		}
 	}
 
@@ -556,7 +577,8 @@ public final class Shape {
 		try {
 			return (boolean) B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED.invoke(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if sensor events are enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if sensor events are enabled: " + className);
 		}
 	}
 
@@ -567,7 +589,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_ENABLE_CONTACT_EVENTS.invokeExact(b2ShapeId, enableContactEvents);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable contact events.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable contact events: " + className);
 		}
 	}
 
@@ -578,7 +601,8 @@ public final class Shape {
 		try {
 			return (boolean) B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if contact events are enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if contact events are enabled: " + className);
 		}
 	}
 
@@ -589,7 +613,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS.invokeExact(b2ShapeId, enablePreSolveEvents);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable pre solve events.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable pre solve events: " + className);
 		}
 	}
 
@@ -600,7 +625,8 @@ public final class Shape {
 		try {
 			return (boolean) B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED.invoke(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if pre solve events are enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if pre solve events are enabled: " + className);
 		}
 	}
 
@@ -611,7 +637,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_ENABLE_HIT_EVENTS.invokeExact(b2ShapeId, enableHitEvents);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable hit events.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable hit events: " + className);
 		}
 	}
 
@@ -622,7 +649,8 @@ public final class Shape {
 		try {
 			return (boolean) B2_SHAPE_ARE_HIT_EVENTS_ENABLED.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if hit events are enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if hit events are enabled: " + className);
 		}
 	}
 
@@ -634,7 +662,8 @@ public final class Shape {
 			vecTmp.set(point);
 			return (boolean) B2_SHAPE_TEST_POINT.invokeExact(b2ShapeId, vecTmp.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot test point.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot test point: " + className);
 		}
 	}
 
@@ -649,7 +678,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast: " + className);
 		}
 	}
 
@@ -669,7 +699,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get circle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get circle: " + className);
 		}
 	}
 
@@ -689,7 +720,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
 		}
 	}
 
@@ -709,7 +741,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
 		}
 	}
 
@@ -729,7 +762,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
 		}
 	}
 
@@ -748,7 +782,8 @@ public final class Shape {
 			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_POLYGON.invoke(arena, b2ShapeId);
 			return new Polygon(segment);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
 		}
 	}
 
@@ -759,7 +794,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_CIRCLE.invokeExact(b2ShapeId, circle.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set circle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set circle: " + className);
 		}
 	}
 
@@ -770,7 +806,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_CAPSULE.invokeExact(b2ShapeId, capsule.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set capsule.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set capsule: " + className);
 		}
 	}
 
@@ -781,7 +818,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_SEGMENT.invokeExact(b2ShapeId, segment.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set segment.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set segment: " + className);
 		}
 	}
 
@@ -792,7 +830,8 @@ public final class Shape {
 		try {
 			B2_SHAPE_SET_POLYGON.invokeExact(b2ShapeId, polygon.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set polygon: " + className);
 		}
 	}
 
@@ -805,7 +844,8 @@ public final class Shape {
 			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_PARENT_CHAIN.invoke(arena, b2ShapeId);
 			return Box2D.getChain(Chain.getChainId(segment), body.getWorld());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get parent chain.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get parent chain: " + className);
 		}
 	}
 
@@ -817,7 +857,8 @@ public final class Shape {
 		try {
 			return (int) B2_SHAPE_GET_CONTACT_CAPACITY.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get contact capacity");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get contact capacity: " + className);
 		}
 	}
 
@@ -835,13 +876,14 @@ public final class Shape {
 
 				if (target[i] == null)
 					target[i] = new ContactData();
-				
+
 				MemorySegment.copy(array, offset, target[i].memorySegment(), 0, ContactData.LAYOUT().byteSize());
 			}
 
 			return count;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get contact data.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get contact data: " + className);
 		}
 	}
 
@@ -853,7 +895,8 @@ public final class Shape {
 		try {
 			return (int) B2_SHAPE_GET_SENSOR_CAPACITY.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get sensor capacity.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get sensor capacity: " + className);
 		}
 	}
 
@@ -863,7 +906,7 @@ public final class Shape {
 	public int getSensorOverlaps(Shape[] target) {
 		return getSensorOverlaps(target, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Get the overlapped shapes for a sensor shape.
 	 */
@@ -888,7 +931,8 @@ public final class Shape {
 
 			return count;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get sensor overlaps.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get sensor overlaps: " + className);
 		}
 	}
 
@@ -901,7 +945,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get AABB: " + className);
 		}
 	}
 
@@ -921,7 +966,8 @@ public final class Shape {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get mass data.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get mass data: " + className);
 		}
 	}
 
@@ -945,7 +991,8 @@ public final class Shape {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get closest point.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get closest point: " + className);
 		}
 	}
 
@@ -974,7 +1021,7 @@ public final class Shape {
 		short generation = (short) GENERATION.get(memorySegment, offset);
 		return new ShapeId(index1, world0, generation);
 	}
-	
+
 	public static record ShapeId(int index1, short world0, short generation) {
 	};
 }

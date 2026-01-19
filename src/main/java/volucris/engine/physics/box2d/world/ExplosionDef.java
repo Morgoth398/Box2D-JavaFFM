@@ -10,7 +10,7 @@ import java.lang.invoke.VarHandle;
 import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -62,12 +62,13 @@ public final class ExplosionDef {
 	public ExplosionDef() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ExplosionDef(Arena arena) {
 		try {
 			b2ExplosionDef = (MemorySegment) B2_DEFAULT_EXPLOSION_DEF.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create explosion def.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create explosion def: " + className);
 		}
 
 		position = new Vec2(b2ExplosionDef.asSlice(POSITION_OFFSET, Vec2.LAYOUT()));

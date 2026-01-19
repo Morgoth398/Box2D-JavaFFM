@@ -11,6 +11,7 @@ import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Rot;
 import volucris.engine.physics.box2d.math.Vec2;
+import volucris.engine.utils.Box2DRuntimeException;
 import volucris.engine.utils.MathUtils;
 
 import static java.lang.foreign.ValueLayout.*;
@@ -107,13 +108,14 @@ public final class BodyDef {
 	public BodyDef() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public BodyDef(Arena arena) {
 		try {
 			this.arena = arena;
 			b2BodyDef = (MemorySegment) B2_DEFAULT_BODY_DEF.invoke(arena);
 		} catch (Throwable e) {
-			throw new RuntimeException("Box2D: Cannot create body def.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create body def: " + className);
 		}
 
 		position = new Vec2(b2BodyDef.asSlice(POSITION_OFFSET, Vec2.LAYOUT()));

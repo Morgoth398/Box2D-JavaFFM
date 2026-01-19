@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 import volucris.engine.physics.box2d.HexColor;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -59,7 +59,8 @@ public final class SurfaceMaterial {
 			SegmentAllocator allocator = Arena.ofAuto();
 			b2SurfaceMaterial = (MemorySegment) B2_DEFAULT_SURFACE_MATERIAL.invokeExact(allocator);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create surface material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create surface material: " + className);
 		}
 	}
 

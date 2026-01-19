@@ -58,7 +58,7 @@ public final class Manifold {
 	public Manifold() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Manifold(Arena arena) {
 		b2Manifold = arena.allocate(LAYOUT);
 

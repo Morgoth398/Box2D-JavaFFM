@@ -54,7 +54,7 @@ public final class SensorEvents {
 	public SensorEvents() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public SensorEvents(Arena arena) {
 		b2SensorEvents = arena.allocate(LAYOUT);
 
@@ -85,7 +85,7 @@ public final class SensorEvents {
 
 		if (elementCount == 0)
 			return;
-		
+
 		MemorySegment array = (MemorySegment) BEGIN_EVENTS.get(b2SensorEvents);
 
 		for (int i = 0; i < elementCount; i++) {
@@ -100,12 +100,13 @@ public final class SensorEvents {
 
 		if (elementCount == 0)
 			return;
-		
+
 		MemorySegment array = (MemorySegment) END_EVENTS.get(b2SensorEvents);
 
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * SensorEndTouchEvent.LAYOUT().byteSize();
-			MemorySegment.copy(array, offset, endEvent.memorySegment(), 0, SensorEndTouchEvent.LAYOUT().byteSize());;
+			MemorySegment.copy(array, offset, endEvent.memorySegment(), 0, SensorEndTouchEvent.LAYOUT().byteSize());
+			;
 			endHandler.sensorEnd(endEvent);
 		}
 

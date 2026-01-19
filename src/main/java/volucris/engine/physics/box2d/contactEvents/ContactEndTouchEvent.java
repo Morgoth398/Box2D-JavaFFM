@@ -30,9 +30,9 @@ public final class ContactEndTouchEvent {
 
 	private final MemorySegment shapeIdA;
 	private final MemorySegment shapeIdB;
-	
+
 	private World world;
-	
+
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -48,10 +48,10 @@ public final class ContactEndTouchEvent {
 	public ContactEndTouchEvent() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ContactEndTouchEvent(Arena arena) {
 		b2ContactEndTouchEvent = arena.allocate(LAYOUT);
-		
+
 		shapeIdA = b2ContactEndTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactEndTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
 	}
@@ -59,7 +59,7 @@ public final class ContactEndTouchEvent {
 	public ContactEndTouchEvent(MemorySegment memorySegment, World world) {
 		this.b2ContactEndTouchEvent = memorySegment;
 		this.world = world;
-		
+
 		shapeIdA = b2ContactEndTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactEndTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
 	}
@@ -85,11 +85,11 @@ public final class ContactEndTouchEvent {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2ContactEndTouchEvent;
 	}
-	
+
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

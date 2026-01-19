@@ -36,7 +36,7 @@ public final class TreeStats {
 	public TreeStats() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public TreeStats(Arena arena) {
 		b2TreeStats = arena.allocate(LAYOUT);
 	}
