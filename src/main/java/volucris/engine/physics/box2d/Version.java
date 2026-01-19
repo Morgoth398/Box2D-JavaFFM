@@ -47,7 +47,7 @@ public final class Version {
 			b2Version = (MemorySegment) B2_GET_VERSION.invoke(Arena.ofAuto());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create version: " + className);
+			throw new Box2DRuntimeException("Cannot create version: " + className);
 		}
 
 		int major = (int) MAJOR.get(b2Version);

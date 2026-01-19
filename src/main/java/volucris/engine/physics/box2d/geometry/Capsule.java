@@ -124,7 +124,7 @@ public final class Capsule {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute capsule mass: " + className);
+			throw new Box2DRuntimeException("Cannot compute capsule mass: " + className);
 		}
 	}
 
@@ -146,7 +146,7 @@ public final class Capsule {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute capsule AABB: " + className);
+			throw new Box2DRuntimeException("Cannot compute capsule AABB: " + className);
 		}
 	}
 
@@ -166,7 +166,7 @@ public final class Capsule {
 			return (boolean) B2_POINT_IN_CAPSULE.invokeExact(vecTmp.memorySegment(), b2Capsule);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if point is in capsule: " + className);
+			throw new Box2DRuntimeException("Cannot check if point is in capsule: " + className);
 		}
 	}
 
@@ -182,7 +182,7 @@ public final class Capsule {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast capsule: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast capsule: " + className);
 		}
 	}
 
@@ -205,7 +205,7 @@ public final class Capsule {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot shape cast capsule: " + className);
+			throw new Box2DRuntimeException("Cannot shape cast capsule: " + className);
 		}
 	}
 

@@ -85,7 +85,7 @@ public final class Segment {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute segment AABB: " + className);
+			throw new Box2DRuntimeException("Cannot compute segment AABB: " + className);
 		}
 	}
 
@@ -107,7 +107,7 @@ public final class Segment {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast segment: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast segment: " + className);
 		}
 	}
 
@@ -129,7 +129,7 @@ public final class Segment {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot shape cast segment: " + className);
+			throw new Box2DRuntimeException("Cannot shape cast segment: " + className);
 		}
 	}
 

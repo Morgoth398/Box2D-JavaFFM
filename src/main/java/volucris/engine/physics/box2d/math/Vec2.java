@@ -70,7 +70,7 @@ public final class Vec2 {
 			return (boolean) B2_IS_VALID_VEC2.invokeExact(b2Vec2);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if vector is valid: " + className);
+			throw new Box2DRuntimeException("Cannot check if vector is valid: " + className);
 		}
 	}
 

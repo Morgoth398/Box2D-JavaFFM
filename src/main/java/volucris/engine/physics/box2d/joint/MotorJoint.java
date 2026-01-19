@@ -60,7 +60,7 @@ public final class MotorJoint extends Joint {
 			b2MotorJoint = (MemorySegment) B2_CREATE_MOTOR_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create motor joint: " + className);
+			throw new Box2DRuntimeException("Cannot create motor joint: " + className);
 		}
 		super(b2MotorJoint, world, arena);
 	}
@@ -74,7 +74,7 @@ public final class MotorJoint extends Joint {
 			B2_MOTOR_JOINT_SET_LINEAR_OFFSET.invokeExact(b2JointId, vecTmp.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set linear offset: " + className);
+			throw new Box2DRuntimeException("Cannot set linear offset: " + className);
 		}
 	}
 
@@ -88,7 +88,7 @@ public final class MotorJoint extends Joint {
 			return vecTmp.get(target);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get linear offset: " + className);
+			throw new Box2DRuntimeException("Cannot get linear offset: " + className);
 		}
 	}
 
@@ -107,7 +107,7 @@ public final class MotorJoint extends Joint {
 			B2_MOTOR_JOINT_SET_ANGULAR_OFFSET.invokeExact(b2JointId, angularOffset);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set angular offset: " + className);
+			throw new Box2DRuntimeException("Cannot set angular offset: " + className);
 		}
 	}
 
@@ -126,7 +126,7 @@ public final class MotorJoint extends Joint {
 			return (float) B2_MOTOR_JOINT_GET_ANGULAR_OFFSET.invoke(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get angular offset: " + className);
+			throw new Box2DRuntimeException("Cannot get angular offset: " + className);
 		}
 	}
 
@@ -145,7 +145,7 @@ public final class MotorJoint extends Joint {
 			B2_MOTOR_JOINT_SET_MAX_FORCE.invokeExact(b2JointId, maxForce);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set max force: " + className);
+			throw new Box2DRuntimeException("Cannot set max force: " + className);
 		}
 	}
 
@@ -157,7 +157,7 @@ public final class MotorJoint extends Joint {
 			return (float) B2_MOTOR_JOINT_GET_MAX_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get max force: " + className);
+			throw new Box2DRuntimeException("Cannot get max force: " + className);
 		}
 	}
 
@@ -169,7 +169,7 @@ public final class MotorJoint extends Joint {
 			B2_MOTOR_JOINT_SET_MAX_TORQUE.invokeExact(b2JointId, maxTorque);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set max torque: " + className);
+			throw new Box2DRuntimeException("Cannot set max torque: " + className);
 		}
 	}
 
@@ -181,7 +181,7 @@ public final class MotorJoint extends Joint {
 			return (float) B2_MOTOR_JOINT_GET_MAX_TORQUE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get max torque: " + className);
+			throw new Box2DRuntimeException("Cannot get max torque: " + className);
 		}
 	}
 
@@ -193,7 +193,7 @@ public final class MotorJoint extends Joint {
 			B2_MOTOR_JOINT_SET_CORRECTION_FACTOR.invokeExact(b2JointId, correctionFactor);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set correction factor: " + className);
+			throw new Box2DRuntimeException("Cannot set correction factor: " + className);
 		}
 	}
 
@@ -205,7 +205,7 @@ public final class MotorJoint extends Joint {
 			return (float) B2_MOTOR_JOINT_GET_CORRECTION_FACTOR.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get correction factor: " + className);
+			throw new Box2DRuntimeException("Cannot get correction factor: " + className);
 		}
 	}
 

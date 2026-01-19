@@ -70,7 +70,7 @@ public final class AABB {
 			return (boolean) B2_IS_VALID_AABB.invokeExact(b2AABB);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot validate AABB: " + className);
+			throw new Box2DRuntimeException("Cannot validate AABB: " + className);
 		}
 	}
 

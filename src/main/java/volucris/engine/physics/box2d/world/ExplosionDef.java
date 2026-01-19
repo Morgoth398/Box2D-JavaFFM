@@ -68,7 +68,7 @@ public final class ExplosionDef {
 			b2ExplosionDef = (MemorySegment) B2_DEFAULT_EXPLOSION_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create explosion def: " + className);
+			throw new Box2DRuntimeException("Cannot create explosion def: " + className);
 		}
 
 		position = new Vec2(b2ExplosionDef.asSlice(POSITION_OFFSET, Vec2.LAYOUT()));

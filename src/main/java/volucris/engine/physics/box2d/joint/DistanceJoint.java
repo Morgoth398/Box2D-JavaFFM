@@ -78,7 +78,7 @@ public final class DistanceJoint extends Joint {
 			b2DistanceJoint = (MemorySegment) B2_CREATE_DISTANCE_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create distance joint: " + className);
+			throw new Box2DRuntimeException("Cannot create distance joint: " + className);
 		}
 		super(b2DistanceJoint, world, arena);
 	}
@@ -91,7 +91,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_SET_LENGTH.invokeExact(b2JointId, length);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set length: " + className);
+			throw new Box2DRuntimeException("Cannot set length: " + className);
 		}
 	}
 
@@ -103,7 +103,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_LENGTH.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get length: " + className);
+			throw new Box2DRuntimeException("Cannot get length: " + className);
 		}
 	}
 
@@ -116,7 +116,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_ENABLE_SPRING.invokeExact(b2JointId, enableSpring);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable spring: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable spring: " + className);
 		}
 	}
 
@@ -128,7 +128,7 @@ public final class DistanceJoint extends Joint {
 			return (boolean) B2_DISTANCE_JOINT_IS_SPRING_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if spring is enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if spring is enabled: " + className);
 		}
 	}
 
@@ -140,7 +140,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_SET_SPRING_HERTZ.invokeExact(b2JointId, springHertz);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set spring hertz: " + className);
+			throw new Box2DRuntimeException("Cannot set spring hertz: " + className);
 		}
 	}
 
@@ -152,7 +152,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_SET_SPRING_DAMPING_RATIO.invokeExact(b2JointId, springDampingRatio);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set spring damping ratio: " + className);
+			throw new Box2DRuntimeException("Cannot set spring damping ratio: " + className);
 		}
 	}
 
@@ -164,7 +164,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_SPRING_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get spring hertz: " + className);
+			throw new Box2DRuntimeException("Cannot get spring hertz: " + className);
 		}
 	}
 
@@ -176,7 +176,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_SPRING_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get spring damping ratio: " + className);
+			throw new Box2DRuntimeException("Cannot get spring damping ratio: " + className);
 		}
 	}
 
@@ -188,7 +188,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_ENABLE_LIMIT.invokeExact(b2JointId, enableLimit);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable limit: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable limit: " + className);
 		}
 	}
 
@@ -200,7 +200,7 @@ public final class DistanceJoint extends Joint {
 			return (boolean) B2_DISTANCE_JOINT_IS_LIMIT_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if limit is enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if limit is enabled: " + className);
 		}
 	}
 
@@ -212,7 +212,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_SET_LENGTH_RANGE.invokeExact(b2JointId, minLength, maxLength);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set length range: " + className);
+			throw new Box2DRuntimeException("Cannot set length range: " + className);
 		}
 	}
 
@@ -224,7 +224,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_MIN_LENGTH.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get min length: " + className);
+			throw new Box2DRuntimeException("Cannot get min length: " + className);
 		}
 	}
 
@@ -236,7 +236,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_MAX_LENGTH.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get max length: " + className);
+			throw new Box2DRuntimeException("Cannot get max length: " + className);
 		}
 	}
 
@@ -248,7 +248,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_CURRENT_LENGTH.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get current length: " + className);
+			throw new Box2DRuntimeException("Cannot get current length: " + className);
 		}
 	}
 
@@ -260,7 +260,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_ENABLE_MOTOR.invokeExact(b2JointId, enableMotor);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable motor: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable motor: " + className);
 		}
 	}
 
@@ -272,7 +272,7 @@ public final class DistanceJoint extends Joint {
 			return (boolean) B2_DISTANCE_JOINT_IS_MOTOR_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if motor is enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if motor is enabled: " + className);
 		}
 	}
 
@@ -284,7 +284,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_SET_MOTOR_SPEED.invokeExact(b2JointId, motorSpeed);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set motor speed: " + className);
+			throw new Box2DRuntimeException("Cannot set motor speed: " + className);
 		}
 	}
 
@@ -296,7 +296,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_MOTOR_SPEED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get motor speed: " + className);
+			throw new Box2DRuntimeException("Cannot get motor speed: " + className);
 		}
 	}
 
@@ -308,7 +308,7 @@ public final class DistanceJoint extends Joint {
 			B2_DISTANCE_JOINT_SET_MAX_MOTOR_FORCE.invoke(b2JointId, maxMotorForce);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set max motor force: " + className);
+			throw new Box2DRuntimeException("Cannot set max motor force: " + className);
 		}
 	}
 
@@ -320,7 +320,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_MAX_MOTOR_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get max motor force: " + className);
+			throw new Box2DRuntimeException("Cannot get max motor force: " + className);
 		}
 	}
 
@@ -332,7 +332,7 @@ public final class DistanceJoint extends Joint {
 			return (float) B2_DISTANCE_JOINT_GET_MOTOR_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get motor force: " + className);
+			throw new Box2DRuntimeException("Cannot get motor force: " + className);
 		}
 	}
 

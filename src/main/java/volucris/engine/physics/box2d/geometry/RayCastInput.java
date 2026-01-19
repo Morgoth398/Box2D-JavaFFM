@@ -78,7 +78,7 @@ public final class RayCastInput {
 			return (boolean) B2_IS_VALID_RAY.invokeExact(b2RayCastInput);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot validate ray: " + className);
+			throw new Box2DRuntimeException("Cannot validate ray: " + className);
 		}
 	}
 

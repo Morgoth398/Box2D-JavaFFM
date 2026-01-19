@@ -55,7 +55,7 @@ public final class MouseJoint extends Joint {
 			b2MouseJoint = (MemorySegment) B2_CREATE_MOUSE_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create mouse joint: " + className);
+			throw new Box2DRuntimeException("Cannot create mouse joint: " + className);
 		}
 		super(b2MouseJoint, world, arena);
 	}
@@ -69,7 +69,7 @@ public final class MouseJoint extends Joint {
 			B2_MOUSE_JOINT_SET_TARGET.invokeExact(b2JointId, vecTmp.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set target: " + className);
+			throw new Box2DRuntimeException("Cannot set target: " + className);
 		}
 	}
 
@@ -83,7 +83,7 @@ public final class MouseJoint extends Joint {
 			return vecTmp.get(target);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get target: " + className);
+			throw new Box2DRuntimeException("Cannot get target: " + className);
 		}
 	}
 
@@ -102,7 +102,7 @@ public final class MouseJoint extends Joint {
 			B2_MOUSE_JOINT_SET_SPRING_HERTZ.invokeExact(b2JointId, springHertz);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set spring hertz: " + className);
+			throw new Box2DRuntimeException("Cannot set spring hertz: " + className);
 		}
 	}
 
@@ -114,7 +114,7 @@ public final class MouseJoint extends Joint {
 			return (float) B2_MOUSE_JOINT_GET_SPRING_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get spring hertz: " + className);
+			throw new Box2DRuntimeException("Cannot get spring hertz: " + className);
 		}
 	}
 
@@ -126,7 +126,7 @@ public final class MouseJoint extends Joint {
 			B2_MOUSE_JOINT_SET_SPRING_DAMPING_RATIO.invokeExact(b2JointId, dampingRatio);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set spring damping ratio: " + className);
+			throw new Box2DRuntimeException("Cannot set spring damping ratio: " + className);
 		}
 	}
 
@@ -138,7 +138,7 @@ public final class MouseJoint extends Joint {
 			return (float) B2_MOUSE_JOINT_GET_SPRING_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get spring damping ratio: " + className);
+			throw new Box2DRuntimeException("Cannot get spring damping ratio: " + className);
 		}
 	}
 
@@ -150,7 +150,7 @@ public final class MouseJoint extends Joint {
 			B2_MOUSE_JOINT_SET_MAX_FORCE.invokeExact(b2JointId, maxForce);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set max force: " + className);
+			throw new Box2DRuntimeException("Cannot set max force: " + className);
 		}
 	}
 
@@ -162,7 +162,7 @@ public final class MouseJoint extends Joint {
 			return (float) B2_MOUSE_JOINT_GET_MAX_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get max force: " + className);
+			throw new Box2DRuntimeException("Cannot get max force: " + className);
 		}
 	}
 

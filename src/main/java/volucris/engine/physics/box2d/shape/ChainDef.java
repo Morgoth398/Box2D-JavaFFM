@@ -103,7 +103,7 @@ public final class ChainDef {
 			b2ChainDef = (MemorySegment) B2_DEFAULT_CHAIN_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create chain def: " + className);
+			throw new Box2DRuntimeException("Cannot create chain def: " + className);
 		}
 
 		filter = new Filter(b2ChainDef.asSlice(FILTER_OFFSET, Filter.LAYOUT()));

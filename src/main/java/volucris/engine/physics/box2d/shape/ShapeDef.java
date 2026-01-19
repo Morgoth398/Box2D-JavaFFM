@@ -86,7 +86,7 @@ public final class ShapeDef {
 			b2ShapeDef = (MemorySegment) B2_DEFAULT_SHAPE_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create shape def: " + className);
+			throw new Box2DRuntimeException("Cannot create shape def: " + className);
 		}
 
 		surfaceMaterial = new SurfaceMaterial(b2ShapeDef.asSlice(SURFACE_MATERIAL_OFFSET, SurfaceMaterial.LAYOUT()));

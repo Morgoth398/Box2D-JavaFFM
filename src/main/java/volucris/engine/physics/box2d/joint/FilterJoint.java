@@ -34,7 +34,7 @@ public final class FilterJoint extends Joint {
 			filterJoint = (MemorySegment) B2_CREATE_FILTER_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create mouse joint: " + className);
+			throw new Box2DRuntimeException("Cannot create mouse joint: " + className);
 		}
 		super(filterJoint, world, arena);
 	}

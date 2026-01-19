@@ -53,7 +53,7 @@ public final class QueryFilter {
 			b2QueryFilter = (MemorySegment) B2_DEFAULT_QUERY_FILTER.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create query filter: " + className);
+			throw new Box2DRuntimeException("Cannot create query filter: " + className);
 		}
 	}
 

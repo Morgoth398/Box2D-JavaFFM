@@ -115,7 +115,7 @@ public final class BodyDef {
 			b2BodyDef = (MemorySegment) B2_DEFAULT_BODY_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create body def: " + className);
+			throw new Box2DRuntimeException("Cannot create body def: " + className);
 		}
 
 		position = new Vec2(b2BodyDef.asSlice(POSITION_OFFSET, Vec2.LAYOUT()));

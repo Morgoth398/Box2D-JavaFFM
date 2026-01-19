@@ -83,7 +83,7 @@ public final class MouseJointDef {
 			b2MouseJointDef = (MemorySegment) B2_DEFAULT_MOUSE_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create motor joint def: " + className);
+			throw new Box2DRuntimeException("Cannot create motor joint def: " + className);
 		}
 
 		target = new Vec2(b2MouseJointDef.asSlice(TARGET_OFFSET, Vec2.LAYOUT()));

@@ -112,7 +112,7 @@ public final class Circle {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute circle mass: " + className);
+			throw new Box2DRuntimeException("Cannot compute circle mass: " + className);
 		}
 	}
 
@@ -134,7 +134,7 @@ public final class Circle {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute circle AABB: " + className);
+			throw new Box2DRuntimeException("Cannot compute circle AABB: " + className);
 		}
 	}
 
@@ -154,7 +154,7 @@ public final class Circle {
 			return (boolean) B2_POINT_IN_CIRCLE.invokeExact(vecTmp.memorySegment(), b2Circle);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if point is in circle: " + className);
+			throw new Box2DRuntimeException("Cannot check if point is in circle: " + className);
 		}
 	}
 
@@ -170,7 +170,7 @@ public final class Circle {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast circle: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast circle: " + className);
 		}
 	}
 
@@ -193,7 +193,7 @@ public final class Circle {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast circle: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast circle: " + className);
 		}
 	}
 

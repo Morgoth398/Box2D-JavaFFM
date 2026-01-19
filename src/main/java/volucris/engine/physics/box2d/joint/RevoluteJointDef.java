@@ -124,7 +124,7 @@ public final class RevoluteJointDef {
 			b2RevoluteJointDef = (MemorySegment) B2_DEFAULT_REVOLUTE_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create revolute joint dev: " + className);
+			throw new Box2DRuntimeException("Cannot create revolute joint dev: " + className);
 		}
 
 		localAnchorA = new Vec2(b2RevoluteJointDef.asSlice(LOCAL_ANCHOR_A_OFFSET, Vec2.LAYOUT()));
