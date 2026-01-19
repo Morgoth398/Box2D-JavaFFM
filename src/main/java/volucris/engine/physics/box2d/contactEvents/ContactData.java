@@ -10,6 +10,7 @@ import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.collision.Manifold;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 
 import static java.lang.foreign.ValueLayout.*;
 
@@ -84,11 +85,25 @@ public final class ContactData {
 	}
 
 	public Shape getShapeA() {
-		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeIdA), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeIdA, 0L, worldId);
 	}
 
 	public Shape getShapeB() {
-		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeIdB), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeIdB, 0L, worldId);
 	}
 
 	public void setWorld(World world) {

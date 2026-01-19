@@ -10,6 +10,7 @@ import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -94,12 +95,14 @@ public final class BodyMoveEvent {
 	}
 
 	public Body getBody() {
-		Body body = Box2D.getBody(Body.getBodyId(b2BodyMoveEvent, BODY_ID_OFFSET), world);
+		WorldId worldId = world.getWorldId();
+		
+		Body body = Box2D.getBody(Body.getBodyId(b2BodyMoveEvent, BODY_ID_OFFSET), worldId);
 
 		if (body != null)
 			return body;
 
-		return new Body(b2BodyMoveEvent, BODY_ID_OFFSET, world);
+		return new Body(b2BodyMoveEvent, BODY_ID_OFFSET, worldId);
 	}
 
 	public boolean fellAsleep() {

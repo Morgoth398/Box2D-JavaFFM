@@ -11,6 +11,7 @@ import org.joml.Vector2f;
 import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.shape.Shape;
+import volucris.engine.physics.box2d.world.World.WorldId;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -106,7 +107,14 @@ public final class RayResult {
 	}
 
 	public Shape getShape() {
-		return Box2D.getShape(Shape.getShapeId(shapeId), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeId), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeId, 0L, worldId);
 	}
 
 	public float getFraction() {

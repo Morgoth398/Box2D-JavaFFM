@@ -12,6 +12,7 @@ import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -90,12 +91,32 @@ public final class ContactHitEvent {
 		this.world = world;
 	}
 
+	/*
+	 * The first shape.
+	 */
 	public Shape getShapeA() {
-		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeIdA), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeIdA, 0L, worldId);
 	}
 
+	/**
+	 * The second shape.
+	 */
 	public Shape getShapeB() {
-		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeIdB), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeIdB, 0L, worldId);
 	}
 
 	/**
