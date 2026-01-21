@@ -6,10 +6,10 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * This function receives clipped ray cast input for a proxy.

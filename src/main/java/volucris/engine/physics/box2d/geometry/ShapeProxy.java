@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 import volucris.engine.physics.box2d.math.Vec2;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * A distance proxy is used by the GJK algorithm.

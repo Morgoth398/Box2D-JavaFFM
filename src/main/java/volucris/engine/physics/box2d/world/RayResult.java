@@ -14,7 +14,7 @@ import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.world.World.WorldId;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 public final class RayResult {
 

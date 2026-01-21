@@ -9,10 +9,10 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 import volucris.engine.physics.box2d.HexColor;
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * Surface materials allow chain shapes to have per segment surface properties.

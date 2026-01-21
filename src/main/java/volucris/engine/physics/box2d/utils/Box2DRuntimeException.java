@@ -1,4 +1,4 @@
-package volucris.engine.utils;
+package volucris.engine.physics.box2d.utils;
 
 public final class Box2DRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = 5110412887151439333L;

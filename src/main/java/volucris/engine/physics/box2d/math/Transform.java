@@ -8,7 +8,7 @@ import java.lang.foreign.StructLayout;
 
 import org.joml.Vector2f;
 
-import volucris.engine.utils.MathUtils;
+import volucris.engine.physics.box2d.utils.MathUtils;
 
 public final class Transform {
 

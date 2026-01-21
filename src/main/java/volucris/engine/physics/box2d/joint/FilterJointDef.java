@@ -7,12 +7,12 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.body.Body;
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 
 import java.lang.foreign.MemoryLayout.PathElement;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * A filter joint is used to disable collision between two specific bodies.

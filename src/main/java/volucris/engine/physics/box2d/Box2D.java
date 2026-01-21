@@ -11,9 +11,9 @@ import volucris.engine.physics.box2d.shape.Chain;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.shape.Chain.ChainId;
 import volucris.engine.physics.box2d.shape.Shape.ShapeId;
+import volucris.engine.physics.box2d.utils.NativeLibraryLoader;
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.physics.box2d.world.World.WorldId;
-import volucris.engine.utils.NativeLibraryLoader;
 
 /**
  * @see <a href="https://box2d.org/">https://box2d.org/</a>

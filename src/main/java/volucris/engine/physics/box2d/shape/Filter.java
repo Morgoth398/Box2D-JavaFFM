@@ -9,12 +9,12 @@ import java.lang.invoke.VarHandle;
 
 import org.joml.Vector2f;
 
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.physics.box2d.world.functions.CastResultFunction;
-import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * This is used to filter collision on shapes.

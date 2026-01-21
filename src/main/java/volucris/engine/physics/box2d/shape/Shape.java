@@ -23,12 +23,12 @@ import volucris.engine.physics.box2d.geometry.RayCastInput;
 import volucris.engine.physics.box2d.geometry.Segment;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Vec2;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.physics.box2d.world.World.WorldId;
-import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 public final class Shape {
 

@@ -1,4 +1,4 @@
-package volucris.engine.example;
+package volucris.engine.physics.box2d.example;
 
 import org.joml.Vector2f;
 
@@ -9,9 +9,9 @@ import volucris.engine.physics.box2d.body.BodyType;
 import volucris.engine.physics.box2d.geometry.Polygon;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.shape.ShapeDef;
+import volucris.engine.physics.box2d.utils.NativeLibraryLoader;
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.physics.box2d.world.WorldDef;
-import volucris.engine.utils.NativeLibraryLoader;
 
 public class HelloBox2D {
 

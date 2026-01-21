@@ -1,4 +1,4 @@
-package volucris.engine.utils;
+package volucris.engine.physics.box2d.utils;
 
 import java.io.Closeable;
 import java.io.File;

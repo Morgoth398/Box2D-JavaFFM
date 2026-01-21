@@ -22,16 +22,16 @@ import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.sensorEvents.SensorEvents;
 import volucris.engine.physics.box2d.sensorEvents.SensorListener;
 import volucris.engine.physics.box2d.shape.QueryFilter;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 import volucris.engine.physics.box2d.world.callbacks.FrictionCallback;
 import volucris.engine.physics.box2d.world.callbacks.RestitutionCallback;
 import volucris.engine.physics.box2d.world.functions.CastResultFunction;
 import volucris.engine.physics.box2d.world.functions.CustomFilterFunction;
 import volucris.engine.physics.box2d.world.functions.OverlapResultFunction;
 import volucris.engine.physics.box2d.world.functions.PreSolveFunction;
-import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 public final class World {
 

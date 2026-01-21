@@ -7,11 +7,11 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-import volucris.engine.utils.MathUtils;
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.MathUtils;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 public final class Rot {
 
