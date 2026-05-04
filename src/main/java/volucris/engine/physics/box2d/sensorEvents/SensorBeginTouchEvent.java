@@ -7,6 +7,7 @@ import java.lang.foreign.MemoryLayout.PathElement;
 import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.StructLayout;
@@ -25,7 +26,7 @@ public final class SensorBeginTouchEvent {
 	private final MemorySegment b2SensorBeginTouchEvent;
 
 	private final MemorySegment sensorShapeId;
-	private final MemorySegment visistorShapeId;
+	private final MemorySegment visitorShapeId;
 
 	private World world;
 
@@ -49,7 +50,7 @@ public final class SensorBeginTouchEvent {
 		b2SensorBeginTouchEvent = arena.allocate(LAYOUT);
 
 		sensorShapeId = b2SensorBeginTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
-		visistorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
+		visitorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
 
 	public SensorBeginTouchEvent(MemorySegment memorySegment, World world) {
@@ -57,7 +58,7 @@ public final class SensorBeginTouchEvent {
 		this.world = world;
 
 		sensorShapeId = b2SensorBeginTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
-		visistorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
+		visitorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
@@ -66,11 +67,25 @@ public final class SensorBeginTouchEvent {
 	}
 
 	public Shape getSensorShape() {
-		return Box2D.getShape(Shape.getShapeId(sensorShapeId), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(sensorShapeId), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(sensorShapeId, 0L, worldId);
 	}
 
 	public Shape getVisitorShape() {
-		return Box2D.getShape(Shape.getShapeId(visistorShapeId), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(visitorShapeId), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(sensorShapeId, 0L, worldId);
 	}
 
 	public void setWorld(World world) {
