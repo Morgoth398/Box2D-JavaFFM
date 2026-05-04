@@ -56,7 +56,7 @@ public final class ShapeProxy {
 	public ShapeProxy() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ShapeProxy(Arena arena) {
 		b2ShapeProxy = arena.allocate(LAYOUT);
 

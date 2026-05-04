@@ -6,7 +6,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -37,7 +37,8 @@ public abstract class TreeShapeCastCallback {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(TreeShapeCastCallback.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		TREE_SHAPE_CAST_CALLBACK_DESCR = functionDescr(ADDRESS, JAVA_INT, JAVA_LONG, ADDRESS);
@@ -51,7 +52,7 @@ public abstract class TreeShapeCastCallback {
 
 	protected abstract boolean treeShapeCastCallback(MemorySegment imput, int proxyId, long userData, MemorySegment context);
 	//@formatter:on
-	
+
 	public MemorySegment memorySegment() {
 		return treeShapeCastCallbackAddress;
 	}

@@ -8,7 +8,7 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -93,7 +93,8 @@ public final class CosSin {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute cosSin.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute cosSin: " + className);
 		}
 	}
 

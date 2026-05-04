@@ -5,7 +5,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -59,7 +59,7 @@ public final class WheelJoint extends Joint {
 	public WheelJoint(World world, WheelJointDef wheelJointDef) {
 		this(world, wheelJointDef, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Create a wheel joint.
 	 */
@@ -71,7 +71,8 @@ public final class WheelJoint extends Joint {
 
 			b2WheelJoint = (MemorySegment) B2_CREATE_WHEEL_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create wheel joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create wheel joint: " + className);
 		}
 		super(b2WheelJoint, world, arena);
 	}
@@ -83,7 +84,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_ENABLE_SPRING.invokeExact(b2JointId, enableSpring);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable spring.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable spring: " + className);
 		}
 	}
 
@@ -94,7 +96,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (boolean) B2_WHEEL_JOINT_IS_SPRING_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if spring is enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if spring is enabled: " + className);
 		}
 	}
 
@@ -105,7 +108,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_SET_SPRING_HERTZ.invokeExact(b2JointId, springHertz);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set spring hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set spring hertz: " + className);
 		}
 	}
 
@@ -116,7 +120,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO.invokeExact(b2JointId, springDampingRatio);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set spring damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set spring damping ratio: " + className);
 		}
 	}
 
@@ -127,7 +132,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_SPRING_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get spring hertz.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get spring hertz: " + className);
 		}
 	}
 
@@ -138,7 +144,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get spring damping ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get spring damping ratio: " + className);
 		}
 	}
 
@@ -149,7 +156,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_ENABLE_LIMIT.invokeExact(b2JointId, enableLimit);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable limit.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable limit: " + className);
 		}
 	}
 
@@ -160,7 +168,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (boolean) B2_WHEEL_JOINT_IS_LIMIT_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if limit is enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if limit is enabled: " + className);
 		}
 	}
 
@@ -171,7 +180,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_LOWER_LIMIT.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get lower limit.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get lower limit: " + className);
 		}
 	}
 
@@ -182,7 +192,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_UPPER_LIMIT.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get upper limit.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get upper limit: " + className);
 		}
 	}
 
@@ -193,7 +204,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_SET_LIMITS.invokeExact(b2JointId, lower, upper);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set limits.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set limits: " + className);
 		}
 	}
 
@@ -204,7 +216,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_ENABLE_MOTOR.invokeExact(b2JointId, enableMotor);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enable/ disable motor.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable motor: " + className);
 		}
 	}
 
@@ -215,7 +228,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (boolean) B2_WHEEL_JOINT_IS_MOTOR_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if motor is enabled.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if motor is enabled: " + className);
 		}
 	}
 
@@ -226,7 +240,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_SET_MOTOR_SPEED.invokeExact(b2JointId, motorSpeed);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set motor speed.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set motor speed: " + className);
 		}
 	}
 
@@ -237,7 +252,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_MOTOR_SPEED.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get motor speed.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get motor speed: " + className);
 		}
 	}
 
@@ -248,7 +264,8 @@ public final class WheelJoint extends Joint {
 		try {
 			B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE.invokeExact(b2JointId, torque);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set max motor torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set max motor torque: " + className);
 		}
 	}
 
@@ -259,7 +276,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get max motor torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get max motor torque: " + className);
 		}
 	}
 
@@ -270,7 +288,8 @@ public final class WheelJoint extends Joint {
 		try {
 			return (float) B2_WHEEL_JOINT_GET_MOTOR_TORQUE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get motor torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get motor torque: " + className);
 		}
 	}
 

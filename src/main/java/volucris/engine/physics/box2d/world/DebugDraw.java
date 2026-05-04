@@ -13,11 +13,10 @@ import java.lang.invoke.VarHandle;
 
 import org.joml.Vector2f;
 
-import volucris.engine.graphics.Color;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -93,7 +92,6 @@ public abstract class DebugDraw {
 	private Transform transformTmp;
 	private Vec2 vec2Tmp;
 
-	private Color color;
 	private Vector2f vectorTmp;
 	private Vector2f vectorTmp2;
 
@@ -133,7 +131,8 @@ public abstract class DebugDraw {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(DebugDraw.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 
 		AddressLayout UNBOUNDED_ADDRESS = ADDRESS.withTargetLayout(MemoryLayout.sequenceLayout(Long.MAX_VALUE, JAVA_BYTE));
@@ -192,12 +191,13 @@ public abstract class DebugDraw {
 	public DebugDraw() {
 		this(Arena.ofAuto());
 	}
-	
-	public DebugDraw(Arena arena) {		
+
+	public DebugDraw(Arena arena) {
 		try {
 			b2DebugDraw = (MemorySegment) B2_DEFAULT_DEBUG_DRAW.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create debug draw.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create debug draw: " + className);
 		}
 
 		drawPolygonAddress = upcallStub(this, DRAW_POLYGON_HANDLE, DRAW_POLYGON_DESCR, arena);
@@ -225,7 +225,6 @@ public abstract class DebugDraw {
 		transformTmp = new Transform();
 		vec2Tmp = new Vec2();
 
-		color = new Color();
 		vectorTmp = new Vector2f();
 		vectorTmp2 = new Vector2f();
 
@@ -241,7 +240,7 @@ public abstract class DebugDraw {
 			this.vertices[counter++] = vec2Tmp.getX();
 			this.vertices[counter++] = vec2Tmp.getY();
 		}
-		drawPolygon(this.vertices, vertexCount * 2, this.color.set(color, false));
+		drawPolygon(this.vertices, vertexCount * 2, color);
 	}
 
 	@SuppressWarnings("unused")
@@ -256,20 +255,20 @@ public abstract class DebugDraw {
 			this.vertices[counter++] = vec2Tmp.getX();
 			this.vertices[counter++] = vec2Tmp.getY();
 		}
-		drawSolidPolygon(transformTmp, this.vertices, vertexCount * 2, radius, this.color.set(color, false));
+		drawSolidPolygon(transformTmp, this.vertices, vertexCount * 2, radius, color);
 	}
 
 	@SuppressWarnings("unused")
 	private void drawCircle(MemorySegment center, float radius, int color, MemorySegment context) {
 		vec2Tmp.set(center);
 		vec2Tmp.get(vectorTmp);
-		drawCircle(vectorTmp, radius, this.color.set(color, false));
+		drawCircle(vectorTmp, radius, color);
 	}
 
 	@SuppressWarnings("unused")
 	private void drawSolidCircle(MemorySegment transform, float radius, int color, MemorySegment context) {
 		transformTmp.set(transform);
-		drawSolidCircle(transformTmp, radius, this.color.set(color, false));
+		drawSolidCircle(transformTmp, radius, color);
 	}
 
 	@SuppressWarnings("unused")
@@ -278,7 +277,7 @@ public abstract class DebugDraw {
 		vec2Tmp.get(vectorTmp);
 		vec2Tmp.set(p2);
 		vec2Tmp.get(vectorTmp2);
-		drawSolidCapsule(vectorTmp, vectorTmp2, radius, this.color.set(color, false));
+		drawSolidCapsule(vectorTmp, vectorTmp2, radius, color);
 	}
 
 	@SuppressWarnings("unused")
@@ -287,7 +286,7 @@ public abstract class DebugDraw {
 		vec2Tmp.get(vectorTmp);
 		vec2Tmp.set(p2);
 		vec2Tmp.get(vectorTmp2);
-		drawSegment(vectorTmp, vectorTmp2, this.color.set(color, false));
+		drawSegment(vectorTmp, vectorTmp2, color);
 	}
 
 	@SuppressWarnings("unused")
@@ -300,7 +299,7 @@ public abstract class DebugDraw {
 	private void drawPoint(MemorySegment p, float size, int color, MemorySegment context) {
 		vec2Tmp.set(p);
 		vec2Tmp.get(vectorTmp);
-		drawPoint(vectorTmp, size, this.color.set(color, false));
+		drawPoint(vectorTmp, size, color);
 	}
 
 	@SuppressWarnings("unused")
@@ -308,7 +307,7 @@ public abstract class DebugDraw {
 		vec2Tmp.set(p);
 		vec2Tmp.get(vectorTmp);
 		String name = string.getString(0);
-		drawString(vectorTmp, name, this.color.set(color, false));
+		drawString(vectorTmp, name, color);
 	}
 
 	//@formatter:off
@@ -318,49 +317,49 @@ public abstract class DebugDraw {
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawPolygon(float[] vertices, int vertexCount, Color color);
+	protected abstract void drawPolygon(float[] vertices, int vertexCount, int color);
 	
 	/**
 	 * Draw a solid closed polygon provided in CCW order. 
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawSolidPolygon(Transform transform, float[] vertices, int vertexCount, float radius, Color color);
+	protected abstract void drawSolidPolygon(Transform transform, float[] vertices, int vertexCount, float radius, int color);
 	
 	/**
 	 * Draw a circle. 
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawCircle(Vector2f center, float radius, Color color);
+	protected abstract void drawCircle(Vector2f center, float radius, int color);
 	
 	/**
 	 * Draw a solid circle.
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawSolidCircle(Transform transform, float radius, Color color);
+	protected abstract void drawSolidCircle(Transform transform, float radius, int color);
 	
 	/**
 	 * Draw a solid capsule. 
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawSolidCapsule(Vector2f p1, Vector2f p2, float radius, Color color);
+	protected abstract void drawSolidCapsule(Vector2f p1, Vector2f p2, float radius, int color);
 	
 	/**
 	 * Draw a line segment. 
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawSegment(Vector2f p1, Vector2f p2, Color color);
+	protected abstract void drawSegment(Vector2f p1, Vector2f p2, int color);
 	
 	/**
 	 * Draw a point.
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected abstract void drawPoint(Vector2f p, float size, Color color);
+	protected abstract void drawPoint(Vector2f p, float size, int color);
 	
 	/**
 	 * Draw a transform. Choose your own length scale. 
@@ -374,7 +373,7 @@ public abstract class DebugDraw {
 	 * <p>
 	 * Do not keep a reference to the objects. They will be reused internally.
 	 */
-	protected void drawString(Vector2f p, String string, Color color) {};
+	protected void drawString(Vector2f p, String string, int color) {};
 	//@formatter:on
 
 	/**

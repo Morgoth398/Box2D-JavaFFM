@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 
 import org.joml.Vector2f;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -19,7 +19,7 @@ public final class AABB {
 	private static final StructLayout LAYOUT;
 
 	private static final MethodHandle B2_IS_VALID_AABB;
-	
+
 	private static final long LOWER_BOUND_OFFSET;
 	private static final long UPPER_BOUND_OFFSET;
 
@@ -37,7 +37,7 @@ public final class AABB {
 		//@formatter:on
 
 		B2_IS_VALID_AABB = downcallHandle("b2IsValidAABB", JAVA_BOOLEAN, LAYOUT);
-		
+
 		LOWER_BOUND_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("lowerBound"));
 		UPPER_BOUND_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("upperBound"));
 	}
@@ -45,7 +45,7 @@ public final class AABB {
 	public AABB() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public AABB(Arena arena) {
 		b2AABB = arena.allocate(LAYOUT);
 
@@ -69,10 +69,11 @@ public final class AABB {
 		try {
 			return (boolean) B2_IS_VALID_AABB.invokeExact(b2AABB);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate AABB: " + className);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return "AABB (Lower Bound: " + lowerBound.toString() + ", UpperBound: " + upperBound.toString() + ")";

@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 import volucris.engine.physics.box2d.geometry.RayCastInput;
 import volucris.engine.physics.box2d.geometry.ShapeCastInput;
 import volucris.engine.physics.box2d.math.AABB;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -116,7 +116,8 @@ public final class DynamicTree {
 			MemorySegment segment = (MemorySegment) B2_DYNAMIC_TREE_CREATE.invoke(arena);
 			b2DynamicTree = segment.reinterpret(arena, s -> destroy(s));
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create dynamic tree: " + className);
 		}
 	}
 
@@ -134,7 +135,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_DESTROY.invokeExact(segment);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot destroy dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot destroy dynamic tree: " + className);
 		}
 	}
 
@@ -147,7 +149,8 @@ public final class DynamicTree {
 			MemorySegment aabbAddr = aabb.memorySegment();
 			return (int) B2_DYNAMIC_TREE_CREATE_PROXY.invokeExact(treeAddr, aabbAddr, categoryBits, userData);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create proxy.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create proxy: " + className);
 		}
 	}
 
@@ -158,7 +161,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_DESTROY_PROXY.invokeExact(b2DynamicTree, proxyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot destroy proxy.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot destroy proxy: " + className);
 		}
 	}
 
@@ -169,7 +173,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_MOVE_PROXY.invokeExact(b2DynamicTree, proxyId, aabb.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot move proxy.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot move proxy: " + className);
 		}
 	}
 
@@ -180,7 +185,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_ENLARGE_PROXY.invokeExact(b2DynamicTree, proxyId, aabb.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot enlarge proxy.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot enlarge proxy: " + className);
 		}
 	}
 
@@ -191,7 +197,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_SET_CATEGORY_BITS.invokeExact(b2DynamicTree, proxyId, categoryBits);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set category bits.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set category bits: " + className);
 		}
 	}
 
@@ -202,7 +209,8 @@ public final class DynamicTree {
 		try {
 			return (long) B2_DYNAMIC_TREE_GET_CATEGORY_BITS.invokeExact(b2DynamicTree, proxyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get proxy id.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get proxy id: " + className);
 		}
 	}
 
@@ -223,7 +231,8 @@ public final class DynamicTree {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot query dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot query dynamic tree: " + className);
 		}
 	}
 
@@ -257,7 +266,8 @@ public final class DynamicTree {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast dynamic tree: " + className);
 		}
 	}
 
@@ -294,7 +304,8 @@ public final class DynamicTree {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot shape cast dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot shape cast dynamic tree: " + className);
 		}
 	}
 
@@ -317,7 +328,8 @@ public final class DynamicTree {
 		try {
 			return (int) B2_DYNAMIC_TREE_GET_HEIGHT.invokeExact(b2DynamicTree);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get dynamic tree height.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get dynamic tree height: " + className);
 		}
 	}
 
@@ -328,7 +340,8 @@ public final class DynamicTree {
 		try {
 			return (float) B2_DYNAMIC_TREE_GET_AREA_RATIO.invokeExact(b2DynamicTree);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get dynamic tree area ratio.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get dynamic tree area ratio: " + className);
 		}
 	}
 
@@ -342,7 +355,8 @@ public final class DynamicTree {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get root bounds.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get root bounds: " + className);
 		}
 	}
 
@@ -360,7 +374,8 @@ public final class DynamicTree {
 		try {
 			return (int) B2_DYNAMIC_TREE_GET_PROXY_COUNT.invokeExact(b2DynamicTree);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Canot get proxy count.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Canot get proxy count: " + className);
 		}
 	}
 
@@ -372,7 +387,8 @@ public final class DynamicTree {
 		try {
 			return (int) B2_DYNAMIC_TREE_REBUILD.invokeExact(b2DynamicTree, fullBuild);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot rebuild dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot rebuild dynamic tree: " + className);
 		}
 	}
 
@@ -383,7 +399,8 @@ public final class DynamicTree {
 		try {
 			return (int) B2_DYNAMIC_TREE_GET_BYTE_COUNT.invokeExact(b2DynamicTree);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get byte count.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get byte count: " + className);
 		}
 	}
 
@@ -394,7 +411,8 @@ public final class DynamicTree {
 		try {
 			return (long) B2_DYNAMIC_TREE_GET_USER_DATA.invokeExact(b2DynamicTree, proxyId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get user data.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get user data: " + className);
 		}
 	}
 
@@ -408,7 +426,8 @@ public final class DynamicTree {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get aabb.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get aabb: " + className);
 		}
 	}
 
@@ -426,7 +445,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_VALIDATE.invokeExact(b2DynamicTree);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate dynamic tree.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate dynamic tree: " + className);
 		}
 	}
 
@@ -437,7 +457,8 @@ public final class DynamicTree {
 		try {
 			B2_DYNAMIC_TREE_VALIDATE_NO_ENLARGED.invokeExact(b2DynamicTree);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate no enlarged.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate no enlarged: " + className);
 		}
 	}
 

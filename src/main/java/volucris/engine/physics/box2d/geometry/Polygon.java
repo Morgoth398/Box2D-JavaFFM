@@ -13,7 +13,7 @@ import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Rot;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -146,7 +146,8 @@ public final class Polygon {
 			MemorySegment segment = (MemorySegment) method.invoke(Arena.ofAuto(), transformAddr, b2Polygon);
 			return new Polygon(segment);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot transform polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot transform polygon: " + className);
 		}
 	}
 
@@ -159,7 +160,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute polygon mass.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute polygon mass: " + className);
 		}
 	}
 
@@ -180,7 +182,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute polygon AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute polygon AABB: " + className);
 		}
 	}
 
@@ -199,7 +202,8 @@ public final class Polygon {
 			vecTmp.set(point);
 			return (boolean) B2_POINT_IN_POLYGON.invokeExact(vecTmp.memorySegment(), b2Polygon);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if point is in polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if point is in polygon: " + className);
 		}
 	}
 
@@ -214,7 +218,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast polygon: " + className);
 		}
 	}
 
@@ -236,7 +241,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast circle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast circle: " + className);
 		}
 	}
 
@@ -318,7 +324,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make polygon: " + className);
 		}
 	}
 
@@ -367,7 +374,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make offset polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make offset polygon: " + className);
 		}
 	}
 
@@ -404,7 +412,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make offset rounded polygon.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make offset rounded polygon: " + className);
 		}
 	}
 
@@ -417,7 +426,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make square.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make square: " + className);
 		}
 	}
 
@@ -444,7 +454,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make box.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make box: " + className);
 		}
 	}
 
@@ -472,7 +483,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make rounded box.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make rounded box: " + className);
 		}
 	}
 
@@ -521,7 +533,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make offset box.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make offset box: " + className);
 		}
 	}
 
@@ -558,7 +571,8 @@ public final class Polygon {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot make offset rounded box.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot make offset rounded box: " + className);
 		}
 	}
 

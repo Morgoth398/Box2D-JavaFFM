@@ -7,7 +7,7 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -46,7 +46,8 @@ public final class Version {
 		try {
 			b2Version = (MemorySegment) B2_GET_VERSION.invoke(Arena.ofAuto());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create version.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create version: " + className);
 		}
 
 		int major = (int) MAJOR.get(b2Version);

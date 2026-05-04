@@ -77,7 +77,7 @@ public final class ContactEvents {
 		beginEvent = new ContactBeginTouchEvent(arena);
 		endEvent = new ContactEndTouchEvent(arena);
 		hitEvent = new ContactHitEvent(arena);
-		
+
 		beginEvent.setWorld(world);
 		endEvent.setWorld(world);
 		hitEvent.setWorld(world);
@@ -96,7 +96,7 @@ public final class ContactEvents {
 
 		if (elementCount == 0)
 			return;
-		
+
 		MemorySegment array = (MemorySegment) BEGIN_EVENTS.get(b2ContactEvents);
 
 		long byteSize = ContactBeginTouchEvent.LAYOUT().byteSize();
@@ -112,7 +112,7 @@ public final class ContactEvents {
 
 		if (elementCount == 0)
 			return;
-		
+
 		MemorySegment array = (MemorySegment) END_EVENTS.get(b2ContactEvents);
 
 		for (int i = 0; i < elementCount; i++) {
@@ -128,7 +128,7 @@ public final class ContactEvents {
 
 		if (elementCount == 0)
 			return;
-		
+
 		MemorySegment array = (MemorySegment) HIT_EVENTS.get(b2ContactEvents);
 
 		for (int i = 0; i < elementCount; i++) {

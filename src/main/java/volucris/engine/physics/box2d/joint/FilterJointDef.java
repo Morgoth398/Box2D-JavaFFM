@@ -7,7 +7,7 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.body.Body;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import java.lang.foreign.MemoryLayout.PathElement;
 
@@ -48,12 +48,13 @@ public final class FilterJointDef {
 	public FilterJointDef() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public FilterJointDef(Arena arena) {
 		try {
 			b2FilterJointDef = (MemorySegment) B2_DEFAULT_FILTER_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create filter joint def.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create filter joint def: " + className);
 		}
 	}
 

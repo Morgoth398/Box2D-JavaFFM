@@ -7,7 +7,7 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -27,7 +27,7 @@ public final class QueryFilter {
 	private static final VarHandle MASK_BITS;
 
 	private static final MethodHandle B2_DEFAULT_QUERY_FILTER;
-	
+
 	private final MemorySegment b2QueryFilter;
 
 	static {
@@ -40,19 +40,20 @@ public final class QueryFilter {
 
 		CATEGORY_BITS = varHandle(LAYOUT, "categoryBits");
 		MASK_BITS = varHandle(LAYOUT, "maskBits");
-		
+
 		B2_DEFAULT_QUERY_FILTER = downcallHandle("b2DefaultQueryFilter", LAYOUT);
 	}
 
 	public QueryFilter() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public QueryFilter(Arena arena) {
 		try {
 			b2QueryFilter = (MemorySegment) B2_DEFAULT_QUERY_FILTER.invoke(arena);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create query filter.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create query filter: " + className);
 		}
 	}
 
