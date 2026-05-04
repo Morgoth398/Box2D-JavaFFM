@@ -89,9 +89,6 @@ public final class Shape {
 
 	private Body body;
 
-	private Object internalUserData;
-	private Object userData;
-
 	private Vec2 vecTmp;
 
 	static {
@@ -366,18 +363,16 @@ public final class Shape {
 
 	/**
 	 * Set the internal user data for the body.
-	 * <p>
-	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
-		this.internalUserData = internalUserData;
+		Box2D.setInternalUserData(getShapeId(b2ShapeId), getWorld(), internalUserData);
 	}
 
 	/**
 	 * Get the internal user data stored in the body.
 	 */
 	public Object getInternalUserData() {
-		return internalUserData;
+		return Box2D.getInternalUserData(getShapeId(b2ShapeId), getWorld());
 	}
 
 	/**
@@ -386,14 +381,14 @@ public final class Shape {
 	 * The implementation does not pass this object to the native code.
 	 */
 	public void setUserData(Object userData) {
-		this.userData = userData;
+		Box2D.setUserData(getShapeId(b2ShapeId), getWorld(), userData);
 	}
 
 	/**
 	 * Get the user data stored in the body.
 	 */
 	public Object getUserData() {
-		return userData;
+		return Box2D.getUserData(getShapeId(b2ShapeId), getWorld());
 	}
 
 	/**
