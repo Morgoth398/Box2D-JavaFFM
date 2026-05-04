@@ -60,7 +60,7 @@ public final class SurfaceMaterial {
 			b2SurfaceMaterial = (MemorySegment) B2_DEFAULT_SURFACE_MATERIAL.invokeExact(allocator);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create surface material: " + className);
+			throw new Box2DRuntimeException("Cannot create surface material: " + className);
 		}
 	}
 

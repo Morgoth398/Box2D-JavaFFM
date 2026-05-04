@@ -94,7 +94,7 @@ public final class CosSin {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute cosSin: " + className);
+			throw new Box2DRuntimeException("Cannot compute cosSin: " + className);
 		}
 	}
 

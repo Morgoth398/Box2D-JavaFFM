@@ -69,7 +69,7 @@ public final class Hull {
 			return (boolean) B2_VALIDATE_HULL.invokeExact(b2Hull);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot validate hull: " + className);
+			throw new Box2DRuntimeException("Cannot validate hull: " + className);
 		}
 	}
 
@@ -100,7 +100,7 @@ public final class Hull {
 			return new Hull(segment);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute hull: " + className);
+			throw new Box2DRuntimeException("Cannot compute hull: " + className);
 		}
 	}
 

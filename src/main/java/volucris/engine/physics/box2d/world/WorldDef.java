@@ -96,7 +96,7 @@ public final class WorldDef {
 			b2WorldDef = (MemorySegment) B2_DEFAULT_WORLD_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create world def: " + className);
+			throw new Box2DRuntimeException("Cannot create world def: " + className);
 		}
 	}
 

@@ -118,7 +118,7 @@ public final class PrismaticJointDef {
 			b2PrismaticJointDef = (MemorySegment) B2_DEFAULT_PRISMATIC_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create prismatic joint def: " + className);
+			throw new Box2DRuntimeException("Cannot create prismatic joint def: " + className);
 		}
 
 		localAnchorA = new Vec2(b2PrismaticJointDef.asSlice(LOCAL_ANCHOR_A_OFFSET, Vec2.LAYOUT()));

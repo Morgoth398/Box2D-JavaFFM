@@ -98,7 +98,7 @@ public final class Rot {
 			return (float) B2_ATAN2.invokeExact(getS(), getC());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get rotation angle: " + className);
+			throw new Box2DRuntimeException("Cannot get rotation angle: " + className);
 		}
 	}
 

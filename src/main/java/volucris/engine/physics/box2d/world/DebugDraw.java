@@ -197,7 +197,7 @@ public abstract class DebugDraw {
 			b2DebugDraw = (MemorySegment) B2_DEFAULT_DEBUG_DRAW.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create debug draw: " + className);
+			throw new Box2DRuntimeException("Cannot create debug draw: " + className);
 		}
 
 		drawPolygonAddress = upcallStub(this, DRAW_POLYGON_HANDLE, DRAW_POLYGON_DESCR, arena);

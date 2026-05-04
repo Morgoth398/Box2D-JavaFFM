@@ -76,7 +76,7 @@ public final class PrismaticJoint extends Joint {
 			b2PrismaticJoint = (MemorySegment) B2_CREATE_PRISMATIC_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create distance joint: " + className);
+			throw new Box2DRuntimeException("Cannot create distance joint: " + className);
 		}
 		super(b2PrismaticJoint, world, arena);
 	}
@@ -89,7 +89,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_ENABLE_SPRING.invokeExact(b2JointId, enableSpring);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable spring: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable spring: " + className);
 		}
 	}
 
@@ -101,7 +101,7 @@ public final class PrismaticJoint extends Joint {
 			return (boolean) B2_PRISMATIC_JOINT_IS_SPRING_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if spring is enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if spring is enabled: " + className);
 		}
 	}
 
@@ -113,7 +113,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_SET_SPRING_HERTZ.invokeExact(b2JointId, springHertz);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set spring hertz: " + className);
+			throw new Box2DRuntimeException("Cannot set spring hertz: " + className);
 		}
 	}
 
@@ -125,7 +125,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO.invokeExact(b2JointId, springDampingRatio);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set spring damping ratio: " + className);
+			throw new Box2DRuntimeException("Cannot set spring damping ratio: " + className);
 		}
 	}
 
@@ -137,7 +137,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_SPRING_HERTZ.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get spring hertz: " + className);
+			throw new Box2DRuntimeException("Cannot get spring hertz: " + className);
 		}
 	}
 
@@ -149,7 +149,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get spring damping ratio: " + className);
+			throw new Box2DRuntimeException("Cannot get spring damping ratio: " + className);
 		}
 	}
 
@@ -161,7 +161,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_ENABLE_LIMIT.invokeExact(b2JointId, enableLimit);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable limit: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable limit: " + className);
 		}
 	}
 
@@ -173,7 +173,7 @@ public final class PrismaticJoint extends Joint {
 			return (boolean) B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if limit is enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if limit is enabled: " + className);
 		}
 	}
 
@@ -185,7 +185,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_LOWER_LIMIT.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get lower limit: " + className);
+			throw new Box2DRuntimeException("Cannot get lower limit: " + className);
 		}
 	}
 
@@ -197,7 +197,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_UPPER_LIMIT.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get upper limit: " + className);
+			throw new Box2DRuntimeException("Cannot get upper limit: " + className);
 		}
 	}
 
@@ -209,7 +209,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_SET_LIMITS.invokeExact(b2JointId, lower, upper);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set limits: " + className);
+			throw new Box2DRuntimeException("Cannot set limits: " + className);
 		}
 	}
 
@@ -221,7 +221,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_ENABLE_MOTOR.invokeExact(b2JointId, enableMotor);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable motor: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable motor: " + className);
 		}
 	}
 
@@ -233,7 +233,7 @@ public final class PrismaticJoint extends Joint {
 			return (boolean) B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if motor is enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if motor is enabled: " + className);
 		}
 	}
 
@@ -245,7 +245,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_SET_MOTOR_SPEED.invokeExact(b2JointId, motorSpeed);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set motor speed: " + className);
+			throw new Box2DRuntimeException("Cannot set motor speed: " + className);
 		}
 	}
 
@@ -257,7 +257,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_MOTOR_SPEED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get motor speed: " + className);
+			throw new Box2DRuntimeException("Cannot get motor speed: " + className);
 		}
 	}
 
@@ -269,7 +269,7 @@ public final class PrismaticJoint extends Joint {
 			B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE.invoke(b2JointId, maxMotorForce);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set max motor force: " + className);
+			throw new Box2DRuntimeException("Cannot set max motor force: " + className);
 		}
 	}
 
@@ -281,7 +281,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get max motor force: " + className);
+			throw new Box2DRuntimeException("Cannot get max motor force: " + className);
 		}
 	}
 
@@ -293,7 +293,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_MOTOR_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get motor force: " + className);
+			throw new Box2DRuntimeException("Cannot get motor force: " + className);
 		}
 	}
 
@@ -305,7 +305,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_TRANSLATION.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get translation: " + className);
+			throw new Box2DRuntimeException("Cannot get translation: " + className);
 		}
 	}
 
@@ -317,7 +317,7 @@ public final class PrismaticJoint extends Joint {
 			return (float) B2_PRISMATIC_JOINT_GET_SPEED.invokeExact(b2JointId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get speed: " + className);
+			throw new Box2DRuntimeException("Cannot get speed: " + className);
 		}
 	}
 
