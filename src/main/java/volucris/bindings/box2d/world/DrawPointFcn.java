@@ -66,12 +66,16 @@ public abstract class DrawPointFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Vec2 p, 
         float size, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawPointFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

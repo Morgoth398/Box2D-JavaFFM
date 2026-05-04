@@ -66,12 +66,16 @@ public abstract class DrawStringFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Vec2 p, 
         String s, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawStringFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

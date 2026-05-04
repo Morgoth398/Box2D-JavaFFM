@@ -60,10 +60,14 @@ public abstract class DrawTransformFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Transform transform, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawTransformFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

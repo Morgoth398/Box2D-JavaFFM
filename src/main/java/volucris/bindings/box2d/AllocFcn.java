@@ -50,10 +50,14 @@ public abstract class AllocFcn {
         CACHE.put(this.segment.address(), new WeakReference<>(this));
     }
 
-    public abstract MemorySegment invoke(
+    public MemorySegment invoke(
         int size, 
         int alignment
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in AllocFcn."
+        );
+    }
 
     public MemorySegment memorySegment() {
         return segment;

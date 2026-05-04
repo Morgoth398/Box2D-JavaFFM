@@ -66,12 +66,16 @@ public abstract class DrawSolidCircleFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Transform transform, 
         float radius, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawSolidCircleFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

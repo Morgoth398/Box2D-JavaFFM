@@ -69,13 +69,17 @@ public abstract class DrawSolidCapsuleFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Vec2 p1, 
         Vec2 p2, 
         float radius, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawSolidCapsuleFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

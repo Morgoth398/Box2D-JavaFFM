@@ -52,12 +52,16 @@ public abstract class RestitutionCallback {
         CACHE.put(this.segment.address(), new WeakReference<>(this));
     }
 
-    public abstract float invoke(
+    public float invoke(
         float restitutionA, 
         int userMaterialIdA, 
         float restitutionB, 
         int userMaterialIdB
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in RestitutionCallback."
+        );
+    }
 
     public MemorySegment memorySegment() {
         return segment;

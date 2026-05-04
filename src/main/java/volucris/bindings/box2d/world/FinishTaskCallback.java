@@ -49,10 +49,14 @@ public abstract class FinishTaskCallback {
         CACHE.put(this.segment.address(), new WeakReference<>(this));
     }
 
-    public abstract void invoke(
+    public void invoke(
         MemorySegment userTask, 
         MemorySegment userContext
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in FinishTaskCallback."
+        );
+    }
 
     public MemorySegment memorySegment() {
         return segment;

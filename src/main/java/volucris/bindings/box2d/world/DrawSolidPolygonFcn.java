@@ -73,14 +73,18 @@ public abstract class DrawSolidPolygonFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Transform transform, 
         Vec2 vertices, 
         int vertexCount, 
         float radius, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawSolidPolygonFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

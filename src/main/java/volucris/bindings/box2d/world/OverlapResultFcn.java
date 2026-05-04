@@ -61,10 +61,14 @@ public abstract class OverlapResultFcn {
         );
     }
 
-    public abstract boolean invoke(
+    public boolean invoke(
         ShapeId shapeId, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in OverlapResultFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

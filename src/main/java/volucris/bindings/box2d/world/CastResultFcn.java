@@ -71,13 +71,17 @@ public abstract class CastResultFcn {
         );
     }
 
-    public abstract float invoke(
+    public float invoke(
         ShapeId shapeId, 
         Vec2 point, 
         Vec2 normal, 
         float fraction, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in CastResultFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

@@ -74,13 +74,17 @@ public abstract class EnqueueTaskCallback {
         return segment;
     }
 
-    public abstract MemorySegment invoke(
+    public MemorySegment invoke(
         TaskCallback task, 
         int itemCount, 
         int minRange, 
         MemorySegment taskContext, 
         MemorySegment userContext
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in EnqueueTaskCallback."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

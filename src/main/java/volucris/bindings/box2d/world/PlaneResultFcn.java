@@ -65,11 +65,15 @@ public abstract class PlaneResultFcn {
         );
     }
 
-    public abstract boolean invoke(
+    public boolean invoke(
         ShapeId shapeId, 
         PlaneResult plane, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in PlaneResultFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

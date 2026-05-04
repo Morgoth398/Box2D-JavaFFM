@@ -66,12 +66,16 @@ public abstract class DrawPolygonFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Vec2 vertices, 
         int vertexCount, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawPolygonFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

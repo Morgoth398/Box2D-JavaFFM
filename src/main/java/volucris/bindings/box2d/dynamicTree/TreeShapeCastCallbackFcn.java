@@ -67,12 +67,16 @@ public abstract class TreeShapeCastCallbackFcn {
         );
     }
 
-    public abstract float invoke(
+    public float invoke(
         ShapeCastInput input, 
         int proxyId, 
         long userData, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in TreeShapeCastCallbackFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

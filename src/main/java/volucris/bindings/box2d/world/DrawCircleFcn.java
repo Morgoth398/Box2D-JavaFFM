@@ -66,12 +66,16 @@ public abstract class DrawCircleFcn {
         );
     }
 
-    public abstract void invoke(
+    public void invoke(
         Vec2 center, 
         float radius, 
         int color, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in DrawCircleFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

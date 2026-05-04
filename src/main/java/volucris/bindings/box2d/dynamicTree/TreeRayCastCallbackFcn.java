@@ -67,12 +67,16 @@ public abstract class TreeRayCastCallbackFcn {
         );
     }
 
-    public abstract float invoke(
+    public float invoke(
         RayCastInput input, 
         int proxyId, 
         long userData, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in TreeRayCastCallbackFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

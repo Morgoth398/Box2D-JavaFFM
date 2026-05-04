@@ -52,12 +52,16 @@ public abstract class FrictionCallback {
         CACHE.put(this.segment.address(), new WeakReference<>(this));
     }
 
-    public abstract float invoke(
+    public float invoke(
         float frictionA, 
         int userMaterialIdA, 
         float frictionB, 
         int userMaterialIdB
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in FrictionCallback."
+        );
+    }
 
     public MemorySegment memorySegment() {
         return segment;

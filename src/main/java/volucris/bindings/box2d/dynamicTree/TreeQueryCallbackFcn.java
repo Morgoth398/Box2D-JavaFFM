@@ -51,11 +51,15 @@ public abstract class TreeQueryCallbackFcn {
         CACHE.put(this.segment.address(), new WeakReference<>(this));
     }
 
-    public abstract boolean invoke(
+    public boolean invoke(
         int proxyId, 
         long userData, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in TreeQueryCallbackFcn."
+        );
+    }
 
     public MemorySegment memorySegment() {
         return segment;

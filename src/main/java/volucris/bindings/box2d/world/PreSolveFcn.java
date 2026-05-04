@@ -68,12 +68,16 @@ public abstract class PreSolveFcn {
         );
     }
 
-    public abstract boolean invoke(
+    public boolean invoke(
         ShapeId shapeIdA, 
         ShapeId shapeIdB, 
         Manifold manifold, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in PreSolveFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

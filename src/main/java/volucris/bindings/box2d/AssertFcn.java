@@ -64,11 +64,15 @@ public abstract class AssertFcn {
         );
     }
 
-    public abstract int invoke(
+    public int invoke(
         NativeByteArray condition, 
         NativeByteArray fileName, 
         int lineNumber
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in AssertFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {

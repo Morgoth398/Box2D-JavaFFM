@@ -64,11 +64,15 @@ public abstract class CustomFilterFcn {
         );
     }
 
-    public abstract boolean invoke(
+    public boolean invoke(
         ShapeId shapeIdA, 
         ShapeId shapeIdB, 
         MemorySegment context
-    );
+    ) {
+        throw new UnsupportedOperationException(
+            "Override either the typed or raw callback method in CustomFilterFcn."
+        );
+    };
 
 
     public MemorySegment memorySegment() {
