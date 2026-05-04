@@ -9,10 +9,10 @@ import java.lang.invoke.MethodHandle;
 import volucris.engine.physics.box2d.geometry.RayCastInput;
 import volucris.engine.physics.box2d.geometry.ShapeCastInput;
 import volucris.engine.physics.box2d.math.AABB;
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * The dynamic tree is a binary AABB tree to organize and query large numbers of

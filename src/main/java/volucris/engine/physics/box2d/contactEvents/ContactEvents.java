@@ -10,7 +10,7 @@ import java.lang.invoke.VarHandle;
 import volucris.engine.physics.box2d.world.World;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * Contact events are buffered in the Box2D world and are available as event
