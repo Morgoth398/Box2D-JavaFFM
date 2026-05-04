@@ -8,12 +8,12 @@ import java.lang.invoke.MethodHandle;
 import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 
 import java.lang.foreign.Arena;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * A convex hull.

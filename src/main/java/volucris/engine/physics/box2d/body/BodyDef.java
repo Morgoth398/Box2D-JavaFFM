@@ -11,11 +11,11 @@ import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Rot;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.Box2DRuntimeException;
-import volucris.engine.utils.MathUtils;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.MathUtils;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * A body definition holds all the data needed to construct a rigid body.

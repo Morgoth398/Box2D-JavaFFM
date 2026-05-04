@@ -12,10 +12,10 @@ import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.Box2DRuntimeException;
+import volucris.engine.physics.box2d.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * Prismatic joint definition.

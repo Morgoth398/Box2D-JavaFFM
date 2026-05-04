@@ -15,7 +15,7 @@ import volucris.engine.physics.box2d.world.World;
 import volucris.engine.physics.box2d.world.World.WorldId;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.engine.utils.FFMUtils.*;
+import static volucris.engine.physics.box2d.utils.FFMUtils.*;
 
 /**
  * A hit touch event is generated when two shapes collide with a speed faster
