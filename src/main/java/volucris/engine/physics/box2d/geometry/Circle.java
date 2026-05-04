@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -61,21 +61,21 @@ public final class Circle {
 	public Circle(Vector2f position, float radius) {
 		this(position, radius, Arena.ofAuto());
 	}
-	
+
 	public Circle(Vector2f position, float radius, Arena arena) {
 		this(position.x, position.y, radius, arena);
 	}
-	
+
 	public Circle(float x, float y, float radius) {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Circle(float x, float y, float radius, Arena arena) {
 		b2Circle = arena.allocate(LAYOUT);
 
 		center = new Vec2(b2Circle.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
 		vecTmp = new Vec2(arena);
-		
+
 		setCenter(x, y);
 		setRadius(radius);
 	}
@@ -83,14 +83,14 @@ public final class Circle {
 	public Circle() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Circle(Arena arena) {
 		b2Circle = arena.allocate(LAYOUT);
 
 		center = new Vec2(b2Circle.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
 		vecTmp = new Vec2(arena);
 	}
-	
+
 	public Circle(MemorySegment memorySegment) {
 		b2Circle = memorySegment;
 
@@ -111,7 +111,8 @@ public final class Circle {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute circle mass.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute circle mass: " + className);
 		}
 	}
 
@@ -132,7 +133,8 @@ public final class Circle {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute circle AABB.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute circle AABB: " + className);
 		}
 	}
 
@@ -151,7 +153,8 @@ public final class Circle {
 			vecTmp.set(point);
 			return (boolean) B2_POINT_IN_CIRCLE.invokeExact(vecTmp.memorySegment(), b2Circle);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot check if point is in circle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot check if point is in circle: " + className);
 		}
 	}
 
@@ -166,7 +169,8 @@ public final class Circle {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast circle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast circle: " + className);
 		}
 	}
 
@@ -188,7 +192,8 @@ public final class Circle {
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot ray cast circle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot ray cast circle: " + className);
 		}
 	}
 

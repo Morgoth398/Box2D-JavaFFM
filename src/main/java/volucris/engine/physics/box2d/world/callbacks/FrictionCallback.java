@@ -7,7 +7,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -38,7 +38,8 @@ public abstract class FrictionCallback {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(FrictionCallback.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		FRICTION_CALLBACK_DESCR = functionDescr(JAVA_FLOAT, JAVA_FLOAT, JAVA_INT, JAVA_FLOAT, JAVA_INT);
@@ -50,7 +51,7 @@ public abstract class FrictionCallback {
 	public FrictionCallback() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public FrictionCallback(Arena arena) {
 		frictionCallbackAddress = upcallStub(this, FRICTION_CALLBACK_HANDLE, FRICTION_CALLBACK_DESCR, arena);
 	}

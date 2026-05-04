@@ -23,10 +23,10 @@ public final class ContactBeginTouchEvent {
 	private static final long MANIFOLD_OFFSET;
 
 	private final MemorySegment b2ContactBeginTouchEvent;
-	
+
 	private final MemorySegment shapeIdA;
 	private final MemorySegment shapeIdB;
-	
+
 	private final Manifold manifold;
 
 	private World world;
@@ -48,23 +48,23 @@ public final class ContactBeginTouchEvent {
 	public ContactBeginTouchEvent() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ContactBeginTouchEvent(Arena arena) {
 		b2ContactBeginTouchEvent = arena.allocate(LAYOUT);
-		
+
 		shapeIdA = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		
+
 		manifold = new Manifold(arena);
 	}
 
 	public ContactBeginTouchEvent(MemorySegment memorySegment, World world) {
 		this.b2ContactBeginTouchEvent = memorySegment;
 		this.world = world;
-		
+
 		shapeIdA = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		
+
 		manifold = new Manifold(memorySegment.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
 	}
 
@@ -90,7 +90,7 @@ public final class ContactBeginTouchEvent {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	/**
 	 * The initial contact manifold.
 	 * <p>
@@ -104,7 +104,7 @@ public final class ContactBeginTouchEvent {
 	public MemorySegment memorySegment() {
 		return b2ContactBeginTouchEvent;
 	}
-	
+
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

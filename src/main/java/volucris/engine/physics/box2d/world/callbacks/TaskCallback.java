@@ -7,7 +7,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -22,10 +22,9 @@ import static volucris.engine.utils.FFMUtils.*;
  * and is analogous to the thread index. The task context is the context pointer
  * sent from Box2D when it is enqueued. The startIndex and endIndex are expected
  * in the range [0, itemCount) where itemCount is the argument to
- * b2EnqueueTaskCallback below. Box2D expects {@code startIndex < endIndex} and will
- * execute a loop like this: {@code 
- * 	for (int i = startIndex; i < endIndex; ++i) {
- * 		DoWork(); } }
+ * b2EnqueueTaskCallback below. Box2D expects {@code startIndex < endIndex} and
+ * will execute a loop like this: {@code 
+ * 	for (int i = startIndex; i < endIndex; ++i) { DoWork(); } }
  */
 public abstract class TaskCallback {
 
@@ -42,7 +41,8 @@ public abstract class TaskCallback {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(TaskCallback.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		TASK_CALLBACK_DESCR = functionDescrVoid(JAVA_INT, JAVA_INT, JAVA_INT, ADDRESS);
@@ -54,7 +54,7 @@ public abstract class TaskCallback {
 	public TaskCallback() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public TaskCallback(Arena arena) {
 		taskCallbackAddress = upcallStub(this, TASK_CALLBACK_HANDLE, TASK_CALLBACK_DESCR, arena);
 	}

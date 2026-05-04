@@ -55,7 +55,7 @@ public final class CastOutput {
 	public CastOutput() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public CastOutput(Arena arena) {
 		b2CastOutput = arena.allocate(LAYOUT);
 

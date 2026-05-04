@@ -57,7 +57,7 @@ public final class ShapeCastInput {
 	public ShapeCastInput() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ShapeCastInput(Arena arena) {
 		b2ShapeCastInput = arena.allocate(LAYOUT);
 

@@ -8,7 +8,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
 import volucris.engine.physics.box2d.shape.Shape;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -35,7 +35,8 @@ public abstract class OverlapResultFunction {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(OverlapResultFunction.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		OVERLAP_RESULT_FCN_DESCR = functionDescr(JAVA_BOOLEAN, Shape.LAYOUT(), ADDRESS);

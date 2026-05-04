@@ -32,15 +32,15 @@ public final class ContactHitEvent {
 	private static final long NORMAL_OFFSET;
 
 	private final MemorySegment b2ContactHitEvent;
-	
+
 	private final MemorySegment shapeIdA;
 	private final MemorySegment shapeIdB;
-	
+
 	private final Vec2 point;
 	private final Vec2 normal;
 
 	private World world;
-	
+
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -63,13 +63,13 @@ public final class ContactHitEvent {
 	public ContactHitEvent() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public ContactHitEvent(Arena arena) {
 		b2ContactHitEvent = arena.allocate(LAYOUT);
-		
+
 		shapeIdA = b2ContactHitEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactHitEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		
+
 		point = new Vec2(b2ContactHitEvent.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
 		normal = new Vec2(b2ContactHitEvent.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}
@@ -77,10 +77,10 @@ public final class ContactHitEvent {
 	public ContactHitEvent(MemorySegment memorySegment, World world) {
 		this.b2ContactHitEvent = memorySegment;
 		this.world = world;
-		
+
 		shapeIdA = b2ContactHitEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
 		shapeIdB = b2ContactHitEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		
+
 		point = new Vec2(b2ContactHitEvent.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
 		normal = new Vec2(b2ContactHitEvent.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}
@@ -137,11 +137,11 @@ public final class ContactHitEvent {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2ContactHitEvent;
 	}
-	
+
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

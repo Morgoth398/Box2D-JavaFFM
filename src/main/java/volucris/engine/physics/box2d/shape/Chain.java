@@ -10,7 +10,7 @@ import java.lang.invoke.VarHandle;
 import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.world.World;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -71,7 +71,7 @@ public final class Chain {
 	public Chain(Body body, ChainDef chainDef) {
 		this(body, chainDef, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Create the chain shape.
 	 */
@@ -83,7 +83,8 @@ public final class Chain {
 			MemorySegment segment = (MemorySegment) B2_CREATE_CHAIN.invoke(arena, bodyAddr, chainDefAddr);
 			b2ChainId = segment.reinterpret(arena, s -> destroyChain(s, body.getWorld()));
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create chain.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create chain: " + className);
 		}
 
 		this.body = body;
@@ -99,7 +100,8 @@ public final class Chain {
 		try {
 			B2_DESTROY_CHAIN.invokeExact(segment);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot destroy chain.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot destroy chain: " + className);
 		}
 	}
 
@@ -117,7 +119,8 @@ public final class Chain {
 		try {
 			return (int) B2_CHAIN_GET_SEGMENT_COUNT.invokeExact(b2ChainId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: ");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: : " + className);
 		}
 	}
 
@@ -127,7 +130,7 @@ public final class Chain {
 	public int getSegments(Shape[] target) {
 		return getSegments(target, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Fill a user array with chain segment shape ids up to the specified capacity.
 	 */
@@ -153,7 +156,8 @@ public final class Chain {
 			return count;
 
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get segments.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get segments: " + className);
 		}
 	}
 
@@ -164,7 +168,8 @@ public final class Chain {
 		try {
 			B2_CHAIN_SET_FRICTION.invokeExact(b2ChainId, friction);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set friction.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set friction: " + className);
 		}
 	}
 
@@ -175,7 +180,8 @@ public final class Chain {
 		try {
 			return (float) B2_CHAIN_GET_FRICTION.invokeExact(b2ChainId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get friction.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get friction: " + className);
 		}
 	}
 
@@ -186,7 +192,8 @@ public final class Chain {
 		try {
 			B2_CHAIN_SET_RESTITUTION.invokeExact(b2ChainId, restitution);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set restitution.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set restitution: " + className);
 		}
 	}
 
@@ -197,7 +204,8 @@ public final class Chain {
 		try {
 			return (float) B2_CHAIN_GET_RESTITUTION.invokeExact(b2ChainId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get restitution.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get restitution: " + className);
 		}
 	}
 
@@ -208,7 +216,8 @@ public final class Chain {
 		try {
 			B2_CHAIN_SET_MATERIAL.invokeExact(b2ChainId, material);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set material: " + className);
 		}
 	}
 
@@ -219,7 +228,8 @@ public final class Chain {
 		try {
 			return (int) B2_CHAIN_GET_MATERIAL.invokeExact(b2ChainId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get material.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get material: " + className);
 		}
 	}
 
@@ -230,7 +240,8 @@ public final class Chain {
 		try {
 			return (boolean) B2_CHAIN_IS_VALID.invokeExact(b2ChainId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate chain.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate chain: " + className);
 		}
 	}
 

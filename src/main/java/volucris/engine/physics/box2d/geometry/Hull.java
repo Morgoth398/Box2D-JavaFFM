@@ -8,7 +8,7 @@ import java.lang.invoke.MethodHandle;
 import org.joml.Vector2f;
 
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import java.lang.foreign.Arena;
 
@@ -68,7 +68,8 @@ public final class Hull {
 		try {
 			return (boolean) B2_VALIDATE_HULL.invokeExact(b2Hull);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate hull.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate hull: " + className);
 		}
 	}
 
@@ -98,7 +99,8 @@ public final class Hull {
 			MemorySegment segment = (MemorySegment) B2_COMPUTE_HULL.invoke(arena, array, count);
 			return new Hull(segment);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot compute hull.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot compute hull: " + className);
 		}
 	}
 

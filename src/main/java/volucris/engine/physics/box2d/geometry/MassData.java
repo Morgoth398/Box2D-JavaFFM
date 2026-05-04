@@ -47,7 +47,7 @@ public final class MassData {
 	public MassData() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public MassData(Arena arena) {
 		b2MassData = arena.allocate(LAYOUT);
 

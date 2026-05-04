@@ -9,7 +9,7 @@ import org.joml.Vector2f;
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.world.World;
 import volucris.engine.utils.MathUtils;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -47,7 +47,7 @@ public final class MotorJoint extends Joint {
 	public MotorJoint(World world, MotorJointDef motorJointDef) {
 		this(world, motorJointDef, Arena.ofAuto());
 	}
-	
+
 	/**
 	 * Create the motor joint.
 	 */
@@ -59,7 +59,8 @@ public final class MotorJoint extends Joint {
 
 			b2MotorJoint = (MemorySegment) B2_CREATE_MOTOR_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create motor joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot create motor joint: " + className);
 		}
 		super(b2MotorJoint, world, arena);
 	}
@@ -72,7 +73,8 @@ public final class MotorJoint extends Joint {
 			vecTmp.set(linearOffset);
 			B2_MOTOR_JOINT_SET_LINEAR_OFFSET.invokeExact(b2JointId, vecTmp.memorySegment());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set linear offset.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set linear offset: " + className);
 		}
 	}
 
@@ -85,7 +87,8 @@ public final class MotorJoint extends Joint {
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get linear offset.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get linear offset: " + className);
 		}
 	}
 
@@ -103,7 +106,8 @@ public final class MotorJoint extends Joint {
 		try {
 			B2_MOTOR_JOINT_SET_ANGULAR_OFFSET.invokeExact(b2JointId, angularOffset);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set angular offset.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set angular offset: " + className);
 		}
 	}
 
@@ -121,7 +125,8 @@ public final class MotorJoint extends Joint {
 		try {
 			return (float) B2_MOTOR_JOINT_GET_ANGULAR_OFFSET.invoke(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get angular offset.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get angular offset: " + className);
 		}
 	}
 
@@ -139,7 +144,8 @@ public final class MotorJoint extends Joint {
 		try {
 			B2_MOTOR_JOINT_SET_MAX_FORCE.invokeExact(b2JointId, maxForce);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set max force.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set max force: " + className);
 		}
 	}
 
@@ -150,7 +156,8 @@ public final class MotorJoint extends Joint {
 		try {
 			return (float) B2_MOTOR_JOINT_GET_MAX_FORCE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get max force.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get max force: " + className);
 		}
 	}
 
@@ -161,7 +168,8 @@ public final class MotorJoint extends Joint {
 		try {
 			B2_MOTOR_JOINT_SET_MAX_TORQUE.invokeExact(b2JointId, maxTorque);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set max torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set max torque: " + className);
 		}
 	}
 
@@ -172,7 +180,8 @@ public final class MotorJoint extends Joint {
 		try {
 			return (float) B2_MOTOR_JOINT_GET_MAX_TORQUE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get max torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get max torque: " + className);
 		}
 	}
 
@@ -183,7 +192,8 @@ public final class MotorJoint extends Joint {
 		try {
 			B2_MOTOR_JOINT_SET_CORRECTION_FACTOR.invokeExact(b2JointId, correctionFactor);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set correction factor.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set correction factor: " + className);
 		}
 	}
 
@@ -194,7 +204,8 @@ public final class MotorJoint extends Joint {
 		try {
 			return (float) B2_MOTOR_JOINT_GET_CORRECTION_FACTOR.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get correction factor.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get correction factor: " + className);
 		}
 	}
 

@@ -8,7 +8,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 import volucris.engine.utils.MathUtils;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -43,7 +43,7 @@ public final class Rot {
 	public Rot() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Rot(Arena arena) {
 		b2Rot = arena.allocate(LAYOUT);
 
@@ -97,7 +97,8 @@ public final class Rot {
 		try {
 			return (float) B2_ATAN2.invokeExact(getS(), getC());
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get rotation angle.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get rotation angle: " + className);
 		}
 	}
 

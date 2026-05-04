@@ -14,7 +14,7 @@ import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.world.World;
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -86,7 +86,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		this.world = world;
 
 		vecTmp = new Vec2(arena);
-		
+
 		Box2D.addJoint(this, getJointId(b2JointId), world);
 	}
 
@@ -95,11 +95,12 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 */
 	public void destroyJoint() {
 		Box2D.removeJoint(getJointId(b2JointId), world);
-		
+
 		try {
 			B2_DESTROY_JOINT.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot destroy joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot destroy joint: " + className);
 		}
 	}
 
@@ -110,7 +111,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		try {
 			return (boolean) B2_JOINT_IS_VALID.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot validate joint.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot validate joint: " + className);
 		}
 	}
 
@@ -139,7 +141,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 				return JointType.WHEEL_JOINT;
 			}
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: ");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: : " + className);
 		}
 	}
 
@@ -149,14 +152,15 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	public final Body getBodyA() {
 		try (Arena arena = Arena.ofConfined()) {
 			MemorySegment segment = (MemorySegment) B2_JOINT_GET_BODY_A.invoke(arena, b2JointId);
-			
+
 			Body body = Box2D.getBody(Body.getBodyId(segment), world);
 			if (body != null)
 				return body;
-			
+
 			return new Body(segment, 0, world);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body A.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body A: " + className);
 		}
 	}
 
@@ -166,14 +170,15 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	public final Body getBodyB() {
 		try (Arena arena = Arena.ofConfined()) {
 			MemorySegment segment = (MemorySegment) B2_JOINT_GET_BODY_B.invoke(arena, b2JointId);
-			
+
 			Body body = Box2D.getBody(Body.getBodyId(segment), world);
 			if (body != null)
 				return body;
-			
+
 			return new Body(segment, 0, world);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get body B.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get body B: " + className);
 		}
 	}
 
@@ -193,7 +198,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get local anchor A.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get local anchor A: " + className);
 		}
 	}
 
@@ -213,7 +219,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get local anchor B.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get local anchor B: " + className);
 		}
 	}
 
@@ -231,7 +238,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		try {
 			B2_JOINT_SET_COLLIDE_CONNECTED.invokeExact(b2JointId, shouldCollide);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot set collide connected.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot set collide connected: " + className);
 		}
 	}
 
@@ -242,7 +250,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		try {
 			return (boolean) B2_JOINT_GET_COLLIDE_CONNECTED.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get collide connected.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get collide connected: " + className);
 		}
 	}
 
@@ -285,7 +294,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		try {
 			B2_JOINT_WAKE_BODIES.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot wake bodies.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot wake bodies: " + className);
 		}
 	}
 
@@ -298,7 +308,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get constraint force.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get constraint force: " + className);
 		}
 	}
 
@@ -316,7 +327,8 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		try {
 			return (float) B2_JOINT_GET_CONSTRAINT_TORQUE.invokeExact(b2JointId);
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get constraint torque.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Box2D: Cannot get constraint torque: " + className);
 		}
 	}
 
@@ -338,7 +350,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		short generation = (short) GENERATION.get(memorySegment, offset);
 		return new JointId(index1, world0, generation);
 	}
-	
+
 	public static record JointId(int index1, short world0, short generation) {
 	};
 }

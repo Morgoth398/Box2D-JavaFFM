@@ -28,7 +28,7 @@ public final class SensorEndTouchEvent {
 	private static final long VISITOR_SHAPE_ID_OFFSET;
 
 	private final MemorySegment b2SensorEndTouchEvent;
-	
+
 	private final MemorySegment sensorShapeId;
 	private final MemorySegment visistorShapeId;
 
@@ -52,15 +52,15 @@ public final class SensorEndTouchEvent {
 
 	public SensorEndTouchEvent(Arena arena) {
 		b2SensorEndTouchEvent = arena.allocate(LAYOUT);
-		
+
 		sensorShapeId = b2SensorEndTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 		visistorShapeId = b2SensorEndTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
-	
+
 	public SensorEndTouchEvent(MemorySegment memorySegment, World world) {
 		this.b2SensorEndTouchEvent = memorySegment;
 		this.world = world;
-		
+
 		sensorShapeId = b2SensorEndTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 		visistorShapeId = b2SensorEndTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
@@ -84,7 +84,7 @@ public final class SensorEndTouchEvent {
 	public MemorySegment memorySegment() {
 		return b2SensorEndTouchEvent;
 	}
-	
+
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

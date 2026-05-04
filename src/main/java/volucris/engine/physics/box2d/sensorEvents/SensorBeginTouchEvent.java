@@ -23,12 +23,12 @@ public final class SensorBeginTouchEvent {
 	private static final long VISITOR_SHAPE_ID_OFFSET;
 
 	private final MemorySegment b2SensorBeginTouchEvent;
-	
+
 	private final MemorySegment sensorShapeId;
 	private final MemorySegment visistorShapeId;
 
 	private World world;
-	
+
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -44,10 +44,10 @@ public final class SensorBeginTouchEvent {
 	public SensorBeginTouchEvent() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public SensorBeginTouchEvent(Arena arena) {
 		b2SensorBeginTouchEvent = arena.allocate(LAYOUT);
-		
+
 		sensorShapeId = b2SensorBeginTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 		visistorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
@@ -76,11 +76,11 @@ public final class SensorBeginTouchEvent {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2SensorBeginTouchEvent;
 	}
-	
+
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

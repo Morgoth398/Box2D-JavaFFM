@@ -7,7 +7,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 
-import volucris.engine.utils.VolucrisRuntimeException;
+import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.engine.utils.FFMUtils.*;
@@ -36,7 +36,8 @@ public abstract class RestitutionCallback {
 		try {
 			LOOKUP = MethodHandles.privateLookupIn(RestitutionCallback.class, MethodHandles.lookup());
 		} catch (IllegalAccessException e) {
-			throw new VolucrisRuntimeException("Cannot create private lookup.");
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create private lookup: " + className);
 		}
 		
 		RESTITUTION_CALLBACK_DESCR = functionDescr(JAVA_FLOAT, JAVA_FLOAT, JAVA_INT, JAVA_FLOAT, JAVA_INT);
@@ -48,7 +49,7 @@ public abstract class RestitutionCallback {
 	public RestitutionCallback() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public RestitutionCallback(Arena arena) {
 		restitutionCallbackAddress = upcallStub(this, RESTITUTION_CALLBACK_HANDLE, RESTITUTION_CALLBACK_DESCR, arena);
 	}

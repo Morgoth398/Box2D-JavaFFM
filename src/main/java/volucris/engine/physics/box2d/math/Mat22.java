@@ -35,7 +35,7 @@ public final class Mat22 {
 	public Mat22() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Mat22(Arena arena) {
 		b2Mat22 = arena.allocate(LAYOUT);
 

@@ -31,12 +31,12 @@ public final class RayResult {
 	private final MemorySegment b2RayResult;
 
 	private final MemorySegment shapeId;
-	
+
 	private final Vec2 point;
 	private final Vec2 normal;
 
 	private World world;
-	
+
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -64,12 +64,12 @@ public final class RayResult {
 	public RayResult() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public RayResult(Arena arena) {
 		b2RayResult = arena.allocate(LAYOUT);
 
 		shapeId = b2RayResult.asSlice(SHAPE_ID_OFFSET, Shape.LAYOUT());
-		
+
 		point = new Vec2(b2RayResult.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
 		normal = new Vec2(b2RayResult.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}
@@ -79,7 +79,7 @@ public final class RayResult {
 		this.world = world;
 
 		shapeId = b2RayResult.asSlice(SHAPE_ID_OFFSET, Shape.LAYOUT());
-		
+
 		point = new Vec2(b2RayResult.asSlice(POINT_OFFSET, Vec2.LAYOUT()));
 		normal = new Vec2(b2RayResult.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}
@@ -128,7 +128,7 @@ public final class RayResult {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2RayResult;
 	}

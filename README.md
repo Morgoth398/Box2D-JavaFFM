@@ -13,7 +13,7 @@ This project requires Java 25.
 
 Before using the bindings (and even loading the bindings classes), you need to call 'Box2D.init()' or load the native library yourself.
 My implementation of a native library loader makes use of some  [LWJGL](https://www.lwjgl.org/) configurations. To set the extract directory of
-the native library, change 'Configuration.SHARED _LIBRARY _EXTRACT _PATH'. 
+the native library, change 'Configuration.SHARED_LIBRARY_EXTRACT_PATH'. 
 
 Due to the introduction of  [restricted methods](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/doc-files/RestrictedMethods.html), it is recommended (and in later versions required) to run the application with the VM argument '--enable-native-access=ALL-UNNAMED'.
 
@@ -44,7 +44,7 @@ ShapeDef groundShapeDef = new ShapeDef();
 new Shape(groundBody, groundShapeDef, groundBox);
 
 BodyDef bodyDef = new BodyDef();
-bodyDef.setType(BodyType.DYNAMIC _BODY);
+bodyDef.setType(BodyType.DYNAMIC_BODY);
 bodyDef.setPosition(0, 4);
 
 Body body = new Body(world, bodyDef);

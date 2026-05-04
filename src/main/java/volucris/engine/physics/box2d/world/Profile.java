@@ -93,7 +93,7 @@ public final class Profile {
 	public Profile() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public Profile(Arena arena) {
 		b2Profile = arena.allocate(LAYOUT);
 	}
