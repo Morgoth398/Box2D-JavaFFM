@@ -89,7 +89,7 @@ public final class Filter {
 			b2Filter = (MemorySegment) B2_DEFAULT_FILTER.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create filter: " + className);
+			throw new Box2DRuntimeException("Cannot create filter: " + className);
 		}
 	}
 

@@ -54,7 +54,7 @@ public final class FilterJointDef {
 			b2FilterJointDef = (MemorySegment) B2_DEFAULT_FILTER_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create filter joint def: " + className);
+			throw new Box2DRuntimeException("Cannot create filter joint def: " + className);
 		}
 	}
 

@@ -112,7 +112,7 @@ public final class WheelJointDef {
 			b2WheelJointDef = (MemorySegment) B2_DEFAULT_WHEEL_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create distance joint def: " + className);
+			throw new Box2DRuntimeException("Cannot create distance joint def: " + className);
 		}
 
 		localAnchorA = new Vec2(b2WheelJointDef.asSlice(LOCAL_ANCHOR_A_OFFSET, Vec2.LAYOUT()));

@@ -147,7 +147,7 @@ public final class Polygon {
 			return new Polygon(segment);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot transform polygon: " + className);
+			throw new Box2DRuntimeException("Cannot transform polygon: " + className);
 		}
 	}
 
@@ -161,7 +161,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute polygon mass: " + className);
+			throw new Box2DRuntimeException("Cannot compute polygon mass: " + className);
 		}
 	}
 
@@ -183,7 +183,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot compute polygon AABB: " + className);
+			throw new Box2DRuntimeException("Cannot compute polygon AABB: " + className);
 		}
 	}
 
@@ -203,7 +203,7 @@ public final class Polygon {
 			return (boolean) B2_POINT_IN_POLYGON.invokeExact(vecTmp.memorySegment(), b2Polygon);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if point is in polygon: " + className);
+			throw new Box2DRuntimeException("Cannot check if point is in polygon: " + className);
 		}
 	}
 
@@ -219,7 +219,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast polygon: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast polygon: " + className);
 		}
 	}
 
@@ -242,7 +242,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast circle: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast circle: " + className);
 		}
 	}
 
@@ -325,7 +325,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make polygon: " + className);
+			throw new Box2DRuntimeException("Cannot make polygon: " + className);
 		}
 	}
 
@@ -375,7 +375,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make offset polygon: " + className);
+			throw new Box2DRuntimeException("Cannot make offset polygon: " + className);
 		}
 	}
 
@@ -413,7 +413,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make offset rounded polygon: " + className);
+			throw new Box2DRuntimeException("Cannot make offset rounded polygon: " + className);
 		}
 	}
 
@@ -427,7 +427,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make square: " + className);
+			throw new Box2DRuntimeException("Cannot make square: " + className);
 		}
 	}
 
@@ -455,7 +455,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make box: " + className);
+			throw new Box2DRuntimeException("Cannot make box: " + className);
 		}
 	}
 
@@ -484,7 +484,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make rounded box: " + className);
+			throw new Box2DRuntimeException("Cannot make rounded box: " + className);
 		}
 	}
 
@@ -534,7 +534,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make offset box: " + className);
+			throw new Box2DRuntimeException("Cannot make offset box: " + className);
 		}
 	}
 
@@ -572,7 +572,7 @@ public final class Polygon {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot make offset rounded box: " + className);
+			throw new Box2DRuntimeException("Cannot make offset rounded box: " + className);
 		}
 	}
 
