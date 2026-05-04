@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import org.joml.Vector2f;
@@ -40,22 +39,24 @@ public final class MouseJoint extends Joint {
 		//@formatter:on
 	}
 
+	public MouseJoint(World world, MouseJointDef mouseJointDef) {
+		this(world, mouseJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create the mouse joint.
 	 */
-	public MouseJoint(World world, MouseJointDef mouseJointDef) {
+	public MouseJoint(World world, MouseJointDef mouseJointDef, Arena arena) {
 		MemorySegment b2MouseJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = mouseJointDef.memorySegment();
 
-			b2MouseJoint = (MemorySegment) B2_CREATE_MOUSE_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			b2MouseJoint = (MemorySegment) B2_CREATE_MOUSE_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create mouse joint.");
 		}
-		super(b2MouseJoint, world);
+		super(b2MouseJoint, world, arena);
 	}
 
 	/**
@@ -75,8 +76,7 @@ public final class MouseJoint extends Joint {
 	 */
 	public Vector2f getTarget(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_MOUSE_JOINT_GET_TARGET.invokeExact(allocator, b2JointId);
+			MemorySegment segment = (MemorySegment) B2_MOUSE_JOINT_GET_TARGET.invoke(arena, b2JointId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {

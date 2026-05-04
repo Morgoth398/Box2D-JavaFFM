@@ -52,7 +52,11 @@ public final class RayCastInput {
 	}
 
 	public RayCastInput() {
-		b2RayCastInput = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public RayCastInput(Arena arena) {
+		b2RayCastInput = arena.allocate(LAYOUT);
 
 		origin = new Vec2(b2RayCastInput.asSlice(ORIGIN_OFFSET, LAYOUT));
 		translation = new Vec2(b2RayCastInput.asSlice(TRANSLATION_OFFSET, LAYOUT));
@@ -133,7 +137,7 @@ public final class RayCastInput {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2RayCastInput.asReadOnly();
+		return b2RayCastInput;
 	}
 
 	public static StructLayout LAYOUT() {

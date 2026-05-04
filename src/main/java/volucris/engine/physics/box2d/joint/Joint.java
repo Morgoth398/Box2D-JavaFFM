@@ -3,8 +3,8 @@ package volucris.engine.physics.box2d.joint;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
+import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
@@ -62,9 +62,9 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 				JAVA_SHORT.withName("generation")
 			).withName("b2JointId");
 
-		INDEX_1 = varHandle(JOINT_ID_LAYOUT, "index1");
-		WORLD_0 = varHandle(JOINT_ID_LAYOUT, "world0");
-		GENERATION = varHandle(JOINT_ID_LAYOUT, "generation");
+		INDEX_1 = JOINT_ID_LAYOUT.varHandle(PathElement.groupElement("index1"));
+		WORLD_0 = JOINT_ID_LAYOUT.varHandle(PathElement.groupElement("world0"));
+		GENERATION = JOINT_ID_LAYOUT.varHandle(PathElement.groupElement("generation"));
 
 		B2_DESTROY_JOINT = downcallHandleVoid("b2DestroyJoint", JOINT_ID_LAYOUT);
 		B2_JOINT_IS_VALID = downcallHandle("b2Joint_IsValid", JAVA_BOOLEAN, JOINT_ID_LAYOUT);
@@ -81,17 +81,21 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 		//@formatter:on
 	}
 
-	protected Joint(MemorySegment b2JointId, World world) {
+	public Joint(MemorySegment b2JointId, World world, Arena arena) {
 		this.b2JointId = b2JointId;
 		this.world = world;
 
-		vecTmp = new Vec2();
+		vecTmp = new Vec2(arena);
+		
+		Box2D.addJoint(this, getJointId(b2JointId), world);
 	}
 
 	/**
 	 * Destroy the joint.
 	 */
-	public final void destroyJoint() {
+	public void destroyJoint() {
+		Box2D.removeJoint(getJointId(b2JointId), world);
+		
 		try {
 			B2_DESTROY_JOINT.invokeExact(b2JointId);
 		} catch (Throwable e) {
@@ -144,9 +148,13 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 */
 	public final Body getBodyA() {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_JOINT_GET_BODY_A.invokeExact(allocator, b2JointId);
-			return Box2D.getBody(Body.getBodyId(segment), world);
+			MemorySegment segment = (MemorySegment) B2_JOINT_GET_BODY_A.invoke(arena, b2JointId);
+			
+			Body body = Box2D.getBody(Body.getBodyId(segment), world);
+			if (body != null)
+				return body;
+			
+			return new Body(segment, 0, world);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot get body A.");
 		}
@@ -157,9 +165,13 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 */
 	public final Body getBodyB() {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_JOINT_GET_BODY_B.invokeExact(allocator, b2JointId);
-			return Box2D.getBody(Body.getBodyId(segment), world);
+			MemorySegment segment = (MemorySegment) B2_JOINT_GET_BODY_B.invoke(arena, b2JointId);
+			
+			Body body = Box2D.getBody(Body.getBodyId(segment), world);
+			if (body != null)
+				return body;
+			
+			return new Body(segment, 0, world);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot get body B.");
 		}
@@ -177,8 +189,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 */
 	public final Vector2f getLocalAnchorA(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_JOINT_GET_LOCAL_ANCHOR_A.invokeExact(allocator, b2JointId);
+			MemorySegment segment = (MemorySegment) B2_JOINT_GET_LOCAL_ANCHOR_A.invoke(arena, b2JointId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -198,8 +209,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 */
 	public final Vector2f getLocalAnchorB(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_JOINT_GET_LOCAL_ANCHOR_B.invokeExact(allocator, b2JointId);
+			MemorySegment segment = (MemorySegment) B2_JOINT_GET_LOCAL_ANCHOR_B.invoke(arena, b2JointId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -284,8 +294,7 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 */
 	public final Vector2f getConstraintForce(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_JOINT_GET_CONSTRAINT_FORCE.invokeExact(allocator, b2JointId);
+			MemorySegment segment = (MemorySegment) B2_JOINT_GET_CONSTRAINT_FORCE.invoke(arena, b2JointId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -320,12 +329,16 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	}
 
 	public static JointId getJointId(MemorySegment memorySegment) {
-		int index1 = (int) INDEX_1.get(memorySegment);
-		short world0 = (short) WORLD_0.get(memorySegment);
-		short generation = (short) GENERATION.get(memorySegment);
-		return new JointId(index1, world0, generation);
+		return getJointId(memorySegment, 0L);
 	}
 
+	public static JointId getJointId(MemorySegment memorySegment, long offset) {
+		int index1 = (int) INDEX_1.get(memorySegment, offset);
+		short world0 = (short) WORLD_0.get(memorySegment, offset);
+		short generation = (short) GENERATION.get(memorySegment, offset);
+		return new JointId(index1, world0, generation);
+	}
+	
 	public static record JointId(int index1, short world0, short generation) {
 	};
 }

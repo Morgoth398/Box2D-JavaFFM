@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.world;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -89,9 +88,12 @@ public final class WorldDef {
 	}
 
 	public WorldDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public WorldDef(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2WorldDef = (MemorySegment) B2_DEFAULT_WORLD_DEF.invokeExact(allocator);
+			b2WorldDef = (MemorySegment) B2_DEFAULT_WORLD_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create world def.");
 		}

@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
@@ -61,22 +60,24 @@ public final class PrismaticJoint extends Joint {
 		//@formatter:on
 	}
 
+	public PrismaticJoint(World world, PrismaticJointDef prismaticJointDef) {
+		this(world, prismaticJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create a prismatic (slider) joint.
 	 */
-	public PrismaticJoint(World world, PrismaticJointDef prismaticJointDef) {
+	public PrismaticJoint(World world, PrismaticJointDef prismaticJointDef, Arena arena) {
 		MemorySegment b2PrismaticJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = prismaticJointDef.memorySegment();
 
-			b2PrismaticJoint = (MemorySegment) B2_CREATE_PRISMATIC_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			b2PrismaticJoint = (MemorySegment) B2_CREATE_PRISMATIC_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create distance joint.");
 		}
-		super(b2PrismaticJoint, world);
+		super(b2PrismaticJoint, world, arena);
 	}
 
 	/**

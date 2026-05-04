@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
@@ -19,22 +18,24 @@ public final class FilterJoint extends Joint {
 		B2_CREATE_FILTER_JOINT = downcallHandle("b2CreateFilterJoint", JOINT_ID_LAYOUT, World.LAYOUT(), ADDRESS);
 	}
 
+	public FilterJoint(World world, FilterJointDef filterJointDef) {
+		this(world, filterJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create a filter joint.
 	 */
-	public FilterJoint(World world, FilterJointDef filterJointDef) {
+	public FilterJoint(World world, FilterJointDef filterJointDef, Arena arena) {
 		MemorySegment filterJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = filterJointDef.memorySegment();
 
-			filterJoint = (MemorySegment) B2_CREATE_FILTER_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			filterJoint = (MemorySegment) B2_CREATE_FILTER_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create mouse joint.");
 		}
-		super(filterJoint, world);
+		super(filterJoint, world, arena);
 	}
 
 }

@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.functions;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -53,7 +54,11 @@ public abstract class PreSolveFunction {
 	}
 
 	public PreSolveFunction() {
-		preSolveFcnAddress = upcallStub(this, PRE_SOLVE_FCN_HANDLE, PRE_SOLVE_FCN_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public PreSolveFunction(Arena arena) {
+		preSolveFcnAddress = upcallStub(this, PRE_SOLVE_FCN_HANDLE, PRE_SOLVE_FCN_DESCR, arena);
 	}
 
 	protected abstract boolean preSolveFunction(MemorySegment shapeIdA, MemorySegment shapeIdB, MemorySegment manifold,

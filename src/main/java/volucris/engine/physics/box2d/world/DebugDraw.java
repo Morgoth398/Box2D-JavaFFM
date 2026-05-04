@@ -5,7 +5,6 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -191,11 +190,12 @@ public abstract class DebugDraw {
 	}
 
 	public DebugDraw() {
-		Arena arena = Arena.ofAuto();
-		
+		this(Arena.ofAuto());
+	}
+	
+	public DebugDraw(Arena arena) {		
 		try {
-			SegmentAllocator allocator = arena;
-			b2DebugDraw = (MemorySegment) B2_DEFAULT_DEBUG_DRAW.invokeExact(allocator);
+			b2DebugDraw = (MemorySegment) B2_DEFAULT_DEBUG_DRAW.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create debug draw.");
 		}
@@ -484,7 +484,7 @@ public abstract class DebugDraw {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2DebugDraw.asReadOnly();
+		return b2DebugDraw;
 	}
 
 	public static StructLayout LAYOUT() {

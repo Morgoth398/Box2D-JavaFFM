@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.geometry;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -14,7 +13,6 @@ import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Rot;
 import volucris.engine.physics.box2d.math.Transform;
 import volucris.engine.physics.box2d.math.Vec2;
-import volucris.engine.utils.MathUtils;
 import volucris.engine.utils.VolucrisRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
@@ -108,14 +106,18 @@ public final class Polygon {
 	}
 
 	public Polygon() {
-		b2Polygon = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+
+	public Polygon(Arena arena) {
+		b2Polygon = arena.allocate(LAYOUT);
 
 		vertices = b2Polygon.asSlice(VERTICES_OFFSET, VERTICES_LAYOUT);
 		normals = b2Polygon.asSlice(NORMALS_OFFSET, NORMALS_LAYOUT);
 
 		centroid = new Vec2(b2Polygon.asSlice(CENTROID_OFFSET, Vec2.LAYOUT()));
 
-		vecTmp = new Vec2();
+		vecTmp = new Vec2(arena);
 	}
 
 	public Polygon(MemorySegment memorySegment) {
@@ -139,10 +141,9 @@ public final class Polygon {
 	 */
 	public Polygon transformPolygon(Transform transform) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
 			MemorySegment transformAddr = transform.memorySegment();
 			MethodHandle method = B2_TRANSFORM_POLYGON;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, transformAddr, b2Polygon);
+			MemorySegment segment = (MemorySegment) method.invoke(Arena.ofAuto(), transformAddr, b2Polygon);
 			return new Polygon(segment);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot transform polygon.");
@@ -154,8 +155,7 @@ public final class Polygon {
 	 */
 	public MassData computePolygonMass(MassData target, float density) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_COMPUTE_POLYGON_MASS.invokeExact(allocator, b2Polygon, density);
+			MemorySegment segment = (MemorySegment) B2_COMPUTE_POLYGON_MASS.invoke(arena, b2Polygon, density);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -175,9 +175,8 @@ public final class Polygon {
 	 */
 	public AABB computePolygonAABB(AABB target, Transform transform) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_COMPUTE_POLYGON_AABB;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2Polygon, transform.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2Polygon, transform.memorySegment());
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -210,9 +209,8 @@ public final class Polygon {
 	 */
 	public CastOutput rayCastPolygon(CastOutput target, RayCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MemorySegment inputAddr = input.memorySegment();
-			MemorySegment segment = (MemorySegment) B2_RAY_CAST_POLYGON.invokeExact(allocator, inputAddr, b2Polygon);
+			MemorySegment segment = (MemorySegment) B2_RAY_CAST_POLYGON.invoke(arena, inputAddr, b2Polygon);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -233,9 +231,8 @@ public final class Polygon {
 	 */
 	public CastOutput shapeCastPolygon(CastOutput target, ShapeCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MemorySegment inputAddr = input.memorySegment();
-			MemorySegment segment = (MemorySegment) B2_SHAPE_CAST_POLYGON.invokeExact(allocator, inputAddr, b2Polygon);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_CAST_POLYGON.invoke(arena, inputAddr, b2Polygon);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -316,14 +313,20 @@ public final class Polygon {
 	 */
 	public static Polygon makePolygon(Polygon target, Hull hull, float radius) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MemorySegment hullAddr = hull.memorySegment();
-			MemorySegment segment = (MemorySegment) B2_MAKE_POLYGON.invokeExact(allocator, hullAddr, radius);
+			MemorySegment segment = (MemorySegment) B2_MAKE_POLYGON.invoke(arena, hullAddr, radius);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot make polygon.");
 		}
+	}
+
+	/**
+	 * Make a convex polygon from a convex hull.
+	 */
+	public static Polygon makePolygon(Arena arena, Hull hull, float radius) {
+		return makePolygon(new Polygon(arena), hull, radius);
 	}
 
 	/**
@@ -336,23 +339,22 @@ public final class Polygon {
 	/**
 	 * Make an offset convex polygon from a convex hull.
 	 */
-	public static Polygon makeOffsetPolygon(Polygon target, Hull hull, Vector2f position, float rotation) {
-		return makeOffsetPolygonRadians(target, hull, position, MathUtils.toRadians(rotation));
-	}
-
-	/**
-	 * Make an offset convex polygon from a convex hull.
-	 */
 	public static Polygon makeOffsetPolygon(Hull hull, Vector2f position, float rotation) {
-		return makeOffsetPolygonRadians(new Polygon(), hull, position, MathUtils.toRadians(rotation));
+		return makeOffsetPolygon(new Polygon(), hull, position, rotation);
 	}
 
 	/**
 	 * Make an offset convex polygon from a convex hull.
 	 */
-	public static Polygon makeOffsetPolygonRadians(Polygon target, Hull hull, Vector2f position, float rotation) {
+	public static Polygon makeOffsetPolygon(Arena arena, Hull hull, Vector2f position, float rotation) {
+		return makeOffsetPolygon(new Polygon(arena), hull, position, rotation);
+	}
+
+	/**
+	 * Make an offset convex polygon from a convex hull.
+	 */
+	public static Polygon makeOffsetPolygon(Polygon target, Hull hull, Vector2f position, float rotation) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 
 			VEC_TMP.set(position);
 			ROT_TMP.setAngleRadians(rotation);
@@ -361,7 +363,7 @@ public final class Polygon {
 			MemorySegment positionAddr = VEC_TMP.memorySegment();
 			MemorySegment rotAddr = ROT_TMP.memorySegment();
 			MethodHandle method = B2_MAKE_OFFSET_POLYGON;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, hullAddr, positionAddr, rotAddr);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, hullAddr, positionAddr, rotAddr);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -372,8 +374,16 @@ public final class Polygon {
 	/**
 	 * Make an offset convex polygon from a convex hull.
 	 */
-	public static Polygon makeOffsetPolygonRadians(Hull hull, Vector2f position, float rotation) {
-		return makeOffsetPolygonRadians(new Polygon(), hull, position, rotation);
+	public static Polygon makeOffsetRoundedPolygon(Arena arena, Hull hull, Vector2f position, float rotation,
+			float radius) {
+		return makeOffsetRoundedPolygon(new Polygon(arena), hull, position, rotation, radius);
+	}
+
+	/**
+	 * Make an offset convex polygon from a convex hull.
+	 */
+	public static Polygon makeOffsetRoundedPolygon(Hull hull, Vector2f position, float rotation, float radius) {
+		return makeOffsetRoundedPolygon(new Polygon(), hull, position, rotation, radius);
 	}
 
 	/**
@@ -381,23 +391,7 @@ public final class Polygon {
 	 */
 	public static Polygon makeOffsetRoundedPolygon(Polygon target, Hull hull, Vector2f position, float rotation,
 			float radius) {
-		return makeOffsetRoundedPolygonRadians(target, hull, position, MathUtils.toRadians(rotation), radius);
-	}
-
-	/**
-	 * Make an offset convex polygon from a convex hull.
-	 */
-	public static Polygon makeOffsetRoundedPolygon(Hull hull, Vector2f position, float rotation, float radius) {
-		return makeOffsetRoundedPolygonRadians(new Polygon(), hull, position, MathUtils.toRadians(rotation), radius);
-	}
-
-	/**
-	 * Make an offset convex polygon from a convex hull.
-	 */
-	public static Polygon makeOffsetRoundedPolygonRadians(Polygon target, Hull hull, Vector2f position, float rotation,
-			float radius) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 
 			VEC_TMP.set(position);
 			ROT_TMP.setAngleRadians(rotation);
@@ -406,7 +400,7 @@ public final class Polygon {
 			MemorySegment posAddr = VEC_TMP.memorySegment();
 			MemorySegment rotAddr = ROT_TMP.memorySegment();
 			MethodHandle method = B2_MAKE_OFFSET_ROUNDED_POLYGON;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, hullAddr, posAddr, rotAddr, radius);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, hullAddr, posAddr, rotAddr, radius);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -415,24 +409,23 @@ public final class Polygon {
 	}
 
 	/**
-	 * Make an offset convex polygon from a convex hull.
-	 */
-	public static Polygon makeOffsetRoundedPolygonRadians(Hull hull, Vector2f position, float rotation, float radius) {
-		return makeOffsetRoundedPolygonRadians(new Polygon(), hull, position, rotation, radius);
-	}
-
-	/**
 	 * Make a square polygon, bypassing the need for a convex hull.
 	 */
 	public static Polygon makeSquare(Polygon target, float halfWidth) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_MAKE_SQUARE.invokeExact(allocator, halfWidth);
+			MemorySegment segment = (MemorySegment) B2_MAKE_SQUARE.invoke(arena, halfWidth);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot make square.");
 		}
+	}
+
+	/**
+	 * Make a square polygon, bypassing the need for a convex hull.
+	 */
+	public static Polygon makeSquare(Arena arena, float halfWidth) {
+		return makeSquare(new Polygon(arena), halfWidth);
 	}
 
 	/**
@@ -447,13 +440,19 @@ public final class Polygon {
 	 */
 	public static Polygon makeBox(Polygon target, float halfWidth, float halfHeight) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_MAKE_BOX.invokeExact(allocator, halfWidth, halfHeight);
+			MemorySegment segment = (MemorySegment) B2_MAKE_BOX.invoke(arena, halfWidth, halfHeight);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot make box.");
 		}
+	}
+
+	/**
+	 * Make a box (rectangle) polygon, bypassing the need for a convex hull.
+	 */
+	public static Polygon makeBox(Arena arena, float halfWidth, float halfHeight) {
+		return makeBox(new Polygon(arena), halfWidth, halfHeight);
 	}
 
 	/**
@@ -468,14 +467,20 @@ public final class Polygon {
 	 */
 	public static Polygon makeRoundedBox(Polygon target, float halfWidth, float halfHeight, float radius) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_MAKE_ROUNDED_BOX;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, halfWidth, halfHeight, radius);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, halfWidth, halfHeight, radius);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot make rounded box.");
 		}
+	}
+
+	/**
+	 * Make a rounded box, bypassing the need for a convex hull.
+	 */
+	public static Polygon makeRoundedBox(Arena arena, float halfWidth, float halfHeight, float radius) {
+		return makeRoundedBox(new Polygon(arena), halfWidth, halfHeight, radius);
 	}
 
 	/**
@@ -488,34 +493,31 @@ public final class Polygon {
 	/**
 	 * Make an offset box, bypassing the need for a convex hull.
 	 */
-	public static Polygon makeOffsetBox(Polygon target, float halfWidth, float halfHeight, Vector2f center,
+	public static Polygon makeOffsetBox(Arena arena, float halfWidth, float halfHeight, Vector2f center,
 			float rotation) {
-		return makeOffsetBoxRadians(target, halfWidth, halfHeight, center, MathUtils.toRadians(rotation));
+		return makeOffsetBox(new Polygon(arena), halfWidth, halfHeight, center, rotation);
 	}
 
 	/**
 	 * Make an offset box, bypassing the need for a convex hull.
 	 */
 	public static Polygon makeOffsetBox(float halfWidth, float halfHeight, Vector2f center, float rotation) {
-		return makeOffsetBoxRadians(new Polygon(), halfWidth, halfHeight, center, MathUtils.toRadians(rotation));
+		return makeOffsetBox(new Polygon(), halfWidth, halfHeight, center, rotation);
 	}
 
 	/**
 	 * Make an offset box, bypassing the need for a convex hull.
 	 */
-	public static Polygon makeOffsetBoxRadians(Polygon target, float halfWidth, float halfHeight, Vector2f center,
+	public static Polygon makeOffsetBox(Polygon target, float halfWidth, float halfHeight, Vector2f center,
 			float rotation) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			VEC_TMP.set(center);
 			ROT_TMP.setAngleRadians(rotation);
 
 			MemorySegment centerAddr = VEC_TMP.memorySegment();
 			MemorySegment rotAddr = ROT_TMP.memorySegment();
 			MethodHandle method = B2_MAKE_OFFSET_BOX;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, halfWidth, halfHeight, centerAddr,
-					rotAddr);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, halfWidth, halfHeight, centerAddr, rotAddr);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -524,10 +526,11 @@ public final class Polygon {
 	}
 
 	/**
-	 * Make an offset box, bypassing the need for a convex hull.
+	 * Make an offset rounded box, bypassing the need for a convex hull.
 	 */
-	public static Polygon makeOffsetBoxRadians(float halfWidth, float halfHeight, Vector2f center, float rotation) {
-		return makeOffsetBoxRadians(new Polygon(), halfWidth, halfHeight, center, rotation);
+	public static Polygon makeOffsetRoundedBox(Arena arena, float halfWidth, float halfHeight, Vector2f center,
+			float rotation, float radius) {
+		return makeOffsetRoundedBox(new Polygon(arena), halfWidth, halfHeight, center, rotation, radius);
 	}
 
 	/**
@@ -535,8 +538,7 @@ public final class Polygon {
 	 */
 	public static Polygon makeOffsetRoundedBox(float halfWidth, float halfHeight, Vector2f center, float rotation,
 			float radius) {
-		return makeOffsetRoundedBoxRadians(new Polygon(), halfWidth, halfHeight, center, MathUtils.toRadians(radius),
-				radius);
+		return makeOffsetRoundedBox(new Polygon(), halfWidth, halfHeight, center, rotation, radius);
 	}
 
 	/**
@@ -544,25 +546,15 @@ public final class Polygon {
 	 */
 	public static Polygon makeOffsetRoundedBox(Polygon target, float halfWidth, float halfHeight, Vector2f center,
 			float rotation, float radius) {
-		return makeOffsetRoundedBoxRadians(target, halfWidth, halfHeight, center, MathUtils.toRadians(radius), radius);
-	}
-
-	/**
-	 * Make an offset rounded box, bypassing the need for a convex hull.
-	 */
-	public static Polygon makeOffsetRoundedBoxRadians(Polygon target, float halfWidth, float halfHeight,
-			Vector2f center, float rotation, float radius) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			VEC_TMP.set(center);
 			ROT_TMP.setAngleRadians(rotation);
 
 			MemorySegment centerAddr = VEC_TMP.memorySegment();
 			MemorySegment rotAddr = ROT_TMP.memorySegment();
 			MethodHandle method = B2_MAKE_OFFSET_ROUNDED_BOX;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, halfWidth, halfHeight, centerAddr,
-					rotAddr, radius);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, halfWidth, halfHeight, centerAddr, rotAddr,
+					radius);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {

@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.callbacks;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -45,7 +46,11 @@ public abstract class RestitutionCallback {
 	}
 
 	public RestitutionCallback() {
-		restitutionCallbackAddress = upcallStub(this, RESTITUTION_CALLBACK_HANDLE, RESTITUTION_CALLBACK_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public RestitutionCallback(Arena arena) {
+		restitutionCallbackAddress = upcallStub(this, RESTITUTION_CALLBACK_HANDLE, RESTITUTION_CALLBACK_DESCR, arena);
 	}
 
 	protected abstract float restitutionCallback(float frictionA, int userMaterialIdA, float frictionB,

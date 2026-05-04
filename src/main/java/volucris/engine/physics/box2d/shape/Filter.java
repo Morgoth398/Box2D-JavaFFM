@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.shape;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -82,9 +81,12 @@ public final class Filter {
 	}
 
 	public Filter() {
+		this(Arena.ofAuto());
+	}
+	
+	public Filter(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2Filter = (MemorySegment) B2_DEFAULT_FILTER.invokeExact(allocator);
+			b2Filter = (MemorySegment) B2_DEFAULT_FILTER.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create filter");
 		}

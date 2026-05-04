@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.world.callbacks;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
@@ -47,7 +48,11 @@ public abstract class FrictionCallback {
 	}
 
 	public FrictionCallback() {
-		frictionCallbackAddress = upcallStub(this, FRICTION_CALLBACK_HANDLE, FRICTION_CALLBACK_DESCR);
+		this(Arena.ofAuto());
+	}
+	
+	public FrictionCallback(Arena arena) {
+		frictionCallbackAddress = upcallStub(this, FRICTION_CALLBACK_HANDLE, FRICTION_CALLBACK_DESCR, arena);
 	}
 
 	protected abstract float frictionCallback(float frictionA, int userMaterialIdA, float frictionB,

@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.body;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -106,9 +105,13 @@ public final class BodyDef {
 	}
 
 	public BodyDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public BodyDef(Arena arena) {
 		try {
-			arena = Arena.ofAuto();
-			b2BodyDef = (MemorySegment) B2_DEFAULT_BODY_DEF.invokeExact((SegmentAllocator) arena);
+			this.arena = arena;
+			b2BodyDef = (MemorySegment) B2_DEFAULT_BODY_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new RuntimeException("Box2D: Cannot create body def.");
 		}
@@ -174,8 +177,7 @@ public final class BodyDef {
 	 * termination)
 	 */
 	public void setName(String name) {
-		MemorySegment nativeString = arena.allocateFrom(name);
-		NAME.set(b2BodyDef, nativeString);
+		NAME.set(b2BodyDef, arena.allocateFrom(name));
 	}
 
 	/**
@@ -281,7 +283,7 @@ public final class BodyDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2BodyDef.asReadOnly();
+		return b2BodyDef;
 	}
 
 	public static StructLayout LAYOUT() {

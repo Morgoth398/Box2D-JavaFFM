@@ -3,8 +3,8 @@ package volucris.engine.physics.box2d.shape;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
+import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
@@ -87,8 +87,6 @@ public final class Shape {
 
 	private final MemorySegment b2ShapeId;
 
-	private ShapeId shapeId;
-
 	private Body body;
 
 	private Object internalUserData;
@@ -104,15 +102,15 @@ public final class Shape {
 		        JAVA_SHORT.withName("generation")
 			);
 		
-		INDEX_1 = varHandle(SHAPE_ID_LAYOUT, "index1");
-		WORLD_0 = varHandle(SHAPE_ID_LAYOUT, "world0");
-		GENERATION = varHandle(SHAPE_ID_LAYOUT, "generation");
+		INDEX_1 = SHAPE_ID_LAYOUT.varHandle(PathElement.groupElement("index1"));
+		WORLD_0 = SHAPE_ID_LAYOUT.varHandle(PathElement.groupElement("world0"));
+		GENERATION = SHAPE_ID_LAYOUT.varHandle(PathElement.groupElement("generation"));
 		
 		B2_CREATE_CIRCLE_SHAPE = downcallHandle("b2CreateCircleShape", SHAPE_ID_LAYOUT, Body.LAYOUT(), ADDRESS, ADDRESS);
 		B2_CREATE_SEGMENT_SHAPE = downcallHandle("b2CreateSegmentShape", SHAPE_ID_LAYOUT, Body.LAYOUT(), ADDRESS, ADDRESS);
 		B2_CREATE_CAPSULE_SHAPE = downcallHandle("b2CreateCapsuleShape", SHAPE_ID_LAYOUT, Body.LAYOUT(), ADDRESS, ADDRESS);
 		B2_CREATE_POLYGON_SHAPE = downcallHandle("b2CreatePolygonShape", SHAPE_ID_LAYOUT, Body.LAYOUT(), ADDRESS, ADDRESS);
-		B2_DESTROY_SHAPE = downcallHandleVoid("b2DestroyShape", SHAPE_ID_LAYOUT);
+		B2_DESTROY_SHAPE = downcallHandleVoid("b2DestroyShape", SHAPE_ID_LAYOUT, JAVA_BOOLEAN);
 		B2_SHAPE_IS_VALID = downcallHandle("b2Shape_IsValid", JAVA_BOOLEAN, SHAPE_ID_LAYOUT);
 		B2_SHAPE_GET_TYPE = downcallHandle("b2Shape_GetType", JAVA_INT, SHAPE_ID_LAYOUT);
 		B2_SHAPE_IS_SENSOR = downcallHandle("b2Shape_IsSensor", JAVA_BOOLEAN, SHAPE_ID_LAYOUT);
@@ -167,20 +165,28 @@ public final class Shape {
 	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
 	 */
 	public Shape(Body body, ShapeDef shapeDef, Circle circle) {
+		this(body, shapeDef, circle, Arena.ofAuto());
+	}
+	
+	/**
+	 *Create a circle shape and attach it to a body.  
+	 *<p>
+	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
+	 */
+	public Shape(Body body, ShapeDef shapeDef, Circle circle, Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
 			MemorySegment bodyAddr = body.memorySegment();
 			MemorySegment shapeDefAddr = shapeDef.memorySegment();
 			MemorySegment circleAddr = circle.memorySegment();
-			b2ShapeId = (MemorySegment) B2_CREATE_CIRCLE_SHAPE.invokeExact(allocator, bodyAddr, shapeDefAddr, circleAddr);
+			
+			b2ShapeId = (MemorySegment)  B2_CREATE_CIRCLE_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, circleAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create circle shape.");
 		}
 		
-		this.shapeId = getShapeId(b2ShapeId);
 		this.body = body;
 		
-		Box2D.addShape(this, shapeId, body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
 	}
 	
 	/**
@@ -189,20 +195,28 @@ public final class Shape {
 	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
 	 */
 	public Shape(Body body, ShapeDef shapeDef, Segment segment) {
+		this(body, shapeDef, segment, Arena.ofAuto());
+	}
+	
+	/**
+	 *Create a line segment shape and attach it to a body.  
+	 *<p>
+	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
+	 */
+	public Shape(Body body, ShapeDef shapeDef, Segment segment, Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
 			MemorySegment bodyAddr = body.memorySegment();
 			MemorySegment shapeDefAddr = shapeDef.memorySegment();
 			MemorySegment segmentAddr = segment.memorySegment();
-			b2ShapeId = (MemorySegment) B2_CREATE_SEGMENT_SHAPE.invokeExact(allocator, bodyAddr, shapeDefAddr, segmentAddr);
+			
+			b2ShapeId = (MemorySegment) B2_CREATE_SEGMENT_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, segmentAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create segment shape.");
 		}
 		
-		this.shapeId = getShapeId(b2ShapeId);
 		this.body = body;
 		
-		Box2D.addShape(this, shapeId, body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
 	}
 	
 	/**
@@ -211,20 +225,27 @@ public final class Shape {
 	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
 	 */
 	public Shape(Body body, ShapeDef shapeDef, Capsule capsule) {
+		this(body, shapeDef, capsule, Arena.ofAuto());
+	}
+	
+	/**
+	 *Create a capsule shape and attach it to a body.  
+	 *<p>
+	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
+	 */
+	public Shape(Body body, ShapeDef shapeDef, Capsule capsule, Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
 			MemorySegment bodyAddr = body.memorySegment();
 			MemorySegment shapeDefAddr = shapeDef.memorySegment();
 			MemorySegment capsuleAddr = capsule.memorySegment();
-			b2ShapeId = (MemorySegment) B2_CREATE_CAPSULE_SHAPE.invokeExact(allocator, bodyAddr, shapeDefAddr, capsuleAddr);
+			b2ShapeId = (MemorySegment) B2_CREATE_CAPSULE_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, capsuleAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create capsule shape.");
 		}
 		
-		this.shapeId = getShapeId(b2ShapeId);
 		this.body = body;
 		
-		Box2D.addShape(this, shapeId, body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
 	}
 	
 	/**
@@ -233,47 +254,49 @@ public final class Shape {
 	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
 	 */
 	public Shape(Body body, ShapeDef shapeDef, Polygon polygon) {
+		this(body, shapeDef, polygon, Arena.ofAuto());
+	}
+	
+	/**
+	 *Create a polygon shape and attach it to a body. 
+	 *<p>
+	 *The shape definition and geometry are fully cloned. Contacts are not created until the next time step. 
+	 */
+	public Shape(Body body, ShapeDef shapeDef, Polygon polygon, Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
 			MemorySegment bodyAddr = body.memorySegment();
 			MemorySegment shapeDefAddr = shapeDef.memorySegment();
 			MemorySegment polygonAddr = polygon.memorySegment();
-			b2ShapeId = (MemorySegment) B2_CREATE_POLYGON_SHAPE.invokeExact(allocator, bodyAddr, shapeDefAddr, polygonAddr);
+			
+			b2ShapeId = (MemorySegment) B2_CREATE_POLYGON_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, polygonAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create polygon shape.");
 		}
 		
-		this.shapeId = getShapeId(b2ShapeId);
 		this.body = body;
 		
-		Box2D.addShape(this, shapeId, body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
 	}
 	//@formatter:on
 
 	public Shape(MemorySegment memorySegment, Body body) {
 		b2ShapeId = memorySegment;
 
-		this.shapeId = getShapeId(b2ShapeId);
 		this.body = body;
 
-		Box2D.addShape(this, shapeId, body.getWorld());
+		Box2D.addShape(this, getShapeId(memorySegment), body.getWorld());
 	}
 
 	/**
 	 * Destroy a shape.
 	 */
-	public void destroyShape() {
+	public void destroyShape(boolean updateBodyMass) {
+		Box2D.removeShape(getShapeId(b2ShapeId), body.getWorld());
 		try {
-			B2_DESTROY_SHAPE.invokeExact(b2ShapeId);
+			B2_DESTROY_SHAPE.invokeExact(b2ShapeId, updateBodyMass);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot destroy shape.");
 		}
-
-		int index1 = (int) INDEX_1.get(b2ShapeId);
-		short world0 = (short) WORLD_0.get(b2ShapeId);
-		short generation = (short) GENERATION.get(b2ShapeId);
-		ShapeId shapeId = new ShapeId(index1, world0, generation);
-		Box2D.removeShape(shapeId, body.getWorld());
 	}
 
 	/**
@@ -469,8 +492,7 @@ public final class Shape {
 	 */
 	public SurfaceMaterial getSurfaceMaterial(SurfaceMaterial target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_SURFACE_MATERIAL.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_SURFACE_MATERIAL.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -490,8 +512,7 @@ public final class Shape {
 	 */
 	public Filter getFilter(Filter target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_FILTER.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_FILTER.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -622,10 +643,9 @@ public final class Shape {
 	 */
 	public CastOutput rayCast(CastOutput target, RayCastInput rayCastInput) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MemorySegment inputAddr = rayCastInput.memorySegment();
 
-			MemorySegment segment = (MemorySegment) B2_SHAPE_RAY_CAST.invokeExact(allocator, b2ShapeId, inputAddr);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_RAY_CAST.invoke(arena, b2ShapeId, inputAddr);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -645,8 +665,7 @@ public final class Shape {
 	 */
 	public Circle getCircle(Circle target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_CIRCLE.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_CIRCLE.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -666,8 +685,7 @@ public final class Shape {
 	 */
 	public Segment getSegment(Segment target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_SEGMENT.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_SEGMENT.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -687,8 +705,7 @@ public final class Shape {
 	 */
 	public ChainSegment getChainSegment(ChainSegment target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_CHAIN_SEGMENT.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_CHAIN_SEGMENT.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -708,8 +725,7 @@ public final class Shape {
 	 */
 	public Capsule getCapsule(Capsule target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_CAPSULE.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_CAPSULE.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -729,8 +745,7 @@ public final class Shape {
 	 */
 	public Polygon getPolygon() {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_POLYGON.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_POLYGON.invoke(arena, b2ShapeId);
 			return new Polygon(segment);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot get segment.");
@@ -787,8 +802,7 @@ public final class Shape {
 	 */
 	public Chain getParentChain() {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_PARENT_CHAIN.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_PARENT_CHAIN.invoke(arena, b2ShapeId);
 			return Box2D.getChain(Chain.getChainId(segment), body.getWorld());
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot get parent chain.");
@@ -847,6 +861,13 @@ public final class Shape {
 	 * Get the overlapped shapes for a sensor shape.
 	 */
 	public int getSensorOverlaps(Shape[] target) {
+		return getSensorOverlaps(target, Arena.ofAuto());
+	}
+	
+	/**
+	 * Get the overlapped shapes for a sensor shape.
+	 */
+	public int getSensorOverlaps(Shape[] target, Arena shapeArena) {
 		try (Arena arena = Arena.ofConfined()) {
 			MemorySegment array = arena.allocate(MemoryLayout.sequenceLayout(target.length, Shape.LAYOUT()));
 
@@ -854,12 +875,11 @@ public final class Shape {
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * Shape.LAYOUT().byteSize();
-				MemorySegment arraySegment = array.asSlice(offset, Shape.LAYOUT());
-				Shape shape = Box2D.getShape(Shape.getShapeId(arraySegment), body.getWorld());
+				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), body.getWorld());
 
 				if (shape == null) {
-					MemorySegment shapeSegment = Arena.ofAuto().allocate(Shape.LAYOUT());
-					MemorySegment.copy(arraySegment, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
+					MemorySegment shapeSegment = shapeArena.allocate(Shape.LAYOUT());
+					MemorySegment.copy(array, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
 					target[i] = new Shape(shapeSegment, body);
 				} else {
 					target[i] = shape;
@@ -877,8 +897,7 @@ public final class Shape {
 	 */
 	public AABB getAABB(AABB target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_AABB.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_AABB.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -898,8 +917,7 @@ public final class Shape {
 	 */
 	public MassData getMassData(MassData target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_MASS_DATA.invokeExact(allocator, b2ShapeId);
+			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_MASS_DATA.invoke(arena, b2ShapeId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -919,11 +937,10 @@ public final class Shape {
 	 */
 	public Vector2f getClosestPoint(Vector2f point, Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			vecTmp.set(point);
 
 			MethodHandle method = B2_SHAPE_GET_CLOSEST_POINT;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2ShapeId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2ShapeId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -948,12 +965,16 @@ public final class Shape {
 	}
 
 	public static ShapeId getShapeId(MemorySegment memorySegment) {
-		int index1 = (int) INDEX_1.get(memorySegment);
-		short world0 = (short) WORLD_0.get(memorySegment);
-		short generation = (short) GENERATION.get(memorySegment);
-		return new ShapeId(index1, world0, generation);
+		return getShapeId(memorySegment, 0L);
 	}
 
+	public static ShapeId getShapeId(MemorySegment memorySegment, long offset) {
+		int index1 = (int) INDEX_1.get(memorySegment, offset);
+		short world0 = (short) WORLD_0.get(memorySegment, offset);
+		short generation = (short) GENERATION.get(memorySegment, offset);
+		return new ShapeId(index1, world0, generation);
+	}
+	
 	public static record ShapeId(int index1, short world0, short generation) {
 	};
 }

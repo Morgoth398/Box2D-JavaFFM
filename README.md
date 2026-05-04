@@ -17,6 +17,13 @@ the native library, change 'Configuration.SHARED _LIBRARY _EXTRACT _PATH'.
 
 Due to the introduction of  [restricted methods](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/doc-files/RestrictedMethods.html), it is recommended (and in later versions required) to run the application with the VM argument '--enable-native-access=ALL-UNNAMED'.
 
+# Memory Management
+When creating an object, native memory will be allocated. An automatic arena will be used by default, but you can change that with one of the given constructors.
+
+A confined arena may be preferred for short-lived objects like body or shape definitions.
+
+For long-lived objects, such as a joint, a body, or a shape, however, it is crucial that both the memory and the objects remain alive until they are removed from the physics simulation. To guarantee that they are kept in an internal list, but this only ensures that the memory won't be released by an automatic arena. You have to take care of this yourself if you use any other arena.
+
 # Example
 This is a port of the  [Hello Box2D](https://box2d.org/documentation/hello.html) introduction.
 

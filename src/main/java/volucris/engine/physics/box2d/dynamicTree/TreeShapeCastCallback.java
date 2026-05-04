@@ -43,17 +43,15 @@ public abstract class TreeShapeCastCallback {
 		TREE_SHAPE_CAST_CALLBACK_DESCR = functionDescr(ADDRESS, JAVA_INT, JAVA_LONG, ADDRESS);
 		
 		TREE_SHAPE_CAST_CALLBACK_HANDLE = upcallHandle(LOOKUP, TreeShapeCastCallback.class, "treeShapeCastCallback", TREE_SHAPE_CAST_CALLBACK_DESCR);
-		//@formatter:on
 	}
 
 	public TreeShapeCastCallback() {
-		treeShapeCastCallbackAddress = upcallStub(this, TREE_SHAPE_CAST_CALLBACK_HANDLE,
-				TREE_SHAPE_CAST_CALLBACK_DESCR);
+		treeShapeCastCallbackAddress = upcallStub(this, TREE_SHAPE_CAST_CALLBACK_HANDLE, TREE_SHAPE_CAST_CALLBACK_DESCR);
 	}
 
-	protected abstract boolean treeShapeCastCallback(MemorySegment imput, int proxyId, long userData,
-			MemorySegment context);
-
+	protected abstract boolean treeShapeCastCallback(MemorySegment imput, int proxyId, long userData, MemorySegment context);
+	//@formatter:on
+	
 	public MemorySegment memorySegment() {
 		return treeShapeCastCallbackAddress;
 	}

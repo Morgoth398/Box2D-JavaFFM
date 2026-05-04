@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.dynamicTree;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 
@@ -106,19 +105,19 @@ public final class DynamicTree {
 	 * Constructing the tree initializes the node pool.
 	 */
 	public DynamicTree() {
-		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2DynamicTree = (MemorySegment) B2_DYNAMIC_TREE_CREATE.invokeExact(allocator);
-		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot create dynamic tree.");
-		}
+		this(Arena.ofAuto());
 	}
 
 	/**
-	 * 
+	 * Constructing the tree initializes the node pool.
 	 */
-	public DynamicTree(MemorySegment memorySegment) {
-		b2DynamicTree = memorySegment;
+	public DynamicTree(Arena arena) {
+		try {
+			MemorySegment segment = (MemorySegment) B2_DYNAMIC_TREE_CREATE.invoke(arena);
+			b2DynamicTree = segment.reinterpret(arena, s -> destroy(s));
+		} catch (Throwable e) {
+			throw new VolucrisRuntimeException("Box2D: Cannot create dynamic tree.");
+		}
 	}
 
 	/**
@@ -131,9 +130,9 @@ public final class DynamicTree {
 	/**
 	 * Destroy the tree, freeing the node pool.
 	 */
-	public void destroy() {
+	private static void destroy(MemorySegment segment) {
 		try {
-			B2_DYNAMIC_TREE_DESTROY.invokeExact(b2DynamicTree);
+			B2_DYNAMIC_TREE_DESTROY.invokeExact(segment);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot destroy dynamic tree.");
 		}
@@ -214,13 +213,11 @@ public final class DynamicTree {
 	public TreeStats query(TreeStats target, AABB aabb, long maskBits, TreeQueryCallback callback,
 			MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			MemorySegment aabbAddr = aabb.memorySegment();
 			MemorySegment callbackAddr = callback.memorySegment();
 
 			MethodHandle method = B2_DYNAMIC_TREE_QUERY;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2DynamicTree, aabbAddr, maskBits,
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2DynamicTree, aabbAddr, maskBits,
 					callbackAddr, context);
 
 			target.set(segment);
@@ -250,13 +247,11 @@ public final class DynamicTree {
 	public TreeStats rayCast(TreeStats target, RayCastInput input, long maskBits, TreeRayCastCallback callback,
 			MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			MemorySegment inputAddr = input.memorySegment();
 			MemorySegment callbackAddr = callback.memorySegment();
 
 			MethodHandle method = B2_DYNAMIC_TREE_RAY_CAST;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2DynamicTree, inputAddr, maskBits,
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2DynamicTree, inputAddr, maskBits,
 					callbackAddr, context);
 
 			target.set(segment);
@@ -289,13 +284,11 @@ public final class DynamicTree {
 	public TreeStats shapeCast(TreeStats target, ShapeCastInput input, long maskBits, TreeShapeCastCallback callback,
 			MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			MemorySegment inputAddr = input.memorySegment();
 			MemorySegment callbackAddr = callback.memorySegment();
 
 			MethodHandle method = B2_DYNAMIC_TREE_SHAPE_CAST;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2DynamicTree, inputAddr, maskBits,
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2DynamicTree, inputAddr, maskBits,
 					callbackAddr, context);
 
 			target.set(segment);
@@ -344,9 +337,8 @@ public final class DynamicTree {
 	 */
 	public AABB getRootBounds(AABB target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_DYNAMIC_TREE_GET_ROOT_BOUNDS;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2DynamicTree);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2DynamicTree);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -411,9 +403,8 @@ public final class DynamicTree {
 	 */
 	public AABB getAABB(AABB target, int proxyId) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_DYNAMIC_TREE_GET_AABB;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2DynamicTree, proxyId);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2DynamicTree, proxyId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {

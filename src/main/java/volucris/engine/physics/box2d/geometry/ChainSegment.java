@@ -48,7 +48,11 @@ public final class ChainSegment {
 	}
 
 	public ChainSegment() {
-		b2ChainSegment = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public ChainSegment(Arena arena) {
+		b2ChainSegment = arena.allocate(LAYOUT);
 
 		segment = new Segment(b2ChainSegment.asSlice(SEGMENT_OFFSET, Segment.LAYOUT()));
 		ghost1 = new Vec2(b2ChainSegment.asSlice(GHOST1_OFFSET, Vec2.LAYOUT()));

@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.geometry;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -60,24 +59,36 @@ public final class Circle {
 	}
 
 	public Circle(Vector2f position, float radius) {
-		this(position.x, position.y, radius);
+		this(position, radius, Arena.ofAuto());
+	}
+	
+	public Circle(Vector2f position, float radius, Arena arena) {
+		this(position.x, position.y, radius, arena);
 	}
 	
 	public Circle(float x, float y, float radius) {
-		b2Circle = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Circle(float x, float y, float radius, Arena arena) {
+		b2Circle = arena.allocate(LAYOUT);
 
 		center = new Vec2(b2Circle.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
-		vecTmp = new Vec2();
+		vecTmp = new Vec2(arena);
 		
 		setCenter(x, y);
 		setRadius(radius);
 	}
 
 	public Circle() {
-		b2Circle = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Circle(Arena arena) {
+		b2Circle = arena.allocate(LAYOUT);
 
 		center = new Vec2(b2Circle.asSlice(CENTER_OFFSET, Vec2.LAYOUT()));
-		vecTmp = new Vec2();
+		vecTmp = new Vec2(arena);
 	}
 	
 	public Circle(MemorySegment memorySegment) {
@@ -96,8 +107,7 @@ public final class Circle {
 	 */
 	public MassData computeCircleMass(MassData target, float density) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_COMPUTE_CIRCLE_MASS.invokeExact(allocator, b2Circle, density);
+			MemorySegment segment = (MemorySegment) B2_COMPUTE_CIRCLE_MASS.invoke(arena, b2Circle, density);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -117,9 +127,8 @@ public final class Circle {
 	 */
 	public AABB computeCircleAABB(AABB target, Transform transform) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_COMPUTE_CIRCLE_AABB;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2Circle, transform.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2Circle, transform.memorySegment());
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -152,9 +161,8 @@ public final class Circle {
 	 */
 	public CastOutput rayCastCircle(CastOutput target, RayCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_RAY_CAST_CIRCLE;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, input.memorySegment(), b2Circle);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, input.memorySegment(), b2Circle);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -175,9 +183,8 @@ public final class Circle {
 	 */
 	public CastOutput shapeCastCircle(CastOutput target, ShapeCastInput input) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_SHAPE_CAST_CIRCLE;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, input.memorySegment(), b2Circle);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, input.memorySegment(), b2Circle);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -217,7 +224,7 @@ public final class Circle {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Circle.asReadOnly();
+		return b2Circle;
 	}
 
 	public static StructLayout LAYOUT() {
