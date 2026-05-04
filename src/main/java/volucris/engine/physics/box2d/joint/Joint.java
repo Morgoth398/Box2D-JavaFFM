@@ -49,9 +49,6 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 
 	private final World world;
 
-	private Object internalUserData;
-	private Object userData;
-
 	protected Vec2 vecTmp;
 
 	static {
@@ -257,18 +254,16 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 
 	/**
 	 * Set the internal user data for the body.
-	 * <p>
-	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
-		this.internalUserData = internalUserData;
+		Box2D.setInternalUserData(getJointId(b2JointId), world, internalUserData);
 	}
 
 	/**
 	 * Get the internal user data stored in the body.
 	 */
 	public Object getInternalUserData() {
-		return internalUserData;
+		return Box2D.getInternalUserData(getJointId(b2JointId), world);
 	}
 
 	/**
@@ -277,14 +272,14 @@ public sealed class Joint permits DistanceJoint, MotorJoint, MouseJoint, FilterJ
 	 * The implementation does not pass this object to the native code.
 	 */
 	public void setUserData(Object userData) {
-		this.userData = userData;
+		Box2D.setUserData(getJointId(b2JointId), world, userData);
 	}
 
 	/**
 	 * Get the user data stored in the body.
 	 */
 	public Object getUserData() {
-		return userData;
+		return Box2D.getUserData(getJointId(b2JointId), world);
 	}
 
 	/**
