@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.joint;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.invoke.MethodHandle;
@@ -111,9 +110,12 @@ public final class PrismaticJointDef {
 	}
 
 	public PrismaticJointDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public PrismaticJointDef(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2PrismaticJointDef = (MemorySegment) B2_DEFAULT_PRISMATIC_JOINT_DEF.invokeExact(allocator);
+			b2PrismaticJointDef = (MemorySegment) B2_DEFAULT_PRISMATIC_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create prismatic joint def.");
 		}

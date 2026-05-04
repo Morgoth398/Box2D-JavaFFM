@@ -40,7 +40,7 @@ public final class BodyMoveEvent {
 	private static final long BODY_ID_OFFSET;
 
 	private final MemorySegment b2BodyMoveEvent;
-	
+
 	private final Transform transform;
 
 	private World world;
@@ -65,17 +65,17 @@ public final class BodyMoveEvent {
 	public BodyMoveEvent() {
 		this(Arena.ofAuto());
 	}
-	
+
 	public BodyMoveEvent(Arena arena) {
 		b2BodyMoveEvent = arena.allocate(LAYOUT);
-		
+
 		transform = new Transform(b2BodyMoveEvent.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT()));
 	}
 
 	public BodyMoveEvent(MemorySegment memorySegment, World world) {
 		this.b2BodyMoveEvent = memorySegment;
 		this.world = world;
-		
+
 		transform = new Transform(b2BodyMoveEvent.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT()));
 	}
 
@@ -94,8 +94,12 @@ public final class BodyMoveEvent {
 	}
 
 	public Body getBody() {
-		MemorySegment bodyId = b2BodyMoveEvent.asSlice(BODY_ID_OFFSET, Body.LAYOUT());
-		return Box2D.getBody(Body.getBodyId(bodyId), world);
+		Body body = Box2D.getBody(Body.getBodyId(b2BodyMoveEvent, BODY_ID_OFFSET), world);
+
+		if (body != null)
+			return body;
+
+		return new Body(b2BodyMoveEvent, BODY_ID_OFFSET, world);
 	}
 
 	public boolean fellAsleep() {
@@ -105,11 +109,11 @@ public final class BodyMoveEvent {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2BodyMoveEvent;
 	}
-	
+
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

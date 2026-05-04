@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -45,8 +44,7 @@ public final class Version {
 
 	public Version() {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2Version = (MemorySegment) B2_GET_VERSION.invokeExact(allocator);
+			b2Version = (MemorySegment) B2_GET_VERSION.invoke(Arena.ofAuto());
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create version.");
 		}

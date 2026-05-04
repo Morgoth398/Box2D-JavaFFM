@@ -87,6 +87,7 @@ public final class ContactHitEvent {
 
 	public void set(MemorySegment memorySegment, World world) {
 		MemorySegment.copy(memorySegment, 0, b2ContactHitEvent, 0, LAYOUT.byteSize());
+		this.world = world;
 	}
 
 	public Shape getShapeA() {

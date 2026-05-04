@@ -79,7 +79,7 @@ public final class CosSin {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2CosSin.asReadOnly();
+		return b2CosSin;
 	}
 
 	public static CosSin computeCosSin(float radians) {

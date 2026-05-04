@@ -53,7 +53,11 @@ public final class CastOutput {
 	}
 
 	public CastOutput() {
-		b2CastOutput = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public CastOutput(Arena arena) {
+		b2CastOutput = arena.allocate(LAYOUT);
 
 		normal = new Vec2(b2CastOutput.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 		point = new Vec2(b2CastOutput.asSlice(POINT_OFFSET, Vec2.LAYOUT()));

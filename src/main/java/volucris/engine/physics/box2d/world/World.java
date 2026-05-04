@@ -3,7 +3,6 @@ package volucris.engine.physics.box2d.world;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
@@ -84,12 +83,10 @@ public final class World {
 
 	private final MemorySegment b2WorldId;
 
-	private WorldId worldId;
-
 	private ContactListener contactListener;
 	private SensorListener sensorListener;
 	private BodyEventListener bodyListener;
-	
+
 	private Object internalUserData;
 	private Object userData;
 
@@ -153,17 +150,30 @@ public final class World {
 	/**
 	 * Create a world for rigid body simulation.
 	 */
+	public World(Arena arena) {
+		this(new WorldDef(), arena);
+	}
+
+	/**
+	 * Create a world for rigid body simulation.
+	 */
 	public World() {
-		this(new WorldDef());
+		this(new WorldDef(), Arena.ofAuto());
 	}
 
 	/**
 	 * Create a world for rigid body simulation.
 	 */
 	public World(WorldDef worldDef) {
+		this(worldDef, Arena.ofAuto());
+	}
+
+	/**
+	 * Create a world for rigid body simulation.
+	 */
+	public World(WorldDef worldDef, Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2WorldId = (MemorySegment) B2_CREATE_WORLD.invokeExact(allocator, worldDef.memorySegment());
+			b2WorldId = (MemorySegment) B2_CREATE_WORLD.invoke(arena, worldDef.memorySegment());
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create World.");
 		}
@@ -171,22 +181,19 @@ public final class World {
 		vecTmp = new Vec2();
 		vecTmp2 = new Vec2();
 
-		worldId = getWorldId(b2WorldId);
-
-		Box2D.addWorld(this, worldId);
+		Box2D.addWorld(this, getWorldId(b2WorldId));
 	}
 
 	/**
 	 * Destroy a world.
 	 */
 	public void destroyWorld() {
+		Box2D.removeWorld(getWorldId(b2WorldId));
 		try {
 			B2_DESTORY_WORLD.invokeExact(b2WorldId);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot destroy world.");
 		}
-
-		Box2D.removeWorld(worldId);
 	}
 
 	/**
@@ -211,7 +218,7 @@ public final class World {
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot do physics step.");
 		}
-		
+
 		if (contactListener != null)
 			contactListener.handleContactEvents(this);
 		if (sensorListener != null)
@@ -236,8 +243,7 @@ public final class World {
 	 */
 	public BodyEvents getBodyEvents(BodyEvents target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_WORLD_GET_BODY_EVENTS.invokeExact(allocator, b2WorldId);
+			MemorySegment segment = (MemorySegment) B2_WORLD_GET_BODY_EVENTS.invoke(arena, b2WorldId);
 			target.set(segment, this);
 			return target;
 		} catch (Throwable e) {
@@ -250,8 +256,7 @@ public final class World {
 	 */
 	public SensorEvents getSensorEvents(SensorEvents target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_WORLD_GET_SENSOR_EVENTS.invokeExact(allocator, b2WorldId);
+			MemorySegment segment = (MemorySegment) B2_WORLD_GET_SENSOR_EVENTS.invoke(arena, b2WorldId);
 			target.set(segment, this);
 			return target;
 		} catch (Throwable e) {
@@ -264,8 +269,7 @@ public final class World {
 	 */
 	public ContactEvents getContactEvents(ContactEvents target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_WORLD_GET_CONTACT_EVENTS.invokeExact(allocator, b2WorldId);
+			MemorySegment segment = (MemorySegment) B2_WORLD_GET_CONTACT_EVENTS.invoke(arena, b2WorldId);
 			target.set(segment, this);
 			return target;
 		} catch (Throwable e) {
@@ -279,14 +283,13 @@ public final class World {
 	public TreeStats overlapAABB(TreeStats target, AABB aabb, QueryFilter queryFilter, OverlapResultFunction fcn,
 			MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 
 			MemorySegment aabbAddr = aabb.memorySegment();
 			MemorySegment filterAddr = queryFilter.memorySegment();
 			MemorySegment fcnAddr = fcn.memorySegment();
 			MethodHandle method = B2_WORLD_OVERLAP_AABB;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2WorldId, aabbAddr, filterAddr,
-					fcnAddr, context);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2WorldId, aabbAddr, filterAddr, fcnAddr,
+					context);
 
 			target.set(segment);
 			return target;
@@ -308,14 +311,13 @@ public final class World {
 	public TreeStats overlapShape(TreeStats target, ShapeProxy proxy, QueryFilter queryFilter,
 			OverlapResultFunction fcn, MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 
 			MemorySegment proxyAddr = proxy.memorySegment();
 			MemorySegment filterAddr = queryFilter.memorySegment();
 			MemorySegment fcnAddr = fcn.memorySegment();
 			MethodHandle method = B2_WORLD_OVERLAP_SHAPE;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2WorldId, proxyAddr, filterAddr,
-					fcnAddr, context);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2WorldId, proxyAddr, filterAddr, fcnAddr,
+					context);
 
 			target.set(segment);
 			return target;
@@ -338,7 +340,6 @@ public final class World {
 	public TreeStats castRay(TreeStats target, Vector2f origin, Vector2f translation, QueryFilter queryFilter,
 			CastResultFunction fcn, MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
 
 			vecTmp.set(origin);
 			vecTmp2.set(translation);
@@ -348,8 +349,8 @@ public final class World {
 			MemorySegment filterAddr = queryFilter.memorySegment();
 			MemorySegment fcnAddr = fcn.memorySegment();
 			MethodHandle method = B2_WORLD_CAST_RAY;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2WorldId, originAddr,
-					translationAddr, filterAddr, fcnAddr, context);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2WorldId, originAddr, translationAddr,
+					filterAddr, fcnAddr, context);
 
 			target.set(segment);
 			return target;
@@ -371,8 +372,6 @@ public final class World {
 	 */
 	public RayResult castRayClosest(RayResult target, Vector2f origin, Vector2f translation, QueryFilter queryFilter) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			vecTmp.set(origin);
 			vecTmp2.set(translation);
 
@@ -380,8 +379,8 @@ public final class World {
 			MemorySegment translationAddr = vecTmp2.memorySegment();
 			MemorySegment filterAddr = queryFilter.memorySegment();
 			MethodHandle method = B2_WORLD_CAST_RAY_CLOSEST;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2WorldId, originAddr,
-					translationAddr, filterAddr);
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2WorldId, originAddr, translationAddr,
+					filterAddr);
 
 			target.set(segment, this);
 			return target;
@@ -403,8 +402,6 @@ public final class World {
 	public TreeStats castShape(TreeStats target, ShapeProxy proxy, Vector2f translation, QueryFilter filter,
 			CastResultFunction fcn, MemorySegment context) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
 			vecTmp.set(translation);
 
 			MemorySegment proxyAddr = proxy.memorySegment();
@@ -412,7 +409,7 @@ public final class World {
 			MemorySegment filterAddr = filter.memorySegment();
 			MemorySegment fcnAddr = fcn.memorySegment();
 			MethodHandle method = B2_WORLD_CAST_SHAPE;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2WorldId, proxyAddr, translationAddr,
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2WorldId, proxyAddr, translationAddr,
 					filterAddr, fcnAddr, context);
 
 			target.set(segment);
@@ -588,9 +585,8 @@ public final class World {
 	 * Get the gravity vector.
 	 */
 	public Vector2f getGravity(Vector2f target) {
-		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			MemorySegment segment = (MemorySegment) B2_WORLD_GET_GRAVITY.invokeExact(allocator, b2WorldId);
+		try (Arena arena = Arena.ofConfined()) {
+			MemorySegment segment = (MemorySegment) B2_WORLD_GET_GRAVITY.invoke(arena, b2WorldId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -687,9 +683,7 @@ public final class World {
 	 */
 	public Profile getProfile(Profile target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
-			MemorySegment segment = (MemorySegment) B2_WORLD_GET_PROFILE.invokeExact(allocator, b2WorldId);
+			MemorySegment segment = (MemorySegment) B2_WORLD_GET_PROFILE.invoke(arena, b2WorldId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -709,9 +703,7 @@ public final class World {
 	 */
 	public Counters getCounters(Counters target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-
-			MemorySegment segment = (MemorySegment) B2_WORLD_GET_COUNTERS.invokeExact(allocator, b2WorldId);
+			MemorySegment segment = (MemorySegment) B2_WORLD_GET_COUNTERS.invoke(arena, b2WorldId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -832,21 +824,17 @@ public final class World {
 	public void setContactListener(ContactListener contactListener) {
 		this.contactListener = contactListener;
 	}
-	
+
 	public void setSensorListener(SensorListener sensorListener) {
 		this.sensorListener = sensorListener;
 	}
-	
+
 	public void setBodyListener(BodyEventListener bodyListener) {
 		this.bodyListener = bodyListener;
 	}
-	
+
 	public MemorySegment memorySegment() {
 		return b2WorldId;
-	}
-
-	public WorldId getWorldId() {
-		return worldId;
 	}
 
 	public static StructLayout LAYOUT() {

@@ -37,7 +37,11 @@ public final class Plane {
 	}
 
 	public Plane() {
-		b2Plane = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Plane(Arena arena) {
+		b2Plane = arena.allocate(LAYOUT);
 		
 		normal = new Vec2(b2Plane.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 	}

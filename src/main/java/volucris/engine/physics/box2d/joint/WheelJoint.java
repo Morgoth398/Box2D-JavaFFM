@@ -2,7 +2,6 @@ package volucris.engine.physics.box2d.joint;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 
 import volucris.engine.physics.box2d.world.World;
@@ -57,22 +56,24 @@ public final class WheelJoint extends Joint {
 		//@formatter:on
 	}
 
+	public WheelJoint(World world, WheelJointDef wheelJointDef) {
+		this(world, wheelJointDef, Arena.ofAuto());
+	}
+	
 	/**
 	 * Create a wheel joint.
 	 */
-	public WheelJoint(World world, WheelJointDef wheelJointDef) {
+	public WheelJoint(World world, WheelJointDef wheelJointDef, Arena arena) {
 		MemorySegment b2WheelJoint;
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-
 			MemorySegment worldAddr = world.memorySegment();
 			MemorySegment defAddr = wheelJointDef.memorySegment();
 
-			b2WheelJoint = (MemorySegment) B2_CREATE_WHEEL_JOINT.invokeExact(allocator, worldAddr, defAddr);
+			b2WheelJoint = (MemorySegment) B2_CREATE_WHEEL_JOINT.invoke(arena, worldAddr, defAddr);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create wheel joint.");
 		}
-		super(b2WheelJoint, world);
+		super(b2WheelJoint, world, arena);
 	}
 
 	/**

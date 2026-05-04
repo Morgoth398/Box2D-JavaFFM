@@ -206,7 +206,7 @@ public final class ManifoldPoint {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ManifoldPoint.asReadOnly();
+		return b2ManifoldPoint;
 	}
 
 	public static StructLayout LAYOUT() {

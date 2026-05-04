@@ -91,7 +91,11 @@ public final class Profile {
 	}
 
 	public Profile() {
-		b2Profile = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Profile(Arena arena) {
+		b2Profile = arena.allocate(LAYOUT);
 	}
 
 	public Profile(MemorySegment memorySegment) {

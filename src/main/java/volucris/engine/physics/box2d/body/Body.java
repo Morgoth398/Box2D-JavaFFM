@@ -4,8 +4,8 @@ import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
+import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
@@ -101,8 +101,6 @@ public final class Body {
 
 	private final MemorySegment b2BodyId;
 
-	private BodyId bodyId;
-
 	private World world;
 
 	private Object internalUserData;
@@ -122,9 +120,9 @@ public final class Body {
 					JAVA_SHORT.withName("generation")
 				).withName("b2BodyId");
 
-		INDEX_1 = varHandle(BODY_ID_LAYOUT, "index1");
-		WORLD_0 = varHandle(BODY_ID_LAYOUT, "world0");
-		GENERATION = varHandle(BODY_ID_LAYOUT, "generation");
+		INDEX_1 = BODY_ID_LAYOUT.varHandle(PathElement.groupElement("index1"));
+		WORLD_0 = BODY_ID_LAYOUT.varHandle(PathElement.groupElement("world0"));
+		GENERATION = BODY_ID_LAYOUT.varHandle(PathElement.groupElement("generation"));
 		
 		B2_CREATE_BODY = downcallHandle("b2CreateBody", BODY_ID_LAYOUT, World.LAYOUT(), ADDRESS);
 		B2_DESTROY_BODY = downcallHandleVoid("b2DestroyBody", BODY_ID_LAYOUT);
@@ -196,12 +194,17 @@ public final class Body {
 	 * Create a rigid body given a definition.
 	 */
 	public Body(World world, BodyDef bodyDef) {
+		this(world, bodyDef, Arena.ofAuto());
+	}
+
+	/**
+	 * Create a rigid body given a definition.
+	 */
+	public Body(World world, BodyDef bodyDef, Arena arena) {
 		try {
-			Arena arena = Arena.ofAuto();
 			MemorySegment worldSegment = world.memorySegment();
 			MemorySegment bodyDefSegment = bodyDef.memorySegment();
-			b2BodyId = (MemorySegment) B2_CREATE_BODY.invokeExact((SegmentAllocator) arena, worldSegment,
-					bodyDefSegment);
+			b2BodyId = (MemorySegment) B2_CREATE_BODY.invoke(arena, worldSegment, bodyDefSegment);
 
 			vecTmp = new Vec2(arena);
 			vecTmp2 = new Vec2(arena);
@@ -210,30 +213,54 @@ public final class Body {
 			throw new VolucrisRuntimeException("Box2D: Cannot create body.");
 		}
 
-		this.bodyId = getBodyId(b2BodyId);
 		this.world = world;
 
-		Box2D.addBody(this, bodyId, world);
+		Box2D.addBody(this, getBodyId(b2BodyId), world);
 	}
 
 	/**
-	 * Create a rigid body given with the default definition.
+	 * Create a rigid body with the default definition.
 	 */
 	public Body(World world) {
 		this(world, new BodyDef());
 	}
 
 	/**
-	 * Create the rigid body given a definition.
+	 * Create a rigid body given with the default definition.
+	 */
+	public Body(World world, Arena arena) {
+		this(world, new BodyDef(arena), arena);
+	}
+
+	public Body(MemorySegment segment, long offset, World world) {
+		Arena arena = Arena.ofAuto();
+		
+		b2BodyId = arena.allocate(BODY_ID_LAYOUT);
+		MemorySegment.copy(segment, offset, b2BodyId, 0, BODY_ID_LAYOUT.byteSize());
+		
+		vecTmp = new Vec2(arena);
+		vecTmp2 = new Vec2(arena);
+		rotTmp = new Rot(arena);
+		
+		this.world = world;
+
+		Box2D.addBody(this, getBodyId(b2BodyId), world);
+	}
+	
+	/**
+	 * Destroy the rigid body..
+	 * <p>
+	 * This destroys all shapes and joints attached to the body. Do not keep
+	 * references to the associated shapes and joints.
 	 */
 	public void destroyBody() {
+		Box2D.removeBody(getBodyId(b2BodyId), world);
+
 		try {
 			B2_DESTROY_BODY.invokeExact(b2BodyId);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot destroy body.");
 		}
-
-		Box2D.removeBody(bodyId, world);
 	}
 
 	/**
@@ -282,8 +309,7 @@ public final class Body {
 	 */
 	public void setName(String name) {
 		try (Arena arena = Arena.ofConfined()) {
-			MemorySegment nativeString = arena.allocateFrom(name);
-			B2_BODY_SET_NAME.invokeExact(b2BodyId, nativeString);
+			B2_BODY_SET_NAME.invokeExact(b2BodyId, arena.allocateFrom(name));
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot set body name.");
 		}
@@ -303,8 +329,6 @@ public final class Body {
 
 	/**
 	 * Set the internal user data for the body.
-	 * <p>
-	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
 		this.internalUserData = internalUserData;
@@ -338,8 +362,7 @@ public final class Body {
 	 */
 	public Vector2f getPosition(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_POSITION.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_POSITION.invoke(arena, b2BodyId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -357,22 +380,14 @@ public final class Body {
 	/**
 	 * Get the world rotation of the body in radians.
 	 */
-	public float getRotationRadians() {
+	public float getRotation() {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_ROTATION.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_ROTATION.invoke(arena, b2BodyId);
 			rotTmp.set(segment);
 			return rotTmp.getAngleRadians();
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot get body rotation.");
 		}
-	}
-
-	/**
-	 * Get the world rotation of the body in degrees.
-	 */
-	public float getRotation() {
-		return MathUtils.toDegrees(getRotationRadians());
 	}
 
 	/**
@@ -387,8 +402,7 @@ public final class Body {
 	 */
 	public Transform getTransform(Transform target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_TRANSFORM.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_TRANSFORM.invoke(arena, b2BodyId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -437,9 +451,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			vecTmp.set(worldPoint);
 
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_BODY_GET_LOCAL_POINT;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2BodyId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2BodyId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -462,9 +475,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			vecTmp.set(localPoint);
 
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_BODY_GET_WORLD_POINT;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2BodyId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2BodyId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -487,9 +499,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			vecTmp.set(worldVector);
 
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_BODY_GET_LOCAL_VECTOR;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2BodyId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2BodyId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -512,9 +523,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			vecTmp.set(localVector);
 
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_BODY_GET_WORLD_VECTOR;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2BodyId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2BodyId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -536,8 +546,7 @@ public final class Body {
 	 */
 	public Vector2f getLinearVelocity(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_LINEAR_VELOCITY.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_LINEAR_VELOCITY.invoke(arena, b2BodyId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -613,9 +622,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			vecTmp.set(localPoint);
 
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_BODY_GET_LOCAL_POINT_VELOCITY;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2BodyId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2BodyId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -640,9 +648,8 @@ public final class Body {
 		try (Arena arena = Arena.ofConfined()) {
 			vecTmp.set(worldPoint);
 
-			SegmentAllocator allocator = arena;
 			MethodHandle method = B2_BODY_GET_WORLD_POINT_VELOCITY;
-			MemorySegment segment = (MemorySegment) method.invokeExact(allocator, b2BodyId, vecTmp.memorySegment());
+			MemorySegment segment = (MemorySegment) method.invoke(arena, b2BodyId, vecTmp.memorySegment());
 
 			vecTmp.set(segment);
 			return vecTmp.get(target);
@@ -758,8 +765,7 @@ public final class Body {
 	 */
 	public Vector2f getLocalCenterOfMass(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_LOCAL_CENTER_OF_MASS.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_LOCAL_CENTER_OF_MASS.invoke(arena, b2BodyId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -779,8 +785,7 @@ public final class Body {
 	 */
 	public Vector2f getWorldCenterOfMass(Vector2f target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_WORLD_CENTER_OF_MASS.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_WORLD_CENTER_OF_MASS.invoke(arena, b2BodyId);
 			vecTmp.set(segment);
 			return vecTmp.get(target);
 		} catch (Throwable e) {
@@ -811,8 +816,7 @@ public final class Body {
 	 */
 	public MassData getMassData(MassData target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_GET_MASS_DATA.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_GET_MASS_DATA.invoke(arena, b2BodyId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -1097,18 +1101,25 @@ public final class Body {
 	 * Get all shapes on this body, up to the provided capacity.
 	 */
 	public int getShapes(Shape[] target) {
+		return getShapes(target, Arena.ofAuto());
+	}
+
+	/**
+	 * Get all shapes on this body, up to the provided capacity.
+	 */
+	public int getShapes(Shape[] target, Arena shapeArena) {
 		try (Arena arena = Arena.ofConfined()) {
 			MemorySegment array = arena.allocate(MemoryLayout.sequenceLayout(target.length, Shape.LAYOUT()));
 			int count = (int) B2_BODY_GET_SHAPES.invokeExact(b2BodyId, array, target.length);
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * Shape.LAYOUT().byteSize();
-				MemorySegment arraySegment = array.asSlice(offset, Shape.LAYOUT());
-				Shape shape = Box2D.getShape(Shape.getShapeId(arraySegment), world);
+
+				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), world);
 
 				if (shape == null) {
-					MemorySegment shapeSegment = Arena.ofAuto().allocate(Shape.LAYOUT());
-					MemorySegment.copy(arraySegment, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
+					MemorySegment shapeSegment = shapeArena.allocate(Shape.LAYOUT());
+					MemorySegment.copy(array, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
 					target[i] = new Shape(shapeSegment, this);
 				} else {
 					target[i] = shape;
@@ -1116,7 +1127,7 @@ public final class Body {
 			}
 			return count;
 		} catch (Throwable e) {
-			throw new VolucrisRuntimeException("Box2D: Cannot get shapes.");
+			throw new VolucrisRuntimeException("Box2D: Cannot get shapes.", e);
 		}
 	}
 
@@ -1135,15 +1146,28 @@ public final class Body {
 	 * Get all joints on this body, up to the provided capacity.
 	 */
 	public int getJoints(Joint[] target) {
+		return getJoints(target, Arena.ofAuto());
+	}
+
+	/**
+	 * Get all joints on this body, up to the provided capacity.
+	 */
+	public int getJoints(Joint[] target, Arena jointArena) {
 		try (Arena arena = Arena.ofConfined()) {
 			MemorySegment array = arena.allocate(MemoryLayout.sequenceLayout(target.length, Joint.LAYOUT()));
 			int count = (int) B2_BODY_GET_JOINTS.invokeExact(b2BodyId, array, target.length);
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * Joint.LAYOUT().byteSize();
-				MemorySegment segment = array.asSlice(offset, Joint.LAYOUT());
-				Joint joint = Box2D.getJoint(Joint.getJointId(segment), world);
-				target[i] = joint;
+				Joint joint = Box2D.getJoint(Joint.getJointId(array, offset), world);
+
+				if (joint == null) {
+					MemorySegment shapeSegment = jointArena.allocate(Joint.LAYOUT());
+					MemorySegment.copy(array, offset, shapeSegment, 0L, Joint.LAYOUT().byteSize());
+					target[i] = new Joint(shapeSegment, world, jointArena);
+				} else {
+					target[i] = joint;
+				}
 			}
 
 			return count;
@@ -1175,12 +1199,11 @@ public final class Body {
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * ContactData.LAYOUT().byteSize();
-				MemorySegment dataSegment = array.asSlice(offset, ContactData.LAYOUT());
 
 				if (target[i] == null)
 					target[i] = new ContactData();
-				
-				target[i].set(dataSegment, world);
+
+				MemorySegment.copy(array, offset, target[i].memorySegment(), 0, ContactData.LAYOUT().byteSize());
 			}
 
 			return count;
@@ -1194,8 +1217,7 @@ public final class Body {
 	 */
 	public AABB computeAABB(AABB target) {
 		try (Arena arena = Arena.ofConfined()) {
-			SegmentAllocator allocator = arena;
-			MemorySegment segment = (MemorySegment) B2_BODY_COMPUTE_AABB.invokeExact(allocator, b2BodyId);
+			MemorySegment segment = (MemorySegment) B2_BODY_COMPUTE_AABB.invoke(arena, b2BodyId);
 			target.set(segment);
 			return target;
 		} catch (Throwable e) {
@@ -1219,9 +1241,13 @@ public final class Body {
 	}
 
 	public static BodyId getBodyId(MemorySegment memorySegment) {
-		int index1 = (int) INDEX_1.get(memorySegment);
-		short world0 = (short) WORLD_0.get(memorySegment);
-		short generation = (short) GENERATION.get(memorySegment);
+		return getBodyId(memorySegment, 0L);
+	}
+
+	public static BodyId getBodyId(MemorySegment memorySegment, long offset) {
+		int index1 = (int) INDEX_1.get(memorySegment, offset);
+		short world0 = (short) WORLD_0.get(memorySegment, offset);
+		short generation = (short) GENERATION.get(memorySegment, offset);
 		return new BodyId(index1, world0, generation);
 	}
 

@@ -55,7 +55,11 @@ public final class ShapeCastInput {
 	}
 
 	public ShapeCastInput() {
-		b2ShapeCastInput = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public ShapeCastInput(Arena arena) {
+		b2ShapeCastInput = arena.allocate(LAYOUT);
 
 		proxy = new ShapeProxy(b2ShapeCastInput.asSlice(PROXY_OFFSET, ShapeProxy.LAYOUT()));
 		translation = new Vec2(b2ShapeCastInput.asSlice(TRANSLATION_OFFSET, Vec2.LAYOUT()));
@@ -138,7 +142,7 @@ public final class ShapeCastInput {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ShapeCastInput.asReadOnly();
+		return b2ShapeCastInput;
 	}
 
 	public static StructLayout LAYOUT() {

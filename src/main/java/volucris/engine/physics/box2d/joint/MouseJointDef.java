@@ -5,7 +5,6 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.StructLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
@@ -76,9 +75,12 @@ public final class MouseJointDef {
 	}
 
 	public MouseJointDef() {
+		this(Arena.ofAuto());
+	}
+	
+	public MouseJointDef(Arena arena) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2MouseJointDef = (MemorySegment) B2_DEFAULT_MOUSE_JOINT_DEF.invokeExact(allocator);
+			b2MouseJointDef = (MemorySegment) B2_DEFAULT_MOUSE_JOINT_DEF.invoke(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create motor joint def.");
 		}
