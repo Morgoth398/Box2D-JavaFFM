@@ -1,0 +1,20 @@
+naming:
+  strip-prefixes:
+    - b2World_
+    - b2Shape_
+    - b2Rot_
+    - b2AABB_
+    - b2WeldJoint_
+    - b2RevoluteJoint_
+    - b2PrismaticJoint_
+    - b2FilterJoint_
+    - b2MouseJoint_
+    - b2MotorJoint_
+    - b2DistanceJoint_
+    - b2Joint_
+    - b2DynamicTree_
+    - b2Body_
+    - B2_
+    - b2_
+    - b2
+  strip-postfixes:

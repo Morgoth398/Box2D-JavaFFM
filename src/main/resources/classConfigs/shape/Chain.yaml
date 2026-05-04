@@ -1,0 +1,42 @@
+class-description:
+  name: Chain
+  package-name: volucris.bindings.box2d.shape
+  directory: src/main/java/volucris/bindings/box2d/shape
+  is-static: true
+  static-native-methods: false
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: true
+  instance-parameter:
+
+imports:
+  - volucris.bindings.box2d.body.BodyId
+  - volucris.bindings.box2d.world.WorldId
+static-imports:
+  - java.lang.foreign.ValueLayout.*
+  - volucris.bindings.core.FFMUtils.*
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+  - b2Chain_
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+  
+native-functions:
+  - name: b2CreateChain
+  - name: b2DestroyChain
+native-function-pointers:

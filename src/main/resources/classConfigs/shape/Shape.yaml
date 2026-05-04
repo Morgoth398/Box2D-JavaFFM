@@ -1,0 +1,56 @@
+class-description:
+  name: Shape
+  package-name: volucris.bindings.box2d.shape
+  directory: src/main/java/volucris/bindings/box2d/shape
+  is-static: true
+  static-native-methods: false
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: true
+  instance-parameter:
+
+imports:
+  - volucris.bindings.box2d.math.Vec2
+  - volucris.bindings.box2d.body.BodyId
+  - volucris.bindings.box2d.world.WorldId
+  - volucris.bindings.box2d.geometry.CastOutput
+  - volucris.bindings.box2d.geometry.Circle
+  - volucris.bindings.box2d.geometry.Segment
+  - volucris.bindings.box2d.geometry.ChainSegment
+  - volucris.bindings.box2d.geometry.Capsule
+  - volucris.bindings.box2d.geometry.Polygon
+  - volucris.bindings.box2d.math.AABB
+  - volucris.bindings.box2d.geometry.MassData
+  - volucris.bindings.box2d.geometry.RayCastInput
+  - volucris.bindings.box2d.events.ContactData
+static-imports:
+  - java.lang.foreign.ValueLayout.*
+  - volucris.bindings.core.FFMUtils.*
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+  - b2Shape_
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+  
+native-functions:
+  - name: b2CreateCircleShape
+  - name: b2CreateSegmentShape
+  - name: b2CreateCapsuleShape
+  - name: b2CreatePolygonShape
+  - name: b2DestroyShape
+native-function-pointers:

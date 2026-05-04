@@ -1,0 +1,59 @@
+class-description:
+  name: Body
+  package-name: volucris.bindings.box2d.body
+  directory: src/main/java/volucris/bindings/box2d/body
+  is-static: true
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: true
+  instance-parameter:
+
+imports:
+  - volucris.bindings.box2d.math.Vec2
+  - volucris.bindings.box2d.shape.ShapeId
+  - volucris.bindings.box2d.geometry.MassData
+  - volucris.bindings.box2d.math.AABB
+  - volucris.bindings.box2d.math.Rot
+  - volucris.bindings.box2d.math.Transform
+  - volucris.bindings.box2d.math.Vec2
+  - volucris.bindings.box2d.world.WorldId
+  - volucris.bindings.box2d.joint.JointId
+  - volucris.bindings.box2d.events.ContactData
+static-imports:
+  - java.lang.foreign.ValueLayout.*
+  - volucris.bindings.core.FFMUtils.*
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+  - b2Body_
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+native-functions:
+  - name: b2CreateBody
+  - name: b2DestroyBody
+  - name: b2Body_GetJoints
+    struct-arrays:
+      - jointArray
+  - name: b2Body_SetName
+    string-parameters:
+      - name
+  - name: b2Body_GetName
+    string-return-type: true
+  - name: b2Body_GetShapes
+    struct-arrays:
+      - shapeArray
+native-function-pointers:

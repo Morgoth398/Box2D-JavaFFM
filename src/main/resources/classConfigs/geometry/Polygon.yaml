@@ -1,0 +1,64 @@
+class-description:
+  name: Polygon
+  package-name: volucris.bindings.box2d.geometry
+  directory: src/main/java/volucris/bindings/box2d/geometry
+  is-static: false
+  static-native-methods: false
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: true
+  instance-parameter: shape
+
+imports:
+  - volucris.bindings.box2d.math.Vec2
+  - volucris.bindings.box2d.math.Rot
+  - volucris.bindings.box2d.math.Transform
+static-imports:
+  - java.lang.foreign.ValueLayout.*
+  - volucris.bindings.core.FFMUtils.*
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+  - name: B2_MAX_POLYGON_VERTICES
+    type: int
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+  name: b2Polygon
+  
+native-functions:
+  - name: b2MakePolygon
+    is-static: true
+  - name: b2MakeOffsetPolygon
+    is-static: true
+  - name: b2MakeOffsetRoundedPolygon
+    is-static: true
+  - name: b2MakeSquare
+    is-static: true
+  - name: b2MakeBox
+    is-static: true
+  - name: b2MakeRoundedBox
+    is-static: true
+  - name: b2MakeOffsetBox
+    is-static: true
+  - name: b2MakeOffsetRoundedBox
+    is-static: true
+  - name: b2TransformPolygon
+    is-static: true
+  - name: b2PointInPolygon
+  - name: b2RayCastPolygon
+  - name: b2ShapeCastPolygon
+native-function-pointers:

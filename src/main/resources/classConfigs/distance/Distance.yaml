@@ -1,0 +1,48 @@
+class-description:
+  name: Distance
+  package-name: volucris.bindings.box2d.distance
+  directory: src/main/java/volucris/bindings/box2d/distance
+  is-static: true
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: true
+  instance-parameter:
+
+imports:
+  - volucris.bindings.box2d.math.Vec2
+  - volucris.bindings.box2d.geometry.CastOutput
+  - volucris.bindings.box2d.geometry.ShapeProxy
+  - volucris.bindings.box2d.math.Transform
+  - volucris.bindings.box2d.math.Rot
+static-imports:
+  - java.lang.foreign.ValueLayout.*
+  - volucris.bindings.core.FFMUtils.*
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+  
+native-functions:
+  - name: b2SegmentDistance
+  - name: b2ShapeDistance
+  - name: b2ShapeCast
+  - name: b2MakeProxy
+  - name: b2MakeOffsetProxy
+  - name: b2GetSweepTransform
+  - name: b2TimeOfImpact
+native-function-pointers:

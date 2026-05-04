@@ -1,0 +1,41 @@
+class-description:
+  name: MouseJoint
+  package-name: volucris.bindings.box2d.joint
+  directory: src/main/java/volucris/bindings/box2d/joint
+  is-static: true
+  static-native-methods: false
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: true
+  instance-parameter:
+
+imports:
+  - volucris.bindings.box2d.world.WorldId
+  - volucris.bindings.box2d.math.Vec2
+static-imports:
+  - java.lang.foreign.ValueLayout.*
+  - volucris.bindings.core.FFMUtils.*
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+  - b2MouseJoint_
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+  
+native-functions:
+  - name: b2CreateMouseJoint
+native-function-pointers:

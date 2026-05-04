@@ -1,0 +1,4 @@
+package-name: volucris.bindings.box2d.enums
+directory: src/main/java/volucris/bindings/box2d/enums
+generate-all: true
+configs:

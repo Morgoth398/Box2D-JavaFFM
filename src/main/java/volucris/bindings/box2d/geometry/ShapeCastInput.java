@@ -1,0 +1,172 @@
+/*
+ * MACHINE GENERATED FILE, DO NOT EDIT.
+ */
+package volucris.bindings.box2d.geometry;
+
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.StructLayout;
+import java.lang.invoke.VarHandle;
+import java.util.function.Consumer;
+import volucris.bindings.box2d.math.Vec2;
+import volucris.bindings.core.NativeStructArray;
+import volucris.bindings.core.Struct;
+
+import static java.lang.foreign.ValueLayout.*;
+
+/**
+ * Low level shape cast input in generic form. This allows casting an arbitrary point cloud wrap with a radius. For example, a circle is a single point with a non-zero radius. A capsule is two points with a non-zero radius. A box is four points with a zero radius.
+ */
+public final class ShapeCastInput
+		implements Struct<ShapeCastInput> {
+
+    public static final StructLayout LAYOUT;
+
+    public static final VarHandle MAX_FRACTION;
+    public static final VarHandle CAN_ENCROACH;
+
+    public static final long PROXY_OFFSET;
+    public static final long TRANSLATION_OFFSET;
+    public static final long MAX_FRACTION_OFFSET;
+    public static final long CAN_ENCROACH_OFFSET;
+
+    private final MemorySegment segment;
+
+    private final ShapeProxy proxy;
+    private final Vec2 translation;
+
+    static {
+        //@formatter:off
+        LAYOUT = MemoryLayout.structLayout(
+            ShapeProxy.LAYOUT.withName("proxy"),
+            Vec2.LAYOUT.withName("translation"),
+            JAVA_FLOAT.withName("maxFraction"),
+            JAVA_BOOLEAN.withName("canEncroach"),
+            MemoryLayout.paddingLayout(3)
+        ).withName("b2ShapeCastInput").withByteAlignment(4);
+        
+        MAX_FRACTION = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+        CAN_ENCROACH = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
+        
+        PROXY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxy"));
+        TRANSLATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
+        MAX_FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+        CAN_ENCROACH_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
+        //@formatter:on
+    }
+
+    public ShapeCastInput() {
+        this(Arena.ofAuto());
+    }
+    
+    public ShapeCastInput(Arena arena) {
+        this(arena.allocate(LAYOUT));
+    }
+    
+    public ShapeCastInput(MemorySegment segment) {
+        this.segment = segment;
+    
+        proxy = new ShapeProxy(segment.asSlice(PROXY_OFFSET, ShapeProxy.LAYOUT));
+        translation = new Vec2(segment.asSlice(TRANSLATION_OFFSET, Vec2.LAYOUT));
+    }
+
+    public ShapeCastInput maxFraction(float maxFraction) {
+        MAX_FRACTION.set(segment, 0L, maxFraction);
+        return this;
+    }
+    
+    public float maxFraction() {
+        return (float) MAX_FRACTION.get(segment, 0L);
+    }
+    
+    public ShapeCastInput canEncroach(boolean canEncroach) {
+        CAN_ENCROACH.set(segment, 0L, canEncroach);
+        return this;
+    }
+    
+    public boolean canEncroach() {
+        return (boolean) CAN_ENCROACH.get(segment, 0L);
+    }
+    
+    public ShapeCastInput proxy(Consumer<ShapeProxy> consumer) {
+        consumer.accept(proxy);
+        return this;
+    }
+    
+    public ShapeCastInput proxy(ShapeProxy other) {
+        proxy.set(other);
+        return this;
+    }
+    
+    public ShapeProxy proxy() {
+        return proxy;
+    }
+    
+    public ShapeCastInput translation(Consumer<Vec2> consumer) {
+        consumer.accept(translation);
+        return this;
+    }
+    
+    public ShapeCastInput translation(Vec2 other) {
+        translation.set(other);
+        return this;
+    }
+    
+    public Vec2 translation() {
+        return translation;
+    }
+    
+    @Override
+    public ShapeCastInput set(ShapeCastInput other) {
+        return set(other.segment);
+    }
+    
+    @Override
+    public ShapeCastInput set(MemorySegment src) {
+        MemorySegment.copy(src, 0L, segment, 0L, LAYOUT.byteSize());
+        return this;
+    }
+    
+    @Override
+    public MemorySegment memorySegment() {
+        return segment;
+    }
+    
+    public NativeStructArray<ShapeCastInput> asArray() {
+        return new NativeStructArray<>(this);
+    }
+    
+    public static NativeStructArray<ShapeCastInput> array(Arena arena, int count) {
+        return new NativeStructArray<>(
+            arena,
+            LAYOUT,
+            segment -> new ShapeCastInput(segment),
+            count
+        );
+    }
+    
+    public static NativeStructArray<ShapeCastInput> array(Arena arena, ShapeCastInput... structs) {
+        NativeStructArray<ShapeCastInput> array = new NativeStructArray<>(
+            arena,
+            LAYOUT,
+            segment -> new ShapeCastInput(segment),
+            structs.length
+        );
+    
+        for (int i = 0; i < structs.length; i++) {
+            array.set(i, structs[i]);
+        }
+    
+        return array;
+    }
+    
+    public static NativeStructArray<ShapeCastInput> array(MemorySegment array) {
+        return new NativeStructArray<>(
+            array,
+            LAYOUT,
+            segment -> new ShapeCastInput(segment)
+        );
+    }
+    
+}

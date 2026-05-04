@@ -1,74 +1,95 @@
 # Box2D-JavaFFM
-This project provides Java bindings for  [Box2D](https://box2d.org/) 3.1.1 using the Java FFM API. 
-All implemented functions can be found in 'AllFunctions.txt'.
+This project provides Java bindings for  [Box2D](https://box2d.org/) using the Java FFM API.
 
 # Supported Platforms
 Windows and Linux are directly supported. The Linux .so file was built on Linux Mint 22.2.
 Nevertheless, you can use these bindings for Mac if you provide your own .dylib file and load it.
 
-If you build your own dynamic library file for Box2D, make sure to additionally export the function 'b2Atan2' as the bindings make use of it.
-
 # Usage
-This project requires Java 25.
+This project requires Java 26 and preview features enabled.
 
-Before using the bindings (and even loading the bindings classes), you need to call 'Box2D.init()' or load the native library yourself.
+Before calling any method you need to load the native library. For Windows and Linux you can call `Box2D.loadNativeLibrary()`.
+
 My implementation of a native library loader makes use of some  [LWJGL](https://www.lwjgl.org/) configurations. To set the extract directory of
-the native library, change 'Configuration.SHARED_LIBRARY_EXTRACT_PATH'. 
+the native library, change `Configuration.SHARED_LIBRARY_EXTRACT_PATH`. 
 
-Due to the introduction of  [restricted methods](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/doc-files/RestrictedMethods.html), it is recommended (and in later versions required) to run the application with the VM argument '--enable-native-access=ALL-UNNAMED'.
+Due to the introduction of  [restricted methods](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/doc-files/RestrictedMethods.html), it is recommended (and in later versions required) to run the application with the VM argument `--enable-native-access=ALL-UNNAMED`.
 
 # Memory Management
-When creating an object, native memory will be allocated. An automatic arena will be used by default, but you can change that with one of the given constructors.
+When creating an object, native memory will be allocated.
 
-A confined arena may be preferred for short-lived objects like body or shape definitions.
+Structs are always allocated with an arena. By default an automatic arena is used, but you can use any arena you want (even a global arena, but this may not be desirable) by using the appropriate constructor.
 
-Nevertheless, it is important that the memory allocated by an instance stay alive as long as the instance is in use.
+When a struct is allocated through a native function call, the first parameter is always a `SegmentAllocator` (a parent type of an arena). This parameter is not part of the original C function signature and is added automatically in Java.
 
 # Example
 This is a port of the  [Hello Box2D](https://box2d.org/documentation/hello.html) introduction.
 
 ```Java
-Box2D.init();		
+public class HelloBox2D {
 
-WorldDef worldDef = new WorldDef();
-worldDef.setGravity(0, -10);
+	public static void main(String[] args) {
 
-World world = new World(worldDef);
+		HelloBox2D helloBox2D = new HelloBox2D();
+		helloBox2D.run();
+		helloBox2D.dispose();
 
-BodyDef groundBodyDef = new BodyDef();
-groundBodyDef.setPosition(0, -10);
+	}
 
-Body groundBody = new Body(world, groundBodyDef);	
-Polygon groundBox = Polygon.makeBox(50, 10);
-ShapeDef groundShapeDef = new ShapeDef();
-new Shape(groundBody, groundShapeDef, groundBox);
+	private WorldId worldId;
+	
+	private BodyId groundBodyId;
+	private BodyId dynamicBodyId;
+	
+	public HelloBox2D() {
+		Box2D.loadNativeLibrary();
+		
+		try (Arena arena = Arena.ofConfined()) {
+			WorldDef worldDef = WorldDef.defaultWorldDef(arena)
+					.gravity(g -> g.x(0).y(-10));
+			worldId = World.createWorld(Arena.ofAuto(), worldDef);
+			
+			BodyDef groundBodyDef = BodyDef.defaultBodyDef(arena)
+					.position(p -> p.x(0).y(-10));
+			groundBodyId = Body.createBody(Arena.ofAuto(), worldId, groundBodyDef);
+			
+			Polygon groundBox = Polygon.makeBox(arena, 50, 10);
+			ShapeDef groundShapeDef = ShapeDef.defaultShapeDef(arena);	
+			Shape.createPolygonShape(arena, groundBodyId, groundShapeDef, groundBox);
+			
+			BodyDef dynamicBodyDef = BodyDef.defaultBodyDef(arena)
+					.type(BodyType.DYNAMIC_BODY)
+					.position(p -> p.x(0).y(4));
+			dynamicBodyId = Body.createBody(Arena.ofAuto(), worldId, dynamicBodyDef);
+			
+			Polygon dynamicBox = Polygon.makeBox(arena, 1, 1);
+			ShapeDef dynamicShapeDef = ShapeDef.defaultShapeDef(arena)
+					.density(1)
+					.material(m -> m.friction(0.4f));
+			Shape.createPolygonShape(arena, dynamicBodyId, dynamicShapeDef, dynamicBox);
+		}
+	}
+	
+	public void run() {
+		float timeStep = 1 / 60f;
+		int subStepCount = 4;
 
-BodyDef bodyDef = new BodyDef();
-bodyDef.setType(BodyType.DYNAMIC_BODY);
-bodyDef.setPosition(0, 4);
-
-Body body = new Body(world, bodyDef);
-Polygon dynamicBox = Polygon.makeBox(1, 1);
-ShapeDef shapeDef = new ShapeDef();
-shapeDef.setDensity(1);
-shapeDef.getSurfaceMaterial().setFriction(0.4f);
-new Shape(body, shapeDef, dynamicBox);
-
-float timeStep = 1 / 60f;
-int subStepCount = 4;
-
-Vector2f position = new Vector2f();
-
-for (int i = 0; i < 90; i++) {
-	world.step(timeStep, subStepCount);
-	body.getPosition(position);
-	float rotation = body.getRotation();
-	System.out.println(position.x + " " + position.y + " " + rotation);
+		for (int i = 0; i < 90; i++) {
+			World.step(worldId, timeStep, subStepCount);
+			
+			try (Arena arena = Arena.ofConfined()) {
+				Vec2 position = Body.getPosition(arena, dynamicBodyId);
+				Rot rotation = Body.getRotation(arena, dynamicBodyId);
+				
+				double angle = Box2DMath.atan2(rotation.s(), rotation.c());
+				System.out.println(position.x() + ", " + position.y() + ", " + angle);
+			}
+		}
+	}
+	
+	public void dispose() {
+		World.destroyWorld(worldId);
+	}
+	
 }
-
-world.destroyWorld();
-
 ```
-
-# Implementation
-I made these bindings as part of my own game engine (therefore the package naming). Because I use  [Joml](https://github.com/JOML-CI/JOML) as the math library of this engine, it is the math library used in these bindings. Even if the default Box2D math classes exist, they are only used internally to pass the values to the C code. Feel free to change the package name and the math library if it does not fit your project.

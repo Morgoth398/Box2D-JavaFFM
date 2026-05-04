@@ -1,0 +1,130 @@
+/*
+ * MACHINE GENERATED FILE, DO NOT EDIT.
+ */
+package volucris.bindings.box2d.math;
+
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.StructLayout;
+import java.lang.invoke.VarHandle;
+import volucris.bindings.core.NativeStructArray;
+import volucris.bindings.core.Struct;
+
+import static java.lang.foreign.ValueLayout.*;
+
+/**
+ * Cosine and sine pair This uses a custom implementation designed for cross-platform determinism
+ */
+public final class CosSin
+		implements Struct<CosSin> {
+
+    public static final StructLayout LAYOUT;
+
+    public static final VarHandle COSINE;
+    public static final VarHandle SINE;
+
+    public static final long COSINE_OFFSET;
+    public static final long SINE_OFFSET;
+
+    private final MemorySegment segment;
+
+    static {
+        //@formatter:off
+        LAYOUT = MemoryLayout.structLayout(
+            JAVA_FLOAT.withName("cosine"),
+            JAVA_FLOAT.withName("sine")
+        ).withName("b2CosSin").withByteAlignment(4);
+        
+        COSINE = LAYOUT.varHandle(PathElement.groupElement("cosine"));
+        SINE = LAYOUT.varHandle(PathElement.groupElement("sine"));
+        
+        COSINE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cosine"));
+        SINE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sine"));
+        //@formatter:on
+    }
+
+    public CosSin() {
+        this(Arena.ofAuto());
+    }
+    
+    public CosSin(Arena arena) {
+        this(arena.allocate(LAYOUT));
+    }
+    
+    public CosSin(MemorySegment segment) {
+        this.segment = segment;
+    
+    }
+
+    public CosSin cosine(float cosine) {
+        COSINE.set(segment, 0L, cosine);
+        return this;
+    }
+    
+    public float cosine() {
+        return (float) COSINE.get(segment, 0L);
+    }
+    
+    public CosSin sine(float sine) {
+        SINE.set(segment, 0L, sine);
+        return this;
+    }
+    
+    public float sine() {
+        return (float) SINE.get(segment, 0L);
+    }
+    
+    @Override
+    public CosSin set(CosSin other) {
+        return set(other.segment);
+    }
+    
+    @Override
+    public CosSin set(MemorySegment src) {
+        MemorySegment.copy(src, 0L, segment, 0L, LAYOUT.byteSize());
+        return this;
+    }
+    
+    @Override
+    public MemorySegment memorySegment() {
+        return segment;
+    }
+    
+    public NativeStructArray<CosSin> asArray() {
+        return new NativeStructArray<>(this);
+    }
+    
+    public static NativeStructArray<CosSin> array(Arena arena, int count) {
+        return new NativeStructArray<>(
+            arena,
+            LAYOUT,
+            segment -> new CosSin(segment),
+            count
+        );
+    }
+    
+    public static NativeStructArray<CosSin> array(Arena arena, CosSin... structs) {
+        NativeStructArray<CosSin> array = new NativeStructArray<>(
+            arena,
+            LAYOUT,
+            segment -> new CosSin(segment),
+            structs.length
+        );
+    
+        for (int i = 0; i < structs.length; i++) {
+            array.set(i, structs[i]);
+        }
+    
+        return array;
+    }
+    
+    public static NativeStructArray<CosSin> array(MemorySegment array) {
+        return new NativeStructArray<>(
+            array,
+            LAYOUT,
+            segment -> new CosSin(segment)
+        );
+    }
+    
+}
