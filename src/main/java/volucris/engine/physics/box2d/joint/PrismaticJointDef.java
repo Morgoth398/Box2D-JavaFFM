@@ -265,7 +265,7 @@ public final class PrismaticJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2PrismaticJointDef.asReadOnly();
+		return b2PrismaticJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

@@ -70,7 +70,7 @@ public final class Plane {
 	}
 	
 	public MemorySegment memorySegment() {
-		return b2Plane.asReadOnly();
+		return b2Plane;
 	}
 	
 	public static StructLayout LAYOUT() {

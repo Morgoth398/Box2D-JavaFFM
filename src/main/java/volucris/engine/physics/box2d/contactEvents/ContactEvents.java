@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.contactEvents;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -30,18 +31,18 @@ public final class ContactEvents {
 
 	private final MemorySegment b2ContactEvents;
 
-	private World world;
-	
 	private ContactBeginTouchEvent beginEvent;
 	private ContactEndTouchEvent endEvent;
 	private ContactHitEvent hitEvent;
-	
+
 	static {
 		//@formatter:off
+		AddressLayout UNBOUNDED_ADDRESS = ADDRESS.withTargetLayout(MemoryLayout.sequenceLayout(Long.MAX_VALUE, JAVA_BYTE));
+
 		LAYOUT = MemoryLayout.structLayout(
-				ADDRESS.withName("beginEvents"),
-				ADDRESS.withName("endEvents"),
-				ADDRESS.withName("hitEvents"),
+				UNBOUNDED_ADDRESS.withName("beginEvents"),
+				UNBOUNDED_ADDRESS.withName("endEvents"),
+				UNBOUNDED_ADDRESS.withName("hitEvents"),
 		        JAVA_INT.withName("beginCount"),
 		        JAVA_INT.withName("endCount"),
 		        JAVA_INT.withName("hitCount"),
@@ -58,64 +59,86 @@ public final class ContactEvents {
 	}
 
 	public ContactEvents() {
-		b2ContactEvents = Arena.ofAuto().allocate(LAYOUT);
-		
-		beginEvent = new ContactBeginTouchEvent();
-		endEvent = new ContactEndTouchEvent();
-		hitEvent = new ContactHitEvent(); 
+		this(Arena.ofAuto());
+	}
+
+	public ContactEvents(Arena arena) {
+		b2ContactEvents = arena.allocate(LAYOUT);
+
+		beginEvent = new ContactBeginTouchEvent(arena);
+		endEvent = new ContactEndTouchEvent(arena);
+		hitEvent = new ContactHitEvent(arena);
 	}
 
 	public ContactEvents(MemorySegment memorySegment, World world) {
 		this.b2ContactEvents = memorySegment;
-		this.world = world;
+
+		Arena arena = Arena.ofAuto();
+		beginEvent = new ContactBeginTouchEvent(arena);
+		endEvent = new ContactEndTouchEvent(arena);
+		hitEvent = new ContactHitEvent(arena);
+		
+		beginEvent.setWorld(world);
+		endEvent.setWorld(world);
+		hitEvent.setWorld(world);
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		MemorySegment.copy(memorySegment, 0L, b2ContactEvents, 0L, LAYOUT.byteSize());
-		this.world = world;
+		MemorySegment.copy(memorySegment, 0, b2ContactEvents, 0, LAYOUT.byteSize());
+
+		beginEvent.setWorld(world);
+		endEvent.setWorld(world);
+		hitEvent.setWorld(world);
 	}
 
 	public void handleBeginEvents(ContactBeginHandler beginHandler) {
 		int elementCount = getBeginCount();
+
+		if (elementCount == 0)
+			return;
 		
-		long arraySize = elementCount * ContactBeginTouchEvent.LAYOUT().byteSize();
-		MemorySegment array = ((MemorySegment) BEGIN_EVENTS.get(b2ContactEvents)).reinterpret(arraySize);
-		
+		MemorySegment array = (MemorySegment) BEGIN_EVENTS.get(b2ContactEvents);
+
+		long byteSize = ContactBeginTouchEvent.LAYOUT().byteSize();
 		for (int i = 0; i < elementCount; i++) {
-			long offset = i * ContactBeginTouchEvent.LAYOUT().byteSize();
-			beginEvent.set(array.asSlice(offset, ContactBeginTouchEvent.LAYOUT()), world);
+			long offset = i * byteSize;
+			MemorySegment.copy(array, offset, beginEvent.memorySegment(), 0, byteSize);
 			beginHandler.contactBegin(beginEvent);
 		}
 	}
 
 	public void handleEndEvents(ContactEndHandler endHandler) {
 		int elementCount = getEndCount();
+
+		if (elementCount == 0)
+			return;
 		
-		long arraySize = elementCount * ContactEndTouchEvent.LAYOUT().byteSize();
-		MemorySegment array = ((MemorySegment) END_EVENTS.get(b2ContactEvents)).reinterpret(arraySize);
-		
+		MemorySegment array = (MemorySegment) END_EVENTS.get(b2ContactEvents);
+
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * ContactEndTouchEvent.LAYOUT().byteSize();
-			endEvent.set(array.asSlice(offset, ContactEndTouchEvent.LAYOUT()), world);
+			MemorySegment.copy(array, offset, endEvent.memorySegment(), 0, ContactEndTouchEvent.LAYOUT().byteSize());
 			endHandler.contactEnd(endEvent);
 		}
-		
+
 	}
-	
+
 	public void handleHitEvents(ContactHitHandler hitHandler) {
 		int elementCount = getHitCount();
+
+		if (elementCount == 0)
+			return;
 		
-		long arraySize = elementCount * ContactHitEvent.LAYOUT().byteSize();
-		MemorySegment array = ((MemorySegment) HIT_EVENTS.get(b2ContactEvents)).reinterpret(arraySize);
-		
+		MemorySegment array = (MemorySegment) HIT_EVENTS.get(b2ContactEvents);
+
 		for (int i = 0; i < elementCount; i++) {
 			long offset = i * ContactHitEvent.LAYOUT().byteSize();
-			hitEvent.set(array.asSlice(offset, ContactHitEvent.LAYOUT()), world);
+			MemorySegment.copy(array, offset, hitEvent.memorySegment(), 0, ContactHitEvent.LAYOUT().byteSize());
 			hitHandler.contactHit(hitEvent);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Number of begin touch events.
 	 */

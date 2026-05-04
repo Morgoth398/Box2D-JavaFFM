@@ -100,12 +100,7 @@ public final class Capsule {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		float radius = (float) RADIUS.get(memorySegment);
-
-		setRadius(radius);
-
-		center1.set(memorySegment.asSlice(CENTER1_OFFSET, Vec2.LAYOUT()));
-		center2.set(memorySegment.asSlice(CENTER2_OFFSET, Vec2.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2Capsule, 0, LAYOUT.byteSize());
 	}
 
 	/**
@@ -280,7 +275,7 @@ public final class Capsule {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Capsule.asReadOnly();
+		return b2Capsule;
 	}
 
 	public static StructLayout LAYOUT() {

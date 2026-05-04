@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.bodyEvents;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.StructLayout;
@@ -38,11 +39,11 @@ public final class BodyMoveEvent {
 	private static final long TRANSFORM_OFFSET;
 	private static final long BODY_ID_OFFSET;
 
+	private final MemorySegment b2BodyMoveEvent;
+	
 	private final Transform transform;
 
-	private Body body;
-
-	private boolean fellAsleep;
+	private World world;
 
 	static {
 		//@formatter:off
@@ -62,26 +63,25 @@ public final class BodyMoveEvent {
 	}
 
 	public BodyMoveEvent() {
-		transform = new Transform();
+		this(Arena.ofAuto());
+	}
+	
+	public BodyMoveEvent(Arena arena) {
+		b2BodyMoveEvent = arena.allocate(LAYOUT);
+		
+		transform = new Transform(b2BodyMoveEvent.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT()));
 	}
 
 	public BodyMoveEvent(MemorySegment memorySegment, World world) {
-		transform = new Transform();
-		transform.set(memorySegment.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT()));
-
-		MemorySegment bodyIdSegment = memorySegment.asSlice(BODY_ID_OFFSET, Body.LAYOUT());
-		body = Box2D.getBody(Body.getBodyId(bodyIdSegment), world);
-
-		fellAsleep = (boolean) FELL_ASLEEP.get(memorySegment);
+		this.b2BodyMoveEvent = memorySegment;
+		this.world = world;
+		
+		transform = new Transform(b2BodyMoveEvent.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT()));
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		transform.set(memorySegment.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT()));
-
-		MemorySegment bodyIdSegment = memorySegment.asSlice(BODY_ID_OFFSET, Body.LAYOUT());
-		body = Box2D.getBody(Body.getBodyId(bodyIdSegment), world);
-
-		fellAsleep = (boolean) FELL_ASLEEP.get(memorySegment);
+		MemorySegment.copy(memorySegment, 0, b2BodyMoveEvent, 0, LAYOUT.byteSize());
+		this.world = world;
 	}
 
 	/**
@@ -94,13 +94,22 @@ public final class BodyMoveEvent {
 	}
 
 	public Body getBody() {
-		return body;
+		MemorySegment bodyId = b2BodyMoveEvent.asSlice(BODY_ID_OFFSET, Body.LAYOUT());
+		return Box2D.getBody(Body.getBodyId(bodyId), world);
 	}
 
 	public boolean fellAsleep() {
-		return fellAsleep;
+		return (boolean) FELL_ASLEEP.get(b2BodyMoveEvent);
 	}
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
+	public MemorySegment memorySegment() {
+		return b2BodyMoveEvent;
+	}
+	
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

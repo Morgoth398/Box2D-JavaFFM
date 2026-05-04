@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.body;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -113,6 +114,8 @@ public final class Body {
 
 	static {
 		//@formatter:off
+		AddressLayout UNBOUNDED_ADDRESS = ADDRESS.withTargetLayout(MemoryLayout.sequenceLayout(Long.MAX_VALUE, JAVA_BYTE));
+		
 		BODY_ID_LAYOUT = MemoryLayout.structLayout(
 					JAVA_INT.withName("index1"),
 					JAVA_SHORT.withName("world0"),
@@ -129,7 +132,7 @@ public final class Body {
 		B2_BODY_GET_TYPE = downcallHandle("b2Body_GetType", JAVA_INT, BODY_ID_LAYOUT);
 		B2_BODY_SET_TYPE = downcallHandleVoid("b2Body_SetType", BODY_ID_LAYOUT, JAVA_INT);
 		B2_BODY_SET_NAME = downcallHandleVoid("b2Body_SetName", BODY_ID_LAYOUT, ADDRESS);
-		B2_BODY_GET_NAME = downcallHandle("b2Body_GetName", ADDRESS, BODY_ID_LAYOUT);
+		B2_BODY_GET_NAME = downcallHandle("b2Body_GetName", UNBOUNDED_ADDRESS, BODY_ID_LAYOUT);
 		B2_BODY_GET_POSITION = downcallHandle("b2Body_GetPosition", Vec2.LAYOUT(), BODY_ID_LAYOUT);
 		B2_BODY_GET_ROTATION = downcallHandle("b2Body_GetRotation", Rot.LAYOUT(), BODY_ID_LAYOUT);
 		B2_BODY_GET_TRANSFORM = downcallHandle("b2Body_GetTransform", Transform.LAYOUT(), BODY_ID_LAYOUT);
@@ -194,10 +197,15 @@ public final class Body {
 	 */
 	public Body(World world, BodyDef bodyDef) {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
+			Arena arena = Arena.ofAuto();
 			MemorySegment worldSegment = world.memorySegment();
 			MemorySegment bodyDefSegment = bodyDef.memorySegment();
-			b2BodyId = (MemorySegment) B2_CREATE_BODY.invokeExact(allocator, worldSegment, bodyDefSegment);
+			b2BodyId = (MemorySegment) B2_CREATE_BODY.invokeExact((SegmentAllocator) arena, worldSegment,
+					bodyDefSegment);
+
+			vecTmp = new Vec2(arena);
+			vecTmp2 = new Vec2(arena);
+			rotTmp = new Rot(arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create body.");
 		}
@@ -206,10 +214,6 @@ public final class Body {
 		this.world = world;
 
 		Box2D.addBody(this, bodyId, world);
-
-		vecTmp = new Vec2();
-		vecTmp2 = new Vec2();
-		rotTmp = new Rot();
 	}
 
 	/**
@@ -291,7 +295,7 @@ public final class Body {
 	public String getName() {
 		try {
 			MemorySegment segment = (MemorySegment) B2_BODY_GET_NAME.invokeExact(b2BodyId);
-			return segment.reinterpret(Integer.MAX_VALUE).getString(0);
+			return segment.getString(0);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot get body name.");
 		}
@@ -299,6 +303,8 @@ public final class Body {
 
 	/**
 	 * Set the internal user data for the body.
+	 * <p>
+	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
 		this.internalUserData = internalUserData;
@@ -1170,12 +1176,11 @@ public final class Body {
 			for (int i = 0; i < count; i++) {
 				long offset = i * ContactData.LAYOUT().byteSize();
 				MemorySegment dataSegment = array.asSlice(offset, ContactData.LAYOUT());
-				ContactData data = target[i];
 
-				if (data == null)
-					target[i] = new ContactData(dataSegment.reinterpret(Arena.ofAuto(), null), world);
-				else
-					target[i].set(dataSegment, world);
+				if (target[i] == null)
+					target[i] = new ContactData();
+				
+				target[i].set(dataSegment, world);
 			}
 
 			return count;
@@ -1206,7 +1211,7 @@ public final class Body {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2BodyId.asReadOnly();
+		return b2BodyId;
 	}
 
 	public static StructLayout LAYOUT() {

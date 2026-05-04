@@ -99,7 +99,7 @@ public final class AABB {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2AABB.asReadOnly();
+		return b2AABB;
 	}
 
 	public static StructLayout LAYOUT() {

@@ -54,8 +54,7 @@ public final class Transform {
 	}
 	
 	public void set(MemorySegment memorySegment) {
-		p.set(memorySegment.asSlice(P_OFFSET, Vec2.LAYOUT()));
-		q.set(memorySegment.asSlice(Q_OFFSET, Rot.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2Transform, 0, LAYOUT.byteSize());
 	}
 	
 	@Override
@@ -96,7 +95,7 @@ public final class Transform {
 	}
 	
 	public MemorySegment memorySegment() {
-		return b2Transform.asReadOnly();
+		return b2Transform;
 	}
 	
 	public static StructLayout LAYOUT() {
