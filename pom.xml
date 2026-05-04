@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>volucris.engine</groupId>
+	<groupId>dev.morgoth398</groupId>
 	<artifactId>Box2D-JavaFFM</artifactId>
 	<version>3.1.1</version>
 	<build>
@@ -72,7 +72,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<lwjgl.version>3.3.6</lwjgl.version>
+		<lwjgl.version>3.4.0</lwjgl.version>
 		<joml.version>1.10.8</joml.version>
 		<lwjgl.windows.natives>natives-windows</lwjgl.windows.natives>
 		<lwjgl.linux.natives>natives-linux</lwjgl.linux.natives>
