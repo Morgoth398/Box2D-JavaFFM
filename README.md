@@ -2,6 +2,12 @@
 This project provides Java bindings for  [Box2D](https://box2d.org/) 3.1.1 using the Java FFM API. 
 All implemented functions can be found in 'AllFunctions.txt'.
 
+# Future Development
+
+All future development will take place on the "Overhaul" branch. As the name suggests, this branch represents a complete rewrite (or more precisely, a regeneration) of the project.
+
+The new implementation is closer to the C API and provides both low-level ("raw") methods as well as higher-level, typed methods and wrapper objects.
+
 # Supported Platforms
 Windows and Linux are directly supported. The Linux .so file was built on Linux Mint 22.2.
 Nevertheless, you can use these bindings for Mac if you provide your own .dylib file and load it.
