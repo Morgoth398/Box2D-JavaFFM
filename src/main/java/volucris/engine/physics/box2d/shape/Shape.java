@@ -24,6 +24,7 @@ import volucris.engine.physics.box2d.geometry.Segment;
 import volucris.engine.physics.box2d.math.AABB;
 import volucris.engine.physics.box2d.math.Vec2;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
@@ -44,6 +45,8 @@ public final class Shape {
 	private static final MethodHandle B2_DESTROY_SHAPE;
 	private static final MethodHandle B2_SHAPE_IS_VALID;
 	private static final MethodHandle B2_SHAPE_GET_TYPE;
+	private static final MethodHandle B2_SHAPE_GET_BODY;
+	private static final MethodHandle B2_SHAPE_GET_WORLD;
 	private static final MethodHandle B2_SHAPE_IS_SENSOR;
 	private static final MethodHandle B2_SHAPE_SET_DENSITY;
 	private static final MethodHandle B2_SHAPE_GET_DENSITY;
@@ -87,8 +90,6 @@ public final class Shape {
 
 	private final MemorySegment b2ShapeId;
 
-	private Body body;
-
 	private Vec2 vecTmp;
 
 	static {
@@ -110,6 +111,8 @@ public final class Shape {
 		B2_DESTROY_SHAPE = downcallHandleVoid("b2DestroyShape", SHAPE_ID_LAYOUT, JAVA_BOOLEAN);
 		B2_SHAPE_IS_VALID = downcallHandle("b2Shape_IsValid", JAVA_BOOLEAN, SHAPE_ID_LAYOUT);
 		B2_SHAPE_GET_TYPE = downcallHandle("b2Shape_GetType", JAVA_INT, SHAPE_ID_LAYOUT);
+		B2_SHAPE_GET_BODY = downcallHandle("b2Shape_GetBody", Body.LAYOUT(), SHAPE_ID_LAYOUT);
+		B2_SHAPE_GET_WORLD = downcallHandle("b2Shape_GetWorld", World.LAYOUT(), SHAPE_ID_LAYOUT);
 		B2_SHAPE_IS_SENSOR = downcallHandle("b2Shape_IsSensor", JAVA_BOOLEAN, SHAPE_ID_LAYOUT);
 		B2_SHAPE_SET_DENSITY = downcallHandleVoid("b2Shape_SetDensity", SHAPE_ID_LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
 		B2_SHAPE_GET_DENSITY = downcallHandle("b2Shape_GetDensity", JAVA_FLOAT, SHAPE_ID_LAYOUT);
@@ -178,13 +181,11 @@ public final class Shape {
 			
 			b2ShapeId = (MemorySegment)  B2_CREATE_CIRCLE_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, circleAddr);
 		} catch (Throwable e) {
-    String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create circle shape: " + className);
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create circle shape: " + className);
 		}
 		
-		this.body = body;
-		
-		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld().getWorldId());
 	}
 	
 	/**
@@ -209,13 +210,11 @@ public final class Shape {
 			
 			b2ShapeId = (MemorySegment) B2_CREATE_SEGMENT_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, segmentAddr);
 		} catch (Throwable e) {
-    String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create segment shape: " + className);
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create segment shape: " + className);
 		}
 		
-		this.body = body;
-		
-		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld().getWorldId());
 	}
 	
 	/**
@@ -239,13 +238,11 @@ public final class Shape {
 			MemorySegment capsuleAddr = capsule.memorySegment();
 			b2ShapeId = (MemorySegment) B2_CREATE_CAPSULE_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, capsuleAddr);
 		} catch (Throwable e) {
-    String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create capsule shape: " + className);
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create capsule shape: " + className);
 		}
 		
-		this.body = body;
-		
-		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld().getWorldId());
 	}
 	
 	/**
@@ -270,34 +267,35 @@ public final class Shape {
 			
 			b2ShapeId = (MemorySegment) B2_CREATE_POLYGON_SHAPE.invoke(arena, bodyAddr, shapeDefAddr, polygonAddr);
 		} catch (Throwable e) {
-    String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create polygon shape: " + className);
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot create polygon shape: " + className);
 		}
 		
-		this.body = body;
-		
-		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), body.getWorld().getWorldId());
 	}
 	//@formatter:on
 
-	public Shape(MemorySegment memorySegment, Body body) {
-		b2ShapeId = memorySegment;
+	public Shape(MemorySegment segment, long offset, WorldId worldId) {
+		this(segment, Arena.ofAuto(), offset, worldId);
+	}
 
-		this.body = body;
+	public Shape(MemorySegment segment, Arena arena, long offset, WorldId worldId) {
+		b2ShapeId = arena.allocate(SHAPE_ID_LAYOUT);
+		MemorySegment.copy(segment, offset, b2ShapeId, 0, SHAPE_ID_LAYOUT.byteSize());
 
-		Box2D.addShape(this, getShapeId(memorySegment), body.getWorld());
+		Box2D.addShape(this, getShapeId(b2ShapeId), worldId);
 	}
 
 	/**
 	 * Destroy a shape.
 	 */
 	public void destroyShape(boolean updateBodyMass) {
-		Box2D.removeShape(getShapeId(b2ShapeId), body.getWorld());
+		Box2D.removeShape(getShapeId(b2ShapeId), getWorld().getWorldId());
 		try {
 			B2_DESTROY_SHAPE.invokeExact(b2ShapeId, updateBodyMass);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot destroy shape: " + className);
+			throw new Box2DRuntimeException("Cannot destroy shape: " + className);
 		}
 	}
 
@@ -309,7 +307,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_IS_VALID.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot validate shape: " + className);
+			throw new Box2DRuntimeException("Cannot validate shape: " + className);
 		}
 	}
 
@@ -331,7 +329,7 @@ public final class Shape {
 				return ShapeType.CHAIN_SEGMENT_SHAPE;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get type: " + className);
+			throw new Box2DRuntimeException("Cannot get type: " + className);
 		}
 	}
 
@@ -339,14 +337,42 @@ public final class Shape {
 	 * Get the body that a shape is attached to.
 	 */
 	public Body getBody() {
-		return body;
+		try (Arena arena = Arena.ofConfined()) {
+			WorldId worldId = getWorld().getWorldId();
+			
+			MethodHandle method = B2_SHAPE_GET_BODY;
+			MemorySegment b2BodyId = (MemorySegment) method.invoke(arena, b2ShapeId);	
+			
+			Body body = Box2D.getBody(Body.getBodyId(b2BodyId), worldId);
+			
+			if (body != null)
+				return body;
+			
+			return new Body(b2BodyId, 0L, worldId);
+		} catch (Throwable e) {
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot get body: " + className);
+		}
 	}
 
 	/**
 	 * Get the world that owns this shape.
 	 */
 	public World getWorld() {
-		return body.getWorld();
+		try (Arena arena = Arena.ofConfined()) {
+			MethodHandle method = B2_SHAPE_GET_WORLD;
+			MemorySegment b2WorldId = (MemorySegment) method.invoke(arena, b2ShapeId);	
+			
+			World world = Box2D.getWorld(World.getWorldId(b2WorldId));
+			
+			if (world != null)
+				return world;
+			
+			return new World(b2WorldId, 0L);
+		} catch (Throwable e) {
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot get world: " + className);
+		}
 	}
 
 	/**
@@ -357,7 +383,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_IS_SENSOR.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if shape is sensor: " + className);
+			throw new Box2DRuntimeException("Cannot check if shape is sensor: " + className);
 		}
 	}
 
@@ -365,14 +391,14 @@ public final class Shape {
 	 * Set the internal user data for the body.
 	 */
 	public void setInternalUserData(Object internalUserData) {
-		Box2D.setInternalUserData(getShapeId(b2ShapeId), getWorld(), internalUserData);
+		Box2D.setInternalUserData(getShapeId(b2ShapeId), getWorld().getWorldId(), internalUserData);
 	}
 
 	/**
 	 * Get the internal user data stored in the body.
 	 */
 	public Object getInternalUserData() {
-		return Box2D.getInternalUserData(getShapeId(b2ShapeId), getWorld());
+		return Box2D.getInternalUserData(getShapeId(b2ShapeId), getWorld().getWorldId());
 	}
 
 	/**
@@ -381,14 +407,14 @@ public final class Shape {
 	 * The implementation does not pass this object to the native code.
 	 */
 	public void setUserData(Object userData) {
-		Box2D.setUserData(getShapeId(b2ShapeId), getWorld(), userData);
+		Box2D.setUserData(getShapeId(b2ShapeId), getWorld().getWorldId(), userData);
 	}
 
 	/**
 	 * Get the user data stored in the body.
 	 */
 	public Object getUserData() {
-		return Box2D.getUserData(getShapeId(b2ShapeId), getWorld());
+		return Box2D.getUserData(getShapeId(b2ShapeId), getWorld().getWorldId());
 	}
 
 	/**
@@ -399,7 +425,7 @@ public final class Shape {
 			B2_SHAPE_SET_DENSITY.invokeExact(b2ShapeId, density, updateBodyMass);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set density: " + className);
+			throw new Box2DRuntimeException("Cannot set density: " + className);
 		}
 	}
 
@@ -411,7 +437,7 @@ public final class Shape {
 			return (float) B2_SHAPE_GET_DENSITY.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get density: " + className);
+			throw new Box2DRuntimeException("Cannot get density: " + className);
 		}
 	}
 
@@ -423,7 +449,7 @@ public final class Shape {
 			B2_SHAPE_SET_FRICTION.invokeExact(b2ShapeId, friction);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set friction: " + className);
+			throw new Box2DRuntimeException("Cannot set friction: " + className);
 		}
 	}
 
@@ -435,7 +461,7 @@ public final class Shape {
 			return (float) B2_SHAPE_GET_FRICTION.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get friction: " + className);
+			throw new Box2DRuntimeException("Cannot get friction: " + className);
 		}
 	}
 
@@ -447,7 +473,7 @@ public final class Shape {
 			B2_SHAPE_SET_RESTITUTION.invokeExact(b2ShapeId, restitution);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set restitution: " + className);
+			throw new Box2DRuntimeException("Cannot set restitution: " + className);
 		}
 	}
 
@@ -459,7 +485,7 @@ public final class Shape {
 			return (float) B2_SHAPE_GET_RESTITUTION.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get restitution: " + className);
+			throw new Box2DRuntimeException("Cannot get restitution: " + className);
 		}
 	}
 
@@ -471,7 +497,7 @@ public final class Shape {
 			B2_SHAPE_SET_MATERIAL.invoke(b2ShapeId, material);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set material: " + className);
+			throw new Box2DRuntimeException("Cannot set material: " + className);
 		}
 	}
 
@@ -483,7 +509,7 @@ public final class Shape {
 			return (int) B2_SHAPE_GET_MATERIAL.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get material: " + className);
+			throw new Box2DRuntimeException("Cannot get material: " + className);
 		}
 	}
 
@@ -495,7 +521,7 @@ public final class Shape {
 			B2_SHAPE_SET_SURFACE_MATERIAL.invokeExact(b2ShapeId, surfaceMaterial.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set surface material: " + className);
+			throw new Box2DRuntimeException("Cannot set surface material: " + className);
 		}
 	}
 
@@ -509,7 +535,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get surface material: " + className);
+			throw new Box2DRuntimeException("Cannot get surface material: " + className);
 		}
 	}
 
@@ -530,7 +556,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get filter: " + className);
+			throw new Box2DRuntimeException("Cannot get filter: " + className);
 		}
 	}
 
@@ -542,7 +568,7 @@ public final class Shape {
 			B2_SHAPE_SET_FILTER.invokeExact(b2ShapeId, filter.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set filter: " + className);
+			throw new Box2DRuntimeException("Cannot set filter: " + className);
 		}
 	}
 
@@ -561,7 +587,7 @@ public final class Shape {
 			B2_SHAPE_ENABLE_SENSOR_EVENTS.invokeExact(b2ShapeId, enableSensorEvents);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable sensor events: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable sensor events: " + className);
 		}
 	}
 
@@ -573,7 +599,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED.invoke(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if sensor events are enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if sensor events are enabled: " + className);
 		}
 	}
 
@@ -585,7 +611,7 @@ public final class Shape {
 			B2_SHAPE_ENABLE_CONTACT_EVENTS.invokeExact(b2ShapeId, enableContactEvents);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable contact events: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable contact events: " + className);
 		}
 	}
 
@@ -597,7 +623,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if contact events are enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if contact events are enabled: " + className);
 		}
 	}
 
@@ -609,7 +635,7 @@ public final class Shape {
 			B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS.invokeExact(b2ShapeId, enablePreSolveEvents);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable pre solve events: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable pre solve events: " + className);
 		}
 	}
 
@@ -621,7 +647,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED.invoke(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if pre solve events are enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if pre solve events are enabled: " + className);
 		}
 	}
 
@@ -633,7 +659,7 @@ public final class Shape {
 			B2_SHAPE_ENABLE_HIT_EVENTS.invokeExact(b2ShapeId, enableHitEvents);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot enable/ disable hit events: " + className);
+			throw new Box2DRuntimeException("Cannot enable/ disable hit events: " + className);
 		}
 	}
 
@@ -645,7 +671,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_ARE_HIT_EVENTS_ENABLED.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot check if hit events are enabled: " + className);
+			throw new Box2DRuntimeException("Cannot check if hit events are enabled: " + className);
 		}
 	}
 
@@ -658,7 +684,7 @@ public final class Shape {
 			return (boolean) B2_SHAPE_TEST_POINT.invokeExact(b2ShapeId, vecTmp.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot test point: " + className);
+			throw new Box2DRuntimeException("Cannot test point: " + className);
 		}
 	}
 
@@ -674,7 +700,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot ray cast: " + className);
+			throw new Box2DRuntimeException("Cannot ray cast: " + className);
 		}
 	}
 
@@ -695,7 +721,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get circle: " + className);
+			throw new Box2DRuntimeException("Cannot get circle: " + className);
 		}
 	}
 
@@ -716,7 +742,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
+			throw new Box2DRuntimeException("Cannot get segment: " + className);
 		}
 	}
 
@@ -737,7 +763,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
+			throw new Box2DRuntimeException("Cannot get segment: " + className);
 		}
 	}
 
@@ -758,7 +784,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
+			throw new Box2DRuntimeException("Cannot get segment: " + className);
 		}
 	}
 
@@ -778,7 +804,7 @@ public final class Shape {
 			return new Polygon(segment);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get segment: " + className);
+			throw new Box2DRuntimeException("Cannot get segment: " + className);
 		}
 	}
 
@@ -790,7 +816,7 @@ public final class Shape {
 			B2_SHAPE_SET_CIRCLE.invokeExact(b2ShapeId, circle.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set circle: " + className);
+			throw new Box2DRuntimeException("Cannot set circle: " + className);
 		}
 	}
 
@@ -802,7 +828,7 @@ public final class Shape {
 			B2_SHAPE_SET_CAPSULE.invokeExact(b2ShapeId, capsule.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set capsule: " + className);
+			throw new Box2DRuntimeException("Cannot set capsule: " + className);
 		}
 	}
 
@@ -814,7 +840,7 @@ public final class Shape {
 			B2_SHAPE_SET_SEGMENT.invokeExact(b2ShapeId, segment.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set segment: " + className);
+			throw new Box2DRuntimeException("Cannot set segment: " + className);
 		}
 	}
 
@@ -826,7 +852,7 @@ public final class Shape {
 			B2_SHAPE_SET_POLYGON.invokeExact(b2ShapeId, polygon.memorySegment());
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set polygon: " + className);
+			throw new Box2DRuntimeException("Cannot set polygon: " + className);
 		}
 	}
 
@@ -836,11 +862,19 @@ public final class Shape {
 	 */
 	public Chain getParentChain() {
 		try (Arena arena = Arena.ofConfined()) {
+			WorldId worldId = getWorld().getWorldId();
+			
 			MemorySegment segment = (MemorySegment) B2_SHAPE_GET_PARENT_CHAIN.invoke(arena, b2ShapeId);
-			return Box2D.getChain(Chain.getChainId(segment), body.getWorld());
+			
+			Chain chain = Box2D.getChain(Chain.getChainId(segment), worldId);
+			
+			if (chain != null)
+				return chain;
+			
+			return new Chain(segment, 0L, worldId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get parent chain: " + className);
+			throw new Box2DRuntimeException("Cannot get parent chain: " + className);
 		}
 	}
 
@@ -853,7 +887,7 @@ public final class Shape {
 			return (int) B2_SHAPE_GET_CONTACT_CAPACITY.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get contact capacity: " + className);
+			throw new Box2DRuntimeException("Cannot get contact capacity: " + className);
 		}
 	}
 
@@ -878,7 +912,7 @@ public final class Shape {
 			return count;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get contact data: " + className);
+			throw new Box2DRuntimeException("Cannot get contact data: " + className);
 		}
 	}
 
@@ -891,7 +925,7 @@ public final class Shape {
 			return (int) B2_SHAPE_GET_SENSOR_CAPACITY.invokeExact(b2ShapeId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get sensor capacity: " + className);
+			throw new Box2DRuntimeException("Cannot get sensor capacity: " + className);
 		}
 	}
 
@@ -899,26 +933,19 @@ public final class Shape {
 	 * Get the overlapped shapes for a sensor shape.
 	 */
 	public int getSensorOverlaps(Shape[] target) {
-		return getSensorOverlaps(target, Arena.ofAuto());
-	}
-
-	/**
-	 * Get the overlapped shapes for a sensor shape.
-	 */
-	public int getSensorOverlaps(Shape[] target, Arena shapeArena) {
 		try (Arena arena = Arena.ofConfined()) {
+			WorldId worldId = getWorld().getWorldId();
+			
 			MemorySegment array = arena.allocate(MemoryLayout.sequenceLayout(target.length, Shape.LAYOUT()));
-
+			
 			int count = (int) B2_SHAPE_GET_SENSOR_OVERLAPS.invokeExact(b2ShapeId, array, target.length);
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * Shape.LAYOUT().byteSize();
-				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), body.getWorld());
+				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), worldId);
 
 				if (shape == null) {
-					MemorySegment shapeSegment = shapeArena.allocate(Shape.LAYOUT());
-					MemorySegment.copy(array, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
-					target[i] = new Shape(shapeSegment, body);
+					target[i] = new Shape(array, offset, worldId);
 				} else {
 					target[i] = shape;
 				}
@@ -927,7 +954,7 @@ public final class Shape {
 			return count;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get sensor overlaps: " + className);
+			throw new Box2DRuntimeException("Cannot get sensor overlaps: " + className);
 		}
 	}
 
@@ -941,7 +968,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get AABB: " + className);
+			throw new Box2DRuntimeException("Cannot get AABB: " + className);
 		}
 	}
 
@@ -962,7 +989,7 @@ public final class Shape {
 			return target;
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get mass data: " + className);
+			throw new Box2DRuntimeException("Cannot get mass data: " + className);
 		}
 	}
 
@@ -987,7 +1014,7 @@ public final class Shape {
 			return vecTmp.get(target);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get closest point: " + className);
+			throw new Box2DRuntimeException("Cannot get closest point: " + className);
 		}
 	}
 

@@ -8,6 +8,7 @@ import java.lang.foreign.MemoryLayout.PathElement;
 import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.shape.Shape;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 
 import java.lang.foreign.MemorySegment;
 
@@ -68,18 +69,32 @@ public final class ContactEndTouchEvent {
 		MemorySegment.copy(memorySegment, 0, b2ContactEndTouchEvent, 0, LAYOUT.byteSize());
 	}
 
-	/**
+	/*
 	 * The first shape.
 	 */
 	public Shape getShapeA() {
-		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeIdA), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeIdA, 0L, worldId);
 	}
 
 	/**
 	 * The second shape.
 	 */
 	public Shape getShapeB() {
-		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
+		WorldId worldId = world.getWorldId();
+		
+		Shape shape = Box2D.getShape(Shape.getShapeId(shapeIdB), worldId);
+		
+		if (shape != null)
+			return shape;
+		
+		return new Shape(shapeIdB, 0L, worldId);
 	}
 
 	public void setWorld(World world) {

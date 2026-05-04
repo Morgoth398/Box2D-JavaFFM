@@ -10,6 +10,7 @@ import java.lang.invoke.VarHandle;
 import volucris.engine.physics.box2d.Box2D;
 import volucris.engine.physics.box2d.body.Body;
 import volucris.engine.physics.box2d.world.World;
+import volucris.engine.physics.box2d.world.World.WorldId;
 import volucris.engine.utils.Box2DRuntimeException;
 
 import static java.lang.foreign.ValueLayout.*;
@@ -25,6 +26,7 @@ public final class Chain {
 
 	private static final MethodHandle B2_CREATE_CHAIN;
 	private static final MethodHandle B2_DESTROY_CHAIN;
+	private static final MethodHandle B2_CHAIN_GET_WORLD;
 	private static final MethodHandle B2_CHAIN_GET_SEGMENT_COUNT;
 	private static final MethodHandle B2_CHAIN_GET_SEGMENTS;
 	private static final MethodHandle B2_CHAIN_SET_FRICTION;
@@ -36,8 +38,6 @@ public final class Chain {
 	private static final MethodHandle B2_CHAIN_IS_VALID;
 
 	private final MemorySegment b2ChainId;
-
-	private Body body;
 
 	static {
 		//@formatter:off
@@ -54,6 +54,7 @@ public final class Chain {
 
 		B2_CREATE_CHAIN = downcallHandle("b2CreateChain", CHAIN_ID_LAYOUT, Body.LAYOUT(), ADDRESS);
 		B2_DESTROY_CHAIN = downcallHandleVoid("b2DestroyChain", CHAIN_ID_LAYOUT);
+		B2_CHAIN_GET_WORLD = downcallHandle("b2Chain_GetWorld", World.LAYOUT(), CHAIN_ID_LAYOUT);
 		B2_CHAIN_GET_SEGMENT_COUNT = downcallHandle("b2Chain_GetSegmentCount", JAVA_INT, CHAIN_ID_LAYOUT);
 		B2_CHAIN_GET_SEGMENTS = downcallHandle("b2Chain_GetSegments", JAVA_INT, CHAIN_ID_LAYOUT, ADDRESS, JAVA_INT);
 		B2_CHAIN_SET_FRICTION = downcallHandleVoid("b2Chain_SetFriction", CHAIN_ID_LAYOUT, JAVA_FLOAT);
@@ -80,28 +81,34 @@ public final class Chain {
 			MemorySegment bodyAddr = body.memorySegment();
 			MemorySegment chainDefAddr = chainDef.memorySegment();
 
-			MemorySegment segment = (MemorySegment) B2_CREATE_CHAIN.invoke(arena, bodyAddr, chainDefAddr);
-			b2ChainId = segment.reinterpret(arena, s -> destroyChain(s, body.getWorld()));
+			b2ChainId = (MemorySegment) B2_CREATE_CHAIN.invoke(arena, bodyAddr, chainDefAddr);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot create chain: " + className);
+			throw new Box2DRuntimeException("Cannot create chain: " + className);
 		}
 
-		this.body = body;
-
-		Box2D.addChain(this, getChainId(b2ChainId), body.getWorld());
+		Box2D.addChain(this, getChainId(b2ChainId), body.getWorld().getWorldId());
 	}
-
+	
+	public Chain(MemorySegment segment, long offset, WorldId worldId) {
+		this(segment, Arena.ofAuto(), offset, worldId);
+	}
+	
+	public Chain(MemorySegment segment, Arena arena, long offset, WorldId worldId) {
+		b2ChainId = arena.allocate(CHAIN_ID_LAYOUT);
+		MemorySegment.copy(segment, offset, b2ChainId, 0, CHAIN_ID_LAYOUT.byteSize());
+	}
+	
 	/**
 	 * Destroy a chain shape.
 	 */
-	private static void destroyChain(MemorySegment segment, World world) {
-		Box2D.removeChain(getChainId(segment), world);
+	public void destroyChain(MemorySegment segment) {
+		Box2D.removeChain(getChainId(segment), getWorld().getWorldId());
 		try {
 			B2_DESTROY_CHAIN.invokeExact(segment);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot destroy chain: " + className);
+			throw new Box2DRuntimeException("Cannot destroy chain: " + className);
 		}
 	}
 
@@ -109,7 +116,20 @@ public final class Chain {
 	 * Get the world that owns this chain shape.
 	 */
 	public World getWorld() {
-		return body.getWorld();
+		try (Arena arena = Arena.ofConfined()) {
+			MethodHandle method = B2_CHAIN_GET_WORLD;
+			MemorySegment b2WorldId = (MemorySegment) method.invoke(arena, b2ChainId);
+
+			World world = Box2D.getWorld(World.getWorldId(b2WorldId));
+
+			if (world != null)
+				return world;
+
+			return new World(b2WorldId, 0L);
+		} catch (Throwable e) {
+			String className = e.getClass().getSimpleName();
+			throw new Box2DRuntimeException("Cannot get world: " + className);
+		}
 	}
 
 	/**
@@ -120,7 +140,7 @@ public final class Chain {
 			return (int) B2_CHAIN_GET_SEGMENT_COUNT.invokeExact(b2ChainId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: : " + className);
+			throw new Box2DRuntimeException("Cannot get Segment count: " + className);
 		}
 	}
 
@@ -128,26 +148,19 @@ public final class Chain {
 	 * Fill a user array with chain segment shape ids up to the specified capacity.
 	 */
 	public int getSegments(Shape[] target) {
-		return getSegments(target, Arena.ofAuto());
-	}
-
-	/**
-	 * Fill a user array with chain segment shape ids up to the specified capacity.
-	 */
-	public int getSegments(Shape[] target, Arena shapeArena) {
 		try (Arena arena = Arena.ofConfined()) {
+			WorldId worldId = getWorld().getWorldId();
+
 			MemorySegment array = arena.allocate(MemoryLayout.sequenceLayout(target.length, Shape.LAYOUT()));
 			int count = (int) B2_CHAIN_GET_SEGMENTS.invokeExact(b2ChainId, array, target.length);
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * Shape.LAYOUT().byteSize();
 
-				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), body.getWorld());
+				Shape shape = Box2D.getShape(Shape.getShapeId(array, offset), worldId);
 
 				if (shape == null) {
-					MemorySegment shapeSegment = shapeArena.allocate(Shape.LAYOUT());
-					MemorySegment.copy(array, offset, shapeSegment, 0L, Shape.LAYOUT().byteSize());
-					target[i] = new Shape(shapeSegment, body);
+					target[i] = new Shape(array, offset, worldId);
 				} else {
 					target[i] = shape;
 				}
@@ -157,7 +170,7 @@ public final class Chain {
 
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get segments: " + className);
+			throw new Box2DRuntimeException("Cannot get segments: " + className);
 		}
 	}
 
@@ -169,7 +182,7 @@ public final class Chain {
 			B2_CHAIN_SET_FRICTION.invokeExact(b2ChainId, friction);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set friction: " + className);
+			throw new Box2DRuntimeException("Cannot set friction: " + className);
 		}
 	}
 
@@ -181,7 +194,7 @@ public final class Chain {
 			return (float) B2_CHAIN_GET_FRICTION.invokeExact(b2ChainId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get friction: " + className);
+			throw new Box2DRuntimeException("Cannot get friction: " + className);
 		}
 	}
 
@@ -193,7 +206,7 @@ public final class Chain {
 			B2_CHAIN_SET_RESTITUTION.invokeExact(b2ChainId, restitution);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set restitution: " + className);
+			throw new Box2DRuntimeException("Cannot set restitution: " + className);
 		}
 	}
 
@@ -205,7 +218,7 @@ public final class Chain {
 			return (float) B2_CHAIN_GET_RESTITUTION.invokeExact(b2ChainId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get restitution: " + className);
+			throw new Box2DRuntimeException("Cannot get restitution: " + className);
 		}
 	}
 
@@ -217,7 +230,7 @@ public final class Chain {
 			B2_CHAIN_SET_MATERIAL.invokeExact(b2ChainId, material);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot set material: " + className);
+			throw new Box2DRuntimeException("Cannot set material: " + className);
 		}
 	}
 
@@ -229,7 +242,7 @@ public final class Chain {
 			return (int) B2_CHAIN_GET_MATERIAL.invokeExact(b2ChainId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot get material: " + className);
+			throw new Box2DRuntimeException("Cannot get material: " + className);
 		}
 	}
 
@@ -241,7 +254,7 @@ public final class Chain {
 			return (boolean) B2_CHAIN_IS_VALID.invokeExact(b2ChainId);
 		} catch (Throwable e) {
 			String className = e.getClass().getSimpleName();
-			throw new Box2DRuntimeException("Box2D: Cannot validate chain: " + className);
+			throw new Box2DRuntimeException("Cannot validate chain: " + className);
 		}
 	}
 
