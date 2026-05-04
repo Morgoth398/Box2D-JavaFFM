@@ -76,7 +76,7 @@ public final class Mat22 {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Mat22.asReadOnly();
+		return b2Mat22;
 	}
 
 	public static StructLayout LAYOUT() {

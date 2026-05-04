@@ -237,7 +237,7 @@ public final class DistanceJointDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2DistanceJointDef.asReadOnly();
+		return b2DistanceJointDef;
 	}
 
 	public static StructLayout LAYOUT() {

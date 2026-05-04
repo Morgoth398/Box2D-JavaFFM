@@ -335,6 +335,8 @@ public final class Shape {
 
 	/**
 	 * Set the internal user data for the body.
+	 * <p>
+	 * Do not call.
 	 */
 	public void setInternalUserData(Object internalUserData) {
 		this.internalUserData = internalUserData;
@@ -816,16 +818,11 @@ public final class Shape {
 
 			for (int i = 0; i < count; i++) {
 				long offset = i * ContactData.LAYOUT().byteSize();
-				ContactData data = target[i];
 
-				if (data == null) {
-					MemorySegment arraySegment = array.asSlice(offset, ContactData.LAYOUT());
-					MemorySegment dataSegment = Arena.ofAuto().allocate(ContactData.LAYOUT());
-					MemorySegment.copy(arraySegment, 0L, dataSegment, 0L, ContactData.LAYOUT().byteSize());
-					target[i] = new ContactData(dataSegment, body.getWorld());
-				} else {
-					target[i].set(array.asSlice(offset, ContactData.LAYOUT()), body.getWorld());
-				}
+				if (target[i] == null)
+					target[i] = new ContactData();
+				
+				MemorySegment.copy(array, offset, target[i].memorySegment(), 0, ContactData.LAYOUT().byteSize());
 			}
 
 			return count;
@@ -943,7 +940,7 @@ public final class Shape {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ShapeId.asReadOnly();
+		return b2ShapeId;
 	}
 
 	public static StructLayout LAYOUT() {

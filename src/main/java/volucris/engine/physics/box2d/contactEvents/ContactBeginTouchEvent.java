@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.contactEvents;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.StructLayout;
@@ -21,10 +22,14 @@ public final class ContactBeginTouchEvent {
 	private static final long SHAPE_ID_B_OFFSET;
 	private static final long MANIFOLD_OFFSET;
 
+	private final MemorySegment b2ContactBeginTouchEvent;
+	
+	private final MemorySegment shapeIdA;
+	private final MemorySegment shapeIdB;
+	
 	private final Manifold manifold;
 
-	private Shape shapeA;
-	private Shape shapeB;
+	private World world;
 
 	static {
 		//@formatter:off
@@ -41,43 +46,51 @@ public final class ContactBeginTouchEvent {
 	}
 
 	public ContactBeginTouchEvent() {
-		manifold = new Manifold();
+		this(Arena.ofAuto());
+	}
+	
+	public ContactBeginTouchEvent(Arena arena) {
+		b2ContactBeginTouchEvent = arena.allocate(LAYOUT);
+		
+		shapeIdA = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
+		
+		manifold = new Manifold(arena);
 	}
 
 	public ContactBeginTouchEvent(MemorySegment memorySegment, World world) {
+		this.b2ContactBeginTouchEvent = memorySegment;
+		this.world = world;
+		
+		shapeIdA = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactBeginTouchEvent.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
+		
 		manifold = new Manifold(memorySegment.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
-
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		manifold.set(memorySegment.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
-
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
+		MemorySegment.copy(memorySegment, 0, b2ContactBeginTouchEvent, 0, LAYOUT.byteSize());
+		this.world = world;
 	}
 
 	/**
 	 * The first shape.
 	 */
 	public Shape getShapeA() {
-		return shapeA;
+		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
 	}
 
 	/**
 	 * The second shape.
 	 */
 	public Shape getShapeB() {
-		return shapeB;
+		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
 	}
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
 	/**
 	 * The initial contact manifold.
 	 * <p>
@@ -88,6 +101,10 @@ public final class ContactBeginTouchEvent {
 		return manifold;
 	}
 
+	public MemorySegment memorySegment() {
+		return b2ContactBeginTouchEvent;
+	}
+	
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

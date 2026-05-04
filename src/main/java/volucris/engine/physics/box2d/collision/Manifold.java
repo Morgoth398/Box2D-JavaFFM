@@ -56,7 +56,11 @@ public final class Manifold {
 	}
 
 	public Manifold() {
-		b2Manifold = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
+	
+	public Manifold(Arena arena) {
+		b2Manifold = arena.allocate(LAYOUT);
 
 		normal = new Vec2(b2Manifold.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
 		point1 = new ManifoldPoint(b2Manifold.asSlice(POINT1_OFFSET, ManifoldPoint.LAYOUT()));
@@ -72,9 +76,7 @@ public final class Manifold {
 	}
 
 	public void set(MemorySegment memorySegment) {
-		normal.set(memorySegment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT()));
-		point1.set(memorySegment.asSlice(POINT1_OFFSET, ManifoldPoint.LAYOUT()));
-		point2.set(memorySegment.asSlice(POINT2_OFFSET, ManifoldPoint.LAYOUT()));
+		MemorySegment.copy(memorySegment, 0, b2Manifold, 0, LAYOUT.byteSize());
 	}
 
 	/**

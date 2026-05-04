@@ -1,5 +1,6 @@
 package volucris.engine.physics.box2d.sensorEvents;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
 
@@ -21,9 +22,13 @@ public final class SensorBeginTouchEvent {
 	private static final long SENSOR_SHAPE_ID_OFFSET;
 	private static final long VISITOR_SHAPE_ID_OFFSET;
 
-	private Shape sensorShape;
-	private Shape visitorShape;
+	private final MemorySegment b2SensorBeginTouchEvent;
+	
+	private final MemorySegment sensorShapeId;
+	private final MemorySegment visistorShapeId;
 
+	private World world;
+	
 	static {
 		//@formatter:off
 		LAYOUT = MemoryLayout.structLayout(
@@ -37,32 +42,45 @@ public final class SensorBeginTouchEvent {
 	}
 
 	public SensorBeginTouchEvent() {
+		this(Arena.ofAuto());
+	}
+	
+	public SensorBeginTouchEvent(Arena arena) {
+		b2SensorBeginTouchEvent = arena.allocate(LAYOUT);
+		
+		sensorShapeId = b2SensorBeginTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
+		visistorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
 
 	public SensorBeginTouchEvent(MemorySegment memorySegment, World world) {
-		MemorySegment sensorShapeSegment = memorySegment.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
-		sensorShape = Box2D.getShape(Shape.getShapeId(sensorShapeSegment), world);
+		this.b2SensorBeginTouchEvent = memorySegment;
+		this.world = world;
 
-		MemorySegment visitorShapeSegment = memorySegment.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
-		visitorShape = Box2D.getShape(Shape.getShapeId(visitorShapeSegment), world);
+		sensorShapeId = b2SensorBeginTouchEvent.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
+		visistorShapeId = b2SensorBeginTouchEvent.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		MemorySegment sensorShapeSegment = memorySegment.asSlice(SENSOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
-		sensorShape = Box2D.getShape(Shape.getShapeId(sensorShapeSegment), world);
-
-		MemorySegment visitorShapeSegment = memorySegment.asSlice(VISITOR_SHAPE_ID_OFFSET, Shape.LAYOUT());
-		visitorShape = Box2D.getShape(Shape.getShapeId(visitorShapeSegment), world);
+		MemorySegment.copy(memorySegment, 0, b2SensorBeginTouchEvent, 0, LAYOUT.byteSize());
+		this.world = world;
 	}
 
 	public Shape getSensorShape() {
-		return sensorShape;
+		return Box2D.getShape(Shape.getShapeId(sensorShapeId), world);
 	}
 
 	public Shape getVisitorShape() {
-		return visitorShape;
+		return Box2D.getShape(Shape.getShapeId(visistorShapeId), world);
 	}
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
+	public MemorySegment memorySegment() {
+		return b2SensorBeginTouchEvent;
+	}
+	
 	public static StructLayout LAYOUT() {
 		return LAYOUT;
 	}

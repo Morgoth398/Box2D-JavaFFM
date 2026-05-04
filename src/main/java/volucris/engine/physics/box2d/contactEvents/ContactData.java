@@ -17,6 +17,7 @@ import static java.lang.foreign.ValueLayout.*;
  * The contact data for two shapes.
  * 
  * By convention the manifold normal points from shape A to shape B.
+ * 
  * @see Shape#getContactData(ContactData[]) Shape.getContactData
  * @see Body#getContactData(ContactData[]) Body.getContactData
  */
@@ -30,10 +31,12 @@ public final class ContactData {
 
 	private final MemorySegment b2ContactData;
 
+	private final MemorySegment shapeIdA;
+	private final MemorySegment shapeIdB;
+	
 	private final Manifold manifold;
 
-	private Shape shapeA;
-	private Shape shapeB;
+	private World world;
 
 	static {
 		//@formatter:off
@@ -50,31 +53,30 @@ public final class ContactData {
 	}
 
 	public ContactData() {
-		b2ContactData = Arena.ofAuto().allocate(LAYOUT);
+		this(Arena.ofAuto());
+	}
 
+	public ContactData(Arena arena) {
+		b2ContactData = arena.allocate(LAYOUT);
+
+		shapeIdA = b2ContactData.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactData.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
+		
 		manifold = new Manifold(b2ContactData.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
 	}
 
 	public ContactData(MemorySegment memorySegment, World world) {
-		b2ContactData = memorySegment;
+		this.b2ContactData = memorySegment;
+		this.world = world;
 
+		shapeIdA = b2ContactData.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
+		shapeIdB = b2ContactData.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
+		
 		manifold = new Manifold(b2ContactData.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
-
-		MemorySegment shapeASegment = b2ContactData.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = b2ContactData.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
 	}
 
 	public void set(MemorySegment memorySegment, World world) {
-		manifold.set(memorySegment.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT()));
-
-		MemorySegment shapeASegment = memorySegment.asSlice(SHAPE_ID_A_OFFSET, Shape.LAYOUT());
-		shapeA = Box2D.getShape(Shape.getShapeId(shapeASegment), world);
-
-		MemorySegment shapeBSegment = memorySegment.asSlice(SHAPE_ID_B_OFFSET, Shape.LAYOUT());
-		shapeB = Box2D.getShape(Shape.getShapeId(shapeBSegment), world);
+		MemorySegment.copy(memorySegment, 0, b2ContactData, 0, LAYOUT.byteSize());
 	}
 
 	public Manifold getManifold() {
@@ -82,13 +84,17 @@ public final class ContactData {
 	}
 
 	public Shape getShapeA() {
-		return shapeA;
+		return Box2D.getShape(Shape.getShapeId(shapeIdA), world);
 	}
 
 	public Shape getShapeB() {
-		return shapeB;
+		return Box2D.getShape(Shape.getShapeId(shapeIdB), world);
 	}
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	
 	public MemorySegment memorySegment() {
 		return b2ContactData;
 	}

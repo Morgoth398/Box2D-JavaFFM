@@ -184,7 +184,7 @@ public final class ShapeDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ShapeDef.asReadOnly();
+		return b2ShapeDef;
 	}
 
 	public static StructLayout LAYOUT() {

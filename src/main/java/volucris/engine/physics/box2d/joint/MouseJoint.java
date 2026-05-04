@@ -26,8 +26,6 @@ public final class MouseJoint extends Joint {
 	private static final MethodHandle B2_MOUSE_JOINT_SET_MAX_FORCE;
 	private static final MethodHandle B2_MOUSE_JOINT_GET_MAX_FORCE;
 
-	private Vec2 vecTmp;
-
 	static {
 		//@formatter:off
 		B2_CREATE_MOUSE_JOINT = downcallHandle("b2CreateMouseJoint", World.LAYOUT(), ADDRESS);
@@ -58,8 +56,6 @@ public final class MouseJoint extends Joint {
 			throw new VolucrisRuntimeException("Box2D: Cannot create mouse joint.");
 		}
 		super(b2MouseJoint, world);
-
-		vecTmp = new Vec2();
 	}
 
 	/**

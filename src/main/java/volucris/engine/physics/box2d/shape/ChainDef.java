@@ -53,6 +53,8 @@ public final class ChainDef {
 
 	private static final long FILTER_OFFSET;
 
+	private final Arena arena;
+	
 	private final MemorySegment b2ChainDef;
 
 	private final Filter filter;
@@ -94,8 +96,8 @@ public final class ChainDef {
 
 	public ChainDef() {
 		try {
-			SegmentAllocator allocator = Arena.ofAuto();
-			b2ChainDef = (MemorySegment) B2_DEFAULT_CHAIN_DEF.invokeExact(allocator);
+			arena = Arena.ofAuto();
+			b2ChainDef = (MemorySegment) B2_DEFAULT_CHAIN_DEF.invokeExact((SegmentAllocator) arena);
 		} catch (Throwable e) {
 			throw new VolucrisRuntimeException("Box2D: Cannot create chain def.");
 		}
@@ -118,7 +120,7 @@ public final class ChainDef {
 	public void setPoints(Vector2f[] points) {
 
 		if (pointArray == null || pointArray.byteSize() < points.length * Vec2.LAYOUT().byteSize())
-			pointArray = Arena.ofAuto().allocate(MemoryLayout.sequenceLayout(points.length, Vec2.LAYOUT()));
+			pointArray = arena.allocate(MemoryLayout.sequenceLayout(points.length, Vec2.LAYOUT()));
 
 		for (int i = 0; i < points.length; i++) {
 			vecTmp.set(points[i]);
@@ -138,7 +140,7 @@ public final class ChainDef {
 		StructLayout layout = SurfaceMaterial.LAYOUT();
 
 		if (materialArray == null || materialArray.byteSize() < materials.length * layout.byteSize())
-			materialArray = Arena.ofAuto().allocate(MemoryLayout.sequenceLayout(materials.length, layout));
+			materialArray = arena.allocate(MemoryLayout.sequenceLayout(materials.length, layout));
 
 		for (int i = 0; i < materials.length; i++) {
 			long offset = i * layout.byteSize();
@@ -164,7 +166,7 @@ public final class ChainDef {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2ChainDef.asReadOnly();
+		return b2ChainDef;
 	}
 
 	public static StructLayout LAYOUT() {

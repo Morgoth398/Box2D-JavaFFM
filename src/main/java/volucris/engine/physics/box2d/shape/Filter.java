@@ -121,7 +121,7 @@ public final class Filter {
 	}
 
 	public MemorySegment memorySegment() {
-		return b2Filter.asReadOnly();
+		return b2Filter;
 	}
 
 	public static StructLayout LAYOUT() {

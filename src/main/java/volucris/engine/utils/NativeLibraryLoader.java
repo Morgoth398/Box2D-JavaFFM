@@ -17,10 +17,12 @@ public final class NativeLibraryLoader {
 
 	private static final String OS = System.getProperty("os.name").toLowerCase();
 	private static final boolean IS_WINDOWS = OS.contains("windows");
+	private static final boolean IS_APPLE = OS.contains("mac") || OS.contains("darwin");
 
 	private static final String[] EXTRACT_PATHS;
 
 	public static boolean DEBUG = false;
+	public static boolean LOAD_LIBRARY = true;
 
 	static {
 		EXTRACT_PATHS = new String[4];
@@ -68,9 +70,10 @@ public final class NativeLibraryLoader {
 	}
 
 	public static void loadLibrary(String sourcePath, String name) {
-		boolean isWindows = OS.contains("windows");
-
-		String fileName = isWindows ? name + ".dll" : "lib" + name + ".so";
+		if (IS_APPLE || !LOAD_LIBRARY)
+			return;
+		
+		String fileName = IS_WINDOWS ? name + ".dll" : "lib" + name + ".so";
 		String internalPath = sourcePath + File.separator + fileName;
 		InputStream sharedLibraryStream = VolucrisFiles.internal(internalPath).getInputStream();
 
