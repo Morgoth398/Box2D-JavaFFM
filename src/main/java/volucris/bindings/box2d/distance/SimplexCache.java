@@ -21,13 +21,13 @@ public final class SimplexCache
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle COUNT;
-    public static final VarHandle INDEX_A;
-    public static final VarHandle INDEX_B;
+    public static final VarHandle COUNT_HANDLE;
+    public static final VarHandle INDEX_A_HANDLE;
+    public static final VarHandle INDEX_B_HANDLE;
 
-    public static final long COUNT_OFFSET;
-    public static final long INDEX_A_OFFSET;
-    public static final long INDEX_B_OFFSET;
+    public static final long COUNT_BYTE_OFFSET;
+    public static final long INDEX_A_BYTE_OFFSET;
+    public static final long INDEX_B_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -39,13 +39,13 @@ public final class SimplexCache
             MemoryLayout.sequenceLayout(3, JAVA_BYTE).withName("indexB")
         ).withName("b2SimplexCache").withByteAlignment(2);
         
-        COUNT = LAYOUT.varHandle(PathElement.groupElement("count"));
-        INDEX_A = LAYOUT.varHandle(PathElement.groupElement("indexA"), PathElement.sequenceElement());
-        INDEX_B = LAYOUT.varHandle(PathElement.groupElement("indexB"), PathElement.sequenceElement());
+        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
+        INDEX_A_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexA"), PathElement.sequenceElement());
+        INDEX_B_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexB"), PathElement.sequenceElement());
         
-        COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
-        INDEX_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexA"));
-        INDEX_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexB"));
+        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+        INDEX_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexA"));
+        INDEX_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexB"));
         //@formatter:on
     }
 
@@ -63,30 +63,30 @@ public final class SimplexCache
     }
 
     public SimplexCache count(short count) {
-        COUNT.set(segment, 0L, count);
+        COUNT_HANDLE.set(segment, 0L, count);
         return this;
     }
     
     public short count() {
-        return (short) COUNT.get(segment, 0L);
+        return (short) COUNT_HANDLE.get(segment, 0L);
     }
     
     public SimplexCache indexA(byte indexA, long index) {
-        INDEX_A.set(segment, 0L, index, indexA);
+        INDEX_A_HANDLE.set(segment, 0L, index, indexA);
         return this;
     }
     
     public byte indexA(long index) {
-        return (byte) INDEX_A.get(segment, 0L, index);
+        return (byte) INDEX_A_HANDLE.get(segment, 0L, index);
     }
     
     public SimplexCache indexB(byte indexB, long index) {
-        INDEX_B.set(segment, 0L, index, indexB);
+        INDEX_B_HANDLE.set(segment, 0L, index, indexB);
         return this;
     }
     
     public byte indexB(long index) {
-        return (byte) INDEX_B.get(segment, 0L, index);
+        return (byte) INDEX_B_HANDLE.get(segment, 0L, index);
     }
     
     @Override

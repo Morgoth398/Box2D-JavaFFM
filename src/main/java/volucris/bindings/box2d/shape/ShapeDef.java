@@ -28,29 +28,29 @@ public final class ShapeDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle USER_DATA;
-    public static final VarHandle DENSITY;
-    public static final VarHandle IS_SENSOR;
-    public static final VarHandle ENABLE_SENSOR_EVENTS;
-    public static final VarHandle ENABLE_CONTACT_EVENTS;
-    public static final VarHandle ENABLE_HIT_EVENTS;
-    public static final VarHandle ENABLE_PRE_SOLVE_EVENTS;
-    public static final VarHandle INVOKE_CONTACT_CREATION;
-    public static final VarHandle UPDATE_BODY_MASS;
-    public static final VarHandle INTERNAL_VALUE;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle DENSITY_HANDLE;
+    public static final VarHandle IS_SENSOR_HANDLE;
+    public static final VarHandle ENABLE_SENSOR_EVENTS_HANDLE;
+    public static final VarHandle ENABLE_CONTACT_EVENTS_HANDLE;
+    public static final VarHandle ENABLE_HIT_EVENTS_HANDLE;
+    public static final VarHandle ENABLE_PRE_SOLVE_EVENTS_HANDLE;
+    public static final VarHandle INVOKE_CONTACT_CREATION_HANDLE;
+    public static final VarHandle UPDATE_BODY_MASS_HANDLE;
+    public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long USER_DATA_OFFSET;
-    public static final long MATERIAL_OFFSET;
-    public static final long DENSITY_OFFSET;
-    public static final long FILTER_OFFSET;
-    public static final long IS_SENSOR_OFFSET;
-    public static final long ENABLE_SENSOR_EVENTS_OFFSET;
-    public static final long ENABLE_CONTACT_EVENTS_OFFSET;
-    public static final long ENABLE_HIT_EVENTS_OFFSET;
-    public static final long ENABLE_PRE_SOLVE_EVENTS_OFFSET;
-    public static final long INVOKE_CONTACT_CREATION_OFFSET;
-    public static final long UPDATE_BODY_MASS_OFFSET;
-    public static final long INTERNAL_VALUE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long MATERIAL_BYTE_OFFSET;
+    public static final long DENSITY_BYTE_OFFSET;
+    public static final long FILTER_BYTE_OFFSET;
+    public static final long IS_SENSOR_BYTE_OFFSET;
+    public static final long ENABLE_SENSOR_EVENTS_BYTE_OFFSET;
+    public static final long ENABLE_CONTACT_EVENTS_BYTE_OFFSET;
+    public static final long ENABLE_HIT_EVENTS_BYTE_OFFSET;
+    public static final long ENABLE_PRE_SOLVE_EVENTS_BYTE_OFFSET;
+    public static final long INVOKE_CONTACT_CREATION_BYTE_OFFSET;
+    public static final long UPDATE_BODY_MASS_BYTE_OFFSET;
+    public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -79,37 +79,37 @@ public final class ShapeDef
         
         B2_DEFAULT_SHAPE_DEF = downcallHandle("b2DefaultShapeDef", ShapeDef.LAYOUT);
         
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        DENSITY = LAYOUT.varHandle(PathElement.groupElement("density"));
-        IS_SENSOR = LAYOUT.varHandle(PathElement.groupElement("isSensor"));
-        ENABLE_SENSOR_EVENTS = LAYOUT.varHandle(PathElement.groupElement("enableSensorEvents"));
-        ENABLE_CONTACT_EVENTS = LAYOUT.varHandle(PathElement.groupElement("enableContactEvents"));
-        ENABLE_HIT_EVENTS = LAYOUT.varHandle(PathElement.groupElement("enableHitEvents"));
-        ENABLE_PRE_SOLVE_EVENTS = LAYOUT.varHandle(PathElement.groupElement("enablePreSolveEvents"));
-        INVOKE_CONTACT_CREATION = LAYOUT.varHandle(PathElement.groupElement("invokeContactCreation"));
-        UPDATE_BODY_MASS = LAYOUT.varHandle(PathElement.groupElement("updateBodyMass"));
-        INTERNAL_VALUE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        DENSITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("density"));
+        IS_SENSOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isSensor"));
+        ENABLE_SENSOR_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableSensorEvents"));
+        ENABLE_CONTACT_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableContactEvents"));
+        ENABLE_HIT_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableHitEvents"));
+        ENABLE_PRE_SOLVE_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enablePreSolveEvents"));
+        INVOKE_CONTACT_CREATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("invokeContactCreation"));
+        UPDATE_BODY_MASS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("updateBodyMass"));
+        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
         
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        MATERIAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("material"));
-        DENSITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("density"));
-        FILTER_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("filter"));
-        IS_SENSOR_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isSensor"));
-        ENABLE_SENSOR_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSensorEvents"));
-        ENABLE_CONTACT_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableContactEvents"));
-        ENABLE_HIT_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableHitEvents"));
-        ENABLE_PRE_SOLVE_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enablePreSolveEvents"));
-        INVOKE_CONTACT_CREATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("invokeContactCreation"));
-        UPDATE_BODY_MASS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("updateBodyMass"));
-        INTERNAL_VALUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        MATERIAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("material"));
+        DENSITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("density"));
+        FILTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("filter"));
+        IS_SENSOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isSensor"));
+        ENABLE_SENSOR_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSensorEvents"));
+        ENABLE_CONTACT_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableContactEvents"));
+        ENABLE_HIT_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableHitEvents"));
+        ENABLE_PRE_SOLVE_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enablePreSolveEvents"));
+        INVOKE_CONTACT_CREATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("invokeContactCreation"));
+        UPDATE_BODY_MASS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("updateBodyMass"));
+        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
         //@formatter:on
     }
 
     public ShapeDef(MemorySegment segment) {
         this.segment = segment;
     
-        material = new SurfaceMaterial(segment.asSlice(MATERIAL_OFFSET, SurfaceMaterial.LAYOUT));
-        filter = new Filter(segment.asSlice(FILTER_OFFSET, Filter.LAYOUT));
+        material = new SurfaceMaterial(segment.asSlice(MATERIAL_BYTE_OFFSET, SurfaceMaterial.LAYOUT));
+        filter = new Filter(segment.asSlice(FILTER_BYTE_OFFSET, Filter.LAYOUT));
     }
 
     /**
@@ -143,12 +143,12 @@ public final class ShapeDef
     }
     
     public ShapeDef userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -157,84 +157,84 @@ public final class ShapeDef
     }
     
     public ShapeDef density(float density) {
-        DENSITY.set(segment, 0L, density);
+        DENSITY_HANDLE.set(segment, 0L, density);
         return this;
     }
     
     public float density() {
-        return (float) DENSITY.get(segment, 0L);
+        return (float) DENSITY_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef isSensor(boolean isSensor) {
-        IS_SENSOR.set(segment, 0L, isSensor);
+        IS_SENSOR_HANDLE.set(segment, 0L, isSensor);
         return this;
     }
     
     public boolean isSensor() {
-        return (boolean) IS_SENSOR.get(segment, 0L);
+        return (boolean) IS_SENSOR_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef enableSensorEvents(boolean enableSensorEvents) {
-        ENABLE_SENSOR_EVENTS.set(segment, 0L, enableSensorEvents);
+        ENABLE_SENSOR_EVENTS_HANDLE.set(segment, 0L, enableSensorEvents);
         return this;
     }
     
     public boolean enableSensorEvents() {
-        return (boolean) ENABLE_SENSOR_EVENTS.get(segment, 0L);
+        return (boolean) ENABLE_SENSOR_EVENTS_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef enableContactEvents(boolean enableContactEvents) {
-        ENABLE_CONTACT_EVENTS.set(segment, 0L, enableContactEvents);
+        ENABLE_CONTACT_EVENTS_HANDLE.set(segment, 0L, enableContactEvents);
         return this;
     }
     
     public boolean enableContactEvents() {
-        return (boolean) ENABLE_CONTACT_EVENTS.get(segment, 0L);
+        return (boolean) ENABLE_CONTACT_EVENTS_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef enableHitEvents(boolean enableHitEvents) {
-        ENABLE_HIT_EVENTS.set(segment, 0L, enableHitEvents);
+        ENABLE_HIT_EVENTS_HANDLE.set(segment, 0L, enableHitEvents);
         return this;
     }
     
     public boolean enableHitEvents() {
-        return (boolean) ENABLE_HIT_EVENTS.get(segment, 0L);
+        return (boolean) ENABLE_HIT_EVENTS_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef enablePreSolveEvents(boolean enablePreSolveEvents) {
-        ENABLE_PRE_SOLVE_EVENTS.set(segment, 0L, enablePreSolveEvents);
+        ENABLE_PRE_SOLVE_EVENTS_HANDLE.set(segment, 0L, enablePreSolveEvents);
         return this;
     }
     
     public boolean enablePreSolveEvents() {
-        return (boolean) ENABLE_PRE_SOLVE_EVENTS.get(segment, 0L);
+        return (boolean) ENABLE_PRE_SOLVE_EVENTS_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef invokeContactCreation(boolean invokeContactCreation) {
-        INVOKE_CONTACT_CREATION.set(segment, 0L, invokeContactCreation);
+        INVOKE_CONTACT_CREATION_HANDLE.set(segment, 0L, invokeContactCreation);
         return this;
     }
     
     public boolean invokeContactCreation() {
-        return (boolean) INVOKE_CONTACT_CREATION.get(segment, 0L);
+        return (boolean) INVOKE_CONTACT_CREATION_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef updateBodyMass(boolean updateBodyMass) {
-        UPDATE_BODY_MASS.set(segment, 0L, updateBodyMass);
+        UPDATE_BODY_MASS_HANDLE.set(segment, 0L, updateBodyMass);
         return this;
     }
     
     public boolean updateBodyMass() {
-        return (boolean) UPDATE_BODY_MASS.get(segment, 0L);
+        return (boolean) UPDATE_BODY_MASS_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef internalValue(int internalValue) {
-        INTERNAL_VALUE.set(segment, 0L, internalValue);
+        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
         return this;
     }
     
     public int internalValue() {
-        return (int) INTERNAL_VALUE.get(segment, 0L);
+        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     public ShapeDef material(Consumer<SurfaceMaterial> consumer) {

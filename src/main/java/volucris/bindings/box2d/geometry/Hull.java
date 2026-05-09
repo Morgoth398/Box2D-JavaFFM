@@ -30,10 +30,10 @@ public final class Hull
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS;
+    public static final VarHandle RADIUS_HANDLE;
 
-    public static final long CENTER_OFFSET;
-    public static final long RADIUS_OFFSET;
+    public static final long CENTER_BYTE_OFFSET;
+    public static final long RADIUS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -49,10 +49,10 @@ public final class Hull
         B2_COMPUTE_HULL = downcallHandle("b2ComputeHull", Hull.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
         B2_VALIDATE_HULL = downcallHandle("b2ValidateHull", JAVA_BOOLEAN, UNBOUNDED_ADDRESS);
         
-        RADIUS = LAYOUT.varHandle(PathElement.groupElement("radius"));
+        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
         
-        CENTER_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
-        RADIUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+        CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
+        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
         //@formatter:on
     }
 
@@ -67,7 +67,7 @@ public final class Hull
     public Hull(MemorySegment segment) {
         this.segment = segment;
     
-        center = new Vec2(segment.asSlice(CENTER_OFFSET, Vec2.LAYOUT));
+        center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -137,12 +137,12 @@ public final class Hull
     }
     
     public Hull radius(float radius) {
-        RADIUS.set(segment, 0L, radius);
+        RADIUS_HANDLE.set(segment, 0L, radius);
         return this;
     }
     
     public float radius() {
-        return (float) RADIUS.get(segment, 0L);
+        return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     public Hull center(Consumer<Vec2> consumer) {

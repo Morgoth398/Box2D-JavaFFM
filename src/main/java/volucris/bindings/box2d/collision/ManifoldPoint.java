@@ -23,24 +23,24 @@ public final class ManifoldPoint
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle SEPARATION;
-    public static final VarHandle NORMAL_IMPULSE;
-    public static final VarHandle TANGENT_IMPULSE;
-    public static final VarHandle TOTAL_NORMAL_IMPULSE;
-    public static final VarHandle NORMAL_VELOCITY;
-    public static final VarHandle ID;
-    public static final VarHandle PERSISTED;
+    public static final VarHandle SEPARATION_HANDLE;
+    public static final VarHandle NORMAL_IMPULSE_HANDLE;
+    public static final VarHandle TANGENT_IMPULSE_HANDLE;
+    public static final VarHandle TOTAL_NORMAL_IMPULSE_HANDLE;
+    public static final VarHandle NORMAL_VELOCITY_HANDLE;
+    public static final VarHandle ID_HANDLE;
+    public static final VarHandle PERSISTED_HANDLE;
 
-    public static final long POINT_OFFSET;
-    public static final long ANCHOR_A_OFFSET;
-    public static final long ANCHOR_B_OFFSET;
-    public static final long SEPARATION_OFFSET;
-    public static final long NORMAL_IMPULSE_OFFSET;
-    public static final long TANGENT_IMPULSE_OFFSET;
-    public static final long TOTAL_NORMAL_IMPULSE_OFFSET;
-    public static final long NORMAL_VELOCITY_OFFSET;
-    public static final long ID_OFFSET;
-    public static final long PERSISTED_OFFSET;
+    public static final long POINT_BYTE_OFFSET;
+    public static final long ANCHOR_A_BYTE_OFFSET;
+    public static final long ANCHOR_B_BYTE_OFFSET;
+    public static final long SEPARATION_BYTE_OFFSET;
+    public static final long NORMAL_IMPULSE_BYTE_OFFSET;
+    public static final long TANGENT_IMPULSE_BYTE_OFFSET;
+    public static final long TOTAL_NORMAL_IMPULSE_BYTE_OFFSET;
+    public static final long NORMAL_VELOCITY_BYTE_OFFSET;
+    public static final long ID_BYTE_OFFSET;
+    public static final long PERSISTED_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -64,24 +64,24 @@ public final class ManifoldPoint
             MemoryLayout.paddingLayout(1)
         ).withName("b2ManifoldPoint").withByteAlignment(4);
         
-        SEPARATION = LAYOUT.varHandle(PathElement.groupElement("separation"));
-        NORMAL_IMPULSE = LAYOUT.varHandle(PathElement.groupElement("normalImpulse"));
-        TANGENT_IMPULSE = LAYOUT.varHandle(PathElement.groupElement("tangentImpulse"));
-        TOTAL_NORMAL_IMPULSE = LAYOUT.varHandle(PathElement.groupElement("totalNormalImpulse"));
-        NORMAL_VELOCITY = LAYOUT.varHandle(PathElement.groupElement("normalVelocity"));
-        ID = LAYOUT.varHandle(PathElement.groupElement("id"));
-        PERSISTED = LAYOUT.varHandle(PathElement.groupElement("persisted"));
+        SEPARATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("separation"));
+        NORMAL_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("normalImpulse"));
+        TANGENT_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("tangentImpulse"));
+        TOTAL_NORMAL_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("totalNormalImpulse"));
+        NORMAL_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("normalVelocity"));
+        ID_HANDLE = LAYOUT.varHandle(PathElement.groupElement("id"));
+        PERSISTED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("persisted"));
         
-        POINT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        ANCHOR_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorA"));
-        ANCHOR_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorB"));
-        SEPARATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("separation"));
-        NORMAL_IMPULSE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalImpulse"));
-        TANGENT_IMPULSE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentImpulse"));
-        TOTAL_NORMAL_IMPULSE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("totalNormalImpulse"));
-        NORMAL_VELOCITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalVelocity"));
-        ID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("id"));
-        PERSISTED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("persisted"));
+        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+        ANCHOR_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorA"));
+        ANCHOR_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorB"));
+        SEPARATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("separation"));
+        NORMAL_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalImpulse"));
+        TANGENT_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentImpulse"));
+        TOTAL_NORMAL_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("totalNormalImpulse"));
+        NORMAL_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalVelocity"));
+        ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("id"));
+        PERSISTED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("persisted"));
         //@formatter:on
     }
 
@@ -96,72 +96,72 @@ public final class ManifoldPoint
     public ManifoldPoint(MemorySegment segment) {
         this.segment = segment;
     
-        point = new Vec2(segment.asSlice(POINT_OFFSET, Vec2.LAYOUT));
-        anchorA = new Vec2(segment.asSlice(ANCHOR_A_OFFSET, Vec2.LAYOUT));
-        anchorB = new Vec2(segment.asSlice(ANCHOR_B_OFFSET, Vec2.LAYOUT));
+        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+        anchorA = new Vec2(segment.asSlice(ANCHOR_A_BYTE_OFFSET, Vec2.LAYOUT));
+        anchorB = new Vec2(segment.asSlice(ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public ManifoldPoint separation(float separation) {
-        SEPARATION.set(segment, 0L, separation);
+        SEPARATION_HANDLE.set(segment, 0L, separation);
         return this;
     }
     
     public float separation() {
-        return (float) SEPARATION.get(segment, 0L);
+        return (float) SEPARATION_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint normalImpulse(float normalImpulse) {
-        NORMAL_IMPULSE.set(segment, 0L, normalImpulse);
+        NORMAL_IMPULSE_HANDLE.set(segment, 0L, normalImpulse);
         return this;
     }
     
     public float normalImpulse() {
-        return (float) NORMAL_IMPULSE.get(segment, 0L);
+        return (float) NORMAL_IMPULSE_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint tangentImpulse(float tangentImpulse) {
-        TANGENT_IMPULSE.set(segment, 0L, tangentImpulse);
+        TANGENT_IMPULSE_HANDLE.set(segment, 0L, tangentImpulse);
         return this;
     }
     
     public float tangentImpulse() {
-        return (float) TANGENT_IMPULSE.get(segment, 0L);
+        return (float) TANGENT_IMPULSE_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint totalNormalImpulse(float totalNormalImpulse) {
-        TOTAL_NORMAL_IMPULSE.set(segment, 0L, totalNormalImpulse);
+        TOTAL_NORMAL_IMPULSE_HANDLE.set(segment, 0L, totalNormalImpulse);
         return this;
     }
     
     public float totalNormalImpulse() {
-        return (float) TOTAL_NORMAL_IMPULSE.get(segment, 0L);
+        return (float) TOTAL_NORMAL_IMPULSE_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint normalVelocity(float normalVelocity) {
-        NORMAL_VELOCITY.set(segment, 0L, normalVelocity);
+        NORMAL_VELOCITY_HANDLE.set(segment, 0L, normalVelocity);
         return this;
     }
     
     public float normalVelocity() {
-        return (float) NORMAL_VELOCITY.get(segment, 0L);
+        return (float) NORMAL_VELOCITY_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint id(short id) {
-        ID.set(segment, 0L, id);
+        ID_HANDLE.set(segment, 0L, id);
         return this;
     }
     
     public short id() {
-        return (short) ID.get(segment, 0L);
+        return (short) ID_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint persisted(boolean persisted) {
-        PERSISTED.set(segment, 0L, persisted);
+        PERSISTED_HANDLE.set(segment, 0L, persisted);
         return this;
     }
     
     public boolean persisted() {
-        return (boolean) PERSISTED.get(segment, 0L);
+        return (boolean) PERSISTED_HANDLE.get(segment, 0L);
     }
     
     public ManifoldPoint point(Consumer<Vec2> consumer) {

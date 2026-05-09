@@ -23,12 +23,12 @@ public final class MassData
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MASS;
-    public static final VarHandle ROTATIONAL_INERTIA;
+    public static final VarHandle MASS_HANDLE;
+    public static final VarHandle ROTATIONAL_INERTIA_HANDLE;
 
-    public static final long MASS_OFFSET;
-    public static final long CENTER_OFFSET;
-    public static final long ROTATIONAL_INERTIA_OFFSET;
+    public static final long MASS_BYTE_OFFSET;
+    public static final long CENTER_BYTE_OFFSET;
+    public static final long ROTATIONAL_INERTIA_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -42,12 +42,12 @@ public final class MassData
             JAVA_FLOAT.withName("rotationalInertia")
         ).withName("b2MassData").withByteAlignment(4);
         
-        MASS = LAYOUT.varHandle(PathElement.groupElement("mass"));
-        ROTATIONAL_INERTIA = LAYOUT.varHandle(PathElement.groupElement("rotationalInertia"));
+        MASS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("mass"));
+        ROTATIONAL_INERTIA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rotationalInertia"));
         
-        MASS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("mass"));
-        CENTER_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
-        ROTATIONAL_INERTIA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotationalInertia"));
+        MASS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("mass"));
+        CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
+        ROTATIONAL_INERTIA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotationalInertia"));
         //@formatter:on
     }
 
@@ -62,25 +62,25 @@ public final class MassData
     public MassData(MemorySegment segment) {
         this.segment = segment;
     
-        center = new Vec2(segment.asSlice(CENTER_OFFSET, Vec2.LAYOUT));
+        center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public MassData mass(float mass) {
-        MASS.set(segment, 0L, mass);
+        MASS_HANDLE.set(segment, 0L, mass);
         return this;
     }
     
     public float mass() {
-        return (float) MASS.get(segment, 0L);
+        return (float) MASS_HANDLE.get(segment, 0L);
     }
     
     public MassData rotationalInertia(float rotationalInertia) {
-        ROTATIONAL_INERTIA.set(segment, 0L, rotationalInertia);
+        ROTATIONAL_INERTIA_HANDLE.set(segment, 0L, rotationalInertia);
         return this;
     }
     
     public float rotationalInertia() {
-        return (float) ROTATIONAL_INERTIA.get(segment, 0L);
+        return (float) ROTATIONAL_INERTIA_HANDLE.get(segment, 0L);
     }
     
     public MassData center(Consumer<Vec2> consumer) {

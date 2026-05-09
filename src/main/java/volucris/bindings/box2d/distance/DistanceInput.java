@@ -24,13 +24,13 @@ public final class DistanceInput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle USE_RADII;
+    public static final VarHandle USE_RADII_HANDLE;
 
-    public static final long PROXY_A_OFFSET;
-    public static final long PROXY_B_OFFSET;
-    public static final long TRANSFORM_A_OFFSET;
-    public static final long TRANSFORM_B_OFFSET;
-    public static final long USE_RADII_OFFSET;
+    public static final long PROXY_A_BYTE_OFFSET;
+    public static final long PROXY_B_BYTE_OFFSET;
+    public static final long TRANSFORM_A_BYTE_OFFSET;
+    public static final long TRANSFORM_B_BYTE_OFFSET;
+    public static final long USE_RADII_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -50,13 +50,13 @@ public final class DistanceInput
             MemoryLayout.paddingLayout(3)
         ).withName("b2DistanceInput").withByteAlignment(4);
         
-        USE_RADII = LAYOUT.varHandle(PathElement.groupElement("useRadii"));
+        USE_RADII_HANDLE = LAYOUT.varHandle(PathElement.groupElement("useRadii"));
         
-        PROXY_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
-        PROXY_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
-        TRANSFORM_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformA"));
-        TRANSFORM_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformB"));
-        USE_RADII_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("useRadii"));
+        PROXY_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
+        PROXY_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
+        TRANSFORM_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformA"));
+        TRANSFORM_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformB"));
+        USE_RADII_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("useRadii"));
         //@formatter:on
     }
 
@@ -71,19 +71,19 @@ public final class DistanceInput
     public DistanceInput(MemorySegment segment) {
         this.segment = segment;
     
-        proxyA = new ShapeProxy(segment.asSlice(PROXY_A_OFFSET, ShapeProxy.LAYOUT));
-        proxyB = new ShapeProxy(segment.asSlice(PROXY_B_OFFSET, ShapeProxy.LAYOUT));
-        transformA = new Transform(segment.asSlice(TRANSFORM_A_OFFSET, Transform.LAYOUT));
-        transformB = new Transform(segment.asSlice(TRANSFORM_B_OFFSET, Transform.LAYOUT));
+        proxyA = new ShapeProxy(segment.asSlice(PROXY_A_BYTE_OFFSET, ShapeProxy.LAYOUT));
+        proxyB = new ShapeProxy(segment.asSlice(PROXY_B_BYTE_OFFSET, ShapeProxy.LAYOUT));
+        transformA = new Transform(segment.asSlice(TRANSFORM_A_BYTE_OFFSET, Transform.LAYOUT));
+        transformB = new Transform(segment.asSlice(TRANSFORM_B_BYTE_OFFSET, Transform.LAYOUT));
     }
 
     public DistanceInput useRadii(boolean useRadii) {
-        USE_RADII.set(segment, 0L, useRadii);
+        USE_RADII_HANDLE.set(segment, 0L, useRadii);
         return this;
     }
     
     public boolean useRadii() {
-        return (boolean) USE_RADII.get(segment, 0L);
+        return (boolean) USE_RADII_HANDLE.get(segment, 0L);
     }
     
     public DistanceInput proxyA(Consumer<ShapeProxy> consumer) {

@@ -23,16 +23,16 @@ public final class DistanceOutput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle DISTANCE;
-    public static final VarHandle ITERATIONS;
-    public static final VarHandle SIMPLEX_COUNT;
+    public static final VarHandle DISTANCE_HANDLE;
+    public static final VarHandle ITERATIONS_HANDLE;
+    public static final VarHandle SIMPLEX_COUNT_HANDLE;
 
-    public static final long POINT_A_OFFSET;
-    public static final long POINT_B_OFFSET;
-    public static final long NORMAL_OFFSET;
-    public static final long DISTANCE_OFFSET;
-    public static final long ITERATIONS_OFFSET;
-    public static final long SIMPLEX_COUNT_OFFSET;
+    public static final long POINT_A_BYTE_OFFSET;
+    public static final long POINT_B_BYTE_OFFSET;
+    public static final long NORMAL_BYTE_OFFSET;
+    public static final long DISTANCE_BYTE_OFFSET;
+    public static final long ITERATIONS_BYTE_OFFSET;
+    public static final long SIMPLEX_COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -51,16 +51,16 @@ public final class DistanceOutput
             JAVA_INT.withName("simplexCount")
         ).withName("b2DistanceOutput").withByteAlignment(4);
         
-        DISTANCE = LAYOUT.varHandle(PathElement.groupElement("distance"));
-        ITERATIONS = LAYOUT.varHandle(PathElement.groupElement("iterations"));
-        SIMPLEX_COUNT = LAYOUT.varHandle(PathElement.groupElement("simplexCount"));
+        DISTANCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("distance"));
+        ITERATIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterations"));
+        SIMPLEX_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("simplexCount"));
         
-        POINT_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointA"));
-        POINT_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointB"));
-        NORMAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        DISTANCE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distance"));
-        ITERATIONS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
-        SIMPLEX_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("simplexCount"));
+        POINT_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointA"));
+        POINT_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointB"));
+        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+        DISTANCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distance"));
+        ITERATIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
+        SIMPLEX_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("simplexCount"));
         //@formatter:on
     }
 
@@ -75,36 +75,36 @@ public final class DistanceOutput
     public DistanceOutput(MemorySegment segment) {
         this.segment = segment;
     
-        pointA = new Vec2(segment.asSlice(POINT_A_OFFSET, Vec2.LAYOUT));
-        pointB = new Vec2(segment.asSlice(POINT_B_OFFSET, Vec2.LAYOUT));
-        normal = new Vec2(segment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT));
+        pointA = new Vec2(segment.asSlice(POINT_A_BYTE_OFFSET, Vec2.LAYOUT));
+        pointB = new Vec2(segment.asSlice(POINT_B_BYTE_OFFSET, Vec2.LAYOUT));
+        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public DistanceOutput distance(float distance) {
-        DISTANCE.set(segment, 0L, distance);
+        DISTANCE_HANDLE.set(segment, 0L, distance);
         return this;
     }
     
     public float distance() {
-        return (float) DISTANCE.get(segment, 0L);
+        return (float) DISTANCE_HANDLE.get(segment, 0L);
     }
     
     public DistanceOutput iterations(int iterations) {
-        ITERATIONS.set(segment, 0L, iterations);
+        ITERATIONS_HANDLE.set(segment, 0L, iterations);
         return this;
     }
     
     public int iterations() {
-        return (int) ITERATIONS.get(segment, 0L);
+        return (int) ITERATIONS_HANDLE.get(segment, 0L);
     }
     
     public DistanceOutput simplexCount(int simplexCount) {
-        SIMPLEX_COUNT.set(segment, 0L, simplexCount);
+        SIMPLEX_COUNT_HANDLE.set(segment, 0L, simplexCount);
         return this;
     }
     
     public int simplexCount() {
-        return (int) SIMPLEX_COUNT.get(segment, 0L);
+        return (int) SIMPLEX_COUNT_HANDLE.get(segment, 0L);
     }
     
     public DistanceOutput pointA(Consumer<Vec2> consumer) {

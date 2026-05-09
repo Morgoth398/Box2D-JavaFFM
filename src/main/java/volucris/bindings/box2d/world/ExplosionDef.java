@@ -29,16 +29,16 @@ public final class ExplosionDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MASK_BITS;
-    public static final VarHandle RADIUS;
-    public static final VarHandle FALLOFF;
-    public static final VarHandle IMPULSE_PER_LENGTH;
+    public static final VarHandle MASK_BITS_HANDLE;
+    public static final VarHandle RADIUS_HANDLE;
+    public static final VarHandle FALLOFF_HANDLE;
+    public static final VarHandle IMPULSE_PER_LENGTH_HANDLE;
 
-    public static final long MASK_BITS_OFFSET;
-    public static final long POSITION_OFFSET;
-    public static final long RADIUS_OFFSET;
-    public static final long FALLOFF_OFFSET;
-    public static final long IMPULSE_PER_LENGTH_OFFSET;
+    public static final long MASK_BITS_BYTE_OFFSET;
+    public static final long POSITION_BYTE_OFFSET;
+    public static final long RADIUS_BYTE_OFFSET;
+    public static final long FALLOFF_BYTE_OFFSET;
+    public static final long IMPULSE_PER_LENGTH_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -57,23 +57,23 @@ public final class ExplosionDef
         
         B2_DEFAULT_EXPLOSION_DEF = downcallHandle("b2DefaultExplosionDef", ExplosionDef.LAYOUT);
         
-        MASK_BITS = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
-        RADIUS = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        FALLOFF = LAYOUT.varHandle(PathElement.groupElement("falloff"));
-        IMPULSE_PER_LENGTH = LAYOUT.varHandle(PathElement.groupElement("impulsePerLength"));
+        MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
+        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+        FALLOFF_HANDLE = LAYOUT.varHandle(PathElement.groupElement("falloff"));
+        IMPULSE_PER_LENGTH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("impulsePerLength"));
         
-        MASK_BITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
-        POSITION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
-        RADIUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        FALLOFF_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("falloff"));
-        IMPULSE_PER_LENGTH_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("impulsePerLength"));
+        MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
+        POSITION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
+        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+        FALLOFF_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("falloff"));
+        IMPULSE_PER_LENGTH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("impulsePerLength"));
         //@formatter:on
     }
 
     public ExplosionDef(MemorySegment segment) {
         this.segment = segment;
     
-        position = new Vec2(segment.asSlice(POSITION_OFFSET, Vec2.LAYOUT));
+        position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -107,39 +107,39 @@ public final class ExplosionDef
     }
     
     public ExplosionDef maskBits(long maskBits) {
-        MASK_BITS.set(segment, 0L, maskBits);
+        MASK_BITS_HANDLE.set(segment, 0L, maskBits);
         return this;
     }
     
     public long maskBits() {
-        return (long) MASK_BITS.get(segment, 0L);
+        return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
     public ExplosionDef radius(float radius) {
-        RADIUS.set(segment, 0L, radius);
+        RADIUS_HANDLE.set(segment, 0L, radius);
         return this;
     }
     
     public float radius() {
-        return (float) RADIUS.get(segment, 0L);
+        return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     public ExplosionDef falloff(float falloff) {
-        FALLOFF.set(segment, 0L, falloff);
+        FALLOFF_HANDLE.set(segment, 0L, falloff);
         return this;
     }
     
     public float falloff() {
-        return (float) FALLOFF.get(segment, 0L);
+        return (float) FALLOFF_HANDLE.get(segment, 0L);
     }
     
     public ExplosionDef impulsePerLength(float impulsePerLength) {
-        IMPULSE_PER_LENGTH.set(segment, 0L, impulsePerLength);
+        IMPULSE_PER_LENGTH_HANDLE.set(segment, 0L, impulsePerLength);
         return this;
     }
     
     public float impulsePerLength() {
-        return (float) IMPULSE_PER_LENGTH.get(segment, 0L);
+        return (float) IMPULSE_PER_LENGTH_HANDLE.get(segment, 0L);
     }
     
     public ExplosionDef position(Consumer<Vec2> consumer) {

@@ -21,11 +21,11 @@ public final class CosSin
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle COSINE;
-    public static final VarHandle SINE;
+    public static final VarHandle COSINE_HANDLE;
+    public static final VarHandle SINE_HANDLE;
 
-    public static final long COSINE_OFFSET;
-    public static final long SINE_OFFSET;
+    public static final long COSINE_BYTE_OFFSET;
+    public static final long SINE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,11 +36,11 @@ public final class CosSin
             JAVA_FLOAT.withName("sine")
         ).withName("b2CosSin").withByteAlignment(4);
         
-        COSINE = LAYOUT.varHandle(PathElement.groupElement("cosine"));
-        SINE = LAYOUT.varHandle(PathElement.groupElement("sine"));
+        COSINE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("cosine"));
+        SINE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sine"));
         
-        COSINE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cosine"));
-        SINE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sine"));
+        COSINE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cosine"));
+        SINE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sine"));
         //@formatter:on
     }
 
@@ -58,21 +58,21 @@ public final class CosSin
     }
 
     public CosSin cosine(float cosine) {
-        COSINE.set(segment, 0L, cosine);
+        COSINE_HANDLE.set(segment, 0L, cosine);
         return this;
     }
     
     public float cosine() {
-        return (float) COSINE.get(segment, 0L);
+        return (float) COSINE_HANDLE.get(segment, 0L);
     }
     
     public CosSin sine(float sine) {
-        SINE.set(segment, 0L, sine);
+        SINE_HANDLE.set(segment, 0L, sine);
         return this;
     }
     
     public float sine() {
-        return (float) SINE.get(segment, 0L);
+        return (float) SINE_HANDLE.get(segment, 0L);
     }
     
     @Override

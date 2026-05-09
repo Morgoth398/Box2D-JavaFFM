@@ -23,15 +23,15 @@ public final class CastOutput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRACTION;
-    public static final VarHandle ITERATIONS;
-    public static final VarHandle HIT;
+    public static final VarHandle FRACTION_HANDLE;
+    public static final VarHandle ITERATIONS_HANDLE;
+    public static final VarHandle HIT_HANDLE;
 
-    public static final long NORMAL_OFFSET;
-    public static final long POINT_OFFSET;
-    public static final long FRACTION_OFFSET;
-    public static final long ITERATIONS_OFFSET;
-    public static final long HIT_OFFSET;
+    public static final long NORMAL_BYTE_OFFSET;
+    public static final long POINT_BYTE_OFFSET;
+    public static final long FRACTION_BYTE_OFFSET;
+    public static final long ITERATIONS_BYTE_OFFSET;
+    public static final long HIT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -49,15 +49,15 @@ public final class CastOutput
             MemoryLayout.paddingLayout(3)
         ).withName("b2CastOutput").withByteAlignment(4);
         
-        FRACTION = LAYOUT.varHandle(PathElement.groupElement("fraction"));
-        ITERATIONS = LAYOUT.varHandle(PathElement.groupElement("iterations"));
-        HIT = LAYOUT.varHandle(PathElement.groupElement("hit"));
+        FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
+        ITERATIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterations"));
+        HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
         
-        NORMAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        POINT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
-        ITERATIONS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
-        HIT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
+        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+        FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
+        ITERATIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
+        HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
         //@formatter:on
     }
 
@@ -72,35 +72,35 @@ public final class CastOutput
     public CastOutput(MemorySegment segment) {
         this.segment = segment;
     
-        normal = new Vec2(segment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_OFFSET, Vec2.LAYOUT));
+        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public CastOutput fraction(float fraction) {
-        FRACTION.set(segment, 0L, fraction);
+        FRACTION_HANDLE.set(segment, 0L, fraction);
         return this;
     }
     
     public float fraction() {
-        return (float) FRACTION.get(segment, 0L);
+        return (float) FRACTION_HANDLE.get(segment, 0L);
     }
     
     public CastOutput iterations(int iterations) {
-        ITERATIONS.set(segment, 0L, iterations);
+        ITERATIONS_HANDLE.set(segment, 0L, iterations);
         return this;
     }
     
     public int iterations() {
-        return (int) ITERATIONS.get(segment, 0L);
+        return (int) ITERATIONS_HANDLE.get(segment, 0L);
     }
     
     public CastOutput hit(boolean hit) {
-        HIT.set(segment, 0L, hit);
+        HIT_HANDLE.set(segment, 0L, hit);
         return this;
     }
     
     public boolean hit() {
-        return (boolean) HIT.get(segment, 0L);
+        return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
     public CastOutput normal(Consumer<Vec2> consumer) {

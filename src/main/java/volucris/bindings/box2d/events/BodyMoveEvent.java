@@ -26,13 +26,13 @@ public final class BodyMoveEvent
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle USER_DATA;
-    public static final VarHandle FELL_ASLEEP;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle FELL_ASLEEP_HANDLE;
 
-    public static final long TRANSFORM_OFFSET;
-    public static final long BODY_ID_OFFSET;
-    public static final long USER_DATA_OFFSET;
-    public static final long FELL_ASLEEP_OFFSET;
+    public static final long TRANSFORM_BYTE_OFFSET;
+    public static final long BODY_ID_BYTE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long FELL_ASLEEP_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -49,13 +49,13 @@ public final class BodyMoveEvent
             MemoryLayout.paddingLayout(7)
         ).withName("b2BodyMoveEvent").withByteAlignment(8);
         
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        FELL_ASLEEP = LAYOUT.varHandle(PathElement.groupElement("fellAsleep"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        FELL_ASLEEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fellAsleep"));
         
-        TRANSFORM_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transform"));
-        BODY_ID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyId"));
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        FELL_ASLEEP_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fellAsleep"));
+        TRANSFORM_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transform"));
+        BODY_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyId"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        FELL_ASLEEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fellAsleep"));
         //@formatter:on
     }
 
@@ -70,17 +70,17 @@ public final class BodyMoveEvent
     public BodyMoveEvent(MemorySegment segment) {
         this.segment = segment;
     
-        transform = new Transform(segment.asSlice(TRANSFORM_OFFSET, Transform.LAYOUT));
-        bodyId = new BodyId(segment.asSlice(BODY_ID_OFFSET, BodyId.LAYOUT));
+        transform = new Transform(segment.asSlice(TRANSFORM_BYTE_OFFSET, Transform.LAYOUT));
+        bodyId = new BodyId(segment.asSlice(BODY_ID_BYTE_OFFSET, BodyId.LAYOUT));
     }
 
     public BodyMoveEvent userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -89,12 +89,12 @@ public final class BodyMoveEvent
     }
     
     public BodyMoveEvent fellAsleep(boolean fellAsleep) {
-        FELL_ASLEEP.set(segment, 0L, fellAsleep);
+        FELL_ASLEEP_HANDLE.set(segment, 0L, fellAsleep);
         return this;
     }
     
     public boolean fellAsleep() {
-        return (boolean) FELL_ASLEEP.get(segment, 0L);
+        return (boolean) FELL_ASLEEP_HANDLE.get(segment, 0L);
     }
     
     public BodyMoveEvent transform(Consumer<Transform> consumer) {

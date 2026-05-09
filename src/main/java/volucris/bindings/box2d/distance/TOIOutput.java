@@ -21,11 +21,11 @@ public final class TOIOutput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle STATE;
-    public static final VarHandle FRACTION;
+    public static final VarHandle STATE_HANDLE;
+    public static final VarHandle FRACTION_HANDLE;
 
-    public static final long STATE_OFFSET;
-    public static final long FRACTION_OFFSET;
+    public static final long STATE_BYTE_OFFSET;
+    public static final long FRACTION_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,11 +36,11 @@ public final class TOIOutput
             JAVA_FLOAT.withName("fraction")
         ).withName("b2TOIOutput").withByteAlignment(4);
         
-        STATE = LAYOUT.varHandle(PathElement.groupElement("state"));
-        FRACTION = LAYOUT.varHandle(PathElement.groupElement("fraction"));
+        STATE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("state"));
+        FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
         
-        STATE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("state"));
-        FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
+        STATE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("state"));
+        FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
         //@formatter:on
     }
 
@@ -58,21 +58,21 @@ public final class TOIOutput
     }
 
     public TOIOutput state(int state) {
-        STATE.set(segment, 0L, state);
+        STATE_HANDLE.set(segment, 0L, state);
         return this;
     }
     
     public int state() {
-        return (int) STATE.get(segment, 0L);
+        return (int) STATE_HANDLE.get(segment, 0L);
     }
     
     public TOIOutput fraction(float fraction) {
-        FRACTION.set(segment, 0L, fraction);
+        FRACTION_HANDLE.set(segment, 0L, fraction);
         return this;
     }
     
     public float fraction() {
-        return (float) FRACTION.get(segment, 0L);
+        return (float) FRACTION_HANDLE.get(segment, 0L);
     }
     
     @Override

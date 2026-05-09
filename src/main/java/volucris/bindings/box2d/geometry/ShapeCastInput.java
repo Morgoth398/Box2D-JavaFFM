@@ -23,13 +23,13 @@ public final class ShapeCastInput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAX_FRACTION;
-    public static final VarHandle CAN_ENCROACH;
+    public static final VarHandle MAX_FRACTION_HANDLE;
+    public static final VarHandle CAN_ENCROACH_HANDLE;
 
-    public static final long PROXY_OFFSET;
-    public static final long TRANSLATION_OFFSET;
-    public static final long MAX_FRACTION_OFFSET;
-    public static final long CAN_ENCROACH_OFFSET;
+    public static final long PROXY_BYTE_OFFSET;
+    public static final long TRANSLATION_BYTE_OFFSET;
+    public static final long MAX_FRACTION_BYTE_OFFSET;
+    public static final long CAN_ENCROACH_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -46,13 +46,13 @@ public final class ShapeCastInput
             MemoryLayout.paddingLayout(3)
         ).withName("b2ShapeCastInput").withByteAlignment(4);
         
-        MAX_FRACTION = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
-        CAN_ENCROACH = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
+        MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+        CAN_ENCROACH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
         
-        PROXY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxy"));
-        TRANSLATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
-        MAX_FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
-        CAN_ENCROACH_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
+        PROXY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxy"));
+        TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
+        MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+        CAN_ENCROACH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
         //@formatter:on
     }
 
@@ -67,26 +67,26 @@ public final class ShapeCastInput
     public ShapeCastInput(MemorySegment segment) {
         this.segment = segment;
     
-        proxy = new ShapeProxy(segment.asSlice(PROXY_OFFSET, ShapeProxy.LAYOUT));
-        translation = new Vec2(segment.asSlice(TRANSLATION_OFFSET, Vec2.LAYOUT));
+        proxy = new ShapeProxy(segment.asSlice(PROXY_BYTE_OFFSET, ShapeProxy.LAYOUT));
+        translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public ShapeCastInput maxFraction(float maxFraction) {
-        MAX_FRACTION.set(segment, 0L, maxFraction);
+        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
         return this;
     }
     
     public float maxFraction() {
-        return (float) MAX_FRACTION.get(segment, 0L);
+        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
     public ShapeCastInput canEncroach(boolean canEncroach) {
-        CAN_ENCROACH.set(segment, 0L, canEncroach);
+        CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
         return this;
     }
     
     public boolean canEncroach() {
-        return (boolean) CAN_ENCROACH.get(segment, 0L);
+        return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
     }
     
     public ShapeCastInput proxy(Consumer<ShapeProxy> consumer) {

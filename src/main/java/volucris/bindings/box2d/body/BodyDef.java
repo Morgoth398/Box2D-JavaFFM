@@ -31,40 +31,40 @@ public final class BodyDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle TYPE;
-    public static final VarHandle ANGULAR_VELOCITY;
-    public static final VarHandle LINEAR_DAMPING;
-    public static final VarHandle ANGULAR_DAMPING;
-    public static final VarHandle GRAVITY_SCALE;
-    public static final VarHandle SLEEP_THRESHOLD;
-    public static final VarHandle NAME;
-    public static final VarHandle USER_DATA;
-    public static final VarHandle ENABLE_SLEEP;
-    public static final VarHandle IS_AWAKE;
-    public static final VarHandle FIXED_ROTATION;
-    public static final VarHandle IS_BULLET;
-    public static final VarHandle IS_ENABLED;
-    public static final VarHandle ALLOW_FAST_ROTATION;
-    public static final VarHandle INTERNAL_VALUE;
+    public static final VarHandle TYPE_HANDLE;
+    public static final VarHandle ANGULAR_VELOCITY_HANDLE;
+    public static final VarHandle LINEAR_DAMPING_HANDLE;
+    public static final VarHandle ANGULAR_DAMPING_HANDLE;
+    public static final VarHandle GRAVITY_SCALE_HANDLE;
+    public static final VarHandle SLEEP_THRESHOLD_HANDLE;
+    public static final VarHandle NAME_HANDLE;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle ENABLE_SLEEP_HANDLE;
+    public static final VarHandle IS_AWAKE_HANDLE;
+    public static final VarHandle FIXED_ROTATION_HANDLE;
+    public static final VarHandle IS_BULLET_HANDLE;
+    public static final VarHandle IS_ENABLED_HANDLE;
+    public static final VarHandle ALLOW_FAST_ROTATION_HANDLE;
+    public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long TYPE_OFFSET;
-    public static final long POSITION_OFFSET;
-    public static final long ROTATION_OFFSET;
-    public static final long LINEAR_VELOCITY_OFFSET;
-    public static final long ANGULAR_VELOCITY_OFFSET;
-    public static final long LINEAR_DAMPING_OFFSET;
-    public static final long ANGULAR_DAMPING_OFFSET;
-    public static final long GRAVITY_SCALE_OFFSET;
-    public static final long SLEEP_THRESHOLD_OFFSET;
-    public static final long NAME_OFFSET;
-    public static final long USER_DATA_OFFSET;
-    public static final long ENABLE_SLEEP_OFFSET;
-    public static final long IS_AWAKE_OFFSET;
-    public static final long FIXED_ROTATION_OFFSET;
-    public static final long IS_BULLET_OFFSET;
-    public static final long IS_ENABLED_OFFSET;
-    public static final long ALLOW_FAST_ROTATION_OFFSET;
-    public static final long INTERNAL_VALUE_OFFSET;
+    public static final long TYPE_BYTE_OFFSET;
+    public static final long POSITION_BYTE_OFFSET;
+    public static final long ROTATION_BYTE_OFFSET;
+    public static final long LINEAR_VELOCITY_BYTE_OFFSET;
+    public static final long ANGULAR_VELOCITY_BYTE_OFFSET;
+    public static final long LINEAR_DAMPING_BYTE_OFFSET;
+    public static final long ANGULAR_DAMPING_BYTE_OFFSET;
+    public static final long GRAVITY_SCALE_BYTE_OFFSET;
+    public static final long SLEEP_THRESHOLD_BYTE_OFFSET;
+    public static final long NAME_BYTE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long ENABLE_SLEEP_BYTE_OFFSET;
+    public static final long IS_AWAKE_BYTE_OFFSET;
+    public static final long FIXED_ROTATION_BYTE_OFFSET;
+    public static final long IS_BULLET_BYTE_OFFSET;
+    public static final long IS_ENABLED_BYTE_OFFSET;
+    public static final long ALLOW_FAST_ROTATION_BYTE_OFFSET;
+    public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -99,49 +99,49 @@ public final class BodyDef
         
         B2_DEFAULT_BODY_DEF = downcallHandle("b2DefaultBodyDef", BodyDef.LAYOUT);
         
-        TYPE = LAYOUT.varHandle(PathElement.groupElement("type"));
-        ANGULAR_VELOCITY = LAYOUT.varHandle(PathElement.groupElement("angularVelocity"));
-        LINEAR_DAMPING = LAYOUT.varHandle(PathElement.groupElement("linearDamping"));
-        ANGULAR_DAMPING = LAYOUT.varHandle(PathElement.groupElement("angularDamping"));
-        GRAVITY_SCALE = LAYOUT.varHandle(PathElement.groupElement("gravityScale"));
-        SLEEP_THRESHOLD = LAYOUT.varHandle(PathElement.groupElement("sleepThreshold"));
-        NAME = LAYOUT.varHandle(PathElement.groupElement("name"));
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        ENABLE_SLEEP = LAYOUT.varHandle(PathElement.groupElement("enableSleep"));
-        IS_AWAKE = LAYOUT.varHandle(PathElement.groupElement("isAwake"));
-        FIXED_ROTATION = LAYOUT.varHandle(PathElement.groupElement("fixedRotation"));
-        IS_BULLET = LAYOUT.varHandle(PathElement.groupElement("isBullet"));
-        IS_ENABLED = LAYOUT.varHandle(PathElement.groupElement("isEnabled"));
-        ALLOW_FAST_ROTATION = LAYOUT.varHandle(PathElement.groupElement("allowFastRotation"));
-        INTERNAL_VALUE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+        TYPE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("type"));
+        ANGULAR_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularVelocity"));
+        LINEAR_DAMPING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearDamping"));
+        ANGULAR_DAMPING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularDamping"));
+        GRAVITY_SCALE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("gravityScale"));
+        SLEEP_THRESHOLD_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sleepThreshold"));
+        NAME_HANDLE = LAYOUT.varHandle(PathElement.groupElement("name"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        ENABLE_SLEEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableSleep"));
+        IS_AWAKE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isAwake"));
+        FIXED_ROTATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fixedRotation"));
+        IS_BULLET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isBullet"));
+        IS_ENABLED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isEnabled"));
+        ALLOW_FAST_ROTATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("allowFastRotation"));
+        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
         
-        TYPE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("type"));
-        POSITION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
-        ROTATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotation"));
-        LINEAR_VELOCITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
-        ANGULAR_VELOCITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularVelocity"));
-        LINEAR_DAMPING_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDamping"));
-        ANGULAR_DAMPING_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDamping"));
-        GRAVITY_SCALE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("gravityScale"));
-        SLEEP_THRESHOLD_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sleepThreshold"));
-        NAME_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("name"));
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        ENABLE_SLEEP_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSleep"));
-        IS_AWAKE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isAwake"));
-        FIXED_ROTATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fixedRotation"));
-        IS_BULLET_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isBullet"));
-        IS_ENABLED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isEnabled"));
-        ALLOW_FAST_ROTATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("allowFastRotation"));
-        INTERNAL_VALUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+        TYPE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("type"));
+        POSITION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
+        ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotation"));
+        LINEAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
+        ANGULAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularVelocity"));
+        LINEAR_DAMPING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDamping"));
+        ANGULAR_DAMPING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDamping"));
+        GRAVITY_SCALE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("gravityScale"));
+        SLEEP_THRESHOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sleepThreshold"));
+        NAME_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("name"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        ENABLE_SLEEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSleep"));
+        IS_AWAKE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isAwake"));
+        FIXED_ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fixedRotation"));
+        IS_BULLET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isBullet"));
+        IS_ENABLED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isEnabled"));
+        ALLOW_FAST_ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("allowFastRotation"));
+        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
         //@formatter:on
     }
 
     public BodyDef(MemorySegment segment) {
         this.segment = segment;
     
-        position = new Vec2(segment.asSlice(POSITION_OFFSET, Vec2.LAYOUT));
-        rotation = new Rot(segment.asSlice(ROTATION_OFFSET, Rot.LAYOUT));
-        linearVelocity = new Vec2(segment.asSlice(LINEAR_VELOCITY_OFFSET, Vec2.LAYOUT));
+        position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
+        rotation = new Rot(segment.asSlice(ROTATION_BYTE_OFFSET, Rot.LAYOUT));
+        linearVelocity = new Vec2(segment.asSlice(LINEAR_VELOCITY_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -175,66 +175,66 @@ public final class BodyDef
     }
     
     public BodyDef type(int type) {
-        TYPE.set(segment, 0L, type);
+        TYPE_HANDLE.set(segment, 0L, type);
         return this;
     }
     
     public int type() {
-        return (int) TYPE.get(segment, 0L);
+        return (int) TYPE_HANDLE.get(segment, 0L);
     }
     
     public BodyDef angularVelocity(float angularVelocity) {
-        ANGULAR_VELOCITY.set(segment, 0L, angularVelocity);
+        ANGULAR_VELOCITY_HANDLE.set(segment, 0L, angularVelocity);
         return this;
     }
     
     public float angularVelocity() {
-        return (float) ANGULAR_VELOCITY.get(segment, 0L);
+        return (float) ANGULAR_VELOCITY_HANDLE.get(segment, 0L);
     }
     
     public BodyDef linearDamping(float linearDamping) {
-        LINEAR_DAMPING.set(segment, 0L, linearDamping);
+        LINEAR_DAMPING_HANDLE.set(segment, 0L, linearDamping);
         return this;
     }
     
     public float linearDamping() {
-        return (float) LINEAR_DAMPING.get(segment, 0L);
+        return (float) LINEAR_DAMPING_HANDLE.get(segment, 0L);
     }
     
     public BodyDef angularDamping(float angularDamping) {
-        ANGULAR_DAMPING.set(segment, 0L, angularDamping);
+        ANGULAR_DAMPING_HANDLE.set(segment, 0L, angularDamping);
         return this;
     }
     
     public float angularDamping() {
-        return (float) ANGULAR_DAMPING.get(segment, 0L);
+        return (float) ANGULAR_DAMPING_HANDLE.get(segment, 0L);
     }
     
     public BodyDef gravityScale(float gravityScale) {
-        GRAVITY_SCALE.set(segment, 0L, gravityScale);
+        GRAVITY_SCALE_HANDLE.set(segment, 0L, gravityScale);
         return this;
     }
     
     public float gravityScale() {
-        return (float) GRAVITY_SCALE.get(segment, 0L);
+        return (float) GRAVITY_SCALE_HANDLE.get(segment, 0L);
     }
     
     public BodyDef sleepThreshold(float sleepThreshold) {
-        SLEEP_THRESHOLD.set(segment, 0L, sleepThreshold);
+        SLEEP_THRESHOLD_HANDLE.set(segment, 0L, sleepThreshold);
         return this;
     }
     
     public float sleepThreshold() {
-        return (float) SLEEP_THRESHOLD.get(segment, 0L);
+        return (float) SLEEP_THRESHOLD_HANDLE.get(segment, 0L);
     }
     
     public BodyDef name(NativeByteArray name) {
-        NAME.set(segment, 0L, name.memorySegment());
+        NAME_HANDLE.set(segment, 0L, name.memorySegment());
         return this;
     }
     
     public @Nullable NativeByteArray name() {
-        MemorySegment segment = (MemorySegment) NAME.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) NAME_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -243,12 +243,12 @@ public final class BodyDef
     }
     
     public BodyDef userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -257,66 +257,66 @@ public final class BodyDef
     }
     
     public BodyDef enableSleep(boolean enableSleep) {
-        ENABLE_SLEEP.set(segment, 0L, enableSleep);
+        ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
         return this;
     }
     
     public boolean enableSleep() {
-        return (boolean) ENABLE_SLEEP.get(segment, 0L);
+        return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
     }
     
     public BodyDef isAwake(boolean isAwake) {
-        IS_AWAKE.set(segment, 0L, isAwake);
+        IS_AWAKE_HANDLE.set(segment, 0L, isAwake);
         return this;
     }
     
     public boolean isAwake() {
-        return (boolean) IS_AWAKE.get(segment, 0L);
+        return (boolean) IS_AWAKE_HANDLE.get(segment, 0L);
     }
     
     public BodyDef fixedRotation(boolean fixedRotation) {
-        FIXED_ROTATION.set(segment, 0L, fixedRotation);
+        FIXED_ROTATION_HANDLE.set(segment, 0L, fixedRotation);
         return this;
     }
     
     public boolean fixedRotation() {
-        return (boolean) FIXED_ROTATION.get(segment, 0L);
+        return (boolean) FIXED_ROTATION_HANDLE.get(segment, 0L);
     }
     
     public BodyDef isBullet(boolean isBullet) {
-        IS_BULLET.set(segment, 0L, isBullet);
+        IS_BULLET_HANDLE.set(segment, 0L, isBullet);
         return this;
     }
     
     public boolean isBullet() {
-        return (boolean) IS_BULLET.get(segment, 0L);
+        return (boolean) IS_BULLET_HANDLE.get(segment, 0L);
     }
     
     public BodyDef isEnabled(boolean isEnabled) {
-        IS_ENABLED.set(segment, 0L, isEnabled);
+        IS_ENABLED_HANDLE.set(segment, 0L, isEnabled);
         return this;
     }
     
     public boolean isEnabled() {
-        return (boolean) IS_ENABLED.get(segment, 0L);
+        return (boolean) IS_ENABLED_HANDLE.get(segment, 0L);
     }
     
     public BodyDef allowFastRotation(boolean allowFastRotation) {
-        ALLOW_FAST_ROTATION.set(segment, 0L, allowFastRotation);
+        ALLOW_FAST_ROTATION_HANDLE.set(segment, 0L, allowFastRotation);
         return this;
     }
     
     public boolean allowFastRotation() {
-        return (boolean) ALLOW_FAST_ROTATION.get(segment, 0L);
+        return (boolean) ALLOW_FAST_ROTATION_HANDLE.get(segment, 0L);
     }
     
     public BodyDef internalValue(int internalValue) {
-        INTERNAL_VALUE.set(segment, 0L, internalValue);
+        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
         return this;
     }
     
     public int internalValue() {
-        return (int) INTERNAL_VALUE.get(segment, 0L);
+        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     public BodyDef position(Consumer<Vec2> consumer) {

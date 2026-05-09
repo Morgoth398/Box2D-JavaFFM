@@ -21,29 +21,29 @@ public final class Counters
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle BODY_COUNT;
-    public static final VarHandle SHAPE_COUNT;
-    public static final VarHandle CONTACT_COUNT;
-    public static final VarHandle JOINT_COUNT;
-    public static final VarHandle ISLAND_COUNT;
-    public static final VarHandle STACK_USED;
-    public static final VarHandle STATIC_TREE_HEIGHT;
-    public static final VarHandle TREE_HEIGHT;
-    public static final VarHandle BYTE_COUNT;
-    public static final VarHandle TASK_COUNT;
-    public static final VarHandle COLOR_COUNTS;
+    public static final VarHandle BODY_COUNT_HANDLE;
+    public static final VarHandle SHAPE_COUNT_HANDLE;
+    public static final VarHandle CONTACT_COUNT_HANDLE;
+    public static final VarHandle JOINT_COUNT_HANDLE;
+    public static final VarHandle ISLAND_COUNT_HANDLE;
+    public static final VarHandle STACK_USED_HANDLE;
+    public static final VarHandle STATIC_TREE_HEIGHT_HANDLE;
+    public static final VarHandle TREE_HEIGHT_HANDLE;
+    public static final VarHandle BYTE_COUNT_HANDLE;
+    public static final VarHandle TASK_COUNT_HANDLE;
+    public static final VarHandle COLOR_COUNTS_HANDLE;
 
-    public static final long BODY_COUNT_OFFSET;
-    public static final long SHAPE_COUNT_OFFSET;
-    public static final long CONTACT_COUNT_OFFSET;
-    public static final long JOINT_COUNT_OFFSET;
-    public static final long ISLAND_COUNT_OFFSET;
-    public static final long STACK_USED_OFFSET;
-    public static final long STATIC_TREE_HEIGHT_OFFSET;
-    public static final long TREE_HEIGHT_OFFSET;
-    public static final long BYTE_COUNT_OFFSET;
-    public static final long TASK_COUNT_OFFSET;
-    public static final long COLOR_COUNTS_OFFSET;
+    public static final long BODY_COUNT_BYTE_OFFSET;
+    public static final long SHAPE_COUNT_BYTE_OFFSET;
+    public static final long CONTACT_COUNT_BYTE_OFFSET;
+    public static final long JOINT_COUNT_BYTE_OFFSET;
+    public static final long ISLAND_COUNT_BYTE_OFFSET;
+    public static final long STACK_USED_BYTE_OFFSET;
+    public static final long STATIC_TREE_HEIGHT_BYTE_OFFSET;
+    public static final long TREE_HEIGHT_BYTE_OFFSET;
+    public static final long BYTE_COUNT_BYTE_OFFSET;
+    public static final long TASK_COUNT_BYTE_OFFSET;
+    public static final long COLOR_COUNTS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -63,29 +63,29 @@ public final class Counters
             MemoryLayout.sequenceLayout(12, JAVA_INT).withName("colorCounts")
         ).withName("b2Counters").withByteAlignment(4);
         
-        BODY_COUNT = LAYOUT.varHandle(PathElement.groupElement("bodyCount"));
-        SHAPE_COUNT = LAYOUT.varHandle(PathElement.groupElement("shapeCount"));
-        CONTACT_COUNT = LAYOUT.varHandle(PathElement.groupElement("contactCount"));
-        JOINT_COUNT = LAYOUT.varHandle(PathElement.groupElement("jointCount"));
-        ISLAND_COUNT = LAYOUT.varHandle(PathElement.groupElement("islandCount"));
-        STACK_USED = LAYOUT.varHandle(PathElement.groupElement("stackUsed"));
-        STATIC_TREE_HEIGHT = LAYOUT.varHandle(PathElement.groupElement("staticTreeHeight"));
-        TREE_HEIGHT = LAYOUT.varHandle(PathElement.groupElement("treeHeight"));
-        BYTE_COUNT = LAYOUT.varHandle(PathElement.groupElement("byteCount"));
-        TASK_COUNT = LAYOUT.varHandle(PathElement.groupElement("taskCount"));
-        COLOR_COUNTS = LAYOUT.varHandle(PathElement.groupElement("colorCounts"), PathElement.sequenceElement());
+        BODY_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("bodyCount"));
+        SHAPE_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("shapeCount"));
+        CONTACT_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("contactCount"));
+        JOINT_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("jointCount"));
+        ISLAND_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("islandCount"));
+        STACK_USED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("stackUsed"));
+        STATIC_TREE_HEIGHT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("staticTreeHeight"));
+        TREE_HEIGHT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("treeHeight"));
+        BYTE_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("byteCount"));
+        TASK_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("taskCount"));
+        COLOR_COUNTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("colorCounts"), PathElement.sequenceElement());
         
-        BODY_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyCount"));
-        SHAPE_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeCount"));
-        CONTACT_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactCount"));
-        JOINT_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("jointCount"));
-        ISLAND_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("islandCount"));
-        STACK_USED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("stackUsed"));
-        STATIC_TREE_HEIGHT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("staticTreeHeight"));
-        TREE_HEIGHT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("treeHeight"));
-        BYTE_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("byteCount"));
-        TASK_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("taskCount"));
-        COLOR_COUNTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("colorCounts"));
+        BODY_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyCount"));
+        SHAPE_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeCount"));
+        CONTACT_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactCount"));
+        JOINT_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("jointCount"));
+        ISLAND_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("islandCount"));
+        STACK_USED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("stackUsed"));
+        STATIC_TREE_HEIGHT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("staticTreeHeight"));
+        TREE_HEIGHT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("treeHeight"));
+        BYTE_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("byteCount"));
+        TASK_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("taskCount"));
+        COLOR_COUNTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("colorCounts"));
         //@formatter:on
     }
 
@@ -103,102 +103,102 @@ public final class Counters
     }
 
     public Counters bodyCount(int bodyCount) {
-        BODY_COUNT.set(segment, 0L, bodyCount);
+        BODY_COUNT_HANDLE.set(segment, 0L, bodyCount);
         return this;
     }
     
     public int bodyCount() {
-        return (int) BODY_COUNT.get(segment, 0L);
+        return (int) BODY_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters shapeCount(int shapeCount) {
-        SHAPE_COUNT.set(segment, 0L, shapeCount);
+        SHAPE_COUNT_HANDLE.set(segment, 0L, shapeCount);
         return this;
     }
     
     public int shapeCount() {
-        return (int) SHAPE_COUNT.get(segment, 0L);
+        return (int) SHAPE_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters contactCount(int contactCount) {
-        CONTACT_COUNT.set(segment, 0L, contactCount);
+        CONTACT_COUNT_HANDLE.set(segment, 0L, contactCount);
         return this;
     }
     
     public int contactCount() {
-        return (int) CONTACT_COUNT.get(segment, 0L);
+        return (int) CONTACT_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters jointCount(int jointCount) {
-        JOINT_COUNT.set(segment, 0L, jointCount);
+        JOINT_COUNT_HANDLE.set(segment, 0L, jointCount);
         return this;
     }
     
     public int jointCount() {
-        return (int) JOINT_COUNT.get(segment, 0L);
+        return (int) JOINT_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters islandCount(int islandCount) {
-        ISLAND_COUNT.set(segment, 0L, islandCount);
+        ISLAND_COUNT_HANDLE.set(segment, 0L, islandCount);
         return this;
     }
     
     public int islandCount() {
-        return (int) ISLAND_COUNT.get(segment, 0L);
+        return (int) ISLAND_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters stackUsed(int stackUsed) {
-        STACK_USED.set(segment, 0L, stackUsed);
+        STACK_USED_HANDLE.set(segment, 0L, stackUsed);
         return this;
     }
     
     public int stackUsed() {
-        return (int) STACK_USED.get(segment, 0L);
+        return (int) STACK_USED_HANDLE.get(segment, 0L);
     }
     
     public Counters staticTreeHeight(int staticTreeHeight) {
-        STATIC_TREE_HEIGHT.set(segment, 0L, staticTreeHeight);
+        STATIC_TREE_HEIGHT_HANDLE.set(segment, 0L, staticTreeHeight);
         return this;
     }
     
     public int staticTreeHeight() {
-        return (int) STATIC_TREE_HEIGHT.get(segment, 0L);
+        return (int) STATIC_TREE_HEIGHT_HANDLE.get(segment, 0L);
     }
     
     public Counters treeHeight(int treeHeight) {
-        TREE_HEIGHT.set(segment, 0L, treeHeight);
+        TREE_HEIGHT_HANDLE.set(segment, 0L, treeHeight);
         return this;
     }
     
     public int treeHeight() {
-        return (int) TREE_HEIGHT.get(segment, 0L);
+        return (int) TREE_HEIGHT_HANDLE.get(segment, 0L);
     }
     
     public Counters byteCount(int byteCount) {
-        BYTE_COUNT.set(segment, 0L, byteCount);
+        BYTE_COUNT_HANDLE.set(segment, 0L, byteCount);
         return this;
     }
     
     public int byteCount() {
-        return (int) BYTE_COUNT.get(segment, 0L);
+        return (int) BYTE_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters taskCount(int taskCount) {
-        TASK_COUNT.set(segment, 0L, taskCount);
+        TASK_COUNT_HANDLE.set(segment, 0L, taskCount);
         return this;
     }
     
     public int taskCount() {
-        return (int) TASK_COUNT.get(segment, 0L);
+        return (int) TASK_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Counters colorCounts(int colorCounts, long index) {
-        COLOR_COUNTS.set(segment, 0L, index, colorCounts);
+        COLOR_COUNTS_HANDLE.set(segment, 0L, index, colorCounts);
         return this;
     }
     
     public int colorCounts(long index) {
-        return (int) COLOR_COUNTS.get(segment, 0L, index);
+        return (int) COLOR_COUNTS_HANDLE.get(segment, 0L, index);
     }
     
     @Override

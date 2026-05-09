@@ -24,13 +24,13 @@ public final class ContactHitEvent
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle APPROACH_SPEED;
+    public static final VarHandle APPROACH_SPEED_HANDLE;
 
-    public static final long SHAPE_ID_A_OFFSET;
-    public static final long SHAPE_ID_B_OFFSET;
-    public static final long POINT_OFFSET;
-    public static final long NORMAL_OFFSET;
-    public static final long APPROACH_SPEED_OFFSET;
+    public static final long SHAPE_ID_A_BYTE_OFFSET;
+    public static final long SHAPE_ID_B_BYTE_OFFSET;
+    public static final long POINT_BYTE_OFFSET;
+    public static final long NORMAL_BYTE_OFFSET;
+    public static final long APPROACH_SPEED_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -49,13 +49,13 @@ public final class ContactHitEvent
             JAVA_FLOAT.withName("approachSpeed")
         ).withName("b2ContactHitEvent").withByteAlignment(4);
         
-        APPROACH_SPEED = LAYOUT.varHandle(PathElement.groupElement("approachSpeed"));
+        APPROACH_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("approachSpeed"));
         
-        SHAPE_ID_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
-        SHAPE_ID_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
-        POINT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        NORMAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        APPROACH_SPEED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("approachSpeed"));
+        SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
+        SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
+        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+        APPROACH_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("approachSpeed"));
         //@formatter:on
     }
 
@@ -70,19 +70,19 @@ public final class ContactHitEvent
     public ContactHitEvent(MemorySegment segment) {
         this.segment = segment;
     
-        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_OFFSET, ShapeId.LAYOUT));
-        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_OFFSET, ShapeId.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_OFFSET, Vec2.LAYOUT));
-        normal = new Vec2(segment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT));
+        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
+        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
+        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public ContactHitEvent approachSpeed(float approachSpeed) {
-        APPROACH_SPEED.set(segment, 0L, approachSpeed);
+        APPROACH_SPEED_HANDLE.set(segment, 0L, approachSpeed);
         return this;
     }
     
     public float approachSpeed() {
-        return (float) APPROACH_SPEED.get(segment, 0L);
+        return (float) APPROACH_SPEED_HANDLE.get(segment, 0L);
     }
     
     public ContactHitEvent shapeIdA(Consumer<ShapeId> consumer) {

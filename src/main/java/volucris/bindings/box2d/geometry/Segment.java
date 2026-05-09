@@ -32,8 +32,8 @@ public final class Segment
 
     public static final StructLayout LAYOUT;
 
-    public static final long POINT1_OFFSET;
-    public static final long POINT2_OFFSET;
+    public static final long POINT1_BYTE_OFFSET;
+    public static final long POINT2_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -51,8 +51,8 @@ public final class Segment
         B2_RAY_CAST_SEGMENT = downcallHandle("b2RayCastSegment", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS, JAVA_BOOLEAN);
         B2_SHAPE_CAST_SEGMENT = downcallHandle("b2ShapeCastSegment", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         
-        POINT1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point1"));
-        POINT2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point2"));
+        POINT1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point1"));
+        POINT2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point2"));
         //@formatter:on
     }
 
@@ -67,8 +67,8 @@ public final class Segment
     public Segment(MemorySegment segment) {
         this.segment = segment;
     
-        point1 = new Vec2(segment.asSlice(POINT1_OFFSET, Vec2.LAYOUT));
-        point2 = new Vec2(segment.asSlice(POINT2_OFFSET, Vec2.LAYOUT));
+        point1 = new Vec2(segment.asSlice(POINT1_BYTE_OFFSET, Vec2.LAYOUT));
+        point2 = new Vec2(segment.asSlice(POINT2_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**

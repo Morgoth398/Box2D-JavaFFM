@@ -21,8 +21,8 @@ public final class Transform
 
     public static final StructLayout LAYOUT;
 
-    public static final long P_OFFSET;
-    public static final long Q_OFFSET;
+    public static final long P_BYTE_OFFSET;
+    public static final long Q_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,8 +36,8 @@ public final class Transform
             Rot.LAYOUT.withName("q")
         ).withName("b2Transform").withByteAlignment(4);
         
-        P_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("p"));
-        Q_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q"));
+        P_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("p"));
+        Q_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q"));
         //@formatter:on
     }
 
@@ -52,8 +52,8 @@ public final class Transform
     public Transform(MemorySegment segment) {
         this.segment = segment;
     
-        p = new Vec2(segment.asSlice(P_OFFSET, Vec2.LAYOUT));
-        q = new Rot(segment.asSlice(Q_OFFSET, Rot.LAYOUT));
+        p = new Vec2(segment.asSlice(P_BYTE_OFFSET, Vec2.LAYOUT));
+        q = new Rot(segment.asSlice(Q_BYTE_OFFSET, Rot.LAYOUT));
     }
 
     public Transform p(Consumer<Vec2> consumer) {

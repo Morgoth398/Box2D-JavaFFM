@@ -21,13 +21,13 @@ public final class BodyId
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle INDEX1;
-    public static final VarHandle WORLD0;
-    public static final VarHandle GENERATION;
+    public static final VarHandle INDEX1_HANDLE;
+    public static final VarHandle WORLD0_HANDLE;
+    public static final VarHandle GENERATION_HANDLE;
 
-    public static final long INDEX1_OFFSET;
-    public static final long WORLD0_OFFSET;
-    public static final long GENERATION_OFFSET;
+    public static final long INDEX1_BYTE_OFFSET;
+    public static final long WORLD0_BYTE_OFFSET;
+    public static final long GENERATION_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -39,13 +39,13 @@ public final class BodyId
             JAVA_SHORT.withName("generation")
         ).withName("b2BodyId").withByteAlignment(4);
         
-        INDEX1 = LAYOUT.varHandle(PathElement.groupElement("index1"));
-        WORLD0 = LAYOUT.varHandle(PathElement.groupElement("world0"));
-        GENERATION = LAYOUT.varHandle(PathElement.groupElement("generation"));
+        INDEX1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("index1"));
+        WORLD0_HANDLE = LAYOUT.varHandle(PathElement.groupElement("world0"));
+        GENERATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("generation"));
         
-        INDEX1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("index1"));
-        WORLD0_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("world0"));
-        GENERATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("generation"));
+        INDEX1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("index1"));
+        WORLD0_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("world0"));
+        GENERATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("generation"));
         //@formatter:on
     }
 
@@ -63,30 +63,30 @@ public final class BodyId
     }
 
     public BodyId index1(int index1) {
-        INDEX1.set(segment, 0L, index1);
+        INDEX1_HANDLE.set(segment, 0L, index1);
         return this;
     }
     
     public int index1() {
-        return (int) INDEX1.get(segment, 0L);
+        return (int) INDEX1_HANDLE.get(segment, 0L);
     }
     
     public BodyId world0(short world0) {
-        WORLD0.set(segment, 0L, world0);
+        WORLD0_HANDLE.set(segment, 0L, world0);
         return this;
     }
     
     public short world0() {
-        return (short) WORLD0.get(segment, 0L);
+        return (short) WORLD0_HANDLE.get(segment, 0L);
     }
     
     public BodyId generation(short generation) {
-        GENERATION.set(segment, 0L, generation);
+        GENERATION_HANDLE.set(segment, 0L, generation);
         return this;
     }
     
     public short generation() {
-        return (short) GENERATION.get(segment, 0L);
+        return (short) GENERATION_HANDLE.get(segment, 0L);
     }
     
     @Override

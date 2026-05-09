@@ -34,10 +34,10 @@ public final class Circle
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS;
+    public static final VarHandle RADIUS_HANDLE;
 
-    public static final long CENTER_OFFSET;
-    public static final long RADIUS_OFFSET;
+    public static final long CENTER_BYTE_OFFSET;
+    public static final long RADIUS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -55,10 +55,10 @@ public final class Circle
         B2_RAY_CAST_CIRCLE = downcallHandle("b2RayCastCircle", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         B2_SHAPE_CAST_CIRCLE = downcallHandle("b2ShapeCastCircle", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         
-        RADIUS = LAYOUT.varHandle(PathElement.groupElement("radius"));
+        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
         
-        CENTER_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
-        RADIUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+        CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
+        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
         //@formatter:on
     }
 
@@ -73,7 +73,7 @@ public final class Circle
     public Circle(MemorySegment segment) {
         this.segment = segment;
     
-        center = new Vec2(segment.asSlice(CENTER_OFFSET, Vec2.LAYOUT));
+        center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -224,12 +224,12 @@ public final class Circle
     }
     
     public Circle radius(float radius) {
-        RADIUS.set(segment, 0L, radius);
+        RADIUS_HANDLE.set(segment, 0L, radius);
         return this;
     }
     
     public float radius() {
-        return (float) RADIUS.get(segment, 0L);
+        return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     public Circle center(Consumer<Vec2> consumer) {

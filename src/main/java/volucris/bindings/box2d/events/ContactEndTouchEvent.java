@@ -22,8 +22,8 @@ public final class ContactEndTouchEvent
 
     public static final StructLayout LAYOUT;
 
-    public static final long SHAPE_ID_A_OFFSET;
-    public static final long SHAPE_ID_B_OFFSET;
+    public static final long SHAPE_ID_A_BYTE_OFFSET;
+    public static final long SHAPE_ID_B_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -37,8 +37,8 @@ public final class ContactEndTouchEvent
             ShapeId.LAYOUT.withName("shapeIdB")
         ).withName("b2ContactEndTouchEvent").withByteAlignment(4);
         
-        SHAPE_ID_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
-        SHAPE_ID_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
+        SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
+        SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
         //@formatter:on
     }
 
@@ -53,8 +53,8 @@ public final class ContactEndTouchEvent
     public ContactEndTouchEvent(MemorySegment segment) {
         this.segment = segment;
     
-        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_OFFSET, ShapeId.LAYOUT));
-        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_OFFSET, ShapeId.LAYOUT));
+        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
+        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
     }
 
     public ContactEndTouchEvent shapeIdA(Consumer<ShapeId> consumer) {

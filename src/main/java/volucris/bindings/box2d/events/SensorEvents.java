@@ -23,15 +23,15 @@ public final class SensorEvents
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle BEGIN_EVENTS;
-    public static final VarHandle END_EVENTS;
-    public static final VarHandle BEGIN_COUNT;
-    public static final VarHandle END_COUNT;
+    public static final VarHandle BEGIN_EVENTS_HANDLE;
+    public static final VarHandle END_EVENTS_HANDLE;
+    public static final VarHandle BEGIN_COUNT_HANDLE;
+    public static final VarHandle END_COUNT_HANDLE;
 
-    public static final long BEGIN_EVENTS_OFFSET;
-    public static final long END_EVENTS_OFFSET;
-    public static final long BEGIN_COUNT_OFFSET;
-    public static final long END_COUNT_OFFSET;
+    public static final long BEGIN_EVENTS_BYTE_OFFSET;
+    public static final long END_EVENTS_BYTE_OFFSET;
+    public static final long BEGIN_COUNT_BYTE_OFFSET;
+    public static final long END_COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -44,15 +44,15 @@ public final class SensorEvents
             JAVA_INT.withName("endCount")
         ).withName("b2SensorEvents").withByteAlignment(8);
         
-        BEGIN_EVENTS = LAYOUT.varHandle(PathElement.groupElement("beginEvents"));
-        END_EVENTS = LAYOUT.varHandle(PathElement.groupElement("endEvents"));
-        BEGIN_COUNT = LAYOUT.varHandle(PathElement.groupElement("beginCount"));
-        END_COUNT = LAYOUT.varHandle(PathElement.groupElement("endCount"));
+        BEGIN_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("beginEvents"));
+        END_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("endEvents"));
+        BEGIN_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("beginCount"));
+        END_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("endCount"));
         
-        BEGIN_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginEvents"));
-        END_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endEvents"));
-        BEGIN_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginCount"));
-        END_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endCount"));
+        BEGIN_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginEvents"));
+        END_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endEvents"));
+        BEGIN_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginCount"));
+        END_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endCount"));
         //@formatter:on
     }
 
@@ -70,12 +70,12 @@ public final class SensorEvents
     }
 
     public SensorEvents beginEvents(SensorBeginTouchEvent beginEvents) {
-        BEGIN_EVENTS.set(segment, 0L, beginEvents.memorySegment());
+        BEGIN_EVENTS_HANDLE.set(segment, 0L, beginEvents.memorySegment());
         return this;
     }
     
     public @Nullable SensorBeginTouchEvent beginEvents() {
-        MemorySegment segment = (MemorySegment) BEGIN_EVENTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) BEGIN_EVENTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -84,12 +84,12 @@ public final class SensorEvents
     }
     
     public SensorEvents endEvents(SensorEndTouchEvent endEvents) {
-        END_EVENTS.set(segment, 0L, endEvents.memorySegment());
+        END_EVENTS_HANDLE.set(segment, 0L, endEvents.memorySegment());
         return this;
     }
     
     public @Nullable SensorEndTouchEvent endEvents() {
-        MemorySegment segment = (MemorySegment) END_EVENTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) END_EVENTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -98,21 +98,21 @@ public final class SensorEvents
     }
     
     public SensorEvents beginCount(int beginCount) {
-        BEGIN_COUNT.set(segment, 0L, beginCount);
+        BEGIN_COUNT_HANDLE.set(segment, 0L, beginCount);
         return this;
     }
     
     public int beginCount() {
-        return (int) BEGIN_COUNT.get(segment, 0L);
+        return (int) BEGIN_COUNT_HANDLE.get(segment, 0L);
     }
     
     public SensorEvents endCount(int endCount) {
-        END_COUNT.set(segment, 0L, endCount);
+        END_COUNT_HANDLE.set(segment, 0L, endCount);
         return this;
     }
     
     public int endCount() {
-        return (int) END_COUNT.get(segment, 0L);
+        return (int) END_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override

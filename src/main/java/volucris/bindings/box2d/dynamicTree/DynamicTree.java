@@ -52,28 +52,28 @@ public final class DynamicTree
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle ROOT;
-    public static final VarHandle NODE_COUNT;
-    public static final VarHandle NODE_CAPACITY;
-    public static final VarHandle FREE_LIST;
-    public static final VarHandle PROXY_COUNT;
-    public static final VarHandle LEAF_INDICES;
-    public static final VarHandle LEAF_BOXES;
-    public static final VarHandle LEAF_CENTERS;
-    public static final VarHandle BIN_INDICES;
-    public static final VarHandle REBUILD_CAPACITY;
+    public static final VarHandle ROOT_HANDLE;
+    public static final VarHandle NODE_COUNT_HANDLE;
+    public static final VarHandle NODE_CAPACITY_HANDLE;
+    public static final VarHandle FREE_LIST_HANDLE;
+    public static final VarHandle PROXY_COUNT_HANDLE;
+    public static final VarHandle LEAF_INDICES_HANDLE;
+    public static final VarHandle LEAF_BOXES_HANDLE;
+    public static final VarHandle LEAF_CENTERS_HANDLE;
+    public static final VarHandle BIN_INDICES_HANDLE;
+    public static final VarHandle REBUILD_CAPACITY_HANDLE;
 
-    public static final long NODES_OFFSET;
-    public static final long ROOT_OFFSET;
-    public static final long NODE_COUNT_OFFSET;
-    public static final long NODE_CAPACITY_OFFSET;
-    public static final long FREE_LIST_OFFSET;
-    public static final long PROXY_COUNT_OFFSET;
-    public static final long LEAF_INDICES_OFFSET;
-    public static final long LEAF_BOXES_OFFSET;
-    public static final long LEAF_CENTERS_OFFSET;
-    public static final long BIN_INDICES_OFFSET;
-    public static final long REBUILD_CAPACITY_OFFSET;
+    public static final long NODES_BYTE_OFFSET;
+    public static final long ROOT_BYTE_OFFSET;
+    public static final long NODE_COUNT_BYTE_OFFSET;
+    public static final long NODE_CAPACITY_BYTE_OFFSET;
+    public static final long FREE_LIST_BYTE_OFFSET;
+    public static final long PROXY_COUNT_BYTE_OFFSET;
+    public static final long LEAF_INDICES_BYTE_OFFSET;
+    public static final long LEAF_BOXES_BYTE_OFFSET;
+    public static final long LEAF_CENTERS_BYTE_OFFSET;
+    public static final long BIN_INDICES_BYTE_OFFSET;
+    public static final long REBUILD_CAPACITY_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -117,28 +117,28 @@ public final class DynamicTree
         B2_DYNAMIC_TREE_VALIDATE = downcallHandleVoid("b2DynamicTree_Validate", UNBOUNDED_ADDRESS);
         B2_DYNAMIC_TREE_VALIDATE_NO_ENLARGED = downcallHandleVoid("b2DynamicTree_ValidateNoEnlarged", UNBOUNDED_ADDRESS);
         
-        ROOT = LAYOUT.varHandle(PathElement.groupElement("root"));
-        NODE_COUNT = LAYOUT.varHandle(PathElement.groupElement("nodeCount"));
-        NODE_CAPACITY = LAYOUT.varHandle(PathElement.groupElement("nodeCapacity"));
-        FREE_LIST = LAYOUT.varHandle(PathElement.groupElement("freeList"));
-        PROXY_COUNT = LAYOUT.varHandle(PathElement.groupElement("proxyCount"));
-        LEAF_INDICES = LAYOUT.varHandle(PathElement.groupElement("leafIndices"));
-        LEAF_BOXES = LAYOUT.varHandle(PathElement.groupElement("leafBoxes"));
-        LEAF_CENTERS = LAYOUT.varHandle(PathElement.groupElement("leafCenters"));
-        BIN_INDICES = LAYOUT.varHandle(PathElement.groupElement("binIndices"));
-        REBUILD_CAPACITY = LAYOUT.varHandle(PathElement.groupElement("rebuildCapacity"));
+        ROOT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("root"));
+        NODE_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeCount"));
+        NODE_CAPACITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeCapacity"));
+        FREE_LIST_HANDLE = LAYOUT.varHandle(PathElement.groupElement("freeList"));
+        PROXY_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("proxyCount"));
+        LEAF_INDICES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafIndices"));
+        LEAF_BOXES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafBoxes"));
+        LEAF_CENTERS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafCenters"));
+        BIN_INDICES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("binIndices"));
+        REBUILD_CAPACITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rebuildCapacity"));
         
-        NODES_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodes"));
-        ROOT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("root"));
-        NODE_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeCount"));
-        NODE_CAPACITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeCapacity"));
-        FREE_LIST_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("freeList"));
-        PROXY_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyCount"));
-        LEAF_INDICES_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafIndices"));
-        LEAF_BOXES_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafBoxes"));
-        LEAF_CENTERS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafCenters"));
-        BIN_INDICES_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("binIndices"));
-        REBUILD_CAPACITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rebuildCapacity"));
+        NODES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodes"));
+        ROOT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("root"));
+        NODE_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeCount"));
+        NODE_CAPACITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeCapacity"));
+        FREE_LIST_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("freeList"));
+        PROXY_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyCount"));
+        LEAF_INDICES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafIndices"));
+        LEAF_BOXES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafBoxes"));
+        LEAF_CENTERS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafCenters"));
+        BIN_INDICES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("binIndices"));
+        REBUILD_CAPACITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rebuildCapacity"));
         //@formatter:on
     }
 
@@ -875,57 +875,57 @@ public final class DynamicTree
     }
     
     public DynamicTree root(int root) {
-        ROOT.set(segment, 0L, root);
+        ROOT_HANDLE.set(segment, 0L, root);
         return this;
     }
     
     public int root() {
-        return (int) ROOT.get(segment, 0L);
+        return (int) ROOT_HANDLE.get(segment, 0L);
     }
     
     public DynamicTree nodeCount(int nodeCount) {
-        NODE_COUNT.set(segment, 0L, nodeCount);
+        NODE_COUNT_HANDLE.set(segment, 0L, nodeCount);
         return this;
     }
     
     public int nodeCount() {
-        return (int) NODE_COUNT.get(segment, 0L);
+        return (int) NODE_COUNT_HANDLE.get(segment, 0L);
     }
     
     public DynamicTree nodeCapacity(int nodeCapacity) {
-        NODE_CAPACITY.set(segment, 0L, nodeCapacity);
+        NODE_CAPACITY_HANDLE.set(segment, 0L, nodeCapacity);
         return this;
     }
     
     public int nodeCapacity() {
-        return (int) NODE_CAPACITY.get(segment, 0L);
+        return (int) NODE_CAPACITY_HANDLE.get(segment, 0L);
     }
     
     public DynamicTree freeList(int freeList) {
-        FREE_LIST.set(segment, 0L, freeList);
+        FREE_LIST_HANDLE.set(segment, 0L, freeList);
         return this;
     }
     
     public int freeList() {
-        return (int) FREE_LIST.get(segment, 0L);
+        return (int) FREE_LIST_HANDLE.get(segment, 0L);
     }
     
     public DynamicTree proxyCount(int proxyCount) {
-        PROXY_COUNT.set(segment, 0L, proxyCount);
+        PROXY_COUNT_HANDLE.set(segment, 0L, proxyCount);
         return this;
     }
     
     public int proxyCount() {
-        return (int) PROXY_COUNT.get(segment, 0L);
+        return (int) PROXY_COUNT_HANDLE.get(segment, 0L);
     }
     
     public DynamicTree leafIndices(NativeIntArray leafIndices) {
-        LEAF_INDICES.set(segment, 0L, leafIndices.memorySegment());
+        LEAF_INDICES_HANDLE.set(segment, 0L, leafIndices.memorySegment());
         return this;
     }
     
     public @Nullable NativeIntArray leafIndices() {
-        MemorySegment segment = (MemorySegment) LEAF_INDICES.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) LEAF_INDICES_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -934,12 +934,12 @@ public final class DynamicTree
     }
     
     public DynamicTree leafBoxes(AABB leafBoxes) {
-        LEAF_BOXES.set(segment, 0L, leafBoxes.memorySegment());
+        LEAF_BOXES_HANDLE.set(segment, 0L, leafBoxes.memorySegment());
         return this;
     }
     
     public @Nullable AABB leafBoxes() {
-        MemorySegment segment = (MemorySegment) LEAF_BOXES.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) LEAF_BOXES_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -948,12 +948,12 @@ public final class DynamicTree
     }
     
     public DynamicTree leafCenters(Vec2 leafCenters) {
-        LEAF_CENTERS.set(segment, 0L, leafCenters.memorySegment());
+        LEAF_CENTERS_HANDLE.set(segment, 0L, leafCenters.memorySegment());
         return this;
     }
     
     public @Nullable Vec2 leafCenters() {
-        MemorySegment segment = (MemorySegment) LEAF_CENTERS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) LEAF_CENTERS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -962,12 +962,12 @@ public final class DynamicTree
     }
     
     public DynamicTree binIndices(NativeIntArray binIndices) {
-        BIN_INDICES.set(segment, 0L, binIndices.memorySegment());
+        BIN_INDICES_HANDLE.set(segment, 0L, binIndices.memorySegment());
         return this;
     }
     
     public @Nullable NativeIntArray binIndices() {
-        MemorySegment segment = (MemorySegment) BIN_INDICES.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) BIN_INDICES_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -976,12 +976,12 @@ public final class DynamicTree
     }
     
     public DynamicTree rebuildCapacity(int rebuildCapacity) {
-        REBUILD_CAPACITY.set(segment, 0L, rebuildCapacity);
+        REBUILD_CAPACITY_HANDLE.set(segment, 0L, rebuildCapacity);
         return this;
     }
     
     public int rebuildCapacity() {
-        return (int) REBUILD_CAPACITY.get(segment, 0L);
+        return (int) REBUILD_CAPACITY_HANDLE.get(segment, 0L);
     }
     
     @Override

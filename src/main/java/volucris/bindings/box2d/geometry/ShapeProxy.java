@@ -23,12 +23,12 @@ public final class ShapeProxy
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle COUNT;
-    public static final VarHandle RADIUS;
+    public static final VarHandle COUNT_HANDLE;
+    public static final VarHandle RADIUS_HANDLE;
 
-    public static final long POINTS_OFFSET;
-    public static final long COUNT_OFFSET;
-    public static final long RADIUS_OFFSET;
+    public static final long POINTS_BYTE_OFFSET;
+    public static final long COUNT_BYTE_OFFSET;
+    public static final long RADIUS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -42,12 +42,12 @@ public final class ShapeProxy
             JAVA_FLOAT.withName("radius")
         ).withName("b2ShapeProxy").withByteAlignment(4);
         
-        COUNT = LAYOUT.varHandle(PathElement.groupElement("count"));
-        RADIUS = LAYOUT.varHandle(PathElement.groupElement("radius"));
+        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
+        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
         
-        POINTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
-        COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
-        RADIUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+        POINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
+        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
         //@formatter:on
     }
 
@@ -65,28 +65,28 @@ public final class ShapeProxy
     
         points = new Vec2[8];
         for (int i = 0; i < 8; i++) {
-            long offset = POINTS_OFFSET + i * Vec2.LAYOUT.byteSize();
+            long offset = POINTS_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
             points[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
         }
     
     }
 
     public ShapeProxy count(int count) {
-        COUNT.set(segment, 0L, count);
+        COUNT_HANDLE.set(segment, 0L, count);
         return this;
     }
     
     public int count() {
-        return (int) COUNT.get(segment, 0L);
+        return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
     public ShapeProxy radius(float radius) {
-        RADIUS.set(segment, 0L, radius);
+        RADIUS_HANDLE.set(segment, 0L, radius);
         return this;
     }
     
     public float radius() {
-        return (float) RADIUS.get(segment, 0L);
+        return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     public ShapeProxy points(Consumer<Vec2> consumer, int index) {

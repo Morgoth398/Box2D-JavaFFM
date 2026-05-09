@@ -27,11 +27,11 @@ public final class QueryFilter
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle CATEGORY_BITS;
-    public static final VarHandle MASK_BITS;
+    public static final VarHandle CATEGORY_BITS_HANDLE;
+    public static final VarHandle MASK_BITS_HANDLE;
 
-    public static final long CATEGORY_BITS_OFFSET;
-    public static final long MASK_BITS_OFFSET;
+    public static final long CATEGORY_BITS_BYTE_OFFSET;
+    public static final long MASK_BITS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -44,11 +44,11 @@ public final class QueryFilter
         
         B2_DEFAULT_QUERY_FILTER = downcallHandle("b2DefaultQueryFilter", QueryFilter.LAYOUT);
         
-        CATEGORY_BITS = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
-        MASK_BITS = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
+        CATEGORY_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
+        MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
         
-        CATEGORY_BITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
-        MASK_BITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
+        CATEGORY_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
+        MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
         //@formatter:on
     }
 
@@ -88,21 +88,21 @@ public final class QueryFilter
     }
     
     public QueryFilter categoryBits(long categoryBits) {
-        CATEGORY_BITS.set(segment, 0L, categoryBits);
+        CATEGORY_BITS_HANDLE.set(segment, 0L, categoryBits);
         return this;
     }
     
     public long categoryBits() {
-        return (long) CATEGORY_BITS.get(segment, 0L);
+        return (long) CATEGORY_BITS_HANDLE.get(segment, 0L);
     }
     
     public QueryFilter maskBits(long maskBits) {
-        MASK_BITS.set(segment, 0L, maskBits);
+        MASK_BITS_HANDLE.set(segment, 0L, maskBits);
         return this;
     }
     
     public long maskBits() {
-        return (long) MASK_BITS.get(segment, 0L);
+        return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
     @Override

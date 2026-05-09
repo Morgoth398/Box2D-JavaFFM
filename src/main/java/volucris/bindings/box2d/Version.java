@@ -27,13 +27,13 @@ public final class Version
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAJOR;
-    public static final VarHandle MINOR;
-    public static final VarHandle REVISION;
+    public static final VarHandle MAJOR_HANDLE;
+    public static final VarHandle MINOR_HANDLE;
+    public static final VarHandle REVISION_HANDLE;
 
-    public static final long MAJOR_OFFSET;
-    public static final long MINOR_OFFSET;
-    public static final long REVISION_OFFSET;
+    public static final long MAJOR_BYTE_OFFSET;
+    public static final long MINOR_BYTE_OFFSET;
+    public static final long REVISION_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -47,13 +47,13 @@ public final class Version
         
         B2_GET_VERSION = downcallHandle("b2GetVersion", Version.LAYOUT);
         
-        MAJOR = LAYOUT.varHandle(PathElement.groupElement("major"));
-        MINOR = LAYOUT.varHandle(PathElement.groupElement("minor"));
-        REVISION = LAYOUT.varHandle(PathElement.groupElement("revision"));
+        MAJOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("major"));
+        MINOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("minor"));
+        REVISION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("revision"));
         
-        MAJOR_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("major"));
-        MINOR_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("minor"));
-        REVISION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("revision"));
+        MAJOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("major"));
+        MINOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("minor"));
+        REVISION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("revision"));
         //@formatter:on
     }
 
@@ -101,30 +101,30 @@ public final class Version
     }
     
     public Version major(int major) {
-        MAJOR.set(segment, 0L, major);
+        MAJOR_HANDLE.set(segment, 0L, major);
         return this;
     }
     
     public int major() {
-        return (int) MAJOR.get(segment, 0L);
+        return (int) MAJOR_HANDLE.get(segment, 0L);
     }
     
     public Version minor(int minor) {
-        MINOR.set(segment, 0L, minor);
+        MINOR_HANDLE.set(segment, 0L, minor);
         return this;
     }
     
     public int minor() {
-        return (int) MINOR.get(segment, 0L);
+        return (int) MINOR_HANDLE.get(segment, 0L);
     }
     
     public Version revision(int revision) {
-        REVISION.set(segment, 0L, revision);
+        REVISION_HANDLE.set(segment, 0L, revision);
         return this;
     }
     
     public int revision() {
-        return (int) REVISION.get(segment, 0L);
+        return (int) REVISION_HANDLE.get(segment, 0L);
     }
     
     @Override

@@ -22,8 +22,8 @@ public final class SensorBeginTouchEvent
 
     public static final StructLayout LAYOUT;
 
-    public static final long SENSOR_SHAPE_ID_OFFSET;
-    public static final long VISITOR_SHAPE_ID_OFFSET;
+    public static final long SENSOR_SHAPE_ID_BYTE_OFFSET;
+    public static final long VISITOR_SHAPE_ID_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -37,8 +37,8 @@ public final class SensorBeginTouchEvent
             ShapeId.LAYOUT.withName("visitorShapeId")
         ).withName("b2SensorBeginTouchEvent").withByteAlignment(4);
         
-        SENSOR_SHAPE_ID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensorShapeId"));
-        VISITOR_SHAPE_ID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("visitorShapeId"));
+        SENSOR_SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensorShapeId"));
+        VISITOR_SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("visitorShapeId"));
         //@formatter:on
     }
 
@@ -53,8 +53,8 @@ public final class SensorBeginTouchEvent
     public SensorBeginTouchEvent(MemorySegment segment) {
         this.segment = segment;
     
-        sensorShapeId = new ShapeId(segment.asSlice(SENSOR_SHAPE_ID_OFFSET, ShapeId.LAYOUT));
-        visitorShapeId = new ShapeId(segment.asSlice(VISITOR_SHAPE_ID_OFFSET, ShapeId.LAYOUT));
+        sensorShapeId = new ShapeId(segment.asSlice(SENSOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
+        visitorShapeId = new ShapeId(segment.asSlice(VISITOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
     }
 
     public SensorBeginTouchEvent sensorShapeId(Consumer<ShapeId> consumer) {

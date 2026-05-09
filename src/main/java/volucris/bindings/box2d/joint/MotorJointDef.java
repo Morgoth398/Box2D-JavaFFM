@@ -30,24 +30,24 @@ public final class MotorJointDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle ANGULAR_OFFSET;
-    public static final VarHandle MAX_FORCE;
-    public static final VarHandle MAX_TORQUE;
-    public static final VarHandle CORRECTION_FACTOR;
-    public static final VarHandle COLLIDE_CONNECTED;
-    public static final VarHandle USER_DATA;
-    public static final VarHandle INTERNAL_VALUE;
+    public static final VarHandle ANGULAR_OFFSET_HANDLE;
+    public static final VarHandle MAX_FORCE_HANDLE;
+    public static final VarHandle MAX_TORQUE_HANDLE;
+    public static final VarHandle CORRECTION_FACTOR_HANDLE;
+    public static final VarHandle COLLIDE_CONNECTED_HANDLE;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long BODY_ID_A_OFFSET;
-    public static final long BODY_ID_B_OFFSET;
-    public static final long LINEAR_OFFSET_OFFSET;
-    public static final long ANGULAR_OFFSET_OFFSET;
-    public static final long MAX_FORCE_OFFSET;
-    public static final long MAX_TORQUE_OFFSET;
-    public static final long CORRECTION_FACTOR_OFFSET;
-    public static final long COLLIDE_CONNECTED_OFFSET;
-    public static final long USER_DATA_OFFSET;
-    public static final long INTERNAL_VALUE_OFFSET;
+    public static final long BODY_ID_A_BYTE_OFFSET;
+    public static final long BODY_ID_B_BYTE_OFFSET;
+    public static final long LINEAR_OFFSET_BYTE_OFFSET;
+    public static final long ANGULAR_OFFSET_BYTE_OFFSET;
+    public static final long MAX_FORCE_BYTE_OFFSET;
+    public static final long MAX_TORQUE_BYTE_OFFSET;
+    public static final long CORRECTION_FACTOR_BYTE_OFFSET;
+    public static final long COLLIDE_CONNECTED_BYTE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -74,33 +74,33 @@ public final class MotorJointDef
         
         B2_DEFAULT_MOTOR_JOINT_DEF = downcallHandle("b2DefaultMotorJointDef", MotorJointDef.LAYOUT);
         
-        ANGULAR_OFFSET = LAYOUT.varHandle(PathElement.groupElement("angularOffset"));
-        MAX_FORCE = LAYOUT.varHandle(PathElement.groupElement("maxForce"));
-        MAX_TORQUE = LAYOUT.varHandle(PathElement.groupElement("maxTorque"));
-        CORRECTION_FACTOR = LAYOUT.varHandle(PathElement.groupElement("correctionFactor"));
-        COLLIDE_CONNECTED = LAYOUT.varHandle(PathElement.groupElement("collideConnected"));
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        INTERNAL_VALUE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+        ANGULAR_OFFSET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularOffset"));
+        MAX_FORCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxForce"));
+        MAX_TORQUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxTorque"));
+        CORRECTION_FACTOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("correctionFactor"));
+        COLLIDE_CONNECTED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("collideConnected"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
         
-        BODY_ID_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
-        BODY_ID_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
-        LINEAR_OFFSET_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearOffset"));
-        ANGULAR_OFFSET_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularOffset"));
-        MAX_FORCE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxForce"));
-        MAX_TORQUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxTorque"));
-        CORRECTION_FACTOR_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("correctionFactor"));
-        COLLIDE_CONNECTED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("collideConnected"));
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+        BODY_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
+        BODY_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
+        LINEAR_OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearOffset"));
+        ANGULAR_OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularOffset"));
+        MAX_FORCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxForce"));
+        MAX_TORQUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxTorque"));
+        CORRECTION_FACTOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("correctionFactor"));
+        COLLIDE_CONNECTED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("collideConnected"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
         //@formatter:on
     }
 
     public MotorJointDef(MemorySegment segment) {
         this.segment = segment;
     
-        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_OFFSET, BodyId.LAYOUT));
-        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_OFFSET, BodyId.LAYOUT));
-        linearOffset = new Vec2(segment.asSlice(LINEAR_OFFSET_OFFSET, Vec2.LAYOUT));
+        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_BYTE_OFFSET, BodyId.LAYOUT));
+        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_BYTE_OFFSET, BodyId.LAYOUT));
+        linearOffset = new Vec2(segment.asSlice(LINEAR_OFFSET_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -134,57 +134,57 @@ public final class MotorJointDef
     }
     
     public MotorJointDef angularOffset(float angularOffset) {
-        ANGULAR_OFFSET.set(segment, 0L, angularOffset);
+        ANGULAR_OFFSET_HANDLE.set(segment, 0L, angularOffset);
         return this;
     }
     
     public float angularOffset() {
-        return (float) ANGULAR_OFFSET.get(segment, 0L);
+        return (float) ANGULAR_OFFSET_HANDLE.get(segment, 0L);
     }
     
     public MotorJointDef maxForce(float maxForce) {
-        MAX_FORCE.set(segment, 0L, maxForce);
+        MAX_FORCE_HANDLE.set(segment, 0L, maxForce);
         return this;
     }
     
     public float maxForce() {
-        return (float) MAX_FORCE.get(segment, 0L);
+        return (float) MAX_FORCE_HANDLE.get(segment, 0L);
     }
     
     public MotorJointDef maxTorque(float maxTorque) {
-        MAX_TORQUE.set(segment, 0L, maxTorque);
+        MAX_TORQUE_HANDLE.set(segment, 0L, maxTorque);
         return this;
     }
     
     public float maxTorque() {
-        return (float) MAX_TORQUE.get(segment, 0L);
+        return (float) MAX_TORQUE_HANDLE.get(segment, 0L);
     }
     
     public MotorJointDef correctionFactor(float correctionFactor) {
-        CORRECTION_FACTOR.set(segment, 0L, correctionFactor);
+        CORRECTION_FACTOR_HANDLE.set(segment, 0L, correctionFactor);
         return this;
     }
     
     public float correctionFactor() {
-        return (float) CORRECTION_FACTOR.get(segment, 0L);
+        return (float) CORRECTION_FACTOR_HANDLE.get(segment, 0L);
     }
     
     public MotorJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED.set(segment, 0L, collideConnected);
+        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
         return this;
     }
     
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED.get(segment, 0L);
+        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
     public MotorJointDef userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -193,12 +193,12 @@ public final class MotorJointDef
     }
     
     public MotorJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE.set(segment, 0L, internalValue);
+        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
         return this;
     }
     
     public int internalValue() {
-        return (int) INTERNAL_VALUE.get(segment, 0L);
+        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     public MotorJointDef bodyIdA(Consumer<BodyId> consumer) {

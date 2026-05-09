@@ -22,10 +22,10 @@ public final class Plane
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle OFFSET;
+    public static final VarHandle OFFSET_HANDLE;
 
-    public static final long NORMAL_OFFSET;
-    public static final long OFFSET_OFFSET;
+    public static final long NORMAL_BYTE_OFFSET;
+    public static final long OFFSET_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -38,10 +38,10 @@ public final class Plane
             JAVA_FLOAT.withName("offset")
         ).withName("b2Plane").withByteAlignment(4);
         
-        OFFSET = LAYOUT.varHandle(PathElement.groupElement("offset"));
+        OFFSET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("offset"));
         
-        NORMAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        OFFSET_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("offset"));
+        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+        OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("offset"));
         //@formatter:on
     }
 
@@ -56,16 +56,16 @@ public final class Plane
     public Plane(MemorySegment segment) {
         this.segment = segment;
     
-        normal = new Vec2(segment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT));
+        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public Plane offset(float offset) {
-        OFFSET.set(segment, 0L, offset);
+        OFFSET_HANDLE.set(segment, 0L, offset);
         return this;
     }
     
     public float offset() {
-        return (float) OFFSET.get(segment, 0L);
+        return (float) OFFSET_HANDLE.get(segment, 0L);
     }
     
     public Plane normal(Consumer<Vec2> consumer) {

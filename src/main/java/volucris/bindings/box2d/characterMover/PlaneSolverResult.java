@@ -23,10 +23,10 @@ public final class PlaneSolverResult
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle ITERATION_COUNT;
+    public static final VarHandle ITERATION_COUNT_HANDLE;
 
-    public static final long TRANSLATION_OFFSET;
-    public static final long ITERATION_COUNT_OFFSET;
+    public static final long TRANSLATION_BYTE_OFFSET;
+    public static final long ITERATION_COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -39,10 +39,10 @@ public final class PlaneSolverResult
             JAVA_INT.withName("iterationCount")
         ).withName("b2PlaneSolverResult").withByteAlignment(4);
         
-        ITERATION_COUNT = LAYOUT.varHandle(PathElement.groupElement("iterationCount"));
+        ITERATION_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterationCount"));
         
-        TRANSLATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
-        ITERATION_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterationCount"));
+        TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
+        ITERATION_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterationCount"));
         //@formatter:on
     }
 
@@ -57,16 +57,16 @@ public final class PlaneSolverResult
     public PlaneSolverResult(MemorySegment segment) {
         this.segment = segment;
     
-        translation = new Vec2(segment.asSlice(TRANSLATION_OFFSET, Vec2.LAYOUT));
+        translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public PlaneSolverResult iterationCount(int iterationCount) {
-        ITERATION_COUNT.set(segment, 0L, iterationCount);
+        ITERATION_COUNT_HANDLE.set(segment, 0L, iterationCount);
         return this;
     }
     
     public int iterationCount() {
-        return (int) ITERATION_COUNT.get(segment, 0L);
+        return (int) ITERATION_COUNT_HANDLE.get(segment, 0L);
     }
     
     public PlaneSolverResult translation(Consumer<Vec2> consumer) {

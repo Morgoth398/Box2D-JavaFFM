@@ -23,13 +23,13 @@ public final class Manifold
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle ROLLING_IMPULSE;
-    public static final VarHandle POINT_COUNT;
+    public static final VarHandle ROLLING_IMPULSE_HANDLE;
+    public static final VarHandle POINT_COUNT_HANDLE;
 
-    public static final long NORMAL_OFFSET;
-    public static final long ROLLING_IMPULSE_OFFSET;
-    public static final long POINTS_OFFSET;
-    public static final long POINT_COUNT_OFFSET;
+    public static final long NORMAL_BYTE_OFFSET;
+    public static final long ROLLING_IMPULSE_BYTE_OFFSET;
+    public static final long POINTS_BYTE_OFFSET;
+    public static final long POINT_COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -45,13 +45,13 @@ public final class Manifold
             JAVA_INT.withName("pointCount")
         ).withName("b2Manifold").withByteAlignment(4);
         
-        ROLLING_IMPULSE = LAYOUT.varHandle(PathElement.groupElement("rollingImpulse"));
-        POINT_COUNT = LAYOUT.varHandle(PathElement.groupElement("pointCount"));
+        ROLLING_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rollingImpulse"));
+        POINT_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pointCount"));
         
-        NORMAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        ROLLING_IMPULSE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingImpulse"));
-        POINTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
-        POINT_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointCount"));
+        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+        ROLLING_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingImpulse"));
+        POINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
+        POINT_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointCount"));
         //@formatter:on
     }
 
@@ -66,32 +66,32 @@ public final class Manifold
     public Manifold(MemorySegment segment) {
         this.segment = segment;
     
-        normal = new Vec2(segment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT));
+        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     
         points = new ManifoldPoint[2];
         for (int i = 0; i < 2; i++) {
-            long offset = POINTS_OFFSET + i * ManifoldPoint.LAYOUT.byteSize();
+            long offset = POINTS_BYTE_OFFSET + i * ManifoldPoint.LAYOUT.byteSize();
             points[i] = new ManifoldPoint(segment.asSlice(offset, ManifoldPoint.LAYOUT));
         }
     
     }
 
     public Manifold rollingImpulse(float rollingImpulse) {
-        ROLLING_IMPULSE.set(segment, 0L, rollingImpulse);
+        ROLLING_IMPULSE_HANDLE.set(segment, 0L, rollingImpulse);
         return this;
     }
     
     public float rollingImpulse() {
-        return (float) ROLLING_IMPULSE.get(segment, 0L);
+        return (float) ROLLING_IMPULSE_HANDLE.get(segment, 0L);
     }
     
     public Manifold pointCount(int pointCount) {
-        POINT_COUNT.set(segment, 0L, pointCount);
+        POINT_COUNT_HANDLE.set(segment, 0L, pointCount);
         return this;
     }
     
     public int pointCount() {
-        return (int) POINT_COUNT.get(segment, 0L);
+        return (int) POINT_COUNT_HANDLE.get(segment, 0L);
     }
     
     public Manifold normal(Consumer<Vec2> consumer) {

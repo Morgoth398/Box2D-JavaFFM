@@ -29,13 +29,13 @@ public final class FilterJointDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle USER_DATA;
-    public static final VarHandle INTERNAL_VALUE;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long BODY_ID_A_OFFSET;
-    public static final long BODY_ID_B_OFFSET;
-    public static final long USER_DATA_OFFSET;
-    public static final long INTERNAL_VALUE_OFFSET;
+    public static final long BODY_ID_A_BYTE_OFFSET;
+    public static final long BODY_ID_B_BYTE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -54,21 +54,21 @@ public final class FilterJointDef
         
         B2_DEFAULT_FILTER_JOINT_DEF = downcallHandle("b2DefaultFilterJointDef", FilterJointDef.LAYOUT);
         
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        INTERNAL_VALUE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
         
-        BODY_ID_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
-        BODY_ID_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+        BODY_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
+        BODY_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
         //@formatter:on
     }
 
     public FilterJointDef(MemorySegment segment) {
         this.segment = segment;
     
-        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_OFFSET, BodyId.LAYOUT));
-        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_OFFSET, BodyId.LAYOUT));
+        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_BYTE_OFFSET, BodyId.LAYOUT));
+        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_BYTE_OFFSET, BodyId.LAYOUT));
     }
 
     /**
@@ -102,12 +102,12 @@ public final class FilterJointDef
     }
     
     public FilterJointDef userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -116,12 +116,12 @@ public final class FilterJointDef
     }
     
     public FilterJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE.set(segment, 0L, internalValue);
+        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
         return this;
     }
     
     public int internalValue() {
-        return (int) INTERNAL_VALUE.get(segment, 0L);
+        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     public FilterJointDef bodyIdA(Consumer<BodyId> consumer) {

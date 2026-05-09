@@ -23,19 +23,19 @@ public final class ContactEvents
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle BEGIN_EVENTS;
-    public static final VarHandle END_EVENTS;
-    public static final VarHandle HIT_EVENTS;
-    public static final VarHandle BEGIN_COUNT;
-    public static final VarHandle END_COUNT;
-    public static final VarHandle HIT_COUNT;
+    public static final VarHandle BEGIN_EVENTS_HANDLE;
+    public static final VarHandle END_EVENTS_HANDLE;
+    public static final VarHandle HIT_EVENTS_HANDLE;
+    public static final VarHandle BEGIN_COUNT_HANDLE;
+    public static final VarHandle END_COUNT_HANDLE;
+    public static final VarHandle HIT_COUNT_HANDLE;
 
-    public static final long BEGIN_EVENTS_OFFSET;
-    public static final long END_EVENTS_OFFSET;
-    public static final long HIT_EVENTS_OFFSET;
-    public static final long BEGIN_COUNT_OFFSET;
-    public static final long END_COUNT_OFFSET;
-    public static final long HIT_COUNT_OFFSET;
+    public static final long BEGIN_EVENTS_BYTE_OFFSET;
+    public static final long END_EVENTS_BYTE_OFFSET;
+    public static final long HIT_EVENTS_BYTE_OFFSET;
+    public static final long BEGIN_COUNT_BYTE_OFFSET;
+    public static final long END_COUNT_BYTE_OFFSET;
+    public static final long HIT_COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -51,19 +51,19 @@ public final class ContactEvents
             MemoryLayout.paddingLayout(4)
         ).withName("b2ContactEvents").withByteAlignment(8);
         
-        BEGIN_EVENTS = LAYOUT.varHandle(PathElement.groupElement("beginEvents"));
-        END_EVENTS = LAYOUT.varHandle(PathElement.groupElement("endEvents"));
-        HIT_EVENTS = LAYOUT.varHandle(PathElement.groupElement("hitEvents"));
-        BEGIN_COUNT = LAYOUT.varHandle(PathElement.groupElement("beginCount"));
-        END_COUNT = LAYOUT.varHandle(PathElement.groupElement("endCount"));
-        HIT_COUNT = LAYOUT.varHandle(PathElement.groupElement("hitCount"));
+        BEGIN_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("beginEvents"));
+        END_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("endEvents"));
+        HIT_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hitEvents"));
+        BEGIN_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("beginCount"));
+        END_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("endCount"));
+        HIT_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hitCount"));
         
-        BEGIN_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginEvents"));
-        END_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endEvents"));
-        HIT_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitEvents"));
-        BEGIN_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginCount"));
-        END_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endCount"));
-        HIT_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitCount"));
+        BEGIN_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginEvents"));
+        END_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endEvents"));
+        HIT_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitEvents"));
+        BEGIN_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("beginCount"));
+        END_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("endCount"));
+        HIT_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitCount"));
         //@formatter:on
     }
 
@@ -81,12 +81,12 @@ public final class ContactEvents
     }
 
     public ContactEvents beginEvents(ContactBeginTouchEvent beginEvents) {
-        BEGIN_EVENTS.set(segment, 0L, beginEvents.memorySegment());
+        BEGIN_EVENTS_HANDLE.set(segment, 0L, beginEvents.memorySegment());
         return this;
     }
     
     public @Nullable ContactBeginTouchEvent beginEvents() {
-        MemorySegment segment = (MemorySegment) BEGIN_EVENTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) BEGIN_EVENTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -95,12 +95,12 @@ public final class ContactEvents
     }
     
     public ContactEvents endEvents(ContactEndTouchEvent endEvents) {
-        END_EVENTS.set(segment, 0L, endEvents.memorySegment());
+        END_EVENTS_HANDLE.set(segment, 0L, endEvents.memorySegment());
         return this;
     }
     
     public @Nullable ContactEndTouchEvent endEvents() {
-        MemorySegment segment = (MemorySegment) END_EVENTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) END_EVENTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -109,12 +109,12 @@ public final class ContactEvents
     }
     
     public ContactEvents hitEvents(ContactHitEvent hitEvents) {
-        HIT_EVENTS.set(segment, 0L, hitEvents.memorySegment());
+        HIT_EVENTS_HANDLE.set(segment, 0L, hitEvents.memorySegment());
         return this;
     }
     
     public @Nullable ContactHitEvent hitEvents() {
-        MemorySegment segment = (MemorySegment) HIT_EVENTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) HIT_EVENTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -123,30 +123,30 @@ public final class ContactEvents
     }
     
     public ContactEvents beginCount(int beginCount) {
-        BEGIN_COUNT.set(segment, 0L, beginCount);
+        BEGIN_COUNT_HANDLE.set(segment, 0L, beginCount);
         return this;
     }
     
     public int beginCount() {
-        return (int) BEGIN_COUNT.get(segment, 0L);
+        return (int) BEGIN_COUNT_HANDLE.get(segment, 0L);
     }
     
     public ContactEvents endCount(int endCount) {
-        END_COUNT.set(segment, 0L, endCount);
+        END_COUNT_HANDLE.set(segment, 0L, endCount);
         return this;
     }
     
     public int endCount() {
-        return (int) END_COUNT.get(segment, 0L);
+        return (int) END_COUNT_HANDLE.get(segment, 0L);
     }
     
     public ContactEvents hitCount(int hitCount) {
-        HIT_COUNT.set(segment, 0L, hitCount);
+        HIT_COUNT_HANDLE.set(segment, 0L, hitCount);
         return this;
     }
     
     public int hitCount() {
-        return (int) HIT_COUNT.get(segment, 0L);
+        return (int) HIT_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override

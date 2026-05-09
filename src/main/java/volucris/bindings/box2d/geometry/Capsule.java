@@ -35,11 +35,11 @@ public final class Capsule
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS;
+    public static final VarHandle RADIUS_HANDLE;
 
-    public static final long CENTER1_OFFSET;
-    public static final long CENTER2_OFFSET;
-    public static final long RADIUS_OFFSET;
+    public static final long CENTER1_BYTE_OFFSET;
+    public static final long CENTER2_BYTE_OFFSET;
+    public static final long RADIUS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -60,11 +60,11 @@ public final class Capsule
         B2_RAY_CAST_CAPSULE = downcallHandle("b2RayCastCapsule", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         B2_SHAPE_CAST_CAPSULE = downcallHandle("b2ShapeCastCapsule", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         
-        RADIUS = LAYOUT.varHandle(PathElement.groupElement("radius"));
+        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
         
-        CENTER1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center1"));
-        CENTER2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center2"));
-        RADIUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+        CENTER1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center1"));
+        CENTER2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center2"));
+        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
         //@formatter:on
     }
 
@@ -79,8 +79,8 @@ public final class Capsule
     public Capsule(MemorySegment segment) {
         this.segment = segment;
     
-        center1 = new Vec2(segment.asSlice(CENTER1_OFFSET, Vec2.LAYOUT));
-        center2 = new Vec2(segment.asSlice(CENTER2_OFFSET, Vec2.LAYOUT));
+        center1 = new Vec2(segment.asSlice(CENTER1_BYTE_OFFSET, Vec2.LAYOUT));
+        center2 = new Vec2(segment.asSlice(CENTER2_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -270,12 +270,12 @@ public final class Capsule
     }
     
     public Capsule radius(float radius) {
-        RADIUS.set(segment, 0L, radius);
+        RADIUS_HANDLE.set(segment, 0L, radius);
         return this;
     }
     
     public float radius() {
-        return (float) RADIUS.get(segment, 0L);
+        return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     public Capsule center1(Consumer<Vec2> consumer) {

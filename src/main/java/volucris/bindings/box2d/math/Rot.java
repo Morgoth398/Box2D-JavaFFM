@@ -21,11 +21,11 @@ public final class Rot
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle C;
-    public static final VarHandle S;
+    public static final VarHandle C_HANDLE;
+    public static final VarHandle S_HANDLE;
 
-    public static final long C_OFFSET;
-    public static final long S_OFFSET;
+    public static final long C_BYTE_OFFSET;
+    public static final long S_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,11 +36,11 @@ public final class Rot
             JAVA_FLOAT.withName("s")
         ).withName("b2Rot").withByteAlignment(4);
         
-        C = LAYOUT.varHandle(PathElement.groupElement("c"));
-        S = LAYOUT.varHandle(PathElement.groupElement("s"));
+        C_HANDLE = LAYOUT.varHandle(PathElement.groupElement("c"));
+        S_HANDLE = LAYOUT.varHandle(PathElement.groupElement("s"));
         
-        C_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c"));
-        S_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("s"));
+        C_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c"));
+        S_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("s"));
         //@formatter:on
     }
 
@@ -58,21 +58,21 @@ public final class Rot
     }
 
     public Rot c(float c) {
-        C.set(segment, 0L, c);
+        C_HANDLE.set(segment, 0L, c);
         return this;
     }
     
     public float c() {
-        return (float) C.get(segment, 0L);
+        return (float) C_HANDLE.get(segment, 0L);
     }
     
     public Rot s(float s) {
-        S.set(segment, 0L, s);
+        S_HANDLE.set(segment, 0L, s);
         return this;
     }
     
     public float s() {
-        return (float) S.get(segment, 0L);
+        return (float) S_HANDLE.get(segment, 0L);
     }
     
     @Override

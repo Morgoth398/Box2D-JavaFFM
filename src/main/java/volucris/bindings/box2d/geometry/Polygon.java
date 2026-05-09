@@ -44,14 +44,14 @@ public final class Polygon
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS;
-    public static final VarHandle COUNT;
+    public static final VarHandle RADIUS_HANDLE;
+    public static final VarHandle COUNT_HANDLE;
 
-    public static final long VERTICES_OFFSET;
-    public static final long NORMALS_OFFSET;
-    public static final long CENTROID_OFFSET;
-    public static final long RADIUS_OFFSET;
-    public static final long COUNT_OFFSET;
+    public static final long VERTICES_BYTE_OFFSET;
+    public static final long NORMALS_BYTE_OFFSET;
+    public static final long CENTROID_BYTE_OFFSET;
+    public static final long RADIUS_BYTE_OFFSET;
+    public static final long COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -82,14 +82,14 @@ public final class Polygon
         B2_RAY_CAST_POLYGON = downcallHandle("b2RayCastPolygon", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         B2_SHAPE_CAST_POLYGON = downcallHandle("b2ShapeCastPolygon", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
         
-        RADIUS = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        COUNT = LAYOUT.varHandle(PathElement.groupElement("count"));
+        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
         
-        VERTICES_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("vertices"));
-        NORMALS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normals"));
-        CENTROID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("centroid"));
-        RADIUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+        VERTICES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("vertices"));
+        NORMALS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normals"));
+        CENTROID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("centroid"));
+        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
         //@formatter:on
     }
 
@@ -107,18 +107,18 @@ public final class Polygon
     
         vertices = new Vec2[8];
         for (int i = 0; i < 8; i++) {
-            long offset = VERTICES_OFFSET + i * Vec2.LAYOUT.byteSize();
+            long offset = VERTICES_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
             vertices[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
         }
     
     
         normals = new Vec2[8];
         for (int i = 0; i < 8; i++) {
-            long offset = NORMALS_OFFSET + i * Vec2.LAYOUT.byteSize();
+            long offset = NORMALS_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
             normals[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
         }
     
-        centroid = new Vec2(segment.asSlice(CENTROID_OFFSET, Vec2.LAYOUT));
+        centroid = new Vec2(segment.asSlice(CENTROID_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -622,21 +622,21 @@ public final class Polygon
     }
     
     public Polygon radius(float radius) {
-        RADIUS.set(segment, 0L, radius);
+        RADIUS_HANDLE.set(segment, 0L, radius);
         return this;
     }
     
     public float radius() {
-        return (float) RADIUS.get(segment, 0L);
+        return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     public Polygon count(int count) {
-        COUNT.set(segment, 0L, count);
+        COUNT_HANDLE.set(segment, 0L, count);
         return this;
     }
     
     public int count() {
-        return (int) COUNT.get(segment, 0L);
+        return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
     public Polygon vertices(Consumer<Vec2> consumer, int index) {

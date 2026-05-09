@@ -27,13 +27,13 @@ public final class Filter
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle CATEGORY_BITS;
-    public static final VarHandle MASK_BITS;
-    public static final VarHandle GROUP_INDEX;
+    public static final VarHandle CATEGORY_BITS_HANDLE;
+    public static final VarHandle MASK_BITS_HANDLE;
+    public static final VarHandle GROUP_INDEX_HANDLE;
 
-    public static final long CATEGORY_BITS_OFFSET;
-    public static final long MASK_BITS_OFFSET;
-    public static final long GROUP_INDEX_OFFSET;
+    public static final long CATEGORY_BITS_BYTE_OFFSET;
+    public static final long MASK_BITS_BYTE_OFFSET;
+    public static final long GROUP_INDEX_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -48,13 +48,13 @@ public final class Filter
         
         B2_DEFAULT_FILTER = downcallHandle("b2DefaultFilter", Filter.LAYOUT);
         
-        CATEGORY_BITS = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
-        MASK_BITS = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
-        GROUP_INDEX = LAYOUT.varHandle(PathElement.groupElement("groupIndex"));
+        CATEGORY_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
+        MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
+        GROUP_INDEX_HANDLE = LAYOUT.varHandle(PathElement.groupElement("groupIndex"));
         
-        CATEGORY_BITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
-        MASK_BITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
-        GROUP_INDEX_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("groupIndex"));
+        CATEGORY_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
+        MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
+        GROUP_INDEX_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("groupIndex"));
         //@formatter:on
     }
 
@@ -94,30 +94,30 @@ public final class Filter
     }
     
     public Filter categoryBits(long categoryBits) {
-        CATEGORY_BITS.set(segment, 0L, categoryBits);
+        CATEGORY_BITS_HANDLE.set(segment, 0L, categoryBits);
         return this;
     }
     
     public long categoryBits() {
-        return (long) CATEGORY_BITS.get(segment, 0L);
+        return (long) CATEGORY_BITS_HANDLE.get(segment, 0L);
     }
     
     public Filter maskBits(long maskBits) {
-        MASK_BITS.set(segment, 0L, maskBits);
+        MASK_BITS_HANDLE.set(segment, 0L, maskBits);
         return this;
     }
     
     public long maskBits() {
-        return (long) MASK_BITS.get(segment, 0L);
+        return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
     public Filter groupIndex(int groupIndex) {
-        GROUP_INDEX.set(segment, 0L, groupIndex);
+        GROUP_INDEX_HANDLE.set(segment, 0L, groupIndex);
         return this;
     }
     
     public int groupIndex() {
-        return (int) GROUP_INDEX.get(segment, 0L);
+        return (int) GROUP_INDEX_HANDLE.get(segment, 0L);
     }
     
     @Override

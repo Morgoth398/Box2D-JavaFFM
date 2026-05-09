@@ -23,16 +23,16 @@ public final class SimplexVertex
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle A;
-    public static final VarHandle INDEX_A;
-    public static final VarHandle INDEX_B;
+    public static final VarHandle A_HANDLE;
+    public static final VarHandle INDEX_A_HANDLE;
+    public static final VarHandle INDEX_B_HANDLE;
 
-    public static final long W_A_OFFSET;
-    public static final long W_B_OFFSET;
-    public static final long W_OFFSET;
-    public static final long A_OFFSET;
-    public static final long INDEX_A_OFFSET;
-    public static final long INDEX_B_OFFSET;
+    public static final long W_A_BYTE_OFFSET;
+    public static final long W_B_BYTE_OFFSET;
+    public static final long W_BYTE_OFFSET;
+    public static final long A_BYTE_OFFSET;
+    public static final long INDEX_A_BYTE_OFFSET;
+    public static final long INDEX_B_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -51,16 +51,16 @@ public final class SimplexVertex
             JAVA_INT.withName("indexB")
         ).withName("b2SimplexVertex").withByteAlignment(4);
         
-        A = LAYOUT.varHandle(PathElement.groupElement("a"));
-        INDEX_A = LAYOUT.varHandle(PathElement.groupElement("indexA"));
-        INDEX_B = LAYOUT.varHandle(PathElement.groupElement("indexB"));
+        A_HANDLE = LAYOUT.varHandle(PathElement.groupElement("a"));
+        INDEX_A_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexA"));
+        INDEX_B_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexB"));
         
-        W_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("wA"));
-        W_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("wB"));
-        W_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("w"));
-        A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("a"));
-        INDEX_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexA"));
-        INDEX_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexB"));
+        W_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("wA"));
+        W_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("wB"));
+        W_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("w"));
+        A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("a"));
+        INDEX_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexA"));
+        INDEX_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexB"));
         //@formatter:on
     }
 
@@ -75,36 +75,36 @@ public final class SimplexVertex
     public SimplexVertex(MemorySegment segment) {
         this.segment = segment;
     
-        wA = new Vec2(segment.asSlice(W_A_OFFSET, Vec2.LAYOUT));
-        wB = new Vec2(segment.asSlice(W_B_OFFSET, Vec2.LAYOUT));
-        w = new Vec2(segment.asSlice(W_OFFSET, Vec2.LAYOUT));
+        wA = new Vec2(segment.asSlice(W_A_BYTE_OFFSET, Vec2.LAYOUT));
+        wB = new Vec2(segment.asSlice(W_B_BYTE_OFFSET, Vec2.LAYOUT));
+        w = new Vec2(segment.asSlice(W_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public SimplexVertex a(float a) {
-        A.set(segment, 0L, a);
+        A_HANDLE.set(segment, 0L, a);
         return this;
     }
     
     public float a() {
-        return (float) A.get(segment, 0L);
+        return (float) A_HANDLE.get(segment, 0L);
     }
     
     public SimplexVertex indexA(int indexA) {
-        INDEX_A.set(segment, 0L, indexA);
+        INDEX_A_HANDLE.set(segment, 0L, indexA);
         return this;
     }
     
     public int indexA() {
-        return (int) INDEX_A.get(segment, 0L);
+        return (int) INDEX_A_HANDLE.get(segment, 0L);
     }
     
     public SimplexVertex indexB(int indexB) {
-        INDEX_B.set(segment, 0L, indexB);
+        INDEX_B_HANDLE.set(segment, 0L, indexB);
         return this;
     }
     
     public int indexB() {
-        return (int) INDEX_B.get(segment, 0L);
+        return (int) INDEX_B_HANDLE.get(segment, 0L);
     }
     
     public SimplexVertex wA(Consumer<Vec2> consumer) {

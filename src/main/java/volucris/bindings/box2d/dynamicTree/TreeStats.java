@@ -21,11 +21,11 @@ public final class TreeStats
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle NODE_VISITS;
-    public static final VarHandle LEAF_VISITS;
+    public static final VarHandle NODE_VISITS_HANDLE;
+    public static final VarHandle LEAF_VISITS_HANDLE;
 
-    public static final long NODE_VISITS_OFFSET;
-    public static final long LEAF_VISITS_OFFSET;
+    public static final long NODE_VISITS_BYTE_OFFSET;
+    public static final long LEAF_VISITS_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,11 +36,11 @@ public final class TreeStats
             JAVA_INT.withName("leafVisits")
         ).withName("b2TreeStats").withByteAlignment(4);
         
-        NODE_VISITS = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
+        NODE_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
+        LEAF_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
         
-        NODE_VISITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
+        NODE_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
+        LEAF_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
         //@formatter:on
     }
 
@@ -58,21 +58,21 @@ public final class TreeStats
     }
 
     public TreeStats nodeVisits(int nodeVisits) {
-        NODE_VISITS.set(segment, 0L, nodeVisits);
+        NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
         return this;
     }
     
     public int nodeVisits() {
-        return (int) NODE_VISITS.get(segment, 0L);
+        return (int) NODE_VISITS_HANDLE.get(segment, 0L);
     }
     
     public TreeStats leafVisits(int leafVisits) {
-        LEAF_VISITS.set(segment, 0L, leafVisits);
+        LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
         return this;
     }
     
     public int leafVisits() {
-        return (int) LEAF_VISITS.get(segment, 0L);
+        return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
     }
     
     @Override

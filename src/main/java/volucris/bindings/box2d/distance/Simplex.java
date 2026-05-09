@@ -22,12 +22,12 @@ public final class Simplex
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle COUNT;
+    public static final VarHandle COUNT_HANDLE;
 
-    public static final long V1_OFFSET;
-    public static final long V2_OFFSET;
-    public static final long V3_OFFSET;
-    public static final long COUNT_OFFSET;
+    public static final long V1_BYTE_OFFSET;
+    public static final long V2_BYTE_OFFSET;
+    public static final long V3_BYTE_OFFSET;
+    public static final long COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -44,12 +44,12 @@ public final class Simplex
             JAVA_INT.withName("count")
         ).withName("b2Simplex").withByteAlignment(4);
         
-        COUNT = LAYOUT.varHandle(PathElement.groupElement("count"));
+        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
         
-        V1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v1"));
-        V2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v2"));
-        V3_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v3"));
-        COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+        V1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v1"));
+        V2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v2"));
+        V3_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v3"));
+        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
         //@formatter:on
     }
 
@@ -64,18 +64,18 @@ public final class Simplex
     public Simplex(MemorySegment segment) {
         this.segment = segment;
     
-        v1 = new SimplexVertex(segment.asSlice(V1_OFFSET, SimplexVertex.LAYOUT));
-        v2 = new SimplexVertex(segment.asSlice(V2_OFFSET, SimplexVertex.LAYOUT));
-        v3 = new SimplexVertex(segment.asSlice(V3_OFFSET, SimplexVertex.LAYOUT));
+        v1 = new SimplexVertex(segment.asSlice(V1_BYTE_OFFSET, SimplexVertex.LAYOUT));
+        v2 = new SimplexVertex(segment.asSlice(V2_BYTE_OFFSET, SimplexVertex.LAYOUT));
+        v3 = new SimplexVertex(segment.asSlice(V3_BYTE_OFFSET, SimplexVertex.LAYOUT));
     }
 
     public Simplex count(int count) {
-        COUNT.set(segment, 0L, count);
+        COUNT_HANDLE.set(segment, 0L, count);
         return this;
     }
     
     public int count() {
-        return (int) COUNT.get(segment, 0L);
+        return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
     public Simplex v1(Consumer<SimplexVertex> consumer) {

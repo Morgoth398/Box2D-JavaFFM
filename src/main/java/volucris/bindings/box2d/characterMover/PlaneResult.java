@@ -24,11 +24,11 @@ public final class PlaneResult
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle HIT;
+    public static final VarHandle HIT_HANDLE;
 
-    public static final long PLANE_OFFSET;
-    public static final long POINT_OFFSET;
-    public static final long HIT_OFFSET;
+    public static final long PLANE_BYTE_OFFSET;
+    public static final long POINT_BYTE_OFFSET;
+    public static final long HIT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -44,11 +44,11 @@ public final class PlaneResult
             MemoryLayout.paddingLayout(3)
         ).withName("b2PlaneResult").withByteAlignment(4);
         
-        HIT = LAYOUT.varHandle(PathElement.groupElement("hit"));
+        HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
         
-        PLANE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
-        POINT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        HIT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
+        PLANE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
+        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+        HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
         //@formatter:on
     }
 
@@ -63,17 +63,17 @@ public final class PlaneResult
     public PlaneResult(MemorySegment segment) {
         this.segment = segment;
     
-        plane = new Plane(segment.asSlice(PLANE_OFFSET, Plane.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_OFFSET, Vec2.LAYOUT));
+        plane = new Plane(segment.asSlice(PLANE_BYTE_OFFSET, Plane.LAYOUT));
+        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public PlaneResult hit(boolean hit) {
-        HIT.set(segment, 0L, hit);
+        HIT_HANDLE.set(segment, 0L, hit);
         return this;
     }
     
     public boolean hit() {
-        return (boolean) HIT.get(segment, 0L);
+        return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
     public PlaneResult plane(Consumer<Plane> consumer) {

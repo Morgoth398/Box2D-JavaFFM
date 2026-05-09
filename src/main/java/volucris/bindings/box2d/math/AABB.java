@@ -21,8 +21,8 @@ public final class AABB
 
     public static final StructLayout LAYOUT;
 
-    public static final long LOWER_BOUND_OFFSET;
-    public static final long UPPER_BOUND_OFFSET;
+    public static final long LOWER_BOUND_BYTE_OFFSET;
+    public static final long UPPER_BOUND_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,8 +36,8 @@ public final class AABB
             Vec2.LAYOUT.withName("upperBound")
         ).withName("b2AABB").withByteAlignment(4);
         
-        LOWER_BOUND_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("lowerBound"));
-        UPPER_BOUND_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("upperBound"));
+        LOWER_BOUND_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("lowerBound"));
+        UPPER_BOUND_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("upperBound"));
         //@formatter:on
     }
 
@@ -52,8 +52,8 @@ public final class AABB
     public AABB(MemorySegment segment) {
         this.segment = segment;
     
-        lowerBound = new Vec2(segment.asSlice(LOWER_BOUND_OFFSET, Vec2.LAYOUT));
-        upperBound = new Vec2(segment.asSlice(UPPER_BOUND_OFFSET, Vec2.LAYOUT));
+        lowerBound = new Vec2(segment.asSlice(LOWER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
+        upperBound = new Vec2(segment.asSlice(UPPER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public AABB lowerBound(Consumer<Vec2> consumer) {

@@ -23,11 +23,11 @@ public final class BodyEvents
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MOVE_EVENTS;
-    public static final VarHandle MOVE_COUNT;
+    public static final VarHandle MOVE_EVENTS_HANDLE;
+    public static final VarHandle MOVE_COUNT_HANDLE;
 
-    public static final long MOVE_EVENTS_OFFSET;
-    public static final long MOVE_COUNT_OFFSET;
+    public static final long MOVE_EVENTS_BYTE_OFFSET;
+    public static final long MOVE_COUNT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -39,11 +39,11 @@ public final class BodyEvents
             MemoryLayout.paddingLayout(4)
         ).withName("b2BodyEvents").withByteAlignment(8);
         
-        MOVE_EVENTS = LAYOUT.varHandle(PathElement.groupElement("moveEvents"));
-        MOVE_COUNT = LAYOUT.varHandle(PathElement.groupElement("moveCount"));
+        MOVE_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("moveEvents"));
+        MOVE_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("moveCount"));
         
-        MOVE_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveEvents"));
-        MOVE_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveCount"));
+        MOVE_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveEvents"));
+        MOVE_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveCount"));
         //@formatter:on
     }
 
@@ -61,12 +61,12 @@ public final class BodyEvents
     }
 
     public BodyEvents moveEvents(BodyMoveEvent moveEvents) {
-        MOVE_EVENTS.set(segment, 0L, moveEvents.memorySegment());
+        MOVE_EVENTS_HANDLE.set(segment, 0L, moveEvents.memorySegment());
         return this;
     }
     
     public @Nullable BodyMoveEvent moveEvents() {
-        MemorySegment segment = (MemorySegment) MOVE_EVENTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) MOVE_EVENTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -75,12 +75,12 @@ public final class BodyEvents
     }
     
     public BodyEvents moveCount(int moveCount) {
-        MOVE_COUNT.set(segment, 0L, moveCount);
+        MOVE_COUNT_HANDLE.set(segment, 0L, moveCount);
         return this;
     }
     
     public int moveCount() {
-        return (int) MOVE_COUNT.get(segment, 0L);
+        return (int) MOVE_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override

@@ -29,24 +29,24 @@ public final class ChainDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle USER_DATA;
-    public static final VarHandle POINTS;
-    public static final VarHandle COUNT;
-    public static final VarHandle MATERIALS;
-    public static final VarHandle MATERIAL_COUNT;
-    public static final VarHandle IS_LOOP;
-    public static final VarHandle ENABLE_SENSOR_EVENTS;
-    public static final VarHandle INTERNAL_VALUE;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle POINTS_HANDLE;
+    public static final VarHandle COUNT_HANDLE;
+    public static final VarHandle MATERIALS_HANDLE;
+    public static final VarHandle MATERIAL_COUNT_HANDLE;
+    public static final VarHandle IS_LOOP_HANDLE;
+    public static final VarHandle ENABLE_SENSOR_EVENTS_HANDLE;
+    public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long USER_DATA_OFFSET;
-    public static final long POINTS_OFFSET;
-    public static final long COUNT_OFFSET;
-    public static final long MATERIALS_OFFSET;
-    public static final long MATERIAL_COUNT_OFFSET;
-    public static final long FILTER_OFFSET;
-    public static final long IS_LOOP_OFFSET;
-    public static final long ENABLE_SENSOR_EVENTS_OFFSET;
-    public static final long INTERNAL_VALUE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long POINTS_BYTE_OFFSET;
+    public static final long COUNT_BYTE_OFFSET;
+    public static final long MATERIALS_BYTE_OFFSET;
+    public static final long MATERIAL_COUNT_BYTE_OFFSET;
+    public static final long FILTER_BYTE_OFFSET;
+    public static final long IS_LOOP_BYTE_OFFSET;
+    public static final long ENABLE_SENSOR_EVENTS_BYTE_OFFSET;
+    public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -71,31 +71,31 @@ public final class ChainDef
         
         B2_DEFAULT_CHAIN_DEF = downcallHandle("b2DefaultChainDef", ChainDef.LAYOUT);
         
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        POINTS = LAYOUT.varHandle(PathElement.groupElement("points"));
-        COUNT = LAYOUT.varHandle(PathElement.groupElement("count"));
-        MATERIALS = LAYOUT.varHandle(PathElement.groupElement("materials"));
-        MATERIAL_COUNT = LAYOUT.varHandle(PathElement.groupElement("materialCount"));
-        IS_LOOP = LAYOUT.varHandle(PathElement.groupElement("isLoop"));
-        ENABLE_SENSOR_EVENTS = LAYOUT.varHandle(PathElement.groupElement("enableSensorEvents"));
-        INTERNAL_VALUE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        POINTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("points"));
+        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
+        MATERIALS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("materials"));
+        MATERIAL_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("materialCount"));
+        IS_LOOP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isLoop"));
+        ENABLE_SENSOR_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableSensorEvents"));
+        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
         
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        POINTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
-        COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
-        MATERIALS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("materials"));
-        MATERIAL_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("materialCount"));
-        FILTER_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("filter"));
-        IS_LOOP_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isLoop"));
-        ENABLE_SENSOR_EVENTS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSensorEvents"));
-        INTERNAL_VALUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        POINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
+        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+        MATERIALS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("materials"));
+        MATERIAL_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("materialCount"));
+        FILTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("filter"));
+        IS_LOOP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isLoop"));
+        ENABLE_SENSOR_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSensorEvents"));
+        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
         //@formatter:on
     }
 
     public ChainDef(MemorySegment segment) {
         this.segment = segment;
     
-        filter = new Filter(segment.asSlice(FILTER_OFFSET, Filter.LAYOUT));
+        filter = new Filter(segment.asSlice(FILTER_BYTE_OFFSET, Filter.LAYOUT));
     }
 
     /**
@@ -129,12 +129,12 @@ public final class ChainDef
     }
     
     public ChainDef userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -143,12 +143,12 @@ public final class ChainDef
     }
     
     public ChainDef points(Vec2 points) {
-        POINTS.set(segment, 0L, points.memorySegment());
+        POINTS_HANDLE.set(segment, 0L, points.memorySegment());
         return this;
     }
     
     public @Nullable Vec2 points() {
-        MemorySegment segment = (MemorySegment) POINTS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) POINTS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -157,21 +157,21 @@ public final class ChainDef
     }
     
     public ChainDef count(int count) {
-        COUNT.set(segment, 0L, count);
+        COUNT_HANDLE.set(segment, 0L, count);
         return this;
     }
     
     public int count() {
-        return (int) COUNT.get(segment, 0L);
+        return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
     public ChainDef materials(SurfaceMaterial materials) {
-        MATERIALS.set(segment, 0L, materials.memorySegment());
+        MATERIALS_HANDLE.set(segment, 0L, materials.memorySegment());
         return this;
     }
     
     public @Nullable SurfaceMaterial materials() {
-        MemorySegment segment = (MemorySegment) MATERIALS.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) MATERIALS_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -180,39 +180,39 @@ public final class ChainDef
     }
     
     public ChainDef materialCount(int materialCount) {
-        MATERIAL_COUNT.set(segment, 0L, materialCount);
+        MATERIAL_COUNT_HANDLE.set(segment, 0L, materialCount);
         return this;
     }
     
     public int materialCount() {
-        return (int) MATERIAL_COUNT.get(segment, 0L);
+        return (int) MATERIAL_COUNT_HANDLE.get(segment, 0L);
     }
     
     public ChainDef isLoop(boolean isLoop) {
-        IS_LOOP.set(segment, 0L, isLoop);
+        IS_LOOP_HANDLE.set(segment, 0L, isLoop);
         return this;
     }
     
     public boolean isLoop() {
-        return (boolean) IS_LOOP.get(segment, 0L);
+        return (boolean) IS_LOOP_HANDLE.get(segment, 0L);
     }
     
     public ChainDef enableSensorEvents(boolean enableSensorEvents) {
-        ENABLE_SENSOR_EVENTS.set(segment, 0L, enableSensorEvents);
+        ENABLE_SENSOR_EVENTS_HANDLE.set(segment, 0L, enableSensorEvents);
         return this;
     }
     
     public boolean enableSensorEvents() {
-        return (boolean) ENABLE_SENSOR_EVENTS.get(segment, 0L);
+        return (boolean) ENABLE_SENSOR_EVENTS_HANDLE.get(segment, 0L);
     }
     
     public ChainDef internalValue(int internalValue) {
-        INTERNAL_VALUE.set(segment, 0L, internalValue);
+        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
         return this;
     }
     
     public int internalValue() {
-        return (int) INTERNAL_VALUE.get(segment, 0L);
+        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     public ChainDef filter(Consumer<Filter> consumer) {

@@ -23,15 +23,15 @@ public final class SegmentDistanceResult
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRACTION1;
-    public static final VarHandle FRACTION2;
-    public static final VarHandle DISTANCE_SQUARED;
+    public static final VarHandle FRACTION1_HANDLE;
+    public static final VarHandle FRACTION2_HANDLE;
+    public static final VarHandle DISTANCE_SQUARED_HANDLE;
 
-    public static final long CLOSEST1_OFFSET;
-    public static final long CLOSEST2_OFFSET;
-    public static final long FRACTION1_OFFSET;
-    public static final long FRACTION2_OFFSET;
-    public static final long DISTANCE_SQUARED_OFFSET;
+    public static final long CLOSEST1_BYTE_OFFSET;
+    public static final long CLOSEST2_BYTE_OFFSET;
+    public static final long FRACTION1_BYTE_OFFSET;
+    public static final long FRACTION2_BYTE_OFFSET;
+    public static final long DISTANCE_SQUARED_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -48,15 +48,15 @@ public final class SegmentDistanceResult
             JAVA_FLOAT.withName("distanceSquared")
         ).withName("b2SegmentDistanceResult").withByteAlignment(4);
         
-        FRACTION1 = LAYOUT.varHandle(PathElement.groupElement("fraction1"));
-        FRACTION2 = LAYOUT.varHandle(PathElement.groupElement("fraction2"));
-        DISTANCE_SQUARED = LAYOUT.varHandle(PathElement.groupElement("distanceSquared"));
+        FRACTION1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction1"));
+        FRACTION2_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction2"));
+        DISTANCE_SQUARED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("distanceSquared"));
         
-        CLOSEST1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest1"));
-        CLOSEST2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest2"));
-        FRACTION1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction1"));
-        FRACTION2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction2"));
-        DISTANCE_SQUARED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distanceSquared"));
+        CLOSEST1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest1"));
+        CLOSEST2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest2"));
+        FRACTION1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction1"));
+        FRACTION2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction2"));
+        DISTANCE_SQUARED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distanceSquared"));
         //@formatter:on
     }
 
@@ -71,35 +71,35 @@ public final class SegmentDistanceResult
     public SegmentDistanceResult(MemorySegment segment) {
         this.segment = segment;
     
-        closest1 = new Vec2(segment.asSlice(CLOSEST1_OFFSET, Vec2.LAYOUT));
-        closest2 = new Vec2(segment.asSlice(CLOSEST2_OFFSET, Vec2.LAYOUT));
+        closest1 = new Vec2(segment.asSlice(CLOSEST1_BYTE_OFFSET, Vec2.LAYOUT));
+        closest2 = new Vec2(segment.asSlice(CLOSEST2_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public SegmentDistanceResult fraction1(float fraction1) {
-        FRACTION1.set(segment, 0L, fraction1);
+        FRACTION1_HANDLE.set(segment, 0L, fraction1);
         return this;
     }
     
     public float fraction1() {
-        return (float) FRACTION1.get(segment, 0L);
+        return (float) FRACTION1_HANDLE.get(segment, 0L);
     }
     
     public SegmentDistanceResult fraction2(float fraction2) {
-        FRACTION2.set(segment, 0L, fraction2);
+        FRACTION2_HANDLE.set(segment, 0L, fraction2);
         return this;
     }
     
     public float fraction2() {
-        return (float) FRACTION2.get(segment, 0L);
+        return (float) FRACTION2_HANDLE.get(segment, 0L);
     }
     
     public SegmentDistanceResult distanceSquared(float distanceSquared) {
-        DISTANCE_SQUARED.set(segment, 0L, distanceSquared);
+        DISTANCE_SQUARED_HANDLE.set(segment, 0L, distanceSquared);
         return this;
     }
     
     public float distanceSquared() {
-        return (float) DISTANCE_SQUARED.get(segment, 0L);
+        return (float) DISTANCE_SQUARED_HANDLE.get(segment, 0L);
     }
     
     public SegmentDistanceResult closest1(Consumer<Vec2> consumer) {

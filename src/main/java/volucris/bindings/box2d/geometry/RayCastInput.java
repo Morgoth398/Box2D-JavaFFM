@@ -27,11 +27,11 @@ public final class RayCastInput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAX_FRACTION;
+    public static final VarHandle MAX_FRACTION_HANDLE;
 
-    public static final long ORIGIN_OFFSET;
-    public static final long TRANSLATION_OFFSET;
-    public static final long MAX_FRACTION_OFFSET;
+    public static final long ORIGIN_BYTE_OFFSET;
+    public static final long TRANSLATION_BYTE_OFFSET;
+    public static final long MAX_FRACTION_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -48,11 +48,11 @@ public final class RayCastInput
         
         B2_IS_VALID_RAY = downcallHandle("b2IsValidRay", JAVA_BOOLEAN, UNBOUNDED_ADDRESS);
         
-        MAX_FRACTION = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+        MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
         
-        ORIGIN_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("origin"));
-        TRANSLATION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
-        MAX_FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+        ORIGIN_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("origin"));
+        TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
+        MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
         //@formatter:on
     }
 
@@ -67,8 +67,8 @@ public final class RayCastInput
     public RayCastInput(MemorySegment segment) {
         this.segment = segment;
     
-        origin = new Vec2(segment.asSlice(ORIGIN_OFFSET, Vec2.LAYOUT));
-        translation = new Vec2(segment.asSlice(TRANSLATION_OFFSET, Vec2.LAYOUT));
+        origin = new Vec2(segment.asSlice(ORIGIN_BYTE_OFFSET, Vec2.LAYOUT));
+        translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -98,12 +98,12 @@ public final class RayCastInput
     }
     
     public RayCastInput maxFraction(float maxFraction) {
-        MAX_FRACTION.set(segment, 0L, maxFraction);
+        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
         return this;
     }
     
     public float maxFraction() {
-        return (float) MAX_FRACTION.get(segment, 0L);
+        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
     public RayCastInput origin(Consumer<Vec2> consumer) {

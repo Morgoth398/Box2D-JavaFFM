@@ -23,14 +23,14 @@ public final class CollisionPlane
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle PUSH_LIMIT;
-    public static final VarHandle PUSH;
-    public static final VarHandle CLIP_VELOCITY;
+    public static final VarHandle PUSH_LIMIT_HANDLE;
+    public static final VarHandle PUSH_HANDLE;
+    public static final VarHandle CLIP_VELOCITY_HANDLE;
 
-    public static final long PLANE_OFFSET;
-    public static final long PUSH_LIMIT_OFFSET;
-    public static final long PUSH_OFFSET;
-    public static final long CLIP_VELOCITY_OFFSET;
+    public static final long PLANE_BYTE_OFFSET;
+    public static final long PUSH_LIMIT_BYTE_OFFSET;
+    public static final long PUSH_BYTE_OFFSET;
+    public static final long CLIP_VELOCITY_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -46,14 +46,14 @@ public final class CollisionPlane
             MemoryLayout.paddingLayout(3)
         ).withName("b2CollisionPlane").withByteAlignment(4);
         
-        PUSH_LIMIT = LAYOUT.varHandle(PathElement.groupElement("pushLimit"));
-        PUSH = LAYOUT.varHandle(PathElement.groupElement("push"));
-        CLIP_VELOCITY = LAYOUT.varHandle(PathElement.groupElement("clipVelocity"));
+        PUSH_LIMIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pushLimit"));
+        PUSH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("push"));
+        CLIP_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("clipVelocity"));
         
-        PLANE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
-        PUSH_LIMIT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pushLimit"));
-        PUSH_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("push"));
-        CLIP_VELOCITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("clipVelocity"));
+        PLANE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
+        PUSH_LIMIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pushLimit"));
+        PUSH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("push"));
+        CLIP_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("clipVelocity"));
         //@formatter:on
     }
 
@@ -68,34 +68,34 @@ public final class CollisionPlane
     public CollisionPlane(MemorySegment segment) {
         this.segment = segment;
     
-        plane = new Plane(segment.asSlice(PLANE_OFFSET, Plane.LAYOUT));
+        plane = new Plane(segment.asSlice(PLANE_BYTE_OFFSET, Plane.LAYOUT));
     }
 
     public CollisionPlane pushLimit(float pushLimit) {
-        PUSH_LIMIT.set(segment, 0L, pushLimit);
+        PUSH_LIMIT_HANDLE.set(segment, 0L, pushLimit);
         return this;
     }
     
     public float pushLimit() {
-        return (float) PUSH_LIMIT.get(segment, 0L);
+        return (float) PUSH_LIMIT_HANDLE.get(segment, 0L);
     }
     
     public CollisionPlane push(float push) {
-        PUSH.set(segment, 0L, push);
+        PUSH_HANDLE.set(segment, 0L, push);
         return this;
     }
     
     public float push() {
-        return (float) PUSH.get(segment, 0L);
+        return (float) PUSH_HANDLE.get(segment, 0L);
     }
     
     public CollisionPlane clipVelocity(boolean clipVelocity) {
-        CLIP_VELOCITY.set(segment, 0L, clipVelocity);
+        CLIP_VELOCITY_HANDLE.set(segment, 0L, clipVelocity);
         return this;
     }
     
     public boolean clipVelocity() {
-        return (boolean) CLIP_VELOCITY.get(segment, 0L);
+        return (boolean) CLIP_VELOCITY_HANDLE.get(segment, 0L);
     }
     
     public CollisionPlane plane(Consumer<Plane> consumer) {

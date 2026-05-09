@@ -23,13 +23,13 @@ public final class TOIInput
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAX_FRACTION;
+    public static final VarHandle MAX_FRACTION_HANDLE;
 
-    public static final long PROXY_A_OFFSET;
-    public static final long PROXY_B_OFFSET;
-    public static final long SWEEP_A_OFFSET;
-    public static final long SWEEP_B_OFFSET;
-    public static final long MAX_FRACTION_OFFSET;
+    public static final long PROXY_A_BYTE_OFFSET;
+    public static final long PROXY_B_BYTE_OFFSET;
+    public static final long SWEEP_A_BYTE_OFFSET;
+    public static final long SWEEP_B_BYTE_OFFSET;
+    public static final long MAX_FRACTION_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -48,13 +48,13 @@ public final class TOIInput
             JAVA_FLOAT.withName("maxFraction")
         ).withName("b2TOIInput").withByteAlignment(4);
         
-        MAX_FRACTION = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+        MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
         
-        PROXY_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
-        PROXY_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
-        SWEEP_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sweepA"));
-        SWEEP_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sweepB"));
-        MAX_FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+        PROXY_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
+        PROXY_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
+        SWEEP_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sweepA"));
+        SWEEP_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sweepB"));
+        MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
         //@formatter:on
     }
 
@@ -69,19 +69,19 @@ public final class TOIInput
     public TOIInput(MemorySegment segment) {
         this.segment = segment;
     
-        proxyA = new ShapeProxy(segment.asSlice(PROXY_A_OFFSET, ShapeProxy.LAYOUT));
-        proxyB = new ShapeProxy(segment.asSlice(PROXY_B_OFFSET, ShapeProxy.LAYOUT));
-        sweepA = new Sweep(segment.asSlice(SWEEP_A_OFFSET, Sweep.LAYOUT));
-        sweepB = new Sweep(segment.asSlice(SWEEP_B_OFFSET, Sweep.LAYOUT));
+        proxyA = new ShapeProxy(segment.asSlice(PROXY_A_BYTE_OFFSET, ShapeProxy.LAYOUT));
+        proxyB = new ShapeProxy(segment.asSlice(PROXY_B_BYTE_OFFSET, ShapeProxy.LAYOUT));
+        sweepA = new Sweep(segment.asSlice(SWEEP_A_BYTE_OFFSET, Sweep.LAYOUT));
+        sweepB = new Sweep(segment.asSlice(SWEEP_B_BYTE_OFFSET, Sweep.LAYOUT));
     }
 
     public TOIInput maxFraction(float maxFraction) {
-        MAX_FRACTION.set(segment, 0L, maxFraction);
+        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
         return this;
     }
     
     public float maxFraction() {
-        return (float) MAX_FRACTION.get(segment, 0L);
+        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
     public TOIInput proxyA(Consumer<ShapeProxy> consumer) {

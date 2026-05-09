@@ -24,18 +24,18 @@ public final class RayResult
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRACTION;
-    public static final VarHandle NODE_VISITS;
-    public static final VarHandle LEAF_VISITS;
-    public static final VarHandle HIT;
+    public static final VarHandle FRACTION_HANDLE;
+    public static final VarHandle NODE_VISITS_HANDLE;
+    public static final VarHandle LEAF_VISITS_HANDLE;
+    public static final VarHandle HIT_HANDLE;
 
-    public static final long SHAPE_ID_OFFSET;
-    public static final long POINT_OFFSET;
-    public static final long NORMAL_OFFSET;
-    public static final long FRACTION_OFFSET;
-    public static final long NODE_VISITS_OFFSET;
-    public static final long LEAF_VISITS_OFFSET;
-    public static final long HIT_OFFSET;
+    public static final long SHAPE_ID_BYTE_OFFSET;
+    public static final long POINT_BYTE_OFFSET;
+    public static final long NORMAL_BYTE_OFFSET;
+    public static final long FRACTION_BYTE_OFFSET;
+    public static final long NODE_VISITS_BYTE_OFFSET;
+    public static final long LEAF_VISITS_BYTE_OFFSET;
+    public static final long HIT_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -56,18 +56,18 @@ public final class RayResult
             MemoryLayout.paddingLayout(3)
         ).withName("b2RayResult").withByteAlignment(4);
         
-        FRACTION = LAYOUT.varHandle(PathElement.groupElement("fraction"));
-        NODE_VISITS = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
-        HIT = LAYOUT.varHandle(PathElement.groupElement("hit"));
+        FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
+        NODE_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
+        LEAF_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
+        HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
         
-        SHAPE_ID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeId"));
-        POINT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        NORMAL_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        FRACTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
-        NODE_VISITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
-        HIT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
+        SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeId"));
+        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+        FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
+        NODE_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
+        LEAF_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
+        HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
         //@formatter:on
     }
 
@@ -82,45 +82,45 @@ public final class RayResult
     public RayResult(MemorySegment segment) {
         this.segment = segment;
     
-        shapeId = new ShapeId(segment.asSlice(SHAPE_ID_OFFSET, ShapeId.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_OFFSET, Vec2.LAYOUT));
-        normal = new Vec2(segment.asSlice(NORMAL_OFFSET, Vec2.LAYOUT));
+        shapeId = new ShapeId(segment.asSlice(SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
+        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public RayResult fraction(float fraction) {
-        FRACTION.set(segment, 0L, fraction);
+        FRACTION_HANDLE.set(segment, 0L, fraction);
         return this;
     }
     
     public float fraction() {
-        return (float) FRACTION.get(segment, 0L);
+        return (float) FRACTION_HANDLE.get(segment, 0L);
     }
     
     public RayResult nodeVisits(int nodeVisits) {
-        NODE_VISITS.set(segment, 0L, nodeVisits);
+        NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
         return this;
     }
     
     public int nodeVisits() {
-        return (int) NODE_VISITS.get(segment, 0L);
+        return (int) NODE_VISITS_HANDLE.get(segment, 0L);
     }
     
     public RayResult leafVisits(int leafVisits) {
-        LEAF_VISITS.set(segment, 0L, leafVisits);
+        LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
         return this;
     }
     
     public int leafVisits() {
-        return (int) LEAF_VISITS.get(segment, 0L);
+        return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
     }
     
     public RayResult hit(boolean hit) {
-        HIT.set(segment, 0L, hit);
+        HIT_HANDLE.set(segment, 0L, hit);
         return this;
     }
     
     public boolean hit() {
-        return (boolean) HIT.get(segment, 0L);
+        return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
     public RayResult shapeId(Consumer<ShapeId> consumer) {

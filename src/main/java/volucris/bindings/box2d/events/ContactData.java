@@ -23,9 +23,9 @@ public final class ContactData
 
     public static final StructLayout LAYOUT;
 
-    public static final long SHAPE_ID_A_OFFSET;
-    public static final long SHAPE_ID_B_OFFSET;
-    public static final long MANIFOLD_OFFSET;
+    public static final long SHAPE_ID_A_BYTE_OFFSET;
+    public static final long SHAPE_ID_B_BYTE_OFFSET;
+    public static final long MANIFOLD_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -41,9 +41,9 @@ public final class ContactData
             Manifold.LAYOUT.withName("manifold")
         ).withName("b2ContactData").withByteAlignment(4);
         
-        SHAPE_ID_A_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
-        SHAPE_ID_B_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
-        MANIFOLD_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("manifold"));
+        SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
+        SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
+        MANIFOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("manifold"));
         //@formatter:on
     }
 
@@ -58,9 +58,9 @@ public final class ContactData
     public ContactData(MemorySegment segment) {
         this.segment = segment;
     
-        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_OFFSET, ShapeId.LAYOUT));
-        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_OFFSET, ShapeId.LAYOUT));
-        manifold = new Manifold(segment.asSlice(MANIFOLD_OFFSET, Manifold.LAYOUT));
+        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
+        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
+        manifold = new Manifold(segment.asSlice(MANIFOLD_BYTE_OFFSET, Manifold.LAYOUT));
     }
 
     public ContactData shapeIdA(Consumer<ShapeId> consumer) {

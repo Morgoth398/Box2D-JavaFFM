@@ -29,40 +29,40 @@ public final class WorldDef
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle RESTITUTION_THRESHOLD;
-    public static final VarHandle HIT_EVENT_THRESHOLD;
-    public static final VarHandle CONTACT_HERTZ;
-    public static final VarHandle CONTACT_DAMPING_RATIO;
-    public static final VarHandle MAX_CONTACT_PUSH_SPEED;
-    public static final VarHandle MAXIMUM_LINEAR_SPEED;
-    public static final VarHandle FRICTION_CALLBACK;
-    public static final VarHandle RESTITUTION_CALLBACK;
-    public static final VarHandle ENABLE_SLEEP;
-    public static final VarHandle ENABLE_CONTINUOUS;
-    public static final VarHandle WORKER_COUNT;
-    public static final VarHandle ENQUEUE_TASK;
-    public static final VarHandle FINISH_TASK;
-    public static final VarHandle USER_TASK_CONTEXT;
-    public static final VarHandle USER_DATA;
-    public static final VarHandle INTERNAL_VALUE;
+    public static final VarHandle RESTITUTION_THRESHOLD_HANDLE;
+    public static final VarHandle HIT_EVENT_THRESHOLD_HANDLE;
+    public static final VarHandle CONTACT_HERTZ_HANDLE;
+    public static final VarHandle CONTACT_DAMPING_RATIO_HANDLE;
+    public static final VarHandle MAX_CONTACT_PUSH_SPEED_HANDLE;
+    public static final VarHandle MAXIMUM_LINEAR_SPEED_HANDLE;
+    public static final VarHandle FRICTION_CALLBACK_HANDLE;
+    public static final VarHandle RESTITUTION_CALLBACK_HANDLE;
+    public static final VarHandle ENABLE_SLEEP_HANDLE;
+    public static final VarHandle ENABLE_CONTINUOUS_HANDLE;
+    public static final VarHandle WORKER_COUNT_HANDLE;
+    public static final VarHandle ENQUEUE_TASK_HANDLE;
+    public static final VarHandle FINISH_TASK_HANDLE;
+    public static final VarHandle USER_TASK_CONTEXT_HANDLE;
+    public static final VarHandle USER_DATA_HANDLE;
+    public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long GRAVITY_OFFSET;
-    public static final long RESTITUTION_THRESHOLD_OFFSET;
-    public static final long HIT_EVENT_THRESHOLD_OFFSET;
-    public static final long CONTACT_HERTZ_OFFSET;
-    public static final long CONTACT_DAMPING_RATIO_OFFSET;
-    public static final long MAX_CONTACT_PUSH_SPEED_OFFSET;
-    public static final long MAXIMUM_LINEAR_SPEED_OFFSET;
-    public static final long FRICTION_CALLBACK_OFFSET;
-    public static final long RESTITUTION_CALLBACK_OFFSET;
-    public static final long ENABLE_SLEEP_OFFSET;
-    public static final long ENABLE_CONTINUOUS_OFFSET;
-    public static final long WORKER_COUNT_OFFSET;
-    public static final long ENQUEUE_TASK_OFFSET;
-    public static final long FINISH_TASK_OFFSET;
-    public static final long USER_TASK_CONTEXT_OFFSET;
-    public static final long USER_DATA_OFFSET;
-    public static final long INTERNAL_VALUE_OFFSET;
+    public static final long GRAVITY_BYTE_OFFSET;
+    public static final long RESTITUTION_THRESHOLD_BYTE_OFFSET;
+    public static final long HIT_EVENT_THRESHOLD_BYTE_OFFSET;
+    public static final long CONTACT_HERTZ_BYTE_OFFSET;
+    public static final long CONTACT_DAMPING_RATIO_BYTE_OFFSET;
+    public static final long MAX_CONTACT_PUSH_SPEED_BYTE_OFFSET;
+    public static final long MAXIMUM_LINEAR_SPEED_BYTE_OFFSET;
+    public static final long FRICTION_CALLBACK_BYTE_OFFSET;
+    public static final long RESTITUTION_CALLBACK_BYTE_OFFSET;
+    public static final long ENABLE_SLEEP_BYTE_OFFSET;
+    public static final long ENABLE_CONTINUOUS_BYTE_OFFSET;
+    public static final long WORKER_COUNT_BYTE_OFFSET;
+    public static final long ENQUEUE_TASK_BYTE_OFFSET;
+    public static final long FINISH_TASK_BYTE_OFFSET;
+    public static final long USER_TASK_CONTEXT_BYTE_OFFSET;
+    public static final long USER_DATA_BYTE_OFFSET;
+    public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -94,47 +94,47 @@ public final class WorldDef
         
         B2_DEFAULT_WORLD_DEF = downcallHandle("b2DefaultWorldDef", WorldDef.LAYOUT);
         
-        RESTITUTION_THRESHOLD = LAYOUT.varHandle(PathElement.groupElement("restitutionThreshold"));
-        HIT_EVENT_THRESHOLD = LAYOUT.varHandle(PathElement.groupElement("hitEventThreshold"));
-        CONTACT_HERTZ = LAYOUT.varHandle(PathElement.groupElement("contactHertz"));
-        CONTACT_DAMPING_RATIO = LAYOUT.varHandle(PathElement.groupElement("contactDampingRatio"));
-        MAX_CONTACT_PUSH_SPEED = LAYOUT.varHandle(PathElement.groupElement("maxContactPushSpeed"));
-        MAXIMUM_LINEAR_SPEED = LAYOUT.varHandle(PathElement.groupElement("maximumLinearSpeed"));
-        FRICTION_CALLBACK = LAYOUT.varHandle(PathElement.groupElement("frictionCallback"));
-        RESTITUTION_CALLBACK = LAYOUT.varHandle(PathElement.groupElement("restitutionCallback"));
-        ENABLE_SLEEP = LAYOUT.varHandle(PathElement.groupElement("enableSleep"));
-        ENABLE_CONTINUOUS = LAYOUT.varHandle(PathElement.groupElement("enableContinuous"));
-        WORKER_COUNT = LAYOUT.varHandle(PathElement.groupElement("workerCount"));
-        ENQUEUE_TASK = LAYOUT.varHandle(PathElement.groupElement("enqueueTask"));
-        FINISH_TASK = LAYOUT.varHandle(PathElement.groupElement("finishTask"));
-        USER_TASK_CONTEXT = LAYOUT.varHandle(PathElement.groupElement("userTaskContext"));
-        USER_DATA = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        INTERNAL_VALUE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+        RESTITUTION_THRESHOLD_HANDLE = LAYOUT.varHandle(PathElement.groupElement("restitutionThreshold"));
+        HIT_EVENT_THRESHOLD_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hitEventThreshold"));
+        CONTACT_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("contactHertz"));
+        CONTACT_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("contactDampingRatio"));
+        MAX_CONTACT_PUSH_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxContactPushSpeed"));
+        MAXIMUM_LINEAR_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maximumLinearSpeed"));
+        FRICTION_CALLBACK_HANDLE = LAYOUT.varHandle(PathElement.groupElement("frictionCallback"));
+        RESTITUTION_CALLBACK_HANDLE = LAYOUT.varHandle(PathElement.groupElement("restitutionCallback"));
+        ENABLE_SLEEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableSleep"));
+        ENABLE_CONTINUOUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableContinuous"));
+        WORKER_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("workerCount"));
+        ENQUEUE_TASK_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enqueueTask"));
+        FINISH_TASK_HANDLE = LAYOUT.varHandle(PathElement.groupElement("finishTask"));
+        USER_TASK_CONTEXT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userTaskContext"));
+        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
         
-        GRAVITY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("gravity"));
-        RESTITUTION_THRESHOLD_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitutionThreshold"));
-        HIT_EVENT_THRESHOLD_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitEventThreshold"));
-        CONTACT_HERTZ_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactHertz"));
-        CONTACT_DAMPING_RATIO_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactDampingRatio"));
-        MAX_CONTACT_PUSH_SPEED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxContactPushSpeed"));
-        MAXIMUM_LINEAR_SPEED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maximumLinearSpeed"));
-        FRICTION_CALLBACK_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("frictionCallback"));
-        RESTITUTION_CALLBACK_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitutionCallback"));
-        ENABLE_SLEEP_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSleep"));
-        ENABLE_CONTINUOUS_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableContinuous"));
-        WORKER_COUNT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("workerCount"));
-        ENQUEUE_TASK_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enqueueTask"));
-        FINISH_TASK_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("finishTask"));
-        USER_TASK_CONTEXT_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userTaskContext"));
-        USER_DATA_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+        GRAVITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("gravity"));
+        RESTITUTION_THRESHOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitutionThreshold"));
+        HIT_EVENT_THRESHOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitEventThreshold"));
+        CONTACT_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactHertz"));
+        CONTACT_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactDampingRatio"));
+        MAX_CONTACT_PUSH_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxContactPushSpeed"));
+        MAXIMUM_LINEAR_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maximumLinearSpeed"));
+        FRICTION_CALLBACK_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("frictionCallback"));
+        RESTITUTION_CALLBACK_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitutionCallback"));
+        ENABLE_SLEEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSleep"));
+        ENABLE_CONTINUOUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableContinuous"));
+        WORKER_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("workerCount"));
+        ENQUEUE_TASK_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enqueueTask"));
+        FINISH_TASK_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("finishTask"));
+        USER_TASK_CONTEXT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userTaskContext"));
+        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
         //@formatter:on
     }
 
     public WorldDef(MemorySegment segment) {
         this.segment = segment;
     
-        gravity = new Vec2(segment.asSlice(GRAVITY_OFFSET, Vec2.LAYOUT));
+        gravity = new Vec2(segment.asSlice(GRAVITY_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     /**
@@ -168,66 +168,66 @@ public final class WorldDef
     }
     
     public WorldDef restitutionThreshold(float restitutionThreshold) {
-        RESTITUTION_THRESHOLD.set(segment, 0L, restitutionThreshold);
+        RESTITUTION_THRESHOLD_HANDLE.set(segment, 0L, restitutionThreshold);
         return this;
     }
     
     public float restitutionThreshold() {
-        return (float) RESTITUTION_THRESHOLD.get(segment, 0L);
+        return (float) RESTITUTION_THRESHOLD_HANDLE.get(segment, 0L);
     }
     
     public WorldDef hitEventThreshold(float hitEventThreshold) {
-        HIT_EVENT_THRESHOLD.set(segment, 0L, hitEventThreshold);
+        HIT_EVENT_THRESHOLD_HANDLE.set(segment, 0L, hitEventThreshold);
         return this;
     }
     
     public float hitEventThreshold() {
-        return (float) HIT_EVENT_THRESHOLD.get(segment, 0L);
+        return (float) HIT_EVENT_THRESHOLD_HANDLE.get(segment, 0L);
     }
     
     public WorldDef contactHertz(float contactHertz) {
-        CONTACT_HERTZ.set(segment, 0L, contactHertz);
+        CONTACT_HERTZ_HANDLE.set(segment, 0L, contactHertz);
         return this;
     }
     
     public float contactHertz() {
-        return (float) CONTACT_HERTZ.get(segment, 0L);
+        return (float) CONTACT_HERTZ_HANDLE.get(segment, 0L);
     }
     
     public WorldDef contactDampingRatio(float contactDampingRatio) {
-        CONTACT_DAMPING_RATIO.set(segment, 0L, contactDampingRatio);
+        CONTACT_DAMPING_RATIO_HANDLE.set(segment, 0L, contactDampingRatio);
         return this;
     }
     
     public float contactDampingRatio() {
-        return (float) CONTACT_DAMPING_RATIO.get(segment, 0L);
+        return (float) CONTACT_DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
     public WorldDef maxContactPushSpeed(float maxContactPushSpeed) {
-        MAX_CONTACT_PUSH_SPEED.set(segment, 0L, maxContactPushSpeed);
+        MAX_CONTACT_PUSH_SPEED_HANDLE.set(segment, 0L, maxContactPushSpeed);
         return this;
     }
     
     public float maxContactPushSpeed() {
-        return (float) MAX_CONTACT_PUSH_SPEED.get(segment, 0L);
+        return (float) MAX_CONTACT_PUSH_SPEED_HANDLE.get(segment, 0L);
     }
     
     public WorldDef maximumLinearSpeed(float maximumLinearSpeed) {
-        MAXIMUM_LINEAR_SPEED.set(segment, 0L, maximumLinearSpeed);
+        MAXIMUM_LINEAR_SPEED_HANDLE.set(segment, 0L, maximumLinearSpeed);
         return this;
     }
     
     public float maximumLinearSpeed() {
-        return (float) MAXIMUM_LINEAR_SPEED.get(segment, 0L);
+        return (float) MAXIMUM_LINEAR_SPEED_HANDLE.get(segment, 0L);
     }
     
     public WorldDef frictionCallback(FrictionCallback frictionCallback) {
-        FRICTION_CALLBACK.set(segment, 0L, frictionCallback.memorySegment());
+        FRICTION_CALLBACK_HANDLE.set(segment, 0L, frictionCallback.memorySegment());
         return this;
     }
     
     public @Nullable FrictionCallback frictionCallback() {
-        MemorySegment segment = (MemorySegment) FRICTION_CALLBACK.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) FRICTION_CALLBACK_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -236,12 +236,12 @@ public final class WorldDef
     }
     
     public WorldDef restitutionCallback(RestitutionCallback restitutionCallback) {
-        RESTITUTION_CALLBACK.set(segment, 0L, restitutionCallback.memorySegment());
+        RESTITUTION_CALLBACK_HANDLE.set(segment, 0L, restitutionCallback.memorySegment());
         return this;
     }
     
     public @Nullable RestitutionCallback restitutionCallback() {
-        MemorySegment segment = (MemorySegment) RESTITUTION_CALLBACK.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) RESTITUTION_CALLBACK_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -250,39 +250,39 @@ public final class WorldDef
     }
     
     public WorldDef enableSleep(boolean enableSleep) {
-        ENABLE_SLEEP.set(segment, 0L, enableSleep);
+        ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
         return this;
     }
     
     public boolean enableSleep() {
-        return (boolean) ENABLE_SLEEP.get(segment, 0L);
+        return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
     }
     
     public WorldDef enableContinuous(boolean enableContinuous) {
-        ENABLE_CONTINUOUS.set(segment, 0L, enableContinuous);
+        ENABLE_CONTINUOUS_HANDLE.set(segment, 0L, enableContinuous);
         return this;
     }
     
     public boolean enableContinuous() {
-        return (boolean) ENABLE_CONTINUOUS.get(segment, 0L);
+        return (boolean) ENABLE_CONTINUOUS_HANDLE.get(segment, 0L);
     }
     
     public WorldDef workerCount(int workerCount) {
-        WORKER_COUNT.set(segment, 0L, workerCount);
+        WORKER_COUNT_HANDLE.set(segment, 0L, workerCount);
         return this;
     }
     
     public int workerCount() {
-        return (int) WORKER_COUNT.get(segment, 0L);
+        return (int) WORKER_COUNT_HANDLE.get(segment, 0L);
     }
     
     public WorldDef enqueueTask(EnqueueTaskCallback enqueueTask) {
-        ENQUEUE_TASK.set(segment, 0L, enqueueTask.memorySegment());
+        ENQUEUE_TASK_HANDLE.set(segment, 0L, enqueueTask.memorySegment());
         return this;
     }
     
     public @Nullable EnqueueTaskCallback enqueueTask() {
-        MemorySegment segment = (MemorySegment) ENQUEUE_TASK.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) ENQUEUE_TASK_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -291,12 +291,12 @@ public final class WorldDef
     }
     
     public WorldDef finishTask(FinishTaskCallback finishTask) {
-        FINISH_TASK.set(segment, 0L, finishTask.memorySegment());
+        FINISH_TASK_HANDLE.set(segment, 0L, finishTask.memorySegment());
         return this;
     }
     
     public @Nullable FinishTaskCallback finishTask() {
-        MemorySegment segment = (MemorySegment) FINISH_TASK.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) FINISH_TASK_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -305,12 +305,12 @@ public final class WorldDef
     }
     
     public WorldDef userTaskContext(MemorySegment userTaskContext) {
-        USER_TASK_CONTEXT.set(segment, 0L, userTaskContext);
+        USER_TASK_CONTEXT_HANDLE.set(segment, 0L, userTaskContext);
         return this;
     }
     
     public @Nullable MemorySegment userTaskContext() {
-        MemorySegment segment = (MemorySegment) USER_TASK_CONTEXT.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_TASK_CONTEXT_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -319,12 +319,12 @@ public final class WorldDef
     }
     
     public WorldDef userData(MemorySegment userData) {
-        USER_DATA.set(segment, 0L, userData);
+        USER_DATA_HANDLE.set(segment, 0L, userData);
         return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA.get(this.segment, 0L);
+        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
         if (segment.equals(MemorySegment.NULL))
             return null;
@@ -333,12 +333,12 @@ public final class WorldDef
     }
     
     public WorldDef internalValue(int internalValue) {
-        INTERNAL_VALUE.set(segment, 0L, internalValue);
+        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
         return this;
     }
     
     public int internalValue() {
-        return (int) INTERNAL_VALUE.get(segment, 0L);
+        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     public WorldDef gravity(Consumer<Vec2> consumer) {

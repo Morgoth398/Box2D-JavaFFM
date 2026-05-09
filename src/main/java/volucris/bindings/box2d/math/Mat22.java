@@ -21,8 +21,8 @@ public final class Mat22
 
     public static final StructLayout LAYOUT;
 
-    public static final long CX_OFFSET;
-    public static final long CY_OFFSET;
+    public static final long CX_BYTE_OFFSET;
+    public static final long CY_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -36,8 +36,8 @@ public final class Mat22
             Vec2.LAYOUT.withName("cy")
         ).withName("b2Mat22").withByteAlignment(4);
         
-        CX_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cx"));
-        CY_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cy"));
+        CX_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cx"));
+        CY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cy"));
         //@formatter:on
     }
 
@@ -52,8 +52,8 @@ public final class Mat22
     public Mat22(MemorySegment segment) {
         this.segment = segment;
     
-        cx = new Vec2(segment.asSlice(CX_OFFSET, Vec2.LAYOUT));
-        cy = new Vec2(segment.asSlice(CY_OFFSET, Vec2.LAYOUT));
+        cx = new Vec2(segment.asSlice(CX_BYTE_OFFSET, Vec2.LAYOUT));
+        cy = new Vec2(segment.asSlice(CY_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
     public Mat22 cx(Consumer<Vec2> consumer) {

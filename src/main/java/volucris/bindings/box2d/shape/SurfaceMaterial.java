@@ -27,19 +27,19 @@ public final class SurfaceMaterial
 
     public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRICTION;
-    public static final VarHandle RESTITUTION;
-    public static final VarHandle ROLLING_RESISTANCE;
-    public static final VarHandle TANGENT_SPEED;
-    public static final VarHandle USER_MATERIAL_ID;
-    public static final VarHandle CUSTOM_COLOR;
+    public static final VarHandle FRICTION_HANDLE;
+    public static final VarHandle RESTITUTION_HANDLE;
+    public static final VarHandle ROLLING_RESISTANCE_HANDLE;
+    public static final VarHandle TANGENT_SPEED_HANDLE;
+    public static final VarHandle USER_MATERIAL_ID_HANDLE;
+    public static final VarHandle CUSTOM_COLOR_HANDLE;
 
-    public static final long FRICTION_OFFSET;
-    public static final long RESTITUTION_OFFSET;
-    public static final long ROLLING_RESISTANCE_OFFSET;
-    public static final long TANGENT_SPEED_OFFSET;
-    public static final long USER_MATERIAL_ID_OFFSET;
-    public static final long CUSTOM_COLOR_OFFSET;
+    public static final long FRICTION_BYTE_OFFSET;
+    public static final long RESTITUTION_BYTE_OFFSET;
+    public static final long ROLLING_RESISTANCE_BYTE_OFFSET;
+    public static final long TANGENT_SPEED_BYTE_OFFSET;
+    public static final long USER_MATERIAL_ID_BYTE_OFFSET;
+    public static final long CUSTOM_COLOR_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -56,19 +56,19 @@ public final class SurfaceMaterial
         
         B2_DEFAULT_SURFACE_MATERIAL = downcallHandle("b2DefaultSurfaceMaterial", SurfaceMaterial.LAYOUT);
         
-        FRICTION = LAYOUT.varHandle(PathElement.groupElement("friction"));
-        RESTITUTION = LAYOUT.varHandle(PathElement.groupElement("restitution"));
-        ROLLING_RESISTANCE = LAYOUT.varHandle(PathElement.groupElement("rollingResistance"));
-        TANGENT_SPEED = LAYOUT.varHandle(PathElement.groupElement("tangentSpeed"));
-        USER_MATERIAL_ID = LAYOUT.varHandle(PathElement.groupElement("userMaterialId"));
-        CUSTOM_COLOR = LAYOUT.varHandle(PathElement.groupElement("customColor"));
+        FRICTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("friction"));
+        RESTITUTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("restitution"));
+        ROLLING_RESISTANCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rollingResistance"));
+        TANGENT_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("tangentSpeed"));
+        USER_MATERIAL_ID_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userMaterialId"));
+        CUSTOM_COLOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("customColor"));
         
-        FRICTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("friction"));
-        RESTITUTION_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitution"));
-        ROLLING_RESISTANCE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingResistance"));
-        TANGENT_SPEED_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentSpeed"));
-        USER_MATERIAL_ID_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userMaterialId"));
-        CUSTOM_COLOR_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("customColor"));
+        FRICTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("friction"));
+        RESTITUTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitution"));
+        ROLLING_RESISTANCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingResistance"));
+        TANGENT_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentSpeed"));
+        USER_MATERIAL_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userMaterialId"));
+        CUSTOM_COLOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("customColor"));
         //@formatter:on
     }
 
@@ -108,57 +108,57 @@ public final class SurfaceMaterial
     }
     
     public SurfaceMaterial friction(float friction) {
-        FRICTION.set(segment, 0L, friction);
+        FRICTION_HANDLE.set(segment, 0L, friction);
         return this;
     }
     
     public float friction() {
-        return (float) FRICTION.get(segment, 0L);
+        return (float) FRICTION_HANDLE.get(segment, 0L);
     }
     
     public SurfaceMaterial restitution(float restitution) {
-        RESTITUTION.set(segment, 0L, restitution);
+        RESTITUTION_HANDLE.set(segment, 0L, restitution);
         return this;
     }
     
     public float restitution() {
-        return (float) RESTITUTION.get(segment, 0L);
+        return (float) RESTITUTION_HANDLE.get(segment, 0L);
     }
     
     public SurfaceMaterial rollingResistance(float rollingResistance) {
-        ROLLING_RESISTANCE.set(segment, 0L, rollingResistance);
+        ROLLING_RESISTANCE_HANDLE.set(segment, 0L, rollingResistance);
         return this;
     }
     
     public float rollingResistance() {
-        return (float) ROLLING_RESISTANCE.get(segment, 0L);
+        return (float) ROLLING_RESISTANCE_HANDLE.get(segment, 0L);
     }
     
     public SurfaceMaterial tangentSpeed(float tangentSpeed) {
-        TANGENT_SPEED.set(segment, 0L, tangentSpeed);
+        TANGENT_SPEED_HANDLE.set(segment, 0L, tangentSpeed);
         return this;
     }
     
     public float tangentSpeed() {
-        return (float) TANGENT_SPEED.get(segment, 0L);
+        return (float) TANGENT_SPEED_HANDLE.get(segment, 0L);
     }
     
     public SurfaceMaterial userMaterialId(int userMaterialId) {
-        USER_MATERIAL_ID.set(segment, 0L, userMaterialId);
+        USER_MATERIAL_ID_HANDLE.set(segment, 0L, userMaterialId);
         return this;
     }
     
     public int userMaterialId() {
-        return (int) USER_MATERIAL_ID.get(segment, 0L);
+        return (int) USER_MATERIAL_ID_HANDLE.get(segment, 0L);
     }
     
     public SurfaceMaterial customColor(int customColor) {
-        CUSTOM_COLOR.set(segment, 0L, customColor);
+        CUSTOM_COLOR_HANDLE.set(segment, 0L, customColor);
         return this;
     }
     
     public int customColor() {
-        return (int) CUSTOM_COLOR.get(segment, 0L);
+        return (int) CUSTOM_COLOR_HANDLE.get(segment, 0L);
     }
     
     @Override

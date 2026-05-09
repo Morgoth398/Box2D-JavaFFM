@@ -23,11 +23,11 @@ public final class Sweep
 
     public static final StructLayout LAYOUT;
 
-    public static final long LOCAL_CENTER_OFFSET;
-    public static final long C1_OFFSET;
-    public static final long C2_OFFSET;
-    public static final long Q1_OFFSET;
-    public static final long Q2_OFFSET;
+    public static final long LOCAL_CENTER_BYTE_OFFSET;
+    public static final long C1_BYTE_OFFSET;
+    public static final long C2_BYTE_OFFSET;
+    public static final long Q1_BYTE_OFFSET;
+    public static final long Q2_BYTE_OFFSET;
 
     private final MemorySegment segment;
 
@@ -47,11 +47,11 @@ public final class Sweep
             Rot.LAYOUT.withName("q2")
         ).withName("b2Sweep").withByteAlignment(4);
         
-        LOCAL_CENTER_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("localCenter"));
-        C1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c1"));
-        C2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c2"));
-        Q1_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q1"));
-        Q2_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q2"));
+        LOCAL_CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("localCenter"));
+        C1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c1"));
+        C2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c2"));
+        Q1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q1"));
+        Q2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q2"));
         //@formatter:on
     }
 
@@ -66,11 +66,11 @@ public final class Sweep
     public Sweep(MemorySegment segment) {
         this.segment = segment;
     
-        localCenter = new Vec2(segment.asSlice(LOCAL_CENTER_OFFSET, Vec2.LAYOUT));
-        c1 = new Vec2(segment.asSlice(C1_OFFSET, Vec2.LAYOUT));
-        c2 = new Vec2(segment.asSlice(C2_OFFSET, Vec2.LAYOUT));
-        q1 = new Rot(segment.asSlice(Q1_OFFSET, Rot.LAYOUT));
-        q2 = new Rot(segment.asSlice(Q2_OFFSET, Rot.LAYOUT));
+        localCenter = new Vec2(segment.asSlice(LOCAL_CENTER_BYTE_OFFSET, Vec2.LAYOUT));
+        c1 = new Vec2(segment.asSlice(C1_BYTE_OFFSET, Vec2.LAYOUT));
+        c2 = new Vec2(segment.asSlice(C2_BYTE_OFFSET, Vec2.LAYOUT));
+        q1 = new Rot(segment.asSlice(Q1_BYTE_OFFSET, Rot.LAYOUT));
+        q2 = new Rot(segment.asSlice(Q2_BYTE_OFFSET, Rot.LAYOUT));
     }
 
     public Sweep localCenter(Consumer<Vec2> consumer) {
