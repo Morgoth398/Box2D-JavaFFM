@@ -3,3 +3,4 @@
 
 *.c linguist-vendored=true
 *.h linguist-vendored=true
+*.cpp linguist-vendored=true
