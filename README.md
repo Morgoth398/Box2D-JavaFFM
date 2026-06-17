@@ -3,7 +3,32 @@ This project provides Java bindings for  [Box2D](https://box2d.org/) using the J
 
 # Supported Platforms
 Windows and Linux are directly supported. The Linux .so file was built on Linux Mint 22.2.
-Nevertheless, you can use these bindings for Mac if you provide your own .dylib file and load it.
+
+Nevertheless, you should be able to use these bindings for Mac if you provide your own `.dylib` file and load it.
+
+# Building The Project
+1. Download [Java 26](https://www.oracle.com/de/java/technologies/downloads/)
+2. Download the sources or clone the repo
+
+	## Using The Terminal
+
+	3. Install [Maven](https://maven.apache.org/download.cgi)
+	4. Open the terminal in the directory of the downloaded project
+	5. Run the goal `mvn package`.
+	6. The output is in the `target/` folder
+
+	## Using An IDE
+
+	3. Import the project in an IDE of your choice as a maven project
+		- [IntelliJ](https://www.jetbrains.com/guide/java/tutorials/working-with-maven/importing-a-project/)
+		- [Eclipse](https://www.lagomframework.com/documentation/1.6.x/java/EclipseMavenInt.html)
+	4. Create a new maven run configuration and add the goal `mvn package`
+		- [IntelliJ](https://www.jetbrains.com/help/idea/run-debug-configuration-maven.html)
+		- [Eclipse](https://www.genuitec.com/docs/assembly/setting-up-maven-launch-configurations/)
+	5. Run the created configuration
+	6. The output is also in the `target/` folder
+
+If you are using the Eclipse IDE, you do not need to build the project explicitly. You can import this project into a workspace and just add the Maven coordinates into the `pom.xml` file of any other Maven project in the same workspace. This works as Eclipse can resolve Maven dependencies directly from the workspace, without requiring the project to be installed into the local Maven repository.
 
 # Usage
 This project requires Java 26 and preview features enabled.
