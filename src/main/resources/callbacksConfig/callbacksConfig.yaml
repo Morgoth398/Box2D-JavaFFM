@@ -21,6 +21,7 @@ callbacks:
   - name: b2EnqueueTaskCallback
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
+    add-typed-method: false
   - name: b2FinishTaskCallback
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world

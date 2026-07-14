@@ -60,32 +60,10 @@ public abstract class EnqueueTaskCallback {
         MemorySegment taskContext, 
         MemorySegment userContext
     ) {
-        MemorySegment segment = invoke(
-            TaskCallback.get(task), 
-            itemCount, 
-            minRange, 
-            taskContext, 
-            userContext
-        );
-
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-
-        return segment;
-    }
-
-    public MemorySegment invoke(
-        TaskCallback task, 
-        int itemCount, 
-        int minRange, 
-        MemorySegment taskContext, 
-        MemorySegment userContext
-    ) {
         throw new UnsupportedOperationException(
             "Override either the typed or raw callback method in EnqueueTaskCallback."
         );
-    };
-
+    }
 
     public MemorySegment memorySegment() {
         return segment;
