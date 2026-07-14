@@ -101,5 +101,5 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: box2d.dll
+          name: Windows_x64_Artifacts
           path: install/bin/box2d.dll
