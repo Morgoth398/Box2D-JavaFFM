@@ -2,9 +2,7 @@
 This project provides Java bindings for  [Box2D](https://box2d.org/) using the Java FFM API.
 
 # Supported Platforms
-Windows and Linux are directly supported. The Linux .so file was built on Linux Mint 22.2.
-
-Nevertheless, you should be able to use these bindings for Mac if you provide your own `.dylib` file and load it.
+Windows, Linux and Mac are directly supported. All native libraries were build using the [Box2D_Build](/.github/workflows/Box2D_Build.yml) Workflow.
 
 # Building The Project
 1. Download [Java 26](https://www.oracle.com/de/java/technologies/downloads/)
