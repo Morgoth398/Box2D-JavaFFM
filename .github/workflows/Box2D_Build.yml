@@ -1,0 +1,105 @@
+name: Box2D_Build
+
+on: workflow_dispatch
+
+jobs:
+  Linux_x64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Configure CMake
+        run: cmake -S src/main/resources/box2d-3.1.1/ -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOX2D_SAMPLES=OFF -DBOX2D_UNIT_TESTS=OFF -DBOX2D_BENCHMARKS=OFF
+      - name: Build CMake
+        run: cmake --build build --config Release
+      - name: Install CMake
+        run: cmake --install build --prefix install
+      - name: Find and copy real files
+        run: |
+          mkdir -p binaries
+          find install/lib -type f -exec cp {} binaries/ \;
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: Linux_x64_Artifacts
+          path: binaries/libbox2d.so.*
+
+  Linux_Arm64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Configure CMake
+        run: cmake -S src/main/resources/box2d-3.1.1/ -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOX2D_SAMPLES=OFF -DBOX2D_UNIT_TESTS=OFF -DBOX2D_BENCHMARKS=OFF
+      - name: Build CMake
+        run: cmake --build build --config Release
+      - name: Install CMake
+        run: cmake --install build --prefix install
+      - name: Find and copy real files
+        run: |
+          mkdir -p binaries
+          find install/lib -type f -exec cp {} binaries/ \;
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: Linux_Arm64_Artifacts
+          path: binaries/libbox2d.so.*
+
+  macOs_Arm64:
+    runs-on: macos-26
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Configure CMake
+        run: cmake -S src/main/resources/box2d-3.1.1/ -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOX2D_SAMPLES=OFF -DBOX2D_UNIT_TESTS=OFF -DBOX2D_BENCHMARKS=OFF
+      - name: Build CMake
+        run: cmake --build build --config Release
+      - name: Install CMake
+        run: cmake --install build --prefix install
+      - name: Find and copy real files
+        run: |
+          mkdir -p binaries
+          find install/lib -type f -exec cp {} binaries/ \;
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: macOs_Arm64_Artifacts
+          path: binaries/libbox2d.*.dylib
+
+  macOs_x64:
+    runs-on: macos-26-intel
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Configure CMake
+        run: cmake -S src/main/resources/box2d-3.1.1/ -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOX2D_SAMPLES=OFF -DBOX2D_UNIT_TESTS=OFF -DBOX2D_BENCHMARKS=OFF
+      - name: Build CMake
+        run: cmake --build build --config Release
+      - name: Install CMake
+        run: cmake --install build --prefix install
+      - name: Find and copy real files
+        run: |
+          mkdir -p binaries
+          find install/lib -type f -exec cp {} binaries/ \;
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: macOs_x64_Artifacts
+          path: binaries/libbox2d.*.dylib
+
+  Windows_x64:
+    runs-on: windows-2025
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Configure CMake
+        run: cmake -S src/main/resources/box2d-3.1.1/ -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBOX2D_SAMPLES=OFF -DBOX2D_UNIT_TESTS=OFF -DBOX2D_BENCHMARKS=OFF
+      - name: Build CMake
+        run: cmake --build build --config Release
+      - name: Install CMake
+        run: cmake --install build --prefix install
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: box2d.dll
+          path: install/bin/box2d.dll
