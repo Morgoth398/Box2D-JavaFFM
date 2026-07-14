@@ -1,0 +1,100 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  Linux_x64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up JDK 26
+      uses: actions/setup-java@v5
+      with:
+        java-version: '26'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Execute the HelloBox2D example
+      run: |
+        $JAVA_HOME/bin/java --enable-preview --enable-native-access=ALL-UNNAMED \
+          -cp target/Box2D-JavaFFM-3.1.1-jar-with-dependencies.jar \
+          volucris.bindings.box2d.HelloBox2D
+
+  Linux_Arm64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up JDK 26
+      uses: actions/setup-java@v5
+      with:
+        java-version: '26'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Execute the HelloBox2D example
+      run: |
+        $JAVA_HOME/bin/java --enable-preview --enable-native-access=ALL-UNNAMED \
+          -cp target/Box2D-JavaFFM-3.1.1-jar-with-dependencies.jar \
+          volucris.bindings.box2d.HelloBox2D
+
+  macOS_Arm64:
+    runs-on: macos-26
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up JDK 26
+      uses: actions/setup-java@v5
+      with:
+        java-version: '26'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Execute the HelloBox2D example
+      run: |
+        $JAVA_HOME/bin/java --enable-preview --enable-native-access=ALL-UNNAMED \
+          -cp target/Box2D-JavaFFM-3.1.1-jar-with-dependencies.jar \
+          volucris.bindings.box2d.HelloBox2D
+          
+  macOS_x64:
+    runs-on: macos-26-intel
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up JDK 26
+      uses: actions/setup-java@v5
+      with:
+        java-version: '26'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Execute the HelloBox2D example
+      run: |
+        $JAVA_HOME/bin/java --enable-preview --enable-native-access=ALL-UNNAMED \
+          -cp target/Box2D-JavaFFM-3.1.1-jar-with-dependencies.jar \
+          volucris.bindings.box2d.HelloBox2D
+
+  Windows_x64:
+    runs-on: windows-2025
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up JDK 26
+      uses: actions/setup-java@v5
+      with:
+        java-version: '26'
+        distribution: 'oracle'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+      shell: bash
+    - name: Execute the HelloWorld app
+      run: |
+        $JAVA_HOME/bin/java --enable-preview --enable-native-access=ALL-UNNAMED \
+          -cp target/Box2D-JavaFFM-3.1.1-jar-with-dependencies.jar \
+          volucris.bindings.box2d.HelloBox2D
+      shell: bash
