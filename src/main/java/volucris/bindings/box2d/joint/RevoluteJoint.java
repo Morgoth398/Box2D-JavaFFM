@@ -482,7 +482,7 @@ public final class RevoluteJoint {
     }
     
     /**
-     * Set the revolute joint limits in radians. It is expected that lower <= upper and that -0.99 * B2_PI <= lower && upper <= -0.99 * B2_PI.
+     * Set the revolute joint limits in radians. It is expected that lower &lt;= upper and that -0.99 * B2_PI &lt;= lower &amp;&amp; upper &lt;= -0.99 * B2_PI.
      */
     public static void setLimits(
         MemorySegment jointId, 
