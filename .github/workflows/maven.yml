@@ -3,8 +3,14 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'src/main/resources/box2d-*/**'
+      - '.github/workflows/Box2D_Build.yml'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'src/main/resources/box2d-*/**'
+      - '.github/workflows/Box2D_Build.yml'
 
 jobs:
   Linux_x64:
