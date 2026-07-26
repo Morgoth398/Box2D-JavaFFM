@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,14 +12,18 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.math.Vec2;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Draw a line segment.
+/// ```
 public abstract class DrawSegmentFcn {
 
-    private static final HashMap<Long, WeakReference<DrawSegmentFcn>> CACHE;
+    private static final Map<Long, WeakReference<DrawSegmentFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -53,23 +58,23 @@ public abstract class DrawSegmentFcn {
     }
 
     public void invoke(
-        MemorySegment p1, 
-        MemorySegment p2, 
-        int color, 
+        MemorySegment p1,
+        MemorySegment p2,
+        int color,
         MemorySegment context
     ) {
         invoke(
-            new Vec2(p1), 
-            new Vec2(p2), 
-            color, 
-            context
+            new Vec2(p1),
+            new Vec2(p2),
+		    color,
+		    context
         );
     }
 
     public void invoke(
-        Vec2 p1, 
-        Vec2 p2, 
-        int color, 
+        Vec2 p1,
+        Vec2 p2,
+        int color,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -77,12 +82,11 @@ public abstract class DrawSegmentFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static DrawSegmentFcn get(MemorySegment segment) {
+    public static @Nullable DrawSegmentFcn get(MemorySegment segment) {
         WeakReference<DrawSegmentFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

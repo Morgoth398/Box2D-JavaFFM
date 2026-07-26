@@ -12,8 +12,8 @@
 //import org.lwjgl.llvm.ClangIndex;
 //
 //import volucris.bindings.generator.generation.Generator;
-//import volucris.bindings.generator.parsing.FunctionPointer;
 //import volucris.bindings.generator.parsing.HeaderFile;
+//import volucris.bindings.generator.parsing.NativeFunctionPointer;
 //
 //public class Box2DGeneration {
 //
@@ -45,9 +45,10 @@
 //			e.printStackTrace();
 //		}
 //		
-//		Map<String, FunctionPointer> functionPointers = new HashMap<>();
-//		headerFile.getStruct("b2DebugDraw").getFunctionPointers().forEach(f -> {
-//			functionPointers.put(f.getName(), f);
+//		Map<String, NativeFunctionPointer> functionPointers = new HashMap<>();
+//		headerFile.getRecord("b2DebugDraw").getFunctionPointerFields().forEach(f -> {
+//			NativeFunctionPointer functionPointer = f.getFunctionPointer();
+//			functionPointers.put(functionPointer.getName(), functionPointer);
 //		});
 //		
 //		generator.generateCallbacks("src/main/resources/callbacksConfig/callbacksConfig.yaml", functionPointers);

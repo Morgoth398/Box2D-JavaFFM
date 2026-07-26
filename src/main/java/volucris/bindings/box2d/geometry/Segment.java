@@ -20,9 +20,9 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A line segment with two-sided collision.
- */
+/// ```
+/// A line segment with two-sided collision.
+/// ```
 public final class Segment
 		implements Struct<Segment> {
 
@@ -71,153 +71,158 @@ public final class Segment
         point2 = new Vec2(segment.asSlice(POINT2_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Compute the bounding box of a transformed line segment
-     */
+    /// ```
+    /// Compute the bounding box of a transformed line segment
+    /// ```
     public static MemorySegment computeSegmentAABB(
-        SegmentAllocator allocator,
-        MemorySegment shape, 
-        MemorySegment transform
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	MemorySegment transform
     ) {
-        MethodHandle method = B2_COMPUTE_SEGMENT_AABB.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shape, 
-                transform
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COMPUTE_SEGMENT_AABB.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			transform
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #computeSegmentAABB}.
-     */
+    /// Typed method of [#computeSegmentAABB].
     public final @Nullable AABB computeSegmentAABB(
-        SegmentAllocator allocator,
-        Transform transform
+    	SegmentAllocator allocator,
+    	Transform transform
     ) {
-        MemorySegment segment = computeSegmentAABB(
-            allocator,
-            this.segment, 
-            transform.memorySegment()
-        );
+    	MemorySegment segment = computeSegmentAABB(
+    		allocator,
+    		this.segment,
+    		transform.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
-    /**
-     * Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with hits from the left side being treated as a miss.
-     */
+    /// ```
+    /// Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with hits from
+    /// the left side being treated as a miss.
+    /// ```
     public static MemorySegment rayCastSegment(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape, 
-        boolean oneSided
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape,
+    	boolean oneSided
     ) {
-        MethodHandle method = B2_RAY_CAST_SEGMENT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape, 
-                oneSided
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_RAY_CAST_SEGMENT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape,
+    			oneSided
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rayCastSegment}.
-     */
+    /// Typed method of [#rayCastSegment].
     public final @Nullable CastOutput rayCastSegment(
-        SegmentAllocator allocator,
-        RayCastInput input, 
-        boolean oneSided
+    	SegmentAllocator allocator,
+    	RayCastInput input,
+    	boolean oneSided
     ) {
-        MemorySegment segment = rayCastSegment(
-            allocator,
-            input.memorySegment(), 
-            this.segment, 
-            oneSided
-        );
+    	MemorySegment segment = rayCastSegment(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment,
+    		oneSided
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
-    /**
-     * Shape cast versus a line segment. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Shape cast versus a line segment. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment shapeCastSegment(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_SHAPE_CAST_SEGMENT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_CAST_SEGMENT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #shapeCastSegment}.
-     */
+    /// Typed method of [#shapeCastSegment].
     public final @Nullable CastOutput shapeCastSegment(
-        SegmentAllocator allocator,
-        ShapeCastInput input
+    	SegmentAllocator allocator,
+    	ShapeCastInput input
     ) {
-        MemorySegment segment = shapeCastSegment(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = shapeCastSegment(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
+    /// @see #point1()
     public Segment point1(Consumer<Vec2> consumer) {
-        consumer.accept(point1);
-        return this;
+    	consumer.accept(point1);
+    	return this;
     }
     
+    /// @see #point1()
     public Segment point1(Vec2 other) {
-        point1.set(other);
-        return this;
+    	point1.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first point
+    /// ```
     public Vec2 point1() {
-        return point1;
+    	return point1;
     }
     
+    /// @see #point2()
     public Segment point2(Consumer<Vec2> consumer) {
-        consumer.accept(point2);
-        return this;
+    	consumer.accept(point2);
+    	return this;
     }
     
+    /// @see #point2()
     public Segment point2(Vec2 other) {
-        point2.set(other);
-        return this;
+    	point2.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second point
+    /// ```
     public Vec2 point2() {
-        return point2;
+    	return point2;
     }
     
     @Override

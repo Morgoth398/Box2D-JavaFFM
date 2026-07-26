@@ -18,9 +18,13 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Used to create a shape. This is a temporary object used to bundle shape creation parameters. You may use the same shape definition to create multiple shapes. Must be initialized using b2DefaultShapeDef().
- */
+/// ```
+/// Used to create a shape.
+/// This is a temporary object used to bundle shape creation parameters. You may use
+/// the same shape definition to create multiple shapes.
+/// Must be initialized using b2DefaultShapeDef().
+/// @ingroup shape
+/// ```
 public final class ShapeDef
 		implements Struct<ShapeDef> {
 
@@ -112,157 +116,217 @@ public final class ShapeDef
         filter = new Filter(segment.asSlice(FILTER_BYTE_OFFSET, Filter.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your shape definition
-     */
+    /// ```
+    /// Use this to initialize your shape definition
+    /// @ingroup shape
+    /// ```
     public static MemorySegment ndefaultShapeDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_SHAPE_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_SHAPE_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultShapeDef}.
-     */
+    /// Typed method of [#ndefaultShapeDef].
     public static @Nullable ShapeDef defaultShapeDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultShapeDef(allocator);
+    	MemorySegment segment = ndefaultShapeDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ShapeDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ShapeDef(segment);
     }
     
+    /// @see #userData()
     public ShapeDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// Use this to store application specific shape data.
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #density()
     public ShapeDef density(float density) {
-        DENSITY_HANDLE.set(segment, 0L, density);
-        return this;
+    	DENSITY_HANDLE.set(segment, 0L, density);
+    	return this;
     }
     
+    /// ```
+    /// The density, usually in kg/m^2.
+    /// This is not part of the surface material because this is for the interior, which may have
+    /// other considerations, such as being hollow. For example a wood barrel may be hollow or full of water.
+    /// ```
     public float density() {
-        return (float) DENSITY_HANDLE.get(segment, 0L);
+    	return (float) DENSITY_HANDLE.get(segment, 0L);
     }
     
+    /// @see #isSensor()
     public ShapeDef isSensor(boolean isSensor) {
-        IS_SENSOR_HANDLE.set(segment, 0L, isSensor);
-        return this;
+    	IS_SENSOR_HANDLE.set(segment, 0L, isSensor);
+    	return this;
     }
     
+    /// ```
+    /// A sensor shape generates overlap events but never generates a collision response.
+    /// Sensors do not have continuous collision. Instead, use a ray or shape cast for those scenarios.
+    /// Sensors still contribute to the body mass if they have non-zero density.
+    /// @note Sensor events are disabled by default.
+    /// @see enableSensorEvents
+    /// ```
     public boolean isSensor() {
-        return (boolean) IS_SENSOR_HANDLE.get(segment, 0L);
+    	return (boolean) IS_SENSOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableSensorEvents()
     public ShapeDef enableSensorEvents(boolean enableSensorEvents) {
-        ENABLE_SENSOR_EVENTS_HANDLE.set(segment, 0L, enableSensorEvents);
-        return this;
+    	ENABLE_SENSOR_EVENTS_HANDLE.set(segment, 0L, enableSensorEvents);
+    	return this;
     }
     
+    /// ```
+    /// Enable sensor events for this shape. This applies to sensors and non-sensors. False by default, even for sensors.
+    /// ```
     public boolean enableSensorEvents() {
-        return (boolean) ENABLE_SENSOR_EVENTS_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SENSOR_EVENTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableContactEvents()
     public ShapeDef enableContactEvents(boolean enableContactEvents) {
-        ENABLE_CONTACT_EVENTS_HANDLE.set(segment, 0L, enableContactEvents);
-        return this;
+    	ENABLE_CONTACT_EVENTS_HANDLE.set(segment, 0L, enableContactEvents);
+    	return this;
     }
     
+    /// ```
+    /// Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors. False by default.
+    /// ```
     public boolean enableContactEvents() {
-        return (boolean) ENABLE_CONTACT_EVENTS_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_CONTACT_EVENTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableHitEvents()
     public ShapeDef enableHitEvents(boolean enableHitEvents) {
-        ENABLE_HIT_EVENTS_HANDLE.set(segment, 0L, enableHitEvents);
-        return this;
+    	ENABLE_HIT_EVENTS_HANDLE.set(segment, 0L, enableHitEvents);
+    	return this;
     }
     
+    /// ```
+    /// Enable hit events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors. False by default.
+    /// ```
     public boolean enableHitEvents() {
-        return (boolean) ENABLE_HIT_EVENTS_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_HIT_EVENTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enablePreSolveEvents()
     public ShapeDef enablePreSolveEvents(boolean enablePreSolveEvents) {
-        ENABLE_PRE_SOLVE_EVENTS_HANDLE.set(segment, 0L, enablePreSolveEvents);
-        return this;
+    	ENABLE_PRE_SOLVE_EVENTS_HANDLE.set(segment, 0L, enablePreSolveEvents);
+    	return this;
     }
     
+    /// ```
+    /// Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive
+    /// and must be carefully handled due to threading. Ignored for sensors.
+    /// ```
     public boolean enablePreSolveEvents() {
-        return (boolean) ENABLE_PRE_SOLVE_EVENTS_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_PRE_SOLVE_EVENTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #invokeContactCreation()
     public ShapeDef invokeContactCreation(boolean invokeContactCreation) {
-        INVOKE_CONTACT_CREATION_HANDLE.set(segment, 0L, invokeContactCreation);
-        return this;
+    	INVOKE_CONTACT_CREATION_HANDLE.set(segment, 0L, invokeContactCreation);
+    	return this;
     }
     
+    /// ```
+    /// When shapes are created they will scan the environment for collision the next time step. This can significantly slow down
+    /// static body creation when there are many static shapes.
+    /// This is flag is ignored for dynamic and kinematic shapes which always invoke contact creation.
+    /// ```
     public boolean invokeContactCreation() {
-        return (boolean) INVOKE_CONTACT_CREATION_HANDLE.get(segment, 0L);
+    	return (boolean) INVOKE_CONTACT_CREATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #updateBodyMass()
     public ShapeDef updateBodyMass(boolean updateBodyMass) {
-        UPDATE_BODY_MASS_HANDLE.set(segment, 0L, updateBodyMass);
-        return this;
+    	UPDATE_BODY_MASS_HANDLE.set(segment, 0L, updateBodyMass);
+    	return this;
     }
     
+    /// ```
+    /// Should the body update the mass properties when this shape is created. Default is true.
+    /// ```
     public boolean updateBodyMass() {
-        return (boolean) UPDATE_BODY_MASS_HANDLE.get(segment, 0L);
+    	return (boolean) UPDATE_BODY_MASS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #internalValue()
     public ShapeDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #material()
     public ShapeDef material(Consumer<SurfaceMaterial> consumer) {
-        consumer.accept(material);
-        return this;
+    	consumer.accept(material);
+    	return this;
     }
     
+    /// @see #material()
     public ShapeDef material(SurfaceMaterial other) {
-        material.set(other);
-        return this;
+    	material.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The surface material for this shape.
+    /// ```
     public SurfaceMaterial material() {
-        return material;
+    	return material;
     }
     
+    /// @see #filter()
     public ShapeDef filter(Consumer<Filter> consumer) {
-        consumer.accept(filter);
-        return this;
+    	consumer.accept(filter);
+    	return this;
     }
     
+    /// @see #filter()
     public ShapeDef filter(Filter other) {
-        filter.set(other);
-        return this;
+    	filter.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Collision filtering data.
+    /// ```
     public Filter filter() {
-        return filter;
+    	return filter;
     }
     
     @Override

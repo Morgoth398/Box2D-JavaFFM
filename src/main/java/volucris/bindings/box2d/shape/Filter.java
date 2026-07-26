@@ -17,9 +17,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * This is used to filter collision on shapes. It affects shape-vs-shape collision and shape-versus-query collision (such as b2World_CastRay).
- */
+/// ```
+/// This is used to filter collision on shapes. It affects shape-vs-shape collision
+/// and shape-versus-query collision (such as b2World_CastRay).
+/// @ingroup shape
+/// ```
 public final class Filter
 		implements Struct<Filter> {
 
@@ -63,61 +65,96 @@ public final class Filter
     
     }
 
-    /**
-     * Use this to initialize your filter
-     */
+    /// ```
+    /// Use this to initialize your filter
+    /// @ingroup shape
+    /// ```
     public static MemorySegment ndefaultFilter(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_FILTER.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_FILTER.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultFilter}.
-     */
+    /// Typed method of [#ndefaultFilter].
     public static @Nullable Filter defaultFilter(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultFilter(allocator);
+    	MemorySegment segment = ndefaultFilter(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Filter(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Filter(segment);
     }
     
+    /// @see #categoryBits()
     public Filter categoryBits(long categoryBits) {
-        CATEGORY_BITS_HANDLE.set(segment, 0L, categoryBits);
-        return this;
+    	CATEGORY_BITS_HANDLE.set(segment, 0L, categoryBits);
+    	return this;
     }
     
+    /// ```
+    /// The collision category bits. Normally you would just set one bit. The category bits should
+    /// represent your application object types. For example:
+    /// @code{.cpp}
+    /// enum MyCategories
+    /// {
+    /// Static  = 0x00000001,
+    /// Dynamic = 0x00000002,
+    /// Debris  = 0x00000004,
+    /// Player  = 0x00000008,
+    /// // etc
+    /// };
+    /// @endcode
+    /// ```
     public long categoryBits() {
-        return (long) CATEGORY_BITS_HANDLE.get(segment, 0L);
+    	return (long) CATEGORY_BITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maskBits()
     public Filter maskBits(long maskBits) {
-        MASK_BITS_HANDLE.set(segment, 0L, maskBits);
-        return this;
+    	MASK_BITS_HANDLE.set(segment, 0L, maskBits);
+    	return this;
     }
     
+    /// ```
+    /// The collision mask bits. This states the categories that this
+    /// shape would accept for collision.
+    /// For example, you may want your player to only collide with static objects
+    /// and other players.
+    /// @code{.c}
+    /// maskBits = Static | Player;
+    /// @endcode
+    /// ```
     public long maskBits() {
-        return (long) MASK_BITS_HANDLE.get(segment, 0L);
+    	return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #groupIndex()
     public Filter groupIndex(int groupIndex) {
-        GROUP_INDEX_HANDLE.set(segment, 0L, groupIndex);
-        return this;
+    	GROUP_INDEX_HANDLE.set(segment, 0L, groupIndex);
+    	return this;
     }
     
+    /// ```
+    /// Collision groups allow a certain group of objects to never collide (negative)
+    /// or always collide (positive). A group index of zero has no effect. Non-zero group filtering
+    /// always wins against the mask bits.
+    /// For example, you may want ragdolls to collide with other ragdolls but you don't want
+    /// ragdoll self-collision. In this case you would give each ragdoll a unique negative group index
+    /// and apply that group index to all shapes on the ragdoll.
+    /// ```
     public int groupIndex() {
-        return (int) GROUP_INDEX_HANDLE.get(segment, 0L);
+    	return (int) GROUP_INDEX_HANDLE.get(segment, 0L);
     }
     
     @Override

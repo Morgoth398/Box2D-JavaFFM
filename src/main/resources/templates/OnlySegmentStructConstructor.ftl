@@ -1,17 +1,16 @@
 public ${className}(MemorySegment segment) {
     this.segment = segment;
 
-    <#list structData as data>
-    <#if data.field.count == 0>
-    ${data.field.name} = new ${data.field.type}(segment.asSlice(${data.offsetName}, ${data.field.type}.LAYOUT));
-    <#else>
-
-    ${data.field.name} = new ${data.field.type}[${data.field.count}];
-    for (int i = 0; i < ${data.field.count}; i++) {
-        long offset = ${data.offsetName} + i * ${data.field.type}.LAYOUT.byteSize();
-        ${data.field.name}[i] = new ${data.field.type}(segment.asSlice(offset, ${data.field.type}.LAYOUT));
+    <#list data as item>
+    <#if item.array()>   
+    ${item.field.name} = new ${item.field.elementType}[${item.dimensions[0]}];
+    for (int i = 0; i < ${item.dimensions[0]}; i++) {
+        long offset = ${item.offsetField.name} + i * ${item.field.elementType}.LAYOUT.byteSize();
+        ${item.field.name}[i] = new ${item.field.elementType}(segment.asSlice(offset, ${item.field.elementType}.LAYOUT));
     }
 
+    <#else>
+    ${item.field.name} = new ${item.field.type}(segment.asSlice(${item.offsetField.name}, ${item.field.type}.LAYOUT));
     </#if>
     </#list>
 }

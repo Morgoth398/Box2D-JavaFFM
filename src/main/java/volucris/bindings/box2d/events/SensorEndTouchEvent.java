@@ -14,9 +14,12 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * An end touch event is generated when a shape stops overlapping a sensor shape. These include things like setting the transform, destroying a body or shape, or changing a filter. You will also get an end event if the sensor or visitor are destroyed. Therefore you should always confirm the shape id is valid using b2Shape_IsValid.
- */
+/// ```
+/// An end touch event is generated when a shape stops overlapping a sensor shape.
+/// These include things like setting the transform, destroying a body or shape, or changing
+/// a filter. You will also get an end event if the sensor or visitor are destroyed.
+/// Therefore you should always confirm the shape id is valid using b2Shape_IsValid.
+/// ```
 public final class SensorEndTouchEvent
 		implements Struct<SensorEndTouchEvent> {
 
@@ -57,32 +60,46 @@ public final class SensorEndTouchEvent
         visitorShapeId = new ShapeId(segment.asSlice(VISITOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
     }
 
+    /// @see #sensorShapeId()
     public SensorEndTouchEvent sensorShapeId(Consumer<ShapeId> consumer) {
-        consumer.accept(sensorShapeId);
-        return this;
+    	consumer.accept(sensorShapeId);
+    	return this;
     }
     
+    /// @see #sensorShapeId()
     public SensorEndTouchEvent sensorShapeId(ShapeId other) {
-        sensorShapeId.set(other);
-        return this;
+    	sensorShapeId.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The id of the sensor shape
+    /// @warning this shape may have been destroyed
+    /// @see b2Shape_IsValid
+    /// ```
     public ShapeId sensorShapeId() {
-        return sensorShapeId;
+    	return sensorShapeId;
     }
     
+    /// @see #visitorShapeId()
     public SensorEndTouchEvent visitorShapeId(Consumer<ShapeId> consumer) {
-        consumer.accept(visitorShapeId);
-        return this;
+    	consumer.accept(visitorShapeId);
+    	return this;
     }
     
+    /// @see #visitorShapeId()
     public SensorEndTouchEvent visitorShapeId(ShapeId other) {
-        visitorShapeId.set(other);
-        return this;
+    	visitorShapeId.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The id of the dynamic shape that stopped touching the sensor shape
+    /// @warning this shape may have been destroyed
+    /// @see b2Shape_IsValid
+    /// ```
     public ShapeId visitorShapeId() {
-        return visitorShapeId;
+    	return visitorShapeId;
     }
     
     @Override

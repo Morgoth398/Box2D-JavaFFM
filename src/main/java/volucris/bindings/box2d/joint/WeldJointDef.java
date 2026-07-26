@@ -20,9 +20,14 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Weld joint definition
- */
+/// ```
+/// Weld joint definition
+/// 
+/// A weld joint connect to bodies together rigidly. This constraint provides springs to mimic
+/// soft-body simulation.
+/// @note The approximate solver in Box2D cannot hold many bodies together rigidly
+/// @ingroup weld_joint
+/// ```
 public final class WeldJointDef
 		implements Struct<WeldJointDef> {
 
@@ -113,167 +118,221 @@ public final class WeldJointDef
         localAnchorB = new Vec2(segment.asSlice(LOCAL_ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition
-     */
+    /// ```
+    /// Use this to initialize your joint definition
+    /// @ingroup weld_joint
+    /// ```
     public static MemorySegment ndefaultWeldJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_WELD_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_WELD_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultWeldJointDef}.
-     */
+    /// Typed method of [#ndefaultWeldJointDef].
     public static @Nullable WeldJointDef defaultWeldJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultWeldJointDef(allocator);
+    	MemorySegment segment = ndefaultWeldJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new WeldJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new WeldJointDef(segment);
     }
     
+    /// @see #referenceAngle()
     public WeldJointDef referenceAngle(float referenceAngle) {
-        REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
-        return this;
+    	REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
+    	return this;
     }
     
+    /// ```
+    /// The bodyB angle minus bodyA angle in the reference state (radians)
+    /// todo maybe make this a b2Rot
+    /// ```
     public float referenceAngle() {
-        return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
+    	return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #linearHertz()
     public WeldJointDef linearHertz(float linearHertz) {
-        LINEAR_HERTZ_HANDLE.set(segment, 0L, linearHertz);
-        return this;
+    	LINEAR_HERTZ_HANDLE.set(segment, 0L, linearHertz);
+    	return this;
     }
     
+    /// ```
+    /// Linear stiffness expressed as Hertz (cycles per second). Use zero for maximum stiffness.
+    /// ```
     public float linearHertz() {
-        return (float) LINEAR_HERTZ_HANDLE.get(segment, 0L);
+    	return (float) LINEAR_HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #angularHertz()
     public WeldJointDef angularHertz(float angularHertz) {
-        ANGULAR_HERTZ_HANDLE.set(segment, 0L, angularHertz);
-        return this;
+    	ANGULAR_HERTZ_HANDLE.set(segment, 0L, angularHertz);
+    	return this;
     }
     
+    /// ```
+    /// Angular stiffness as Hertz (cycles per second). Use zero for maximum stiffness.
+    /// ```
     public float angularHertz() {
-        return (float) ANGULAR_HERTZ_HANDLE.get(segment, 0L);
+    	return (float) ANGULAR_HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #linearDampingRatio()
     public WeldJointDef linearDampingRatio(float linearDampingRatio) {
-        LINEAR_DAMPING_RATIO_HANDLE.set(segment, 0L, linearDampingRatio);
-        return this;
+    	LINEAR_DAMPING_RATIO_HANDLE.set(segment, 0L, linearDampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// Linear damping ratio, non-dimensional. Use 1 for critical damping.
+    /// ```
     public float linearDampingRatio() {
-        return (float) LINEAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) LINEAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #angularDampingRatio()
     public WeldJointDef angularDampingRatio(float angularDampingRatio) {
-        ANGULAR_DAMPING_RATIO_HANDLE.set(segment, 0L, angularDampingRatio);
-        return this;
+    	ANGULAR_DAMPING_RATIO_HANDLE.set(segment, 0L, angularDampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// Linear damping ratio, non-dimensional. Use 1 for critical damping.
+    /// ```
     public float angularDampingRatio() {
-        return (float) ANGULAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) ANGULAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collideConnected()
     public WeldJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-        return this;
+    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to true if the attached bodies should collide
+    /// ```
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userData()
     public WeldJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public WeldJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public WeldJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public WeldJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public WeldJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public WeldJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
+    /// @see #localAnchorA()
     public WeldJointDef localAnchorA(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorA);
-        return this;
+    	consumer.accept(localAnchorA);
+    	return this;
     }
     
+    /// @see #localAnchorA()
     public WeldJointDef localAnchorA(Vec2 other) {
-        localAnchorA.set(other);
-        return this;
+    	localAnchorA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyA's origin
+    /// ```
     public Vec2 localAnchorA() {
-        return localAnchorA;
+    	return localAnchorA;
     }
     
+    /// @see #localAnchorB()
     public WeldJointDef localAnchorB(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorB);
-        return this;
+    	consumer.accept(localAnchorB);
+    	return this;
     }
     
+    /// @see #localAnchorB()
     public WeldJointDef localAnchorB(Vec2 other) {
-        localAnchorB.set(other);
-        return this;
+    	localAnchorB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyB's origin
+    /// ```
     public Vec2 localAnchorB() {
-        return localAnchorB;
+    	return localAnchorB;
     }
     
     @Override

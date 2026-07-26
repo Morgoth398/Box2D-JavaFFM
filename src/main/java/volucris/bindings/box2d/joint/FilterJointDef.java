@@ -19,9 +19,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A filter joint is used to disable collision between two specific bodies.
- */
+/// ```
+/// A filter joint is used to disable collision between two specific bodies.
+/// 
+/// @ingroup filter_joint
+/// ```
 public final class FilterJointDef
 		implements Struct<FilterJointDef> {
 
@@ -71,85 +73,104 @@ public final class FilterJointDef
         bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_BYTE_OFFSET, BodyId.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition
-     */
+    /// ```
+    /// Use this to initialize your joint definition
+    /// @ingroup filter_joint
+    /// ```
     public static MemorySegment ndefaultFilterJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_FILTER_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_FILTER_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultFilterJointDef}.
-     */
+    /// Typed method of [#ndefaultFilterJointDef].
     public static @Nullable FilterJointDef defaultFilterJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultFilterJointDef(allocator);
+    	MemorySegment segment = ndefaultFilterJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new FilterJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new FilterJointDef(segment);
     }
     
+    /// @see #userData()
     public FilterJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public FilterJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public FilterJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public FilterJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body.
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public FilterJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public FilterJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body.
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
     @Override

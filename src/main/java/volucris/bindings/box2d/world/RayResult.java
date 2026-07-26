@@ -16,9 +16,11 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Result from b2World_RayCastClosest If there is initial overlap the fraction and normal will be zero while the point is an arbitrary point in the overlap region.
- */
+/// ```
+/// Result from b2World_RayCastClosest
+/// If there is initial overlap the fraction and normal will be zero while the point is an arbitrary point in the overlap region.
+/// @ingroup world
+/// ```
 public final class RayResult
 		implements Struct<RayResult> {
 
@@ -87,82 +89,92 @@ public final class RayResult
         normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #fraction()
     public RayResult fraction(float fraction) {
-        FRACTION_HANDLE.set(segment, 0L, fraction);
-        return this;
+    	FRACTION_HANDLE.set(segment, 0L, fraction);
+    	return this;
     }
     
     public float fraction() {
-        return (float) FRACTION_HANDLE.get(segment, 0L);
+    	return (float) FRACTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #nodeVisits()
     public RayResult nodeVisits(int nodeVisits) {
-        NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
-        return this;
+    	NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
+    	return this;
     }
     
     public int nodeVisits() {
-        return (int) NODE_VISITS_HANDLE.get(segment, 0L);
+    	return (int) NODE_VISITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #leafVisits()
     public RayResult leafVisits(int leafVisits) {
-        LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
-        return this;
+    	LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
+    	return this;
     }
     
     public int leafVisits() {
-        return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
+    	return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hit()
     public RayResult hit(boolean hit) {
-        HIT_HANDLE.set(segment, 0L, hit);
-        return this;
+    	HIT_HANDLE.set(segment, 0L, hit);
+    	return this;
     }
     
     public boolean hit() {
-        return (boolean) HIT_HANDLE.get(segment, 0L);
+    	return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #shapeId()
     public RayResult shapeId(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeId);
-        return this;
+    	consumer.accept(shapeId);
+    	return this;
     }
     
+    /// @see #shapeId()
     public RayResult shapeId(ShapeId other) {
-        shapeId.set(other);
-        return this;
+    	shapeId.set(other);
+    	return this;
     }
     
     public ShapeId shapeId() {
-        return shapeId;
+    	return shapeId;
     }
     
+    /// @see #point()
     public RayResult point(Consumer<Vec2> consumer) {
-        consumer.accept(point);
-        return this;
+    	consumer.accept(point);
+    	return this;
     }
     
+    /// @see #point()
     public RayResult point(Vec2 other) {
-        point.set(other);
-        return this;
+    	point.set(other);
+    	return this;
     }
     
     public Vec2 point() {
-        return point;
+    	return point;
     }
     
+    /// @see #normal()
     public RayResult normal(Consumer<Vec2> consumer) {
-        consumer.accept(normal);
-        return this;
+    	consumer.accept(normal);
+    	return this;
     }
     
+    /// @see #normal()
     public RayResult normal(Vec2 other) {
-        normal.set(other);
-        return this;
+    	normal.set(other);
+    	return this;
     }
     
     public Vec2 normal() {
-        return normal;
+    	return normal;
     }
     
     @Override

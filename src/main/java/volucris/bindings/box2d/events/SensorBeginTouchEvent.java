@@ -14,9 +14,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A begin touch event is generated when a shape starts to overlap a sensor shape.
- */
+/// ```
+/// A begin touch event is generated when a shape starts to overlap a sensor shape.
+/// ```
 public final class SensorBeginTouchEvent
 		implements Struct<SensorBeginTouchEvent> {
 
@@ -57,32 +57,42 @@ public final class SensorBeginTouchEvent
         visitorShapeId = new ShapeId(segment.asSlice(VISITOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
     }
 
+    /// @see #sensorShapeId()
     public SensorBeginTouchEvent sensorShapeId(Consumer<ShapeId> consumer) {
-        consumer.accept(sensorShapeId);
-        return this;
+    	consumer.accept(sensorShapeId);
+    	return this;
     }
     
+    /// @see #sensorShapeId()
     public SensorBeginTouchEvent sensorShapeId(ShapeId other) {
-        sensorShapeId.set(other);
-        return this;
+    	sensorShapeId.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The id of the sensor shape
+    /// ```
     public ShapeId sensorShapeId() {
-        return sensorShapeId;
+    	return sensorShapeId;
     }
     
+    /// @see #visitorShapeId()
     public SensorBeginTouchEvent visitorShapeId(Consumer<ShapeId> consumer) {
-        consumer.accept(visitorShapeId);
-        return this;
+    	consumer.accept(visitorShapeId);
+    	return this;
     }
     
+    /// @see #visitorShapeId()
     public SensorBeginTouchEvent visitorShapeId(ShapeId other) {
-        visitorShapeId.set(other);
-        return this;
+    	visitorShapeId.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The id of the dynamic shape that began touching the sensor shape
+    /// ```
     public ShapeId visitorShapeId() {
-        return visitorShapeId;
+    	return visitorShapeId;
     }
     
     @Override

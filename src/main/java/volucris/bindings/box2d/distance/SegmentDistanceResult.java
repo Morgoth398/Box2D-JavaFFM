@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Result of computing the distance between two line segments
- */
+/// ```
+/// Result of computing the distance between two line segments
+/// ```
 public final class SegmentDistanceResult
 		implements Struct<SegmentDistanceResult> {
 
@@ -75,59 +75,81 @@ public final class SegmentDistanceResult
         closest2 = new Vec2(segment.asSlice(CLOSEST2_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #fraction1()
     public SegmentDistanceResult fraction1(float fraction1) {
-        FRACTION1_HANDLE.set(segment, 0L, fraction1);
-        return this;
+    	FRACTION1_HANDLE.set(segment, 0L, fraction1);
+    	return this;
     }
     
+    /// ```
+    /// The barycentric coordinate on the first segment
+    /// ```
     public float fraction1() {
-        return (float) FRACTION1_HANDLE.get(segment, 0L);
+    	return (float) FRACTION1_HANDLE.get(segment, 0L);
     }
     
+    /// @see #fraction2()
     public SegmentDistanceResult fraction2(float fraction2) {
-        FRACTION2_HANDLE.set(segment, 0L, fraction2);
-        return this;
+    	FRACTION2_HANDLE.set(segment, 0L, fraction2);
+    	return this;
     }
     
+    /// ```
+    /// The barycentric coordinate on the second segment
+    /// ```
     public float fraction2() {
-        return (float) FRACTION2_HANDLE.get(segment, 0L);
+    	return (float) FRACTION2_HANDLE.get(segment, 0L);
     }
     
+    /// @see #distanceSquared()
     public SegmentDistanceResult distanceSquared(float distanceSquared) {
-        DISTANCE_SQUARED_HANDLE.set(segment, 0L, distanceSquared);
-        return this;
+    	DISTANCE_SQUARED_HANDLE.set(segment, 0L, distanceSquared);
+    	return this;
     }
     
+    /// ```
+    /// The squared distance between the closest points
+    /// ```
     public float distanceSquared() {
-        return (float) DISTANCE_SQUARED_HANDLE.get(segment, 0L);
+    	return (float) DISTANCE_SQUARED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #closest1()
     public SegmentDistanceResult closest1(Consumer<Vec2> consumer) {
-        consumer.accept(closest1);
-        return this;
+    	consumer.accept(closest1);
+    	return this;
     }
     
+    /// @see #closest1()
     public SegmentDistanceResult closest1(Vec2 other) {
-        closest1.set(other);
-        return this;
+    	closest1.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The closest point on the first segment
+    /// ```
     public Vec2 closest1() {
-        return closest1;
+    	return closest1;
     }
     
+    /// @see #closest2()
     public SegmentDistanceResult closest2(Consumer<Vec2> consumer) {
-        consumer.accept(closest2);
-        return this;
+    	consumer.accept(closest2);
+    	return this;
     }
     
+    /// @see #closest2()
     public SegmentDistanceResult closest2(Vec2 other) {
-        closest2.set(other);
-        return this;
+    	closest2.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The closest point on the second segment
+    /// ```
     public Vec2 closest2() {
-        return closest2;
+    	return closest2;
     }
     
     @Override

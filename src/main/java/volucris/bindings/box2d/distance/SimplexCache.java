@@ -13,9 +13,12 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Used to warm start the GJK simplex. If you call this function multiple times with nearby transforms this might improve performance. Otherwise you can zero initialize this. The distance cache must be initialized to zero on the first call. Users should generally just zero initialize this structure for each call.
- */
+/// ```
+/// Used to warm start the GJK simplex. If you call this function multiple times with nearby
+/// transforms this might improve performance. Otherwise you can zero initialize this.
+/// The distance cache must be initialized to zero on the first call.
+/// Users should generally just zero initialize this structure for each call.
+/// ```
 public final class SimplexCache
 		implements Struct<SimplexCache> {
 
@@ -62,31 +65,43 @@ public final class SimplexCache
     
     }
 
+    /// @see #count()
     public SimplexCache count(short count) {
-        COUNT_HANDLE.set(segment, 0L, count);
-        return this;
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
     }
     
+    /// ```
+    /// The number of stored simplex points
+    /// ```
     public short count() {
-        return (short) COUNT_HANDLE.get(segment, 0L);
+    	return (short) COUNT_HANDLE.get(segment, 0L);
     }
     
-    public SimplexCache indexA(byte indexA, long index) {
-        INDEX_A_HANDLE.set(segment, 0L, index, indexA);
-        return this;
+    /// @see #indexA(int)
+    public SimplexCache indexA(byte indexA, int index0) {
+    	INDEX_A_HANDLE.set(segment, 0L, index0, indexA);
+    	return this;
     }
     
-    public byte indexA(long index) {
-        return (byte) INDEX_A_HANDLE.get(segment, 0L, index);
+    /// ```
+    /// The cached simplex indices on shape A
+    /// ```
+    public byte indexA(int index0) {
+    	return (byte) INDEX_A_HANDLE.get(segment, 0L, index0);
     }
     
-    public SimplexCache indexB(byte indexB, long index) {
-        INDEX_B_HANDLE.set(segment, 0L, index, indexB);
-        return this;
+    /// @see #indexB(int)
+    public SimplexCache indexB(byte indexB, int index0) {
+    	INDEX_B_HANDLE.set(segment, 0L, index0, indexB);
+    	return this;
     }
     
-    public byte indexB(long index) {
-        return (byte) INDEX_B_HANDLE.get(segment, 0L, index);
+    /// ```
+    /// The cached simplex indices on shape B
+    /// ```
+    public byte indexB(int index0) {
+    	return (byte) INDEX_B_HANDLE.get(segment, 0L, index0);
     }
     
     @Override

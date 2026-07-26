@@ -21,9 +21,9 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A solid circle
- */
+/// ```
+/// A solid circle
+/// ```
 public final class Circle
 		implements Struct<Circle> {
 
@@ -76,174 +76,175 @@ public final class Circle
         center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Compute the bounding box of a transformed circle
-     */
+    /// ```
+    /// Compute the bounding box of a transformed circle
+    /// ```
     public static MemorySegment computeCircleAABB(
-        SegmentAllocator allocator,
-        MemorySegment shape, 
-        MemorySegment transform
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	MemorySegment transform
     ) {
-        MethodHandle method = B2_COMPUTE_CIRCLE_AABB.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shape, 
-                transform
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COMPUTE_CIRCLE_AABB.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			transform
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #computeCircleAABB}.
-     */
+    /// Typed method of [#computeCircleAABB].
     public final @Nullable AABB computeCircleAABB(
-        SegmentAllocator allocator,
-        Transform transform
+    	SegmentAllocator allocator,
+    	Transform transform
     ) {
-        MemorySegment segment = computeCircleAABB(
-            allocator,
-            this.segment, 
-            transform.memorySegment()
-        );
+    	MemorySegment segment = computeCircleAABB(
+    		allocator,
+    		this.segment,
+    		transform.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
-    /**
-     * Test a point for overlap with a circle in local space
-     */
+    /// ```
+    /// Test a point for overlap with a circle in local space
+    /// ```
     public static boolean pointInCircle(
-        MemorySegment point, 
-        MemorySegment shape
+    	MemorySegment point,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_POINT_IN_CIRCLE.get();
-        try {
-            return (boolean) method.invokeExact(
-                point, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_POINT_IN_CIRCLE.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			point,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #pointInCircle}.
-     */
+    /// Typed method of [#pointInCircle].
     public final boolean pointInCircle(
-        Vec2 point
+    	Vec2 point
     ) {
-        return (boolean) pointInCircle(
-            point.memorySegment(), 
-            this.segment
-        );
+    	return (boolean) pointInCircle(
+    		point.memorySegment(),
+    		this.segment
+    	);
     }
     
-    /**
-     * Ray cast versus circle shape in local space. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Ray cast versus circle shape in local space. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment rayCastCircle(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_RAY_CAST_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_RAY_CAST_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rayCastCircle}.
-     */
+    /// Typed method of [#rayCastCircle].
     public final @Nullable CastOutput rayCastCircle(
-        SegmentAllocator allocator,
-        RayCastInput input
+    	SegmentAllocator allocator,
+    	RayCastInput input
     ) {
-        MemorySegment segment = rayCastCircle(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = rayCastCircle(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
-    /**
-     * Shape cast versus a circle. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Shape cast versus a circle. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment shapeCastCircle(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_SHAPE_CAST_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_CAST_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #shapeCastCircle}.
-     */
+    /// Typed method of [#shapeCastCircle].
     public final @Nullable CastOutput shapeCastCircle(
-        SegmentAllocator allocator,
-        ShapeCastInput input
+    	SegmentAllocator allocator,
+    	ShapeCastInput input
     ) {
-        MemorySegment segment = shapeCastCircle(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = shapeCastCircle(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
+    /// @see #radius()
     public Circle radius(float radius) {
-        RADIUS_HANDLE.set(segment, 0L, radius);
-        return this;
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
     }
     
+    /// ```
+    /// The radius
+    /// ```
     public float radius() {
-        return (float) RADIUS_HANDLE.get(segment, 0L);
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #center()
     public Circle center(Consumer<Vec2> consumer) {
-        consumer.accept(center);
-        return this;
+    	consumer.accept(center);
+    	return this;
     }
     
+    /// @see #center()
     public Circle center(Vec2 other) {
-        center.set(other);
-        return this;
+    	center.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local center
+    /// ```
     public Vec2 center() {
-        return center;
+    	return center;
     }
     
     @Override

@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A 2-by-2 Matrix
- */
+/// ```
+/// A 2-by-2 Matrix
+/// ```
 public final class Mat22
 		implements Struct<Mat22> {
 
@@ -56,32 +56,42 @@ public final class Mat22
         cy = new Vec2(segment.asSlice(CY_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #cx()
     public Mat22 cx(Consumer<Vec2> consumer) {
-        consumer.accept(cx);
-        return this;
+    	consumer.accept(cx);
+    	return this;
     }
     
+    /// @see #cx()
     public Mat22 cx(Vec2 other) {
-        cx.set(other);
-        return this;
+    	cx.set(other);
+    	return this;
     }
     
+    /// ```
+    /// columns
+    /// ```
     public Vec2 cx() {
-        return cx;
+    	return cx;
     }
     
+    /// @see #cy()
     public Mat22 cy(Consumer<Vec2> consumer) {
-        consumer.accept(cy);
-        return this;
+    	consumer.accept(cy);
+    	return this;
     }
     
+    /// @see #cy()
     public Mat22 cy(Vec2 other) {
-        cy.set(other);
-        return this;
+    	cy.set(other);
+    	return this;
     }
     
+    /// ```
+    /// columns
+    /// ```
     public Vec2 cy() {
-        return cy;
+    	return cy;
     }
     
     @Override

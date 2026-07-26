@@ -21,9 +21,14 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A solid convex polygon. It is assumed that the interior of the polygon is to the left of each edge. Polygons have a maximum number of vertices equal to B2_MAX_POLYGON_VERTICES. In most cases you should not need many vertices for a convex polygon.
- */
+/// ```
+/// A solid convex polygon. It is assumed that the interior of the polygon is to
+/// the left of each edge.
+/// Polygons have a maximum number of vertices equal to B2_MAX_POLYGON_VERTICES.
+/// In most cases you should not need many vertices for a convex polygon.
+/// @warning DO NOT fill this out manually, instead use a helper function like
+/// b2MakePolygon or b2MakeBox.
+/// ```
 public final class Polygon
 		implements Struct<Polygon> {
 
@@ -104,13 +109,11 @@ public final class Polygon
     public Polygon(MemorySegment segment) {
         this.segment = segment;
     
-    
         vertices = new Vec2[8];
         for (int i = 0; i < 8; i++) {
             long offset = VERTICES_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
             vertices[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
         }
-    
     
         normals = new Vec2[8];
         for (int i = 0; i < 8; i++) {
@@ -121,564 +124,581 @@ public final class Polygon
         centroid = new Vec2(segment.asSlice(CENTROID_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Make a convex polygon from a convex hull. This will assert if the hull is not valid.
-     */
+    /// ```
+    /// Make a convex polygon from a convex hull. This will assert if the hull is not valid.
+    /// @warning Do not manually fill in the hull data, it must come directly from b2ComputeHull
+    /// ```
     public static MemorySegment makePolygon(
-        SegmentAllocator allocator,
-        MemorySegment hull, 
-        float radius
+    	SegmentAllocator allocator,
+    	MemorySegment hull,
+    	float radius
     ) {
-        MethodHandle method = B2_MAKE_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                hull, 
-                radius
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			hull,
+    			radius
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #makePolygon}.
-     */
+    /// Typed method of [#makePolygon].
     public static @Nullable Polygon makePolygon(
-        SegmentAllocator allocator,
-        Hull hull, 
-        float radius
+    	SegmentAllocator allocator,
+    	Hull hull,
+    	float radius
     ) {
-        MemorySegment segment = makePolygon(
-            allocator,
-            hull.memorySegment(), 
-            radius
-        );
+    	MemorySegment segment = makePolygon(
+    		allocator,
+    		hull.memorySegment(),
+    		radius
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make an offset convex polygon from a convex hull. This will assert if the hull is not valid.
-     */
+    /// ```
+    /// Make an offset convex polygon from a convex hull. This will assert if the hull is not valid.
+    /// @warning Do not manually fill in the hull data, it must come directly from b2ComputeHull
+    /// ```
     public static MemorySegment makeOffsetPolygon(
-        SegmentAllocator allocator,
-        MemorySegment hull, 
-        MemorySegment position, 
-        MemorySegment rotation
+    	SegmentAllocator allocator,
+    	MemorySegment hull,
+    	MemorySegment position,
+    	MemorySegment rotation
     ) {
-        MethodHandle method = B2_MAKE_OFFSET_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                hull, 
-                position, 
-                rotation
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_OFFSET_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			hull,
+    			position,
+    			rotation
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #makeOffsetPolygon}.
-     */
+    /// Typed method of [#makeOffsetPolygon].
     public static @Nullable Polygon makeOffsetPolygon(
-        SegmentAllocator allocator,
-        Hull hull, 
-        Vec2 position, 
-        Rot rotation
+    	SegmentAllocator allocator,
+    	Hull hull,
+    	Vec2 position,
+    	Rot rotation
     ) {
-        MemorySegment segment = makeOffsetPolygon(
-            allocator,
-            hull.memorySegment(), 
-            position.memorySegment(), 
-            rotation.memorySegment()
-        );
+    	MemorySegment segment = makeOffsetPolygon(
+    		allocator,
+    		hull.memorySegment(),
+    		position.memorySegment(),
+    		rotation.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make an offset convex polygon from a convex hull. This will assert if the hull is not valid.
-     */
+    /// ```
+    /// Make an offset convex polygon from a convex hull. This will assert if the hull is not valid.
+    /// @warning Do not manually fill in the hull data, it must come directly from b2ComputeHull
+    /// ```
     public static MemorySegment makeOffsetRoundedPolygon(
-        SegmentAllocator allocator,
-        MemorySegment hull, 
-        MemorySegment position, 
-        MemorySegment rotation, 
-        float radius
+    	SegmentAllocator allocator,
+    	MemorySegment hull,
+    	MemorySegment position,
+    	MemorySegment rotation,
+    	float radius
     ) {
-        MethodHandle method = B2_MAKE_OFFSET_ROUNDED_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                hull, 
-                position, 
-                rotation, 
-                radius
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_OFFSET_ROUNDED_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			hull,
+    			position,
+    			rotation,
+    			radius
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #makeOffsetRoundedPolygon}.
-     */
+    /// Typed method of [#makeOffsetRoundedPolygon].
     public static @Nullable Polygon makeOffsetRoundedPolygon(
-        SegmentAllocator allocator,
-        Hull hull, 
-        Vec2 position, 
-        Rot rotation, 
-        float radius
+    	SegmentAllocator allocator,
+    	Hull hull,
+    	Vec2 position,
+    	Rot rotation,
+    	float radius
     ) {
-        MemorySegment segment = makeOffsetRoundedPolygon(
-            allocator,
-            hull.memorySegment(), 
-            position.memorySegment(), 
-            rotation.memorySegment(), 
-            radius
-        );
+    	MemorySegment segment = makeOffsetRoundedPolygon(
+    		allocator,
+    		hull.memorySegment(),
+    		position.memorySegment(),
+    		rotation.memorySegment(),
+    		radius
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make a square polygon, bypassing the need for a convex hull.
-     */
+    /// ```
+    /// Make a square polygon, bypassing the need for a convex hull.
+    /// @param halfWidth the half-width
+    /// ```
     public static MemorySegment nmakeSquare(
-        SegmentAllocator allocator,
-        float halfWidth
+    	SegmentAllocator allocator,
+    	float halfWidth
     ) {
-        MethodHandle method = B2_MAKE_SQUARE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                halfWidth
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_SQUARE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			halfWidth
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #nmakeSquare}.
-     */
+    /// Typed method of [#nmakeSquare].
     public static @Nullable Polygon makeSquare(
-        SegmentAllocator allocator,
-        float halfWidth
+    	SegmentAllocator allocator,
+    	float halfWidth
     ) {
-        MemorySegment segment = nmakeSquare(
-            allocator,
-            halfWidth
-        );
+    	MemorySegment segment = nmakeSquare(
+    		allocator,
+    		halfWidth
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make a box (rectangle) polygon, bypassing the need for a convex hull.
-     */
+    /// ```
+    /// Make a box (rectangle) polygon, bypassing the need for a convex hull.
+    /// @param halfWidth the half-width (x-axis)
+    /// @param halfHeight the half-height (y-axis)
+    /// ```
     public static MemorySegment nmakeBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight
     ) {
-        MethodHandle method = B2_MAKE_BOX.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                halfWidth, 
-                halfHeight
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_BOX.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			halfWidth,
+    			halfHeight
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #nmakeBox}.
-     */
+    /// Typed method of [#nmakeBox].
     public static @Nullable Polygon makeBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight
     ) {
-        MemorySegment segment = nmakeBox(
-            allocator,
-            halfWidth, 
-            halfHeight
-        );
+    	MemorySegment segment = nmakeBox(
+    		allocator,
+    		halfWidth,
+    		halfHeight
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make a rounded box, bypassing the need for a convex hull.
-     */
+    /// ```
+    /// Make a rounded box, bypassing the need for a convex hull.
+    /// @param halfWidth the half-width (x-axis)
+    /// @param halfHeight the half-height (y-axis)
+    /// @param radius the radius of the rounded extension
+    /// ```
     public static MemorySegment nmakeRoundedBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight, 
-        float radius
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight,
+    	float radius
     ) {
-        MethodHandle method = B2_MAKE_ROUNDED_BOX.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                halfWidth, 
-                halfHeight, 
-                radius
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_ROUNDED_BOX.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			halfWidth,
+    			halfHeight,
+    			radius
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #nmakeRoundedBox}.
-     */
+    /// Typed method of [#nmakeRoundedBox].
     public static @Nullable Polygon makeRoundedBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight, 
-        float radius
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight,
+    	float radius
     ) {
-        MemorySegment segment = nmakeRoundedBox(
-            allocator,
-            halfWidth, 
-            halfHeight, 
-            radius
-        );
+    	MemorySegment segment = nmakeRoundedBox(
+    		allocator,
+    		halfWidth,
+    		halfHeight,
+    		radius
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make an offset box, bypassing the need for a convex hull.
-     */
+    /// ```
+    /// Make an offset box, bypassing the need for a convex hull.
+    /// @param halfWidth the half-width (x-axis)
+    /// @param halfHeight the half-height (y-axis)
+    /// @param center the local center of the box
+    /// @param rotation the local rotation of the box
+    /// ```
     public static MemorySegment makeOffsetBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight, 
-        MemorySegment center, 
-        MemorySegment rotation
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight,
+    	MemorySegment center,
+    	MemorySegment rotation
     ) {
-        MethodHandle method = B2_MAKE_OFFSET_BOX.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                halfWidth, 
-                halfHeight, 
-                center, 
-                rotation
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_OFFSET_BOX.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			halfWidth,
+    			halfHeight,
+    			center,
+    			rotation
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #makeOffsetBox}.
-     */
+    /// Typed method of [#makeOffsetBox].
     public static @Nullable Polygon makeOffsetBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight, 
-        Vec2 center, 
-        Rot rotation
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight,
+    	Vec2 center,
+    	Rot rotation
     ) {
-        MemorySegment segment = makeOffsetBox(
-            allocator,
-            halfWidth, 
-            halfHeight, 
-            center.memorySegment(), 
-            rotation.memorySegment()
-        );
+    	MemorySegment segment = makeOffsetBox(
+    		allocator,
+    		halfWidth,
+    		halfHeight,
+    		center.memorySegment(),
+    		rotation.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Make an offset rounded box, bypassing the need for a convex hull.
-     */
+    /// ```
+    /// Make an offset rounded box, bypassing the need for a convex hull.
+    /// @param halfWidth the half-width (x-axis)
+    /// @param halfHeight the half-height (y-axis)
+    /// @param center the local center of the box
+    /// @param rotation the local rotation of the box
+    /// @param radius the radius of the rounded extension
+    /// ```
     public static MemorySegment makeOffsetRoundedBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight, 
-        MemorySegment center, 
-        MemorySegment rotation, 
-        float radius
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight,
+    	MemorySegment center,
+    	MemorySegment rotation,
+    	float radius
     ) {
-        MethodHandle method = B2_MAKE_OFFSET_ROUNDED_BOX.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                halfWidth, 
-                halfHeight, 
-                center, 
-                rotation, 
-                radius
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MAKE_OFFSET_ROUNDED_BOX.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			halfWidth,
+    			halfHeight,
+    			center,
+    			rotation,
+    			radius
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #makeOffsetRoundedBox}.
-     */
+    /// Typed method of [#makeOffsetRoundedBox].
     public static @Nullable Polygon makeOffsetRoundedBox(
-        SegmentAllocator allocator,
-        float halfWidth, 
-        float halfHeight, 
-        Vec2 center, 
-        Rot rotation, 
-        float radius
+    	SegmentAllocator allocator,
+    	float halfWidth,
+    	float halfHeight,
+    	Vec2 center,
+    	Rot rotation,
+    	float radius
     ) {
-        MemorySegment segment = makeOffsetRoundedBox(
-            allocator,
-            halfWidth, 
-            halfHeight, 
-            center.memorySegment(), 
-            rotation.memorySegment(), 
-            radius
-        );
+    	MemorySegment segment = makeOffsetRoundedBox(
+    		allocator,
+    		halfWidth,
+    		halfHeight,
+    		center.memorySegment(),
+    		rotation.memorySegment(),
+    		radius
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Transform a polygon. This is useful for transferring a shape from one body to another.
-     */
+    /// ```
+    /// Transform a polygon. This is useful for transferring a shape from one body to another.
+    /// ```
     public static MemorySegment transformPolygon(
-        SegmentAllocator allocator,
-        MemorySegment transform, 
-        MemorySegment polygon
+    	SegmentAllocator allocator,
+    	MemorySegment transform,
+    	MemorySegment polygon
     ) {
-        MethodHandle method = B2_TRANSFORM_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                transform, 
-                polygon
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_TRANSFORM_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			transform,
+    			polygon
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #transformPolygon}.
-     */
+    /// Typed method of [#transformPolygon].
     public static @Nullable Polygon transformPolygon(
-        SegmentAllocator allocator,
-        Transform transform, 
-        Polygon polygon
+    	SegmentAllocator allocator,
+    	Transform transform,
+    	Polygon polygon
     ) {
-        MemorySegment segment = transformPolygon(
-            allocator,
-            transform.memorySegment(), 
-            polygon.memorySegment()
-        );
+    	MemorySegment segment = transformPolygon(
+    		allocator,
+    		transform.memorySegment(),
+    		polygon.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Test a point for overlap with a convex polygon in local space
-     */
+    /// ```
+    /// Test a point for overlap with a convex polygon in local space
+    /// ```
     public static boolean pointInPolygon(
-        MemorySegment point, 
-        MemorySegment shape
+    	MemorySegment point,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_POINT_IN_POLYGON.get();
-        try {
-            return (boolean) method.invokeExact(
-                point, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_POINT_IN_POLYGON.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			point,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #pointInPolygon}.
-     */
+    /// Typed method of [#pointInPolygon].
     public final boolean pointInPolygon(
-        Vec2 point
+    	Vec2 point
     ) {
-        return (boolean) pointInPolygon(
-            point.memorySegment(), 
-            this.segment
-        );
+    	return (boolean) pointInPolygon(
+    		point.memorySegment(),
+    		this.segment
+    	);
     }
     
-    /**
-     * Ray cast versus polygon shape in local space. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Ray cast versus polygon shape in local space. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment rayCastPolygon(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_RAY_CAST_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_RAY_CAST_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rayCastPolygon}.
-     */
+    /// Typed method of [#rayCastPolygon].
     public final @Nullable CastOutput rayCastPolygon(
-        SegmentAllocator allocator,
-        RayCastInput input
+    	SegmentAllocator allocator,
+    	RayCastInput input
     ) {
-        MemorySegment segment = rayCastPolygon(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = rayCastPolygon(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
-    /**
-     * Shape cast versus a convex polygon. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Shape cast versus a convex polygon. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment shapeCastPolygon(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_SHAPE_CAST_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_CAST_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #shapeCastPolygon}.
-     */
+    /// Typed method of [#shapeCastPolygon].
     public final @Nullable CastOutput shapeCastPolygon(
-        SegmentAllocator allocator,
-        ShapeCastInput input
+    	SegmentAllocator allocator,
+    	ShapeCastInput input
     ) {
-        MemorySegment segment = shapeCastPolygon(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = shapeCastPolygon(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
+    /// @see #radius()
     public Polygon radius(float radius) {
-        RADIUS_HANDLE.set(segment, 0L, radius);
-        return this;
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
     }
     
+    /// ```
+    /// The external radius for rounded polygons
+    /// ```
     public float radius() {
-        return (float) RADIUS_HANDLE.get(segment, 0L);
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #count()
     public Polygon count(int count) {
-        COUNT_HANDLE.set(segment, 0L, count);
-        return this;
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
     }
     
+    /// ```
+    /// The number of polygon vertices
+    /// ```
     public int count() {
-        return (int) COUNT_HANDLE.get(segment, 0L);
+    	return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #vertices(int)
     public Polygon vertices(Consumer<Vec2> consumer, int index) {
-        consumer.accept(vertices[index]);
-        return this;
+    	consumer.accept(vertices[index]);
+    	return this;
     }
     
+    /// @see #vertices(int)
     public Polygon vertices(Vec2 other, int index) {
-        vertices[index].set(other);
-        return this;
+    	vertices[index].set(other);
+    	return this;
     }
     
+    /// ```
+    /// The polygon vertices
+    /// ```
     public Vec2 vertices(int index) {
-        return vertices[index];
+    	return vertices[index];
     }
     
+    /// @see #normals(int)
     public Polygon normals(Consumer<Vec2> consumer, int index) {
-        consumer.accept(normals[index]);
-        return this;
+    	consumer.accept(normals[index]);
+    	return this;
     }
     
+    /// @see #normals(int)
     public Polygon normals(Vec2 other, int index) {
-        normals[index].set(other);
-        return this;
+    	normals[index].set(other);
+    	return this;
     }
     
+    /// ```
+    /// The outward normal vectors of the polygon sides
+    /// ```
     public Vec2 normals(int index) {
-        return normals[index];
+    	return normals[index];
     }
     
+    /// @see #centroid()
     public Polygon centroid(Consumer<Vec2> consumer) {
-        consumer.accept(centroid);
-        return this;
+    	consumer.accept(centroid);
+    	return this;
     }
     
+    /// @see #centroid()
     public Polygon centroid(Vec2 other) {
-        centroid.set(other);
-        return this;
+    	centroid.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The centroid of the polygon
+    /// ```
     public Vec2 centroid() {
-        return centroid;
+    	return centroid;
     }
     
     @Override

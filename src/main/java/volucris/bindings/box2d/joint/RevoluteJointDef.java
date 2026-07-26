@@ -20,9 +20,20 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Revolute joint definition
- */
+/// ```
+/// Revolute joint definition
+/// 
+/// This requires defining an anchor point where the bodies are joined.
+/// The definition uses local anchor points so that the
+/// initial configuration can violate the constraint slightly. You also need to
+/// specify the initial relative angle for joint limits. This helps when saving
+/// and loading a game.
+/// The local anchor points are measured from the body's origin
+/// rather than the center of mass because:
+/// 1. you might not know where the center of mass will be
+/// 2. if you add/remove shapes from a body and recompute the mass, the joints will be broken
+/// @ingroup revolute_joint
+/// ```
 public final class RevoluteJointDef
 		implements Struct<RevoluteJointDef> {
 
@@ -151,230 +162,313 @@ public final class RevoluteJointDef
         localAnchorB = new Vec2(segment.asSlice(LOCAL_ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition.
-     */
+    /// ```
+    /// Use this to initialize your joint definition.
+    /// @ingroup revolute_joint
+    /// ```
     public static MemorySegment ndefaultRevoluteJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_REVOLUTE_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_REVOLUTE_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultRevoluteJointDef}.
-     */
+    /// Typed method of [#ndefaultRevoluteJointDef].
     public static @Nullable RevoluteJointDef defaultRevoluteJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultRevoluteJointDef(allocator);
+    	MemorySegment segment = ndefaultRevoluteJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new RevoluteJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new RevoluteJointDef(segment);
     }
     
+    /// @see #referenceAngle()
     public RevoluteJointDef referenceAngle(float referenceAngle) {
-        REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
-        return this;
+    	REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
+    	return this;
     }
     
+    /// ```
+    /// The bodyB angle minus bodyA angle in the reference state (radians).
+    /// This defines the zero angle for the joint limit.
+    /// ```
     public float referenceAngle() {
-        return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
+    	return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #targetAngle()
     public RevoluteJointDef targetAngle(float targetAngle) {
-        TARGET_ANGLE_HANDLE.set(segment, 0L, targetAngle);
-        return this;
+    	TARGET_ANGLE_HANDLE.set(segment, 0L, targetAngle);
+    	return this;
     }
     
+    /// ```
+    /// The target angle for the joint in radians. The spring-damper will drive
+    /// to this angle.
+    /// ```
     public float targetAngle() {
-        return (float) TARGET_ANGLE_HANDLE.get(segment, 0L);
+    	return (float) TARGET_ANGLE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableSpring()
     public RevoluteJointDef enableSpring(boolean enableSpring) {
-        ENABLE_SPRING_HANDLE.set(segment, 0L, enableSpring);
-        return this;
+    	ENABLE_SPRING_HANDLE.set(segment, 0L, enableSpring);
+    	return this;
     }
     
+    /// ```
+    /// Enable a rotational spring on the revolute hinge axis
+    /// ```
     public boolean enableSpring() {
-        return (boolean) ENABLE_SPRING_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SPRING_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hertz()
     public RevoluteJointDef hertz(float hertz) {
-        HERTZ_HANDLE.set(segment, 0L, hertz);
-        return this;
+    	HERTZ_HANDLE.set(segment, 0L, hertz);
+    	return this;
     }
     
+    /// ```
+    /// The spring stiffness Hertz, cycles per second
+    /// ```
     public float hertz() {
-        return (float) HERTZ_HANDLE.get(segment, 0L);
+    	return (float) HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #dampingRatio()
     public RevoluteJointDef dampingRatio(float dampingRatio) {
-        DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
-        return this;
+    	DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// The spring damping ratio, non-dimensional
+    /// ```
     public float dampingRatio() {
-        return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableLimit()
     public RevoluteJointDef enableLimit(boolean enableLimit) {
-        ENABLE_LIMIT_HANDLE.set(segment, 0L, enableLimit);
-        return this;
+    	ENABLE_LIMIT_HANDLE.set(segment, 0L, enableLimit);
+    	return this;
     }
     
+    /// ```
+    /// A flag to enable joint limits
+    /// ```
     public boolean enableLimit() {
-        return (boolean) ENABLE_LIMIT_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_LIMIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #lowerAngle()
     public RevoluteJointDef lowerAngle(float lowerAngle) {
-        LOWER_ANGLE_HANDLE.set(segment, 0L, lowerAngle);
-        return this;
+    	LOWER_ANGLE_HANDLE.set(segment, 0L, lowerAngle);
+    	return this;
     }
     
+    /// ```
+    /// The lower angle for the joint limit in radians. Minimum of -0.99*pi radians.
+    /// ```
     public float lowerAngle() {
-        return (float) LOWER_ANGLE_HANDLE.get(segment, 0L);
+    	return (float) LOWER_ANGLE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #upperAngle()
     public RevoluteJointDef upperAngle(float upperAngle) {
-        UPPER_ANGLE_HANDLE.set(segment, 0L, upperAngle);
-        return this;
+    	UPPER_ANGLE_HANDLE.set(segment, 0L, upperAngle);
+    	return this;
     }
     
+    /// ```
+    /// The upper angle for the joint limit in radians. Maximum of 0.99*pi radians.
+    /// ```
     public float upperAngle() {
-        return (float) UPPER_ANGLE_HANDLE.get(segment, 0L);
+    	return (float) UPPER_ANGLE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableMotor()
     public RevoluteJointDef enableMotor(boolean enableMotor) {
-        ENABLE_MOTOR_HANDLE.set(segment, 0L, enableMotor);
-        return this;
+    	ENABLE_MOTOR_HANDLE.set(segment, 0L, enableMotor);
+    	return this;
     }
     
+    /// ```
+    /// A flag to enable the joint motor
+    /// ```
     public boolean enableMotor() {
-        return (boolean) ENABLE_MOTOR_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_MOTOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxMotorTorque()
     public RevoluteJointDef maxMotorTorque(float maxMotorTorque) {
-        MAX_MOTOR_TORQUE_HANDLE.set(segment, 0L, maxMotorTorque);
-        return this;
+    	MAX_MOTOR_TORQUE_HANDLE.set(segment, 0L, maxMotorTorque);
+    	return this;
     }
     
+    /// ```
+    /// The maximum motor torque, typically in newton-meters
+    /// ```
     public float maxMotorTorque() {
-        return (float) MAX_MOTOR_TORQUE_HANDLE.get(segment, 0L);
+    	return (float) MAX_MOTOR_TORQUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #motorSpeed()
     public RevoluteJointDef motorSpeed(float motorSpeed) {
-        MOTOR_SPEED_HANDLE.set(segment, 0L, motorSpeed);
-        return this;
+    	MOTOR_SPEED_HANDLE.set(segment, 0L, motorSpeed);
+    	return this;
     }
     
+    /// ```
+    /// The desired motor speed in radians per second
+    /// ```
     public float motorSpeed() {
-        return (float) MOTOR_SPEED_HANDLE.get(segment, 0L);
+    	return (float) MOTOR_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawSize()
     public RevoluteJointDef drawSize(float drawSize) {
-        DRAW_SIZE_HANDLE.set(segment, 0L, drawSize);
-        return this;
+    	DRAW_SIZE_HANDLE.set(segment, 0L, drawSize);
+    	return this;
     }
     
+    /// ```
+    /// Scale the debug draw
+    /// ```
     public float drawSize() {
-        return (float) DRAW_SIZE_HANDLE.get(segment, 0L);
+    	return (float) DRAW_SIZE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collideConnected()
     public RevoluteJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-        return this;
+    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to true if the attached bodies should collide
+    /// ```
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userData()
     public RevoluteJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public RevoluteJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public RevoluteJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public RevoluteJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public RevoluteJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public RevoluteJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
+    /// @see #localAnchorA()
     public RevoluteJointDef localAnchorA(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorA);
-        return this;
+    	consumer.accept(localAnchorA);
+    	return this;
     }
     
+    /// @see #localAnchorA()
     public RevoluteJointDef localAnchorA(Vec2 other) {
-        localAnchorA.set(other);
-        return this;
+    	localAnchorA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyA's origin
+    /// ```
     public Vec2 localAnchorA() {
-        return localAnchorA;
+    	return localAnchorA;
     }
     
+    /// @see #localAnchorB()
     public RevoluteJointDef localAnchorB(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorB);
-        return this;
+    	consumer.accept(localAnchorB);
+    	return this;
     }
     
+    /// @see #localAnchorB()
     public RevoluteJointDef localAnchorB(Vec2 other) {
-        localAnchorB.set(other);
-        return this;
+    	localAnchorB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyB's origin
+    /// ```
     public Vec2 localAnchorB() {
-        return localAnchorB;
+    	return localAnchorB;
     }
     
     @Override

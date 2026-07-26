@@ -19,9 +19,9 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A solid circle
- */
+/// ```
+/// A solid circle
+/// ```
 public final class Hull
 		implements Struct<Hull> {
 
@@ -70,93 +70,107 @@ public final class Hull
         center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Compute the convex hull of a set of points. Returns an empty hull if it fails. Some failure cases: - all points very close together - all points on a line - less than 3 points - more than B2_MAX_POLYGON_VERTICES points This welds close points and removes collinear points.
-     */
+    /// ```
+    /// Compute the convex hull of a set of points. Returns an empty hull if it fails.
+    /// Some failure cases:
+    /// - all points very close together
+    /// - all points on a line
+    /// - less than 3 points
+    /// - more than B2_MAX_POLYGON_VERTICES points
+    /// This welds close points and removes collinear points.
+    /// @warning Do not modify a hull once it has been computed
+    /// ```
     public static MemorySegment computeHull(
-        SegmentAllocator allocator,
-        MemorySegment points, 
-        int count
+    	SegmentAllocator allocator,
+    	MemorySegment points,
+    	int count
     ) {
-        MethodHandle method = B2_COMPUTE_HULL.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                points, 
-                count
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COMPUTE_HULL.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			points,
+    			count
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #computeHull}.
-     */
+    /// Typed method of [#computeHull].
     public static @Nullable Hull computeHull(
-        SegmentAllocator allocator,
-        NativeStructArray<Vec2> points, 
-        int count
+    	SegmentAllocator allocator,
+    	NativeStructArray<Vec2> points,
+    	int count
     ) {
-        MemorySegment segment = computeHull(
-            allocator,
-            points.memorySegment(), 
-            count
-        );
+    	MemorySegment segment = computeHull(
+    		allocator,
+    		points.memorySegment(),
+    		count
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Hull(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Hull(segment);
     }
     
-    /**
-     * This determines if a hull is valid. Checks for: - convexity - collinear points This is expensive and should not be called at runtime.
-     */
+    /// ```
+    /// This determines if a hull is valid. Checks for:
+    /// - convexity
+    /// - collinear points
+    /// This is expensive and should not be called at runtime.
+    /// ```
     public static boolean validateHull(
-        MemorySegment hull
+    	MemorySegment hull
     ) {
-        MethodHandle method = B2_VALIDATE_HULL.get();
-        try {
-            return (boolean) method.invokeExact(
-                hull
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_VALIDATE_HULL.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			hull
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #validateHull}.
-     */
-    public final boolean validateHull(
-    ) {
-        return (boolean) validateHull(
-            this.segment
-        );
+    /// Typed method of [#validateHull].
+    public final boolean validateHull() {
+    	return (boolean) validateHull(
+    		this.segment
+    	);
     }
     
+    /// @see #radius()
     public Hull radius(float radius) {
-        RADIUS_HANDLE.set(segment, 0L, radius);
-        return this;
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
     }
     
+    /// ```
+    /// The radius
+    /// ```
     public float radius() {
-        return (float) RADIUS_HANDLE.get(segment, 0L);
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #center()
     public Hull center(Consumer<Vec2> consumer) {
-        consumer.accept(center);
-        return this;
+    	consumer.accept(center);
+    	return this;
     }
     
+    /// @see #center()
     public Hull center(Vec2 other) {
-        center.set(other);
-        return this;
+    	center.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local center
+    /// ```
     public Vec2 center() {
-        return center;
+    	return center;
     }
     
     @Override

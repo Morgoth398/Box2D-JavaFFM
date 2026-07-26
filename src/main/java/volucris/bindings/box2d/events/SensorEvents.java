@@ -15,9 +15,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Sensor events are buffered in the Box2D world and are available as begin/end overlap event arrays after the time step is complete. Note: these may become invalid if bodies and/or shapes are destroyed
- */
+/// ```
+/// Sensor events are buffered in the Box2D world and are available
+/// as begin/end overlap event arrays after the time step is complete.
+/// Note: these may become invalid if bodies and/or shapes are destroyed
+/// ```
 public final class SensorEvents
 		implements Struct<SensorEvents> {
 
@@ -69,50 +71,66 @@ public final class SensorEvents
     
     }
 
+    /// @see #beginEvents()
     public SensorEvents beginEvents(SensorBeginTouchEvent beginEvents) {
-        BEGIN_EVENTS_HANDLE.set(segment, 0L, beginEvents.memorySegment());
-        return this;
+    	BEGIN_EVENTS_HANDLE.set(segment, 0L, beginEvents.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Array of sensor begin touch events
+    /// ```
     public @Nullable SensorBeginTouchEvent beginEvents() {
-        MemorySegment segment = (MemorySegment) BEGIN_EVENTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) BEGIN_EVENTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new SensorBeginTouchEvent(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new SensorBeginTouchEvent(segment);
     }
     
+    /// @see #endEvents()
     public SensorEvents endEvents(SensorEndTouchEvent endEvents) {
-        END_EVENTS_HANDLE.set(segment, 0L, endEvents.memorySegment());
-        return this;
+    	END_EVENTS_HANDLE.set(segment, 0L, endEvents.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Array of sensor end touch events
+    /// ```
     public @Nullable SensorEndTouchEvent endEvents() {
-        MemorySegment segment = (MemorySegment) END_EVENTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) END_EVENTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new SensorEndTouchEvent(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new SensorEndTouchEvent(segment);
     }
     
+    /// @see #beginCount()
     public SensorEvents beginCount(int beginCount) {
-        BEGIN_COUNT_HANDLE.set(segment, 0L, beginCount);
-        return this;
+    	BEGIN_COUNT_HANDLE.set(segment, 0L, beginCount);
+    	return this;
     }
     
+    /// ```
+    /// The number of begin touch events
+    /// ```
     public int beginCount() {
-        return (int) BEGIN_COUNT_HANDLE.get(segment, 0L);
+    	return (int) BEGIN_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #endCount()
     public SensorEvents endCount(int endCount) {
-        END_COUNT_HANDLE.set(segment, 0L, endCount);
-        return this;
+    	END_COUNT_HANDLE.set(segment, 0L, endCount);
+    	return this;
     }
     
+    /// ```
+    /// The number of end touch events
+    /// ```
     public int endCount() {
-        return (int) END_COUNT_HANDLE.get(segment, 0L);
+    	return (int) END_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override

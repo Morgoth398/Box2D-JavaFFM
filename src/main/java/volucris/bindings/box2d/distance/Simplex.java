@@ -14,9 +14,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Simplex from the GJK algorithm
- */
+/// ```
+/// Simplex from the GJK algorithm
+/// ```
 public final class Simplex
 		implements Struct<Simplex> {
 
@@ -69,55 +69,74 @@ public final class Simplex
         v3 = new SimplexVertex(segment.asSlice(V3_BYTE_OFFSET, SimplexVertex.LAYOUT));
     }
 
+    /// @see #count()
     public Simplex count(int count) {
-        COUNT_HANDLE.set(segment, 0L, count);
-        return this;
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
     }
     
+    /// ```
+    /// number of valid vertices
+    /// ```
     public int count() {
-        return (int) COUNT_HANDLE.get(segment, 0L);
+    	return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #v1()
     public Simplex v1(Consumer<SimplexVertex> consumer) {
-        consumer.accept(v1);
-        return this;
+    	consumer.accept(v1);
+    	return this;
     }
     
+    /// @see #v1()
     public Simplex v1(SimplexVertex other) {
-        v1.set(other);
-        return this;
+    	v1.set(other);
+    	return this;
     }
     
+    /// ```
+    /// vertices
+    /// ```
     public SimplexVertex v1() {
-        return v1;
+    	return v1;
     }
     
+    /// @see #v2()
     public Simplex v2(Consumer<SimplexVertex> consumer) {
-        consumer.accept(v2);
-        return this;
+    	consumer.accept(v2);
+    	return this;
     }
     
+    /// @see #v2()
     public Simplex v2(SimplexVertex other) {
-        v2.set(other);
-        return this;
+    	v2.set(other);
+    	return this;
     }
     
+    /// ```
+    /// vertices
+    /// ```
     public SimplexVertex v2() {
-        return v2;
+    	return v2;
     }
     
+    /// @see #v3()
     public Simplex v3(Consumer<SimplexVertex> consumer) {
-        consumer.accept(v3);
-        return this;
+    	consumer.accept(v3);
+    	return this;
     }
     
+    /// @see #v3()
     public Simplex v3(SimplexVertex other) {
-        v3.set(other);
-        return this;
+    	v3.set(other);
+    	return this;
     }
     
+    /// ```
+    /// vertices
+    /// ```
     public SimplexVertex v3() {
-        return v3;
+    	return v3;
     }
     
     @Override

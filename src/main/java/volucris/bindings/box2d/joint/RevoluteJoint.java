@@ -12,9 +12,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class RevoluteJoint {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_REVOLUTE_JOINT;
@@ -70,651 +67,610 @@ public final class RevoluteJoint {
     private RevoluteJoint() {
     }
 
-    /**
-     * Create a revolute joint
-     */
+    /// ```
+    /// Create a revolute joint
+    /// @see b2RevoluteJointDef for details
+    /// ```
     public static MemorySegment createRevoluteJoint(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_REVOLUTE_JOINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_REVOLUTE_JOINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createRevoluteJoint}.
-     */
+    /// Typed method of [#createRevoluteJoint].
     public static @Nullable JointId createRevoluteJoint(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        RevoluteJointDef def
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	RevoluteJointDef def
     ) {
-        MemorySegment segment = createRevoluteJoint(
-            allocator,
-            worldId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createRevoluteJoint(
+    		allocator,
+    		worldId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new JointId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new JointId(segment);
     }
     
-    /**
-     * Enable/disable the revolute joint spring
-     */
+    /// ```
+    /// Enable/disable the revolute joint spring
+    /// ```
     public static void enableSpring(
-        MemorySegment jointId, 
-        boolean enableSpring
+    	MemorySegment jointId,
+    	boolean enableSpring
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_ENABLE_SPRING.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableSpring
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_ENABLE_SPRING.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableSpring
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableSpring}.
-     */
+    /// Typed method of [#enableSpring].
     public static void enableSpring(
-        JointId jointId, 
-        boolean enableSpring
+    	JointId jointId,
+    	boolean enableSpring
     ) {
-        enableSpring(
-            jointId.memorySegment(), 
-            enableSpring
-        );
+    	enableSpring(
+    		jointId.memorySegment(),
+    		enableSpring
+    	);
     }
     
-    /**
-     * It the revolute angular spring enabled?
-     */
+    /// ```
+    /// It the revolute angular spring enabled?
+    /// ```
     public static boolean isSpringEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_IS_SPRING_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_IS_SPRING_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isSpringEnabled}.
-     */
+    /// Typed method of [#isSpringEnabled].
     public static boolean isSpringEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) isSpringEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) isSpringEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the revolute joint spring stiffness in Hertz
-     */
+    /// ```
+    /// Set the revolute joint spring stiffness in Hertz
+    /// ```
     public static void setSpringHertz(
-        MemorySegment jointId, 
-        float hertz
+    	MemorySegment jointId,
+    	float hertz
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_SET_SPRING_HERTZ.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_SPRING_HERTZ.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setSpringHertz}.
-     */
+    /// Typed method of [#setSpringHertz].
     public static void setSpringHertz(
-        JointId jointId, 
-        float hertz
+    	JointId jointId,
+    	float hertz
     ) {
-        setSpringHertz(
-            jointId.memorySegment(), 
-            hertz
-        );
+    	setSpringHertz(
+    		jointId.memorySegment(),
+    		hertz
+    	);
     }
     
-    /**
-     * Get the revolute joint spring stiffness in Hertz
-     */
+    /// ```
+    /// Get the revolute joint spring stiffness in Hertz
+    /// ```
     public static float getSpringHertz(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_SPRING_HERTZ.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_SPRING_HERTZ.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSpringHertz}.
-     */
+    /// Typed method of [#getSpringHertz].
     public static float getSpringHertz(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getSpringHertz(
-            jointId.memorySegment()
-        );
+    	return (float) getSpringHertz(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the revolute joint spring damping ratio, non-dimensional
-     */
+    /// ```
+    /// Set the revolute joint spring damping ratio, non-dimensional
+    /// ```
     public static void setSpringDampingRatio(
-        MemorySegment jointId, 
-        float dampingRatio
+    	MemorySegment jointId,
+    	float dampingRatio
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_SET_SPRING_DAMPING_RATIO.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_SPRING_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setSpringDampingRatio}.
-     */
+    /// Typed method of [#setSpringDampingRatio].
     public static void setSpringDampingRatio(
-        JointId jointId, 
-        float dampingRatio
+    	JointId jointId,
+    	float dampingRatio
     ) {
-        setSpringDampingRatio(
-            jointId.memorySegment(), 
-            dampingRatio
-        );
+    	setSpringDampingRatio(
+    		jointId.memorySegment(),
+    		dampingRatio
+    	);
     }
     
-    /**
-     * Get the revolute joint spring damping ratio, non-dimensional
-     */
+    /// ```
+    /// Get the revolute joint spring damping ratio, non-dimensional
+    /// ```
     public static float getSpringDampingRatio(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSpringDampingRatio}.
-     */
+    /// Typed method of [#getSpringDampingRatio].
     public static float getSpringDampingRatio(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getSpringDampingRatio(
-            jointId.memorySegment()
-        );
+    	return (float) getSpringDampingRatio(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the revolute joint spring target angle, radians
-     */
+    /// ```
+    /// Set the revolute joint spring target angle, radians
+    /// ```
     public static void setTargetAngle(
-        MemorySegment jointId, 
-        float angle
+    	MemorySegment jointId,
+    	float angle
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_SET_TARGET_ANGLE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                angle
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_TARGET_ANGLE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			angle
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setTargetAngle}.
-     */
+    /// Typed method of [#setTargetAngle].
     public static void setTargetAngle(
-        JointId jointId, 
-        float angle
+    	JointId jointId,
+    	float angle
     ) {
-        setTargetAngle(
-            jointId.memorySegment(), 
-            angle
-        );
+    	setTargetAngle(
+    		jointId.memorySegment(),
+    		angle
+    	);
     }
     
-    /**
-     * Get the revolute joint spring target angle, radians
-     */
+    /// ```
+    /// Get the revolute joint spring target angle, radians
+    /// ```
     public static float getTargetAngle(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_TARGET_ANGLE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_TARGET_ANGLE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getTargetAngle}.
-     */
+    /// Typed method of [#getTargetAngle].
     public static float getTargetAngle(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getTargetAngle(
-            jointId.memorySegment()
-        );
+    	return (float) getTargetAngle(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the revolute joint current angle in radians relative to the reference angle
-     */
+    /// ```
+    /// Get the revolute joint current angle in radians relative to the reference angle
+    /// @see b2RevoluteJointDef::referenceAngle
+    /// ```
     public static float getAngle(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_ANGLE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_ANGLE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAngle}.
-     */
+    /// Typed method of [#getAngle].
     public static float getAngle(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getAngle(
-            jointId.memorySegment()
-        );
+    	return (float) getAngle(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable/disable the revolute joint limit
-     */
+    /// ```
+    /// Enable/disable the revolute joint limit
+    /// ```
     public static void enableLimit(
-        MemorySegment jointId, 
-        boolean enableLimit
+    	MemorySegment jointId,
+    	boolean enableLimit
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_ENABLE_LIMIT.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableLimit
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_ENABLE_LIMIT.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableLimit
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableLimit}.
-     */
+    /// Typed method of [#enableLimit].
     public static void enableLimit(
-        JointId jointId, 
-        boolean enableLimit
+    	JointId jointId,
+    	boolean enableLimit
     ) {
-        enableLimit(
-            jointId.memorySegment(), 
-            enableLimit
-        );
+    	enableLimit(
+    		jointId.memorySegment(),
+    		enableLimit
+    	);
     }
     
-    /**
-     * Is the revolute joint limit enabled?
-     */
+    /// ```
+    /// Is the revolute joint limit enabled?
+    /// ```
     public static boolean isLimitEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isLimitEnabled}.
-     */
+    /// Typed method of [#isLimitEnabled].
     public static boolean isLimitEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) isLimitEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) isLimitEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the revolute joint lower limit in radians
-     */
+    /// ```
+    /// Get the revolute joint lower limit in radians
+    /// ```
     public static float getLowerLimit(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_LOWER_LIMIT.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_LOWER_LIMIT.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLowerLimit}.
-     */
+    /// Typed method of [#getLowerLimit].
     public static float getLowerLimit(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getLowerLimit(
-            jointId.memorySegment()
-        );
+    	return (float) getLowerLimit(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the revolute joint upper limit in radians
-     */
+    /// ```
+    /// Get the revolute joint upper limit in radians
+    /// ```
     public static float getUpperLimit(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_UPPER_LIMIT.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_UPPER_LIMIT.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getUpperLimit}.
-     */
+    /// Typed method of [#getUpperLimit].
     public static float getUpperLimit(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getUpperLimit(
-            jointId.memorySegment()
-        );
+    	return (float) getUpperLimit(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the revolute joint limits in radians. It is expected that lower &lt;= upper and that -0.99 * B2_PI &lt;= lower &amp;&amp; upper &lt;= -0.99 * B2_PI.
-     */
+    /// ```
+    /// Set the revolute joint limits in radians. It is expected that lower <= upper
+    /// and that -0.99 * B2_PI <= lower && upper <= -0.99 * B2_PI.
+    /// ```
     public static void setLimits(
-        MemorySegment jointId, 
-        float lower, 
-        float upper
+    	MemorySegment jointId,
+    	float lower,
+    	float upper
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_SET_LIMITS.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                lower, 
-                upper
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_LIMITS.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			lower,
+    			upper
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLimits}.
-     */
+    /// Typed method of [#setLimits].
     public static void setLimits(
-        JointId jointId, 
-        float lower, 
-        float upper
+    	JointId jointId,
+    	float lower,
+    	float upper
     ) {
-        setLimits(
-            jointId.memorySegment(), 
-            lower, 
-            upper
-        );
+    	setLimits(
+    		jointId.memorySegment(),
+    		lower,
+    		upper
+    	);
     }
     
-    /**
-     * Enable/disable a revolute joint motor
-     */
+    /// ```
+    /// Enable/disable a revolute joint motor
+    /// ```
     public static void enableMotor(
-        MemorySegment jointId, 
-        boolean enableMotor
+    	MemorySegment jointId,
+    	boolean enableMotor
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_ENABLE_MOTOR.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableMotor
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_ENABLE_MOTOR.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableMotor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableMotor}.
-     */
+    /// Typed method of [#enableMotor].
     public static void enableMotor(
-        JointId jointId, 
-        boolean enableMotor
+    	JointId jointId,
+    	boolean enableMotor
     ) {
-        enableMotor(
-            jointId.memorySegment(), 
-            enableMotor
-        );
+    	enableMotor(
+    		jointId.memorySegment(),
+    		enableMotor
+    	);
     }
     
-    /**
-     * Is the revolute joint motor enabled?
-     */
+    /// ```
+    /// Is the revolute joint motor enabled?
+    /// ```
     public static boolean isMotorEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isMotorEnabled}.
-     */
+    /// Typed method of [#isMotorEnabled].
     public static boolean isMotorEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) isMotorEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) isMotorEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the revolute joint motor speed in radians per second
-     */
+    /// ```
+    /// Set the revolute joint motor speed in radians per second
+    /// ```
     public static void setMotorSpeed(
-        MemorySegment jointId, 
-        float motorSpeed
+    	MemorySegment jointId,
+    	float motorSpeed
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_SET_MOTOR_SPEED.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                motorSpeed
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_MOTOR_SPEED.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			motorSpeed
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMotorSpeed}.
-     */
+    /// Typed method of [#setMotorSpeed].
     public static void setMotorSpeed(
-        JointId jointId, 
-        float motorSpeed
+    	JointId jointId,
+    	float motorSpeed
     ) {
-        setMotorSpeed(
-            jointId.memorySegment(), 
-            motorSpeed
-        );
+    	setMotorSpeed(
+    		jointId.memorySegment(),
+    		motorSpeed
+    	);
     }
     
-    /**
-     * Get the revolute joint motor speed in radians per second
-     */
+    /// ```
+    /// Get the revolute joint motor speed in radians per second
+    /// ```
     public static float getMotorSpeed(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_SPEED.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_SPEED.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMotorSpeed}.
-     */
+    /// Typed method of [#getMotorSpeed].
     public static float getMotorSpeed(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMotorSpeed(
-            jointId.memorySegment()
-        );
+    	return (float) getMotorSpeed(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the revolute joint current motor torque, usually in newton-meters
-     */
+    /// ```
+    /// Get the revolute joint current motor torque, usually in newton-meters
+    /// ```
     public static float getMotorTorque(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_TORQUE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_TORQUE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMotorTorque}.
-     */
+    /// Typed method of [#getMotorTorque].
     public static float getMotorTorque(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMotorTorque(
-            jointId.memorySegment()
-        );
+    	return (float) getMotorTorque(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the revolute joint maximum motor torque, usually in newton-meters
-     */
+    /// ```
+    /// Set the revolute joint maximum motor torque, usually in newton-meters
+    /// ```
     public static void setMaxMotorTorque(
-        MemorySegment jointId, 
-        float torque
+    	MemorySegment jointId,
+    	float torque
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_SET_MAX_MOTOR_TORQUE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                torque
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_MAX_MOTOR_TORQUE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			torque
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMaxMotorTorque}.
-     */
+    /// Typed method of [#setMaxMotorTorque].
     public static void setMaxMotorTorque(
-        JointId jointId, 
-        float torque
+    	JointId jointId,
+    	float torque
     ) {
-        setMaxMotorTorque(
-            jointId.memorySegment(), 
-            torque
-        );
+    	setMaxMotorTorque(
+    		jointId.memorySegment(),
+    		torque
+    	);
     }
     
-    /**
-     * Get the revolute joint maximum motor torque, usually in newton-meters
-     */
+    /// ```
+    /// Get the revolute joint maximum motor torque, usually in newton-meters
+    /// ```
     public static float getMaxMotorTorque(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMaxMotorTorque}.
-     */
+    /// Typed method of [#getMaxMotorTorque].
     public static float getMaxMotorTorque(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMaxMotorTorque(
-            jointId.memorySegment()
-        );
+    	return (float) getMaxMotorTorque(
+    		jointId.memorySegment()
+    	);
     }
     
 }

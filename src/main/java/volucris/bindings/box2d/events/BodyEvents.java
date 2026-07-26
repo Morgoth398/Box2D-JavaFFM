@@ -15,9 +15,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Body events are buffered in the Box2D world and are available as event arrays after the time step is complete. Note: this data becomes invalid if bodies are destroyed
- */
+/// ```
+/// Body events are buffered in the Box2D world and are available
+/// as event arrays after the time step is complete.
+/// Note: this data becomes invalid if bodies are destroyed
+/// ```
 public final class BodyEvents
 		implements Struct<BodyEvents> {
 
@@ -60,27 +62,35 @@ public final class BodyEvents
     
     }
 
+    /// @see #moveEvents()
     public BodyEvents moveEvents(BodyMoveEvent moveEvents) {
-        MOVE_EVENTS_HANDLE.set(segment, 0L, moveEvents.memorySegment());
-        return this;
+    	MOVE_EVENTS_HANDLE.set(segment, 0L, moveEvents.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Array of move events
+    /// ```
     public @Nullable BodyMoveEvent moveEvents() {
-        MemorySegment segment = (MemorySegment) MOVE_EVENTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) MOVE_EVENTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new BodyMoveEvent(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new BodyMoveEvent(segment);
     }
     
+    /// @see #moveCount()
     public BodyEvents moveCount(int moveCount) {
-        MOVE_COUNT_HANDLE.set(segment, 0L, moveCount);
-        return this;
+    	MOVE_COUNT_HANDLE.set(segment, 0L, moveCount);
+    	return this;
     }
     
+    /// ```
+    /// Number of move events
+    /// ```
     public int moveCount() {
-        return (int) MOVE_COUNT_HANDLE.get(segment, 0L);
+    	return (int) MOVE_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override

@@ -13,9 +13,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Cosine and sine pair This uses a custom implementation designed for cross-platform determinism
- */
+/// ```
+/// Cosine and sine pair
+/// This uses a custom implementation designed for cross-platform determinism
+/// ```
 public final class CosSin
 		implements Struct<CosSin> {
 
@@ -57,22 +58,27 @@ public final class CosSin
     
     }
 
+    /// @see #cosine()
     public CosSin cosine(float cosine) {
-        COSINE_HANDLE.set(segment, 0L, cosine);
-        return this;
+    	COSINE_HANDLE.set(segment, 0L, cosine);
+    	return this;
     }
     
+    /// ```
+    /// cosine and sine
+    /// ```
     public float cosine() {
-        return (float) COSINE_HANDLE.get(segment, 0L);
+    	return (float) COSINE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #sine()
     public CosSin sine(float sine) {
-        SINE_HANDLE.set(segment, 0L, sine);
-        return this;
+    	SINE_HANDLE.set(segment, 0L, sine);
+    	return this;
     }
     
     public float sine() {
-        return (float) SINE_HANDLE.get(segment, 0L);
+    	return (float) SINE_HANDLE.get(segment, 0L);
     }
     
     @Override

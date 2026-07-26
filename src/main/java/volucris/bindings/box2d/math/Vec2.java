@@ -13,9 +13,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * 2D vector This can be used to represent a point or free vector
- */
+/// ```
+/// 2D vector
+/// This can be used to represent a point or free vector
+/// ```
 public final class Vec2
 		implements Struct<Vec2> {
 
@@ -57,22 +58,30 @@ public final class Vec2
     
     }
 
+    /// @see #x()
     public Vec2 x(float x) {
-        X_HANDLE.set(segment, 0L, x);
-        return this;
+    	X_HANDLE.set(segment, 0L, x);
+    	return this;
     }
     
+    /// ```
+    /// coordinates
+    /// ```
     public float x() {
-        return (float) X_HANDLE.get(segment, 0L);
+    	return (float) X_HANDLE.get(segment, 0L);
     }
     
+    /// @see #y()
     public Vec2 y(float y) {
-        Y_HANDLE.set(segment, 0L, y);
-        return this;
+    	Y_HANDLE.set(segment, 0L, y);
+    	return this;
     }
     
+    /// ```
+    /// coordinates
+    /// ```
     public float y() {
-        return (float) Y_HANDLE.get(segment, 0L);
+    	return (float) Y_HANDLE.get(segment, 0L);
     }
     
     @Override

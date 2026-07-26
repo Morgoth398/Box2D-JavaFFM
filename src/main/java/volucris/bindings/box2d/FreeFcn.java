@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,13 +12,17 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
-import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Prototype for user free function
+/// @param mem the memory previously allocated through `b2AllocFcn`
+/// ```
 public abstract class FreeFcn {
 
-    private static final HashMap<Long, WeakReference<FreeFcn>> CACHE;
+    private static final Map<Long, WeakReference<FreeFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -60,7 +65,7 @@ public abstract class FreeFcn {
         return segment;
     }
 
-    public static FreeFcn get(MemorySegment segment) {
+    public static @Nullable FreeFcn get(MemorySegment segment) {
         WeakReference<FreeFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

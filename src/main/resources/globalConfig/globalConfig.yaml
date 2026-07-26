@@ -1,5 +1,6 @@
 naming:
   strip-prefixes:
+    - b2DebugDraw_
     - b2World_
     - b2Shape_
     - b2Rot_

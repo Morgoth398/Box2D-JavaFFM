@@ -17,9 +17,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Input parameters for b2ShapeCast
- */
+/// ```
+/// Input parameters for b2ShapeCast
+/// ```
 public final class ShapeCastPairInput
 		implements Struct<ShapeCastPairInput> {
 
@@ -88,92 +88,125 @@ public final class ShapeCastPairInput
         translationB = new Vec2(segment.asSlice(TRANSLATION_B_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #maxFraction()
     public ShapeCastPairInput maxFraction(float maxFraction) {
-        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-        return this;
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
     }
     
+    /// ```
+    /// The fraction of the translation to consider, typically 1
+    /// ```
     public float maxFraction() {
-        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #canEncroach()
     public ShapeCastPairInput canEncroach(boolean canEncroach) {
-        CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
-        return this;
+    	CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
+    	return this;
     }
     
+    /// ```
+    /// Allows shapes with a radius to move slightly closer if already touching
+    /// ```
     public boolean canEncroach() {
-        return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
+    	return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
     }
     
+    /// @see #proxyA()
     public ShapeCastPairInput proxyA(Consumer<ShapeProxy> consumer) {
-        consumer.accept(proxyA);
-        return this;
+    	consumer.accept(proxyA);
+    	return this;
     }
     
+    /// @see #proxyA()
     public ShapeCastPairInput proxyA(ShapeProxy other) {
-        proxyA.set(other);
-        return this;
+    	proxyA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The proxy for shape A
+    /// ```
     public ShapeProxy proxyA() {
-        return proxyA;
+    	return proxyA;
     }
     
+    /// @see #proxyB()
     public ShapeCastPairInput proxyB(Consumer<ShapeProxy> consumer) {
-        consumer.accept(proxyB);
-        return this;
+    	consumer.accept(proxyB);
+    	return this;
     }
     
+    /// @see #proxyB()
     public ShapeCastPairInput proxyB(ShapeProxy other) {
-        proxyB.set(other);
-        return this;
+    	proxyB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The proxy for shape B
+    /// ```
     public ShapeProxy proxyB() {
-        return proxyB;
+    	return proxyB;
     }
     
+    /// @see #transformA()
     public ShapeCastPairInput transformA(Consumer<Transform> consumer) {
-        consumer.accept(transformA);
-        return this;
+    	consumer.accept(transformA);
+    	return this;
     }
     
+    /// @see #transformA()
     public ShapeCastPairInput transformA(Transform other) {
-        transformA.set(other);
-        return this;
+    	transformA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The world transform for shape A
+    /// ```
     public Transform transformA() {
-        return transformA;
+    	return transformA;
     }
     
+    /// @see #transformB()
     public ShapeCastPairInput transformB(Consumer<Transform> consumer) {
-        consumer.accept(transformB);
-        return this;
+    	consumer.accept(transformB);
+    	return this;
     }
     
+    /// @see #transformB()
     public ShapeCastPairInput transformB(Transform other) {
-        transformB.set(other);
-        return this;
+    	transformB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The world transform for shape B
+    /// ```
     public Transform transformB() {
-        return transformB;
+    	return transformB;
     }
     
+    /// @see #translationB()
     public ShapeCastPairInput translationB(Consumer<Vec2> consumer) {
-        consumer.accept(translationB);
-        return this;
+    	consumer.accept(translationB);
+    	return this;
     }
     
+    /// @see #translationB()
     public ShapeCastPairInput translationB(Vec2 other) {
-        translationB.set(other);
-        return this;
+    	translationB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The translation of shape B
+    /// ```
     public Vec2 translationB() {
-        return translationB;
+    	return translationB;
     }
     
     @Override

@@ -16,9 +16,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * These are the collision planes returned from b2World_CollideMover
- */
+/// ```
+/// These are the collision planes returned from b2World_CollideMover
+/// ```
 public final class PlaneResult
 		implements Struct<PlaneResult> {
 
@@ -67,41 +67,52 @@ public final class PlaneResult
         point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #hit()
     public PlaneResult hit(boolean hit) {
-        HIT_HANDLE.set(segment, 0L, hit);
-        return this;
+    	HIT_HANDLE.set(segment, 0L, hit);
+    	return this;
     }
     
+    /// ```
+    /// Did the collision register a hit? If not this plane should be ignored.
+    /// ```
     public boolean hit() {
-        return (boolean) HIT_HANDLE.get(segment, 0L);
+    	return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #plane()
     public PlaneResult plane(Consumer<Plane> consumer) {
-        consumer.accept(plane);
-        return this;
+    	consumer.accept(plane);
+    	return this;
     }
     
+    /// @see #plane()
     public PlaneResult plane(Plane other) {
-        plane.set(other);
-        return this;
+    	plane.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The collision plane between the mover and a convex shape
+    /// ```
     public Plane plane() {
-        return plane;
+    	return plane;
     }
     
+    /// @see #point()
     public PlaneResult point(Consumer<Vec2> consumer) {
-        consumer.accept(point);
-        return this;
+    	consumer.accept(point);
+    	return this;
     }
     
+    /// @see #point()
     public PlaneResult point(Vec2 other) {
-        point.set(other);
-        return this;
+    	point.set(other);
+    	return this;
     }
     
     public Vec2 point() {
-        return point;
+    	return point;
     }
     
     @Override

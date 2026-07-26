@@ -20,9 +20,15 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Prismatic joint definition
- */
+/// ```
+/// Prismatic joint definition
+/// 
+/// This requires defining a line of motion using an axis and an anchor point.
+/// The definition uses local anchor points and a local axis so that the initial
+/// configuration can violate the constraint slightly. The joint translation is zero
+/// when the local anchor points coincide in world space.
+/// @ingroup prismatic_joint
+/// ```
 public final class PrismaticJointDef
 		implements Struct<PrismaticJointDef> {
 
@@ -151,235 +157,318 @@ public final class PrismaticJointDef
         localAxisA = new Vec2(segment.asSlice(LOCAL_AXIS_A_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition
-     */
+    /// ```
+    /// Use this to initialize your joint definition
+    /// @ingroupd prismatic_joint
+    /// ```
     public static MemorySegment ndefaultPrismaticJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_PRISMATIC_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_PRISMATIC_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultPrismaticJointDef}.
-     */
+    /// Typed method of [#ndefaultPrismaticJointDef].
     public static @Nullable PrismaticJointDef defaultPrismaticJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultPrismaticJointDef(allocator);
+    	MemorySegment segment = ndefaultPrismaticJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new PrismaticJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new PrismaticJointDef(segment);
     }
     
+    /// @see #referenceAngle()
     public PrismaticJointDef referenceAngle(float referenceAngle) {
-        REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
-        return this;
+    	REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
+    	return this;
     }
     
+    /// ```
+    /// The constrained angle between the bodies: bodyB_angle - bodyA_angle
+    /// ```
     public float referenceAngle() {
-        return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
+    	return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #targetTranslation()
     public PrismaticJointDef targetTranslation(float targetTranslation) {
-        TARGET_TRANSLATION_HANDLE.set(segment, 0L, targetTranslation);
-        return this;
+    	TARGET_TRANSLATION_HANDLE.set(segment, 0L, targetTranslation);
+    	return this;
     }
     
+    /// ```
+    /// The target translation for the joint in meters. The spring-damper will drive
+    /// to this translation.
+    /// ```
     public float targetTranslation() {
-        return (float) TARGET_TRANSLATION_HANDLE.get(segment, 0L);
+    	return (float) TARGET_TRANSLATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableSpring()
     public PrismaticJointDef enableSpring(boolean enableSpring) {
-        ENABLE_SPRING_HANDLE.set(segment, 0L, enableSpring);
-        return this;
+    	ENABLE_SPRING_HANDLE.set(segment, 0L, enableSpring);
+    	return this;
     }
     
+    /// ```
+    /// Enable a linear spring along the prismatic joint axis
+    /// ```
     public boolean enableSpring() {
-        return (boolean) ENABLE_SPRING_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SPRING_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hertz()
     public PrismaticJointDef hertz(float hertz) {
-        HERTZ_HANDLE.set(segment, 0L, hertz);
-        return this;
+    	HERTZ_HANDLE.set(segment, 0L, hertz);
+    	return this;
     }
     
+    /// ```
+    /// The spring stiffness Hertz, cycles per second
+    /// ```
     public float hertz() {
-        return (float) HERTZ_HANDLE.get(segment, 0L);
+    	return (float) HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #dampingRatio()
     public PrismaticJointDef dampingRatio(float dampingRatio) {
-        DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
-        return this;
+    	DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// The spring damping ratio, non-dimensional
+    /// ```
     public float dampingRatio() {
-        return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableLimit()
     public PrismaticJointDef enableLimit(boolean enableLimit) {
-        ENABLE_LIMIT_HANDLE.set(segment, 0L, enableLimit);
-        return this;
+    	ENABLE_LIMIT_HANDLE.set(segment, 0L, enableLimit);
+    	return this;
     }
     
+    /// ```
+    /// Enable/disable the joint limit
+    /// ```
     public boolean enableLimit() {
-        return (boolean) ENABLE_LIMIT_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_LIMIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #lowerTranslation()
     public PrismaticJointDef lowerTranslation(float lowerTranslation) {
-        LOWER_TRANSLATION_HANDLE.set(segment, 0L, lowerTranslation);
-        return this;
+    	LOWER_TRANSLATION_HANDLE.set(segment, 0L, lowerTranslation);
+    	return this;
     }
     
+    /// ```
+    /// The lower translation limit
+    /// ```
     public float lowerTranslation() {
-        return (float) LOWER_TRANSLATION_HANDLE.get(segment, 0L);
+    	return (float) LOWER_TRANSLATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #upperTranslation()
     public PrismaticJointDef upperTranslation(float upperTranslation) {
-        UPPER_TRANSLATION_HANDLE.set(segment, 0L, upperTranslation);
-        return this;
+    	UPPER_TRANSLATION_HANDLE.set(segment, 0L, upperTranslation);
+    	return this;
     }
     
+    /// ```
+    /// The upper translation limit
+    /// ```
     public float upperTranslation() {
-        return (float) UPPER_TRANSLATION_HANDLE.get(segment, 0L);
+    	return (float) UPPER_TRANSLATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableMotor()
     public PrismaticJointDef enableMotor(boolean enableMotor) {
-        ENABLE_MOTOR_HANDLE.set(segment, 0L, enableMotor);
-        return this;
+    	ENABLE_MOTOR_HANDLE.set(segment, 0L, enableMotor);
+    	return this;
     }
     
+    /// ```
+    /// Enable/disable the joint motor
+    /// ```
     public boolean enableMotor() {
-        return (boolean) ENABLE_MOTOR_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_MOTOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxMotorForce()
     public PrismaticJointDef maxMotorForce(float maxMotorForce) {
-        MAX_MOTOR_FORCE_HANDLE.set(segment, 0L, maxMotorForce);
-        return this;
+    	MAX_MOTOR_FORCE_HANDLE.set(segment, 0L, maxMotorForce);
+    	return this;
     }
     
+    /// ```
+    /// The maximum motor force, typically in newtons
+    /// ```
     public float maxMotorForce() {
-        return (float) MAX_MOTOR_FORCE_HANDLE.get(segment, 0L);
+    	return (float) MAX_MOTOR_FORCE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #motorSpeed()
     public PrismaticJointDef motorSpeed(float motorSpeed) {
-        MOTOR_SPEED_HANDLE.set(segment, 0L, motorSpeed);
-        return this;
+    	MOTOR_SPEED_HANDLE.set(segment, 0L, motorSpeed);
+    	return this;
     }
     
+    /// ```
+    /// The desired motor speed, typically in meters per second
+    /// ```
     public float motorSpeed() {
-        return (float) MOTOR_SPEED_HANDLE.get(segment, 0L);
+    	return (float) MOTOR_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collideConnected()
     public PrismaticJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-        return this;
+    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to true if the attached bodies should collide
+    /// ```
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userData()
     public PrismaticJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public PrismaticJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public PrismaticJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public PrismaticJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public PrismaticJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public PrismaticJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
+    /// @see #localAnchorA()
     public PrismaticJointDef localAnchorA(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorA);
-        return this;
+    	consumer.accept(localAnchorA);
+    	return this;
     }
     
+    /// @see #localAnchorA()
     public PrismaticJointDef localAnchorA(Vec2 other) {
-        localAnchorA.set(other);
-        return this;
+    	localAnchorA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyA's origin
+    /// ```
     public Vec2 localAnchorA() {
-        return localAnchorA;
+    	return localAnchorA;
     }
     
+    /// @see #localAnchorB()
     public PrismaticJointDef localAnchorB(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorB);
-        return this;
+    	consumer.accept(localAnchorB);
+    	return this;
     }
     
+    /// @see #localAnchorB()
     public PrismaticJointDef localAnchorB(Vec2 other) {
-        localAnchorB.set(other);
-        return this;
+    	localAnchorB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyB's origin
+    /// ```
     public Vec2 localAnchorB() {
-        return localAnchorB;
+    	return localAnchorB;
     }
     
+    /// @see #localAxisA()
     public PrismaticJointDef localAxisA(Consumer<Vec2> consumer) {
-        consumer.accept(localAxisA);
-        return this;
+    	consumer.accept(localAxisA);
+    	return this;
     }
     
+    /// @see #localAxisA()
     public PrismaticJointDef localAxisA(Vec2 other) {
-        localAxisA.set(other);
-        return this;
+    	localAxisA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local translation unit axis in bodyA
+    /// ```
     public Vec2 localAxisA() {
-        return localAxisA;
+    	return localAxisA;
     }
     
     @Override

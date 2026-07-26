@@ -15,9 +15,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Contact events are buffered in the Box2D world and are available as event arrays after the time step is complete. Note: these may become invalid if bodies and/or shapes are destroyed
- */
+/// ```
+/// Contact events are buffered in the Box2D world and are available
+/// as event arrays after the time step is complete.
+/// Note: these may become invalid if bodies and/or shapes are destroyed
+/// ```
 public final class ContactEvents
 		implements Struct<ContactEvents> {
 
@@ -80,73 +82,97 @@ public final class ContactEvents
     
     }
 
+    /// @see #beginEvents()
     public ContactEvents beginEvents(ContactBeginTouchEvent beginEvents) {
-        BEGIN_EVENTS_HANDLE.set(segment, 0L, beginEvents.memorySegment());
-        return this;
+    	BEGIN_EVENTS_HANDLE.set(segment, 0L, beginEvents.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Array of begin touch events
+    /// ```
     public @Nullable ContactBeginTouchEvent beginEvents() {
-        MemorySegment segment = (MemorySegment) BEGIN_EVENTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) BEGIN_EVENTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ContactBeginTouchEvent(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ContactBeginTouchEvent(segment);
     }
     
+    /// @see #endEvents()
     public ContactEvents endEvents(ContactEndTouchEvent endEvents) {
-        END_EVENTS_HANDLE.set(segment, 0L, endEvents.memorySegment());
-        return this;
+    	END_EVENTS_HANDLE.set(segment, 0L, endEvents.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Array of end touch events
+    /// ```
     public @Nullable ContactEndTouchEvent endEvents() {
-        MemorySegment segment = (MemorySegment) END_EVENTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) END_EVENTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ContactEndTouchEvent(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ContactEndTouchEvent(segment);
     }
     
+    /// @see #hitEvents()
     public ContactEvents hitEvents(ContactHitEvent hitEvents) {
-        HIT_EVENTS_HANDLE.set(segment, 0L, hitEvents.memorySegment());
-        return this;
+    	HIT_EVENTS_HANDLE.set(segment, 0L, hitEvents.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Array of hit events
+    /// ```
     public @Nullable ContactHitEvent hitEvents() {
-        MemorySegment segment = (MemorySegment) HIT_EVENTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) HIT_EVENTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ContactHitEvent(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ContactHitEvent(segment);
     }
     
+    /// @see #beginCount()
     public ContactEvents beginCount(int beginCount) {
-        BEGIN_COUNT_HANDLE.set(segment, 0L, beginCount);
-        return this;
+    	BEGIN_COUNT_HANDLE.set(segment, 0L, beginCount);
+    	return this;
     }
     
+    /// ```
+    /// Number of begin touch events
+    /// ```
     public int beginCount() {
-        return (int) BEGIN_COUNT_HANDLE.get(segment, 0L);
+    	return (int) BEGIN_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #endCount()
     public ContactEvents endCount(int endCount) {
-        END_COUNT_HANDLE.set(segment, 0L, endCount);
-        return this;
+    	END_COUNT_HANDLE.set(segment, 0L, endCount);
+    	return this;
     }
     
+    /// ```
+    /// Number of end touch events
+    /// ```
     public int endCount() {
-        return (int) END_COUNT_HANDLE.get(segment, 0L);
+    	return (int) END_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hitCount()
     public ContactEvents hitCount(int hitCount) {
-        HIT_COUNT_HANDLE.set(segment, 0L, hitCount);
-        return this;
+    	HIT_COUNT_HANDLE.set(segment, 0L, hitCount);
+    	return this;
     }
     
+    /// ```
+    /// Number of hit events
+    /// ```
     public int hitCount() {
-        return (int) HIT_COUNT_HANDLE.get(segment, 0L);
+    	return (int) HIT_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override

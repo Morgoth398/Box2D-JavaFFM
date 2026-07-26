@@ -20,9 +20,13 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A mouse joint is used to make a point on a body track a specified world point.
- */
+/// ```
+/// A mouse joint is used to make a point on a body track a specified world point.
+/// 
+/// This a soft constraint and allows the constraint to stretch without
+/// applying huge forces. This also applies rotation constraint heuristic to improve control.
+/// @ingroup mouse_joint
+/// ```
 public final class MouseJointDef
 		implements Struct<MouseJointDef> {
 
@@ -98,135 +102,175 @@ public final class MouseJointDef
         target = new Vec2(segment.asSlice(TARGET_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition
-     */
+    /// ```
+    /// Use this to initialize your joint definition
+    /// @ingroup mouse_joint
+    /// ```
     public static MemorySegment ndefaultMouseJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_MOUSE_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_MOUSE_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultMouseJointDef}.
-     */
+    /// Typed method of [#ndefaultMouseJointDef].
     public static @Nullable MouseJointDef defaultMouseJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultMouseJointDef(allocator);
+    	MemorySegment segment = ndefaultMouseJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new MouseJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MouseJointDef(segment);
     }
     
+    /// @see #hertz()
     public MouseJointDef hertz(float hertz) {
-        HERTZ_HANDLE.set(segment, 0L, hertz);
-        return this;
+    	HERTZ_HANDLE.set(segment, 0L, hertz);
+    	return this;
     }
     
+    /// ```
+    /// Stiffness in hertz
+    /// ```
     public float hertz() {
-        return (float) HERTZ_HANDLE.get(segment, 0L);
+    	return (float) HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #dampingRatio()
     public MouseJointDef dampingRatio(float dampingRatio) {
-        DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
-        return this;
+    	DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// Damping ratio, non-dimensional
+    /// ```
     public float dampingRatio() {
-        return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxForce()
     public MouseJointDef maxForce(float maxForce) {
-        MAX_FORCE_HANDLE.set(segment, 0L, maxForce);
-        return this;
+    	MAX_FORCE_HANDLE.set(segment, 0L, maxForce);
+    	return this;
     }
     
+    /// ```
+    /// Maximum force, typically in newtons
+    /// ```
     public float maxForce() {
-        return (float) MAX_FORCE_HANDLE.get(segment, 0L);
+    	return (float) MAX_FORCE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collideConnected()
     public MouseJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-        return this;
+    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to true if the attached bodies should collide.
+    /// ```
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userData()
     public MouseJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public MouseJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public MouseJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public MouseJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body. This is assumed to be static.
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public MouseJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public MouseJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body.
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
+    /// @see #target()
     public MouseJointDef target(Consumer<Vec2> consumer) {
-        consumer.accept(target);
-        return this;
+    	consumer.accept(target);
+    	return this;
     }
     
+    /// @see #target()
     public MouseJointDef target(Vec2 other) {
-        target.set(other);
-        return this;
+    	target.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The initial target point in world space
+    /// ```
     public Vec2 target() {
-        return target;
+    	return target;
     }
     
     @Override

@@ -15,9 +15,11 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Low level shape cast input in generic form. This allows casting an arbitrary point cloud wrap with a radius. For example, a circle is a single point with a non-zero radius. A capsule is two points with a non-zero radius. A box is four points with a zero radius.
- */
+/// ```
+/// Low level shape cast input in generic form. This allows casting an arbitrary point
+/// cloud wrap with a radius. For example, a circle is a single point with a non-zero radius.
+/// A capsule is two points with a non-zero radius. A box is four points with a zero radius.
+/// ```
 public final class ShapeCastInput
 		implements Struct<ShapeCastInput> {
 
@@ -71,50 +73,68 @@ public final class ShapeCastInput
         translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #maxFraction()
     public ShapeCastInput maxFraction(float maxFraction) {
-        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-        return this;
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
     }
     
+    /// ```
+    /// The maximum fraction of the translation to consider, typically 1
+    /// ```
     public float maxFraction() {
-        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #canEncroach()
     public ShapeCastInput canEncroach(boolean canEncroach) {
-        CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
-        return this;
+    	CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
+    	return this;
     }
     
+    /// ```
+    /// Allow shape cast to encroach when initially touching. This only works if the radius is greater than zero.
+    /// ```
     public boolean canEncroach() {
-        return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
+    	return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
     }
     
+    /// @see #proxy()
     public ShapeCastInput proxy(Consumer<ShapeProxy> consumer) {
-        consumer.accept(proxy);
-        return this;
+    	consumer.accept(proxy);
+    	return this;
     }
     
+    /// @see #proxy()
     public ShapeCastInput proxy(ShapeProxy other) {
-        proxy.set(other);
-        return this;
+    	proxy.set(other);
+    	return this;
     }
     
+    /// ```
+    /// A generic shape
+    /// ```
     public ShapeProxy proxy() {
-        return proxy;
+    	return proxy;
     }
     
+    /// @see #translation()
     public ShapeCastInput translation(Consumer<Vec2> consumer) {
-        consumer.accept(translation);
-        return this;
+    	consumer.accept(translation);
+    	return this;
     }
     
+    /// @see #translation()
     public ShapeCastInput translation(Vec2 other) {
-        translation.set(other);
-        return this;
+    	translation.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The translation of the shape cast
+    /// ```
     public Vec2 translation() {
-        return translation;
+    	return translation;
     }
     
     @Override

@@ -15,7 +15,6 @@ imports:
   - volucris.bindings.box2d.math.Vec2
 static-imports:
   - java.lang.foreign.ValueLayout.*
-  - volucris.bindings.core.FFMUtils.*;
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:

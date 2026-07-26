@@ -13,9 +13,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Profiling data. Times are in milliseconds.
- */
+/// ```
+/// @cond
+/// Profiling data. Times are in milliseconds.
+/// ```
 public final class Profile
 		implements Struct<Profile> {
 
@@ -157,202 +158,224 @@ public final class Profile
     
     }
 
+    /// @see #step()
     public Profile step(float step) {
-        STEP_HANDLE.set(segment, 0L, step);
-        return this;
+    	STEP_HANDLE.set(segment, 0L, step);
+    	return this;
     }
     
     public float step() {
-        return (float) STEP_HANDLE.get(segment, 0L);
+    	return (float) STEP_HANDLE.get(segment, 0L);
     }
     
+    /// @see #pairs()
     public Profile pairs(float pairs) {
-        PAIRS_HANDLE.set(segment, 0L, pairs);
-        return this;
+    	PAIRS_HANDLE.set(segment, 0L, pairs);
+    	return this;
     }
     
     public float pairs() {
-        return (float) PAIRS_HANDLE.get(segment, 0L);
+    	return (float) PAIRS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collide()
     public Profile collide(float collide) {
-        COLLIDE_HANDLE.set(segment, 0L, collide);
-        return this;
+    	COLLIDE_HANDLE.set(segment, 0L, collide);
+    	return this;
     }
     
     public float collide() {
-        return (float) COLLIDE_HANDLE.get(segment, 0L);
+    	return (float) COLLIDE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #solve()
     public Profile solve(float solve) {
-        SOLVE_HANDLE.set(segment, 0L, solve);
-        return this;
+    	SOLVE_HANDLE.set(segment, 0L, solve);
+    	return this;
     }
     
     public float solve() {
-        return (float) SOLVE_HANDLE.get(segment, 0L);
+    	return (float) SOLVE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #mergeIslands()
     public Profile mergeIslands(float mergeIslands) {
-        MERGE_ISLANDS_HANDLE.set(segment, 0L, mergeIslands);
-        return this;
+    	MERGE_ISLANDS_HANDLE.set(segment, 0L, mergeIslands);
+    	return this;
     }
     
     public float mergeIslands() {
-        return (float) MERGE_ISLANDS_HANDLE.get(segment, 0L);
+    	return (float) MERGE_ISLANDS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #prepareStages()
     public Profile prepareStages(float prepareStages) {
-        PREPARE_STAGES_HANDLE.set(segment, 0L, prepareStages);
-        return this;
+    	PREPARE_STAGES_HANDLE.set(segment, 0L, prepareStages);
+    	return this;
     }
     
     public float prepareStages() {
-        return (float) PREPARE_STAGES_HANDLE.get(segment, 0L);
+    	return (float) PREPARE_STAGES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #solveConstraints()
     public Profile solveConstraints(float solveConstraints) {
-        SOLVE_CONSTRAINTS_HANDLE.set(segment, 0L, solveConstraints);
-        return this;
+    	SOLVE_CONSTRAINTS_HANDLE.set(segment, 0L, solveConstraints);
+    	return this;
     }
     
     public float solveConstraints() {
-        return (float) SOLVE_CONSTRAINTS_HANDLE.get(segment, 0L);
+    	return (float) SOLVE_CONSTRAINTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #prepareConstraints()
     public Profile prepareConstraints(float prepareConstraints) {
-        PREPARE_CONSTRAINTS_HANDLE.set(segment, 0L, prepareConstraints);
-        return this;
+    	PREPARE_CONSTRAINTS_HANDLE.set(segment, 0L, prepareConstraints);
+    	return this;
     }
     
     public float prepareConstraints() {
-        return (float) PREPARE_CONSTRAINTS_HANDLE.get(segment, 0L);
+    	return (float) PREPARE_CONSTRAINTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #integrateVelocities()
     public Profile integrateVelocities(float integrateVelocities) {
-        INTEGRATE_VELOCITIES_HANDLE.set(segment, 0L, integrateVelocities);
-        return this;
+    	INTEGRATE_VELOCITIES_HANDLE.set(segment, 0L, integrateVelocities);
+    	return this;
     }
     
     public float integrateVelocities() {
-        return (float) INTEGRATE_VELOCITIES_HANDLE.get(segment, 0L);
+    	return (float) INTEGRATE_VELOCITIES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #warmStart()
     public Profile warmStart(float warmStart) {
-        WARM_START_HANDLE.set(segment, 0L, warmStart);
-        return this;
+    	WARM_START_HANDLE.set(segment, 0L, warmStart);
+    	return this;
     }
     
     public float warmStart() {
-        return (float) WARM_START_HANDLE.get(segment, 0L);
+    	return (float) WARM_START_HANDLE.get(segment, 0L);
     }
     
+    /// @see #solveImpulses()
     public Profile solveImpulses(float solveImpulses) {
-        SOLVE_IMPULSES_HANDLE.set(segment, 0L, solveImpulses);
-        return this;
+    	SOLVE_IMPULSES_HANDLE.set(segment, 0L, solveImpulses);
+    	return this;
     }
     
     public float solveImpulses() {
-        return (float) SOLVE_IMPULSES_HANDLE.get(segment, 0L);
+    	return (float) SOLVE_IMPULSES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #integratePositions()
     public Profile integratePositions(float integratePositions) {
-        INTEGRATE_POSITIONS_HANDLE.set(segment, 0L, integratePositions);
-        return this;
+    	INTEGRATE_POSITIONS_HANDLE.set(segment, 0L, integratePositions);
+    	return this;
     }
     
     public float integratePositions() {
-        return (float) INTEGRATE_POSITIONS_HANDLE.get(segment, 0L);
+    	return (float) INTEGRATE_POSITIONS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #relaxImpulses()
     public Profile relaxImpulses(float relaxImpulses) {
-        RELAX_IMPULSES_HANDLE.set(segment, 0L, relaxImpulses);
-        return this;
+    	RELAX_IMPULSES_HANDLE.set(segment, 0L, relaxImpulses);
+    	return this;
     }
     
     public float relaxImpulses() {
-        return (float) RELAX_IMPULSES_HANDLE.get(segment, 0L);
+    	return (float) RELAX_IMPULSES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #applyRestitution()
     public Profile applyRestitution(float applyRestitution) {
-        APPLY_RESTITUTION_HANDLE.set(segment, 0L, applyRestitution);
-        return this;
+    	APPLY_RESTITUTION_HANDLE.set(segment, 0L, applyRestitution);
+    	return this;
     }
     
     public float applyRestitution() {
-        return (float) APPLY_RESTITUTION_HANDLE.get(segment, 0L);
+    	return (float) APPLY_RESTITUTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #storeImpulses()
     public Profile storeImpulses(float storeImpulses) {
-        STORE_IMPULSES_HANDLE.set(segment, 0L, storeImpulses);
-        return this;
+    	STORE_IMPULSES_HANDLE.set(segment, 0L, storeImpulses);
+    	return this;
     }
     
     public float storeImpulses() {
-        return (float) STORE_IMPULSES_HANDLE.get(segment, 0L);
+    	return (float) STORE_IMPULSES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #splitIslands()
     public Profile splitIslands(float splitIslands) {
-        SPLIT_ISLANDS_HANDLE.set(segment, 0L, splitIslands);
-        return this;
+    	SPLIT_ISLANDS_HANDLE.set(segment, 0L, splitIslands);
+    	return this;
     }
     
     public float splitIslands() {
-        return (float) SPLIT_ISLANDS_HANDLE.get(segment, 0L);
+    	return (float) SPLIT_ISLANDS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #transforms()
     public Profile transforms(float transforms) {
-        TRANSFORMS_HANDLE.set(segment, 0L, transforms);
-        return this;
+    	TRANSFORMS_HANDLE.set(segment, 0L, transforms);
+    	return this;
     }
     
     public float transforms() {
-        return (float) TRANSFORMS_HANDLE.get(segment, 0L);
+    	return (float) TRANSFORMS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hitEvents()
     public Profile hitEvents(float hitEvents) {
-        HIT_EVENTS_HANDLE.set(segment, 0L, hitEvents);
-        return this;
+    	HIT_EVENTS_HANDLE.set(segment, 0L, hitEvents);
+    	return this;
     }
     
     public float hitEvents() {
-        return (float) HIT_EVENTS_HANDLE.get(segment, 0L);
+    	return (float) HIT_EVENTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #refit()
     public Profile refit(float refit) {
-        REFIT_HANDLE.set(segment, 0L, refit);
-        return this;
+    	REFIT_HANDLE.set(segment, 0L, refit);
+    	return this;
     }
     
     public float refit() {
-        return (float) REFIT_HANDLE.get(segment, 0L);
+    	return (float) REFIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bullets()
     public Profile bullets(float bullets) {
-        BULLETS_HANDLE.set(segment, 0L, bullets);
-        return this;
+    	BULLETS_HANDLE.set(segment, 0L, bullets);
+    	return this;
     }
     
     public float bullets() {
-        return (float) BULLETS_HANDLE.get(segment, 0L);
+    	return (float) BULLETS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #sleepIslands()
     public Profile sleepIslands(float sleepIslands) {
-        SLEEP_ISLANDS_HANDLE.set(segment, 0L, sleepIslands);
-        return this;
+    	SLEEP_ISLANDS_HANDLE.set(segment, 0L, sleepIslands);
+    	return this;
     }
     
     public float sleepIslands() {
-        return (float) SLEEP_ISLANDS_HANDLE.get(segment, 0L);
+    	return (float) SLEEP_ISLANDS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #sensors()
     public Profile sensors(float sensors) {
-        SENSORS_HANDLE.set(segment, 0L, sensors);
-        return this;
+    	SENSORS_HANDLE.set(segment, 0L, sensors);
+    	return this;
     }
     
     public float sensors() {
-        return (float) SENSORS_HANDLE.get(segment, 0L);
+    	return (float) SENSORS_HANDLE.get(segment, 0L);
     }
     
     @Override

@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.dynamicTree;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,14 +12,22 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.geometry.RayCastInput;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// This function receives clipped ray cast input for a proxy. The function
+/// returns the new ray fraction.
+/// - return a value of 0 to terminate the ray cast
+/// - return a value less than input->maxFraction to clip the ray
+/// - return a value of input->maxFraction to continue the ray cast without clipping
+/// ```
 public abstract class TreeRayCastCallbackFcn {
 
-    private static final HashMap<Long, WeakReference<TreeRayCastCallbackFcn>> CACHE;
+    private static final Map<Long, WeakReference<TreeRayCastCallbackFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -54,23 +63,23 @@ public abstract class TreeRayCastCallbackFcn {
     }
 
     public float invoke(
-        MemorySegment input, 
-        int proxyId, 
-        long userData, 
+        MemorySegment input,
+        int proxyId,
+        long userData,
         MemorySegment context
     ) {
-        return (float) invoke(
-            new RayCastInput(input), 
-            proxyId, 
-            userData, 
-            context
+        return invoke(
+            new RayCastInput(input),
+		    proxyId,
+		    userData,
+		    context
         );
     }
 
     public float invoke(
-        RayCastInput input, 
-        int proxyId, 
-        long userData, 
+        RayCastInput input,
+        int proxyId,
+        long userData,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -78,12 +87,11 @@ public abstract class TreeRayCastCallbackFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static TreeRayCastCallbackFcn get(MemorySegment segment) {
+    public static @Nullable TreeRayCastCallbackFcn get(MemorySegment segment) {
         WeakReference<TreeRayCastCallbackFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

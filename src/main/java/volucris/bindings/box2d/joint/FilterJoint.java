@@ -11,9 +11,6 @@ import volucris.bindings.box2d.world.WorldId;
 
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class FilterJoint {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_FILTER_JOINT;
@@ -27,44 +24,43 @@ public final class FilterJoint {
     private FilterJoint() {
     }
 
-    /**
-     * Create a filter joint.
-     */
+    /// ```
+    /// Create a filter joint.
+    /// @see b2FilterJointDef for details
+    /// ```
     public static MemorySegment createFilterJoint(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_FILTER_JOINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_FILTER_JOINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createFilterJoint}.
-     */
+    /// Typed method of [#createFilterJoint].
     public static @Nullable JointId createFilterJoint(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        FilterJointDef def
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	FilterJointDef def
     ) {
-        MemorySegment segment = createFilterJoint(
-            allocator,
-            worldId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createFilterJoint(
+    		allocator,
+    		worldId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new JointId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new JointId(segment);
     }
     
 }

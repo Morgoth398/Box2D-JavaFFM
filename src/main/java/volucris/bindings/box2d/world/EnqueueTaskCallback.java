@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,13 +12,27 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// These functions can be provided to Box2D to invoke a task system. These are designed to work well with enkiTS.
+/// Returns a pointer to the user's task object. May be nullptr. A nullptr indicates to Box2D that the work was executed
+/// serially within the callback and there is no need to call b2FinishTaskCallback.
+/// The itemCount is the number of Box2D work items that are to be partitioned among workers by the user's task system.
+/// This is essentially a parallel-for. The minRange parameter is a suggestion of the minimum number of items to assign
+/// per worker to reduce overhead. For example, suppose the task is small and that itemCount is 16. A minRange of 8 suggests
+/// that your task system should split the work items among just two workers, even if you have more available.
+/// In general the range [startIndex, endIndex) send to b2TaskCallback should obey:
+/// endIndex - startIndex >= minRange
+/// The exception of course is when itemCount < minRange.
+/// @ingroup world
+/// ```
 public abstract class EnqueueTaskCallback {
 
-    private static final HashMap<Long, WeakReference<EnqueueTaskCallback>> CACHE;
+    private static final Map<Long, WeakReference<EnqueueTaskCallback>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -54,10 +69,10 @@ public abstract class EnqueueTaskCallback {
     }
 
     public MemorySegment invoke(
-        MemorySegment task, 
-        int itemCount, 
-        int minRange, 
-        MemorySegment taskContext, 
+        MemorySegment task,
+        int itemCount,
+        int minRange,
+        MemorySegment taskContext,
         MemorySegment userContext
     ) {
         throw new UnsupportedOperationException(
@@ -69,7 +84,7 @@ public abstract class EnqueueTaskCallback {
         return segment;
     }
 
-    public static EnqueueTaskCallback get(MemorySegment segment) {
+    public static @Nullable EnqueueTaskCallback get(MemorySegment segment) {
         WeakReference<EnqueueTaskCallback> reference = CACHE.get(segment.address());
 
         if (reference == null)

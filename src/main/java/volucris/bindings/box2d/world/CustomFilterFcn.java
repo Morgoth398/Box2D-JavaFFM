@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,14 +12,29 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.shape.ShapeId;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Prototype for a contact filter callback.
+/// This is called when a contact pair is considered for collision. This allows you to
+/// perform custom logic to prevent collision between shapes. This is only called if
+/// one of the two shapes has custom filtering enabled.
+/// Notes:
+/// - this function must be thread-safe
+/// - this is only called if one of the two shapes has enabled custom filtering
+/// - this is called only for awake dynamic bodies
+/// Return false if you want to disable the collision
+/// @see b2ShapeDef
+/// @warning Do not attempt to modify the world inside this callback
+/// @ingroup world
+/// ```
 public abstract class CustomFilterFcn {
 
-    private static final HashMap<Long, WeakReference<CustomFilterFcn>> CACHE;
+    private static final Map<Long, WeakReference<CustomFilterFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -53,20 +69,20 @@ public abstract class CustomFilterFcn {
     }
 
     public boolean invoke(
-        MemorySegment shapeIdA, 
-        MemorySegment shapeIdB, 
+        MemorySegment shapeIdA,
+        MemorySegment shapeIdB,
         MemorySegment context
     ) {
-        return (boolean) invoke(
-            new ShapeId(shapeIdA), 
-            new ShapeId(shapeIdB), 
-            context
+        return invoke(
+            new ShapeId(shapeIdA),
+            new ShapeId(shapeIdB),
+		    context
         );
     }
 
     public boolean invoke(
-        ShapeId shapeIdA, 
-        ShapeId shapeIdB, 
+        ShapeId shapeIdA,
+        ShapeId shapeIdB,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -74,12 +90,11 @@ public abstract class CustomFilterFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static CustomFilterFcn get(MemorySegment segment) {
+    public static @Nullable CustomFilterFcn get(MemorySegment segment) {
         WeakReference<CustomFilterFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

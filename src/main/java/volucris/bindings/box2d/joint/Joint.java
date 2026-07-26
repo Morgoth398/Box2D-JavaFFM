@@ -15,9 +15,6 @@ import volucris.bindings.core.NativeFloatArray;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class Joint {
 
     private static final LazyConstant<MethodHandle> B2_DESTROY_JOINT;
@@ -79,787 +76,740 @@ public final class Joint {
     private Joint() {
     }
 
-    /**
-     * Destroy a joint
-     */
+    /// ```
+    /// Destroy a joint
+    /// ```
     public static void destroyJoint(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_DESTROY_JOINT.get();
-        try {
-            method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DESTROY_JOINT.get();
+    	try {
+    		 method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #destroyJoint}.
-     */
+    /// Typed method of [#destroyJoint].
     public static void destroyJoint(
-        JointId jointId
+    	JointId jointId
     ) {
-        destroyJoint(
-            jointId.memorySegment()
-        );
+    	destroyJoint(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Joint identifier validation. Provides validation for up to 64K allocations.
-     */
+    /// ```
+    /// Joint identifier validation. Provides validation for up to 64K allocations.
+    /// ```
     public static boolean isValid(
-        MemorySegment id
+    	MemorySegment id
     ) {
-        MethodHandle method = B2_JOINT_IS_VALID.get();
-        try {
-            return (boolean) method.invokeExact(
-                id
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_IS_VALID.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			id
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isValid}.
-     */
+    /// Typed method of [#isValid].
     public static boolean isValid(
-        JointId id
+    	JointId id
     ) {
-        return (boolean) isValid(
-            id.memorySegment()
-        );
+    	return (boolean) isValid(
+    		id.memorySegment()
+    	);
     }
     
-    /**
-     * Get the joint type
-     */
+    /// ```
+    /// Get the joint type
+    /// ```
     public static int getType(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_TYPE.get();
-        try {
-            return (int) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_TYPE.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getType}.
-     */
+    /// Typed method of [#getType].
     public static int getType(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (int) getType(
-            jointId.memorySegment()
-        );
+    	return (int) getType(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get body A id on a joint
-     */
+    /// ```
+    /// Get body A id on a joint
+    /// ```
     public static MemorySegment getBodyA(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_BODY_A.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_BODY_A.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getBodyA}.
-     */
+    /// Typed method of [#getBodyA].
     public static @Nullable BodyId getBodyA(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getBodyA(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getBodyA(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new BodyId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new BodyId(segment);
     }
     
-    /**
-     * Get body B id on a joint
-     */
+    /// ```
+    /// Get body B id on a joint
+    /// ```
     public static MemorySegment getBodyB(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_BODY_B.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_BODY_B.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getBodyB}.
-     */
+    /// Typed method of [#getBodyB].
     public static @Nullable BodyId getBodyB(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getBodyB(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getBodyB(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new BodyId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new BodyId(segment);
     }
     
-    /**
-     * Get the world that owns this joint
-     */
+    /// ```
+    /// Get the world that owns this joint
+    /// ```
     public static MemorySegment getWorld(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_WORLD.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_WORLD.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getWorld}.
-     */
+    /// Typed method of [#getWorld].
     public static @Nullable WorldId getWorld(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getWorld(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getWorld(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new WorldId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new WorldId(segment);
     }
     
-    /**
-     * Set the local anchor on bodyA
-     */
+    /// ```
+    /// Set the local anchor on bodyA
+    /// ```
     public static void setLocalAnchorA(
-        MemorySegment jointId, 
-        MemorySegment localAnchor
+    	MemorySegment jointId,
+    	MemorySegment localAnchor
     ) {
-        MethodHandle method = B2_JOINT_SET_LOCAL_ANCHOR_A.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                localAnchor
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_LOCAL_ANCHOR_A.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			localAnchor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLocalAnchorA}.
-     */
+    /// Typed method of [#setLocalAnchorA].
     public static void setLocalAnchorA(
-        JointId jointId, 
-        Vec2 localAnchor
+    	JointId jointId,
+    	Vec2 localAnchor
     ) {
-        setLocalAnchorA(
-            jointId.memorySegment(), 
-            localAnchor.memorySegment()
-        );
+    	setLocalAnchorA(
+    		jointId.memorySegment(),
+    		localAnchor.memorySegment()
+    	);
     }
     
-    /**
-     * Get the local anchor on bodyA
-     */
+    /// ```
+    /// Get the local anchor on bodyA
+    /// ```
     public static MemorySegment getLocalAnchorA(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_LOCAL_ANCHOR_A.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_LOCAL_ANCHOR_A.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLocalAnchorA}.
-     */
+    /// Typed method of [#getLocalAnchorA].
     public static @Nullable Vec2 getLocalAnchorA(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getLocalAnchorA(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getLocalAnchorA(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
-    /**
-     * Set the local anchor on bodyB
-     */
+    /// ```
+    /// Set the local anchor on bodyB
+    /// ```
     public static void setLocalAnchorB(
-        MemorySegment jointId, 
-        MemorySegment localAnchor
+    	MemorySegment jointId,
+    	MemorySegment localAnchor
     ) {
-        MethodHandle method = B2_JOINT_SET_LOCAL_ANCHOR_B.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                localAnchor
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_LOCAL_ANCHOR_B.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			localAnchor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLocalAnchorB}.
-     */
+    /// Typed method of [#setLocalAnchorB].
     public static void setLocalAnchorB(
-        JointId jointId, 
-        Vec2 localAnchor
+    	JointId jointId,
+    	Vec2 localAnchor
     ) {
-        setLocalAnchorB(
-            jointId.memorySegment(), 
-            localAnchor.memorySegment()
-        );
+    	setLocalAnchorB(
+    		jointId.memorySegment(),
+    		localAnchor.memorySegment()
+    	);
     }
     
-    /**
-     * Get the local anchor on bodyB
-     */
+    /// ```
+    /// Get the local anchor on bodyB
+    /// ```
     public static MemorySegment getLocalAnchorB(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_LOCAL_ANCHOR_B.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_LOCAL_ANCHOR_B.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLocalAnchorB}.
-     */
+    /// Typed method of [#getLocalAnchorB].
     public static @Nullable Vec2 getLocalAnchorB(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getLocalAnchorB(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getLocalAnchorB(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
-    /**
-     * Get the joint reference angle in radians (revolute, prismatic, and weld)
-     */
+    /// ```
+    /// Get the joint reference angle in radians (revolute, prismatic, and weld)
+    /// ```
     public static float getReferenceAngle(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_REFERENCE_ANGLE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_REFERENCE_ANGLE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getReferenceAngle}.
-     */
+    /// Typed method of [#getReferenceAngle].
     public static float getReferenceAngle(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getReferenceAngle(
-            jointId.memorySegment()
-        );
+    	return (float) getReferenceAngle(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the joint reference angle in radians, must be in [-pi,pi]. (revolute, prismatic, and weld)
-     */
+    /// ```
+    /// Set the joint reference angle in radians, must be in [-pi,pi]. (revolute, prismatic, and weld)
+    /// ```
     public static void setReferenceAngle(
-        MemorySegment jointId, 
-        float angleInRadians
+    	MemorySegment jointId,
+    	float angleInRadians
     ) {
-        MethodHandle method = B2_JOINT_SET_REFERENCE_ANGLE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                angleInRadians
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_REFERENCE_ANGLE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			angleInRadians
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setReferenceAngle}.
-     */
+    /// Typed method of [#setReferenceAngle].
     public static void setReferenceAngle(
-        JointId jointId, 
-        float angleInRadians
+    	JointId jointId,
+    	float angleInRadians
     ) {
-        setReferenceAngle(
-            jointId.memorySegment(), 
-            angleInRadians
-        );
+    	setReferenceAngle(
+    		jointId.memorySegment(),
+    		angleInRadians
+    	);
     }
     
-    /**
-     * Set the local axis on bodyA (prismatic and wheel)
-     */
+    /// ```
+    /// Set the local axis on bodyA (prismatic and wheel)
+    /// ```
     public static void setLocalAxisA(
-        MemorySegment jointId, 
-        MemorySegment localAxis
+    	MemorySegment jointId,
+    	MemorySegment localAxis
     ) {
-        MethodHandle method = B2_JOINT_SET_LOCAL_AXIS_A.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                localAxis
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_LOCAL_AXIS_A.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			localAxis
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLocalAxisA}.
-     */
+    /// Typed method of [#setLocalAxisA].
     public static void setLocalAxisA(
-        JointId jointId, 
-        Vec2 localAxis
+    	JointId jointId,
+    	Vec2 localAxis
     ) {
-        setLocalAxisA(
-            jointId.memorySegment(), 
-            localAxis.memorySegment()
-        );
+    	setLocalAxisA(
+    		jointId.memorySegment(),
+    		localAxis.memorySegment()
+    	);
     }
     
-    /**
-     * Get the local axis on bodyA (prismatic and wheel)
-     */
+    /// ```
+    /// Get the local axis on bodyA (prismatic and wheel)
+    /// ```
     public static MemorySegment getLocalAxisA(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_LOCAL_AXIS_A.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_LOCAL_AXIS_A.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLocalAxisA}.
-     */
+    /// Typed method of [#getLocalAxisA].
     public static @Nullable Vec2 getLocalAxisA(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getLocalAxisA(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getLocalAxisA(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
-    /**
-     * Toggle collision between connected bodies
-     */
+    /// ```
+    /// Toggle collision between connected bodies
+    /// ```
     public static void setCollideConnected(
-        MemorySegment jointId, 
-        boolean shouldCollide
+    	MemorySegment jointId,
+    	boolean shouldCollide
     ) {
-        MethodHandle method = B2_JOINT_SET_COLLIDE_CONNECTED.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                shouldCollide
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_COLLIDE_CONNECTED.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			shouldCollide
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setCollideConnected}.
-     */
+    /// Typed method of [#setCollideConnected].
     public static void setCollideConnected(
-        JointId jointId, 
-        boolean shouldCollide
+    	JointId jointId,
+    	boolean shouldCollide
     ) {
-        setCollideConnected(
-            jointId.memorySegment(), 
-            shouldCollide
-        );
+    	setCollideConnected(
+    		jointId.memorySegment(),
+    		shouldCollide
+    	);
     }
     
-    /**
-     * Is collision allowed between connected bodies?
-     */
+    /// ```
+    /// Is collision allowed between connected bodies?
+    /// ```
     public static boolean getCollideConnected(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_COLLIDE_CONNECTED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_COLLIDE_CONNECTED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getCollideConnected}.
-     */
+    /// Typed method of [#getCollideConnected].
     public static boolean getCollideConnected(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) getCollideConnected(
-            jointId.memorySegment()
-        );
+    	return (boolean) getCollideConnected(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the user data on a joint
-     */
+    /// ```
+    /// Set the user data on a joint
+    /// ```
     public static void setUserData(
-        MemorySegment jointId, 
-        MemorySegment userData
+    	MemorySegment jointId,
+    	MemorySegment userData
     ) {
-        MethodHandle method = B2_JOINT_SET_USER_DATA.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                userData
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_USER_DATA.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			userData
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setUserData}.
-     */
+    /// Typed method of [#setUserData].
     public static void setUserData(
-        JointId jointId, 
-        MemorySegment userData
+    	JointId jointId,
+    	MemorySegment userData
     ) {
-        setUserData(
-            jointId.memorySegment(), 
-            userData
-        );
+    	setUserData(
+    		jointId.memorySegment(),
+    		userData
+    	);
     }
     
-    /**
-     * Get the user data on a joint
-     */
+    /// ```
+    /// Get the user data on a joint
+    /// ```
     public static MemorySegment getUserData(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_USER_DATA.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_USER_DATA.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getUserData}.
-     */
+    /// Typed method of [#getUserData].
     public static @Nullable MemorySegment getUserData(
-        JointId jointId
+    	JointId jointId
     ) {
-        MemorySegment segment = getUserData(
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getUserData(
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
-    /**
-     * Wake the bodies connect to this joint
-     */
+    /// ```
+    /// Wake the bodies connect to this joint
+    /// ```
     public static void wakeBodies(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_WAKE_BODIES.get();
-        try {
-            method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_WAKE_BODIES.get();
+    	try {
+    		 method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wakeBodies}.
-     */
+    /// Typed method of [#wakeBodies].
     public static void wakeBodies(
-        JointId jointId
+    	JointId jointId
     ) {
-        wakeBodies(
-            jointId.memorySegment()
-        );
+    	wakeBodies(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the current constraint force for this joint. Usually in Newtons.
-     */
+    /// ```
+    /// Get the current constraint force for this joint. Usually in Newtons.
+    /// ```
     public static MemorySegment getConstraintForce(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_CONSTRAINT_FORCE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_CONSTRAINT_FORCE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getConstraintForce}.
-     */
+    /// Typed method of [#getConstraintForce].
     public static @Nullable Vec2 getConstraintForce(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getConstraintForce(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getConstraintForce(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
-    /**
-     * Get the current constraint torque for this joint. Usually in Newton * meters.
-     */
+    /// ```
+    /// Get the current constraint torque for this joint. Usually in Newton * meters.
+    /// ```
     public static float getConstraintTorque(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_CONSTRAINT_TORQUE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_CONSTRAINT_TORQUE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getConstraintTorque}.
-     */
+    /// Typed method of [#getConstraintTorque].
     public static float getConstraintTorque(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getConstraintTorque(
-            jointId.memorySegment()
-        );
+    	return (float) getConstraintTorque(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the current linear separation error for this joint. Does not consider admissible movement. Usually in meters.
-     */
+    /// ```
+    /// Get the current linear separation error for this joint. Does not consider admissible movement. Usually in meters.
+    /// ```
     public static float getLinearSeparation(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_LINEAR_SEPARATION.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_LINEAR_SEPARATION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLinearSeparation}.
-     */
+    /// Typed method of [#getLinearSeparation].
     public static float getLinearSeparation(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getLinearSeparation(
-            jointId.memorySegment()
-        );
+    	return (float) getLinearSeparation(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the current angular separation error for this joint. Does not consider admissible movement. Usually in meters.
-     */
+    /// ```
+    /// Get the current angular separation error for this joint. Does not consider admissible movement. Usually in meters.
+    /// ```
     public static float getAngularSeparation(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_JOINT_GET_ANGULAR_SEPARATION.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_ANGULAR_SEPARATION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAngularSeparation}.
-     */
+    /// Typed method of [#getAngularSeparation].
     public static float getAngularSeparation(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getAngularSeparation(
-            jointId.memorySegment()
-        );
+    	return (float) getAngularSeparation(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the joint constraint tuning. Advanced feature.
-     */
+    /// ```
+    /// Get the joint constraint tuning. Advanced feature.
+    /// ```
     public static void getConstraintTuning(
-        MemorySegment jointId, 
-        MemorySegment hertz, 
-        MemorySegment dampingRatio
+    	MemorySegment jointId,
+    	MemorySegment hertz,
+    	MemorySegment dampingRatio
     ) {
-        MethodHandle method = B2_JOINT_GET_CONSTRAINT_TUNING.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_GET_CONSTRAINT_TUNING.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getConstraintTuning}.
-     */
+    /// Typed method of [#getConstraintTuning].
     public static void getConstraintTuning(
-        JointId jointId, 
-        NativeFloatArray hertz, 
-        NativeFloatArray dampingRatio
+    	JointId jointId,
+    	NativeFloatArray hertz,
+    	NativeFloatArray dampingRatio
     ) {
-        getConstraintTuning(
-            jointId.memorySegment(), 
-            hertz.memorySegment(), 
-            dampingRatio.memorySegment()
-        );
+    	getConstraintTuning(
+    		jointId.memorySegment(),
+    		hertz.memorySegment(),
+    		dampingRatio.memorySegment()
+    	);
     }
     
-    /**
-     * Set the joint constraint tuning. Advanced feature.
-     */
+    /// ```
+    /// Set the joint constraint tuning. Advanced feature.
+    /// @param jointId the joint
+    /// @param hertz the stiffness in Hertz (cycles per second)
+    /// @param dampingRatio the non-dimensional damping ratio (one for critical damping)
+    /// ```
     public static void setConstraintTuning(
-        MemorySegment jointId, 
-        float hertz, 
-        float dampingRatio
+    	MemorySegment jointId,
+    	float hertz,
+    	float dampingRatio
     ) {
-        MethodHandle method = B2_JOINT_SET_CONSTRAINT_TUNING.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_JOINT_SET_CONSTRAINT_TUNING.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setConstraintTuning}.
-     */
+    /// Typed method of [#setConstraintTuning].
     public static void setConstraintTuning(
-        JointId jointId, 
-        float hertz, 
-        float dampingRatio
+    	JointId jointId,
+    	float hertz,
+    	float dampingRatio
     ) {
-        setConstraintTuning(
-            jointId.memorySegment(), 
-            hertz, 
-            dampingRatio
-        );
+    	setConstraintTuning(
+    		jointId.memorySegment(),
+    		hertz,
+    		dampingRatio
+    	);
     }
     
 }

@@ -15,9 +15,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A distance proxy is used by the GJK algorithm. It encapsulates any shape. You can provide between 1 and B2_MAX_POLYGON_VERTICES and a radius.
- */
+/// ```
+/// A distance proxy is used by the GJK algorithm. It encapsulates any shape.
+/// You can provide between 1 and B2_MAX_POLYGON_VERTICES and a radius.
+/// ```
 public final class ShapeProxy
 		implements Struct<ShapeProxy> {
 
@@ -62,7 +63,6 @@ public final class ShapeProxy
     public ShapeProxy(MemorySegment segment) {
         this.segment = segment;
     
-    
         points = new Vec2[8];
         for (int i = 0; i < 8; i++) {
             long offset = POINTS_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
@@ -71,36 +71,49 @@ public final class ShapeProxy
     
     }
 
+    /// @see #count()
     public ShapeProxy count(int count) {
-        COUNT_HANDLE.set(segment, 0L, count);
-        return this;
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
     }
     
+    /// ```
+    /// The number of points. Must be greater than 0.
+    /// ```
     public int count() {
-        return (int) COUNT_HANDLE.get(segment, 0L);
+    	return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #radius()
     public ShapeProxy radius(float radius) {
-        RADIUS_HANDLE.set(segment, 0L, radius);
-        return this;
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
     }
     
+    /// ```
+    /// The external radius of the point cloud. May be zero.
+    /// ```
     public float radius() {
-        return (float) RADIUS_HANDLE.get(segment, 0L);
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #points(int)
     public ShapeProxy points(Consumer<Vec2> consumer, int index) {
-        consumer.accept(points[index]);
-        return this;
+    	consumer.accept(points[index]);
+    	return this;
     }
     
+    /// @see #points(int)
     public ShapeProxy points(Vec2 other, int index) {
-        points[index].set(other);
-        return this;
+    	points[index].set(other);
+    	return this;
     }
     
+    /// ```
+    /// The point cloud
+    /// ```
     public Vec2 points(int index) {
-        return points[index];
+    	return points[index];
     }
     
     @Override

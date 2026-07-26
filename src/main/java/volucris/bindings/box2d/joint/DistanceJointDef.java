@@ -20,9 +20,15 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Distance joint definition
- */
+/// ```
+/// Distance joint definition
+/// 
+/// This requires defining an anchor point on both
+/// bodies and the non-zero distance of the distance joint. The definition uses
+/// local anchor points so that the initial configuration can violate the
+/// constraint slightly. This helps when saving and loading a game.
+/// @ingroup distance_joint
+/// ```
 public final class DistanceJointDef
 		implements Struct<DistanceJointDef> {
 
@@ -141,212 +147,286 @@ public final class DistanceJointDef
         localAnchorB = new Vec2(segment.asSlice(LOCAL_ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition
-     */
+    /// ```
+    /// Use this to initialize your joint definition
+    /// @ingroup distance_joint
+    /// ```
     public static MemorySegment ndefaultDistanceJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_DISTANCE_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_DISTANCE_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultDistanceJointDef}.
-     */
+    /// Typed method of [#ndefaultDistanceJointDef].
     public static @Nullable DistanceJointDef defaultDistanceJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultDistanceJointDef(allocator);
+    	MemorySegment segment = ndefaultDistanceJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new DistanceJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new DistanceJointDef(segment);
     }
     
+    /// @see #length()
     public DistanceJointDef length(float length) {
-        LENGTH_HANDLE.set(segment, 0L, length);
-        return this;
+    	LENGTH_HANDLE.set(segment, 0L, length);
+    	return this;
     }
     
+    /// ```
+    /// The rest length of this joint. Clamped to a stable minimum value.
+    /// ```
     public float length() {
-        return (float) LENGTH_HANDLE.get(segment, 0L);
+    	return (float) LENGTH_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableSpring()
     public DistanceJointDef enableSpring(boolean enableSpring) {
-        ENABLE_SPRING_HANDLE.set(segment, 0L, enableSpring);
-        return this;
+    	ENABLE_SPRING_HANDLE.set(segment, 0L, enableSpring);
+    	return this;
     }
     
+    /// ```
+    /// Enable the distance constraint to behave like a spring. If false
+    /// then the distance joint will be rigid, overriding the limit and motor.
+    /// ```
     public boolean enableSpring() {
-        return (boolean) ENABLE_SPRING_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SPRING_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hertz()
     public DistanceJointDef hertz(float hertz) {
-        HERTZ_HANDLE.set(segment, 0L, hertz);
-        return this;
+    	HERTZ_HANDLE.set(segment, 0L, hertz);
+    	return this;
     }
     
+    /// ```
+    /// The spring linear stiffness Hertz, cycles per second
+    /// ```
     public float hertz() {
-        return (float) HERTZ_HANDLE.get(segment, 0L);
+    	return (float) HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #dampingRatio()
     public DistanceJointDef dampingRatio(float dampingRatio) {
-        DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
-        return this;
+    	DAMPING_RATIO_HANDLE.set(segment, 0L, dampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// The spring linear damping ratio, non-dimensional
+    /// ```
     public float dampingRatio() {
-        return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableLimit()
     public DistanceJointDef enableLimit(boolean enableLimit) {
-        ENABLE_LIMIT_HANDLE.set(segment, 0L, enableLimit);
-        return this;
+    	ENABLE_LIMIT_HANDLE.set(segment, 0L, enableLimit);
+    	return this;
     }
     
+    /// ```
+    /// Enable/disable the joint limit
+    /// ```
     public boolean enableLimit() {
-        return (boolean) ENABLE_LIMIT_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_LIMIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #minLength()
     public DistanceJointDef minLength(float minLength) {
-        MIN_LENGTH_HANDLE.set(segment, 0L, minLength);
-        return this;
+    	MIN_LENGTH_HANDLE.set(segment, 0L, minLength);
+    	return this;
     }
     
+    /// ```
+    /// Minimum length. Clamped to a stable minimum value.
+    /// ```
     public float minLength() {
-        return (float) MIN_LENGTH_HANDLE.get(segment, 0L);
+    	return (float) MIN_LENGTH_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxLength()
     public DistanceJointDef maxLength(float maxLength) {
-        MAX_LENGTH_HANDLE.set(segment, 0L, maxLength);
-        return this;
+    	MAX_LENGTH_HANDLE.set(segment, 0L, maxLength);
+    	return this;
     }
     
+    /// ```
+    /// Maximum length. Must be greater than or equal to the minimum length.
+    /// ```
     public float maxLength() {
-        return (float) MAX_LENGTH_HANDLE.get(segment, 0L);
+    	return (float) MAX_LENGTH_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableMotor()
     public DistanceJointDef enableMotor(boolean enableMotor) {
-        ENABLE_MOTOR_HANDLE.set(segment, 0L, enableMotor);
-        return this;
+    	ENABLE_MOTOR_HANDLE.set(segment, 0L, enableMotor);
+    	return this;
     }
     
+    /// ```
+    /// Enable/disable the joint motor
+    /// ```
     public boolean enableMotor() {
-        return (boolean) ENABLE_MOTOR_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_MOTOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxMotorForce()
     public DistanceJointDef maxMotorForce(float maxMotorForce) {
-        MAX_MOTOR_FORCE_HANDLE.set(segment, 0L, maxMotorForce);
-        return this;
+    	MAX_MOTOR_FORCE_HANDLE.set(segment, 0L, maxMotorForce);
+    	return this;
     }
     
+    /// ```
+    /// The maximum motor force, usually in newtons
+    /// ```
     public float maxMotorForce() {
-        return (float) MAX_MOTOR_FORCE_HANDLE.get(segment, 0L);
+    	return (float) MAX_MOTOR_FORCE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #motorSpeed()
     public DistanceJointDef motorSpeed(float motorSpeed) {
-        MOTOR_SPEED_HANDLE.set(segment, 0L, motorSpeed);
-        return this;
+    	MOTOR_SPEED_HANDLE.set(segment, 0L, motorSpeed);
+    	return this;
     }
     
+    /// ```
+    /// The desired motor speed, usually in meters per second
+    /// ```
     public float motorSpeed() {
-        return (float) MOTOR_SPEED_HANDLE.get(segment, 0L);
+    	return (float) MOTOR_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collideConnected()
     public DistanceJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-        return this;
+    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to true if the attached bodies should collide
+    /// ```
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userData()
     public DistanceJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public DistanceJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public DistanceJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public DistanceJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public DistanceJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public DistanceJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
+    /// @see #localAnchorA()
     public DistanceJointDef localAnchorA(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorA);
-        return this;
+    	consumer.accept(localAnchorA);
+    	return this;
     }
     
+    /// @see #localAnchorA()
     public DistanceJointDef localAnchorA(Vec2 other) {
-        localAnchorA.set(other);
-        return this;
+    	localAnchorA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyA's origin
+    /// ```
     public Vec2 localAnchorA() {
-        return localAnchorA;
+    	return localAnchorA;
     }
     
+    /// @see #localAnchorB()
     public DistanceJointDef localAnchorB(Consumer<Vec2> consumer) {
-        consumer.accept(localAnchorB);
-        return this;
+    	consumer.accept(localAnchorB);
+    	return this;
     }
     
+    /// @see #localAnchorB()
     public DistanceJointDef localAnchorB(Vec2 other) {
-        localAnchorB.set(other);
-        return this;
+    	localAnchorB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The local anchor point relative to bodyB's origin
+    /// ```
     public Vec2 localAnchorB() {
-        return localAnchorB;
+    	return localAnchorB;
     }
     
     @Override

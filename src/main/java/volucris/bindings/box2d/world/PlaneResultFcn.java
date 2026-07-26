@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,6 +12,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.characterMover.PlaneResult;
 import volucris.bindings.box2d.shape.ShapeId;
 
@@ -19,7 +21,7 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public abstract class PlaneResultFcn {
 
-    private static final HashMap<Long, WeakReference<PlaneResultFcn>> CACHE;
+    private static final Map<Long, WeakReference<PlaneResultFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -54,20 +56,20 @@ public abstract class PlaneResultFcn {
     }
 
     public boolean invoke(
-        MemorySegment shapeId, 
-        MemorySegment plane, 
+        MemorySegment shapeId,
+        MemorySegment plane,
         MemorySegment context
     ) {
-        return (boolean) invoke(
-            new ShapeId(shapeId), 
-            new PlaneResult(plane), 
-            context
+        return invoke(
+            new ShapeId(shapeId),
+            new PlaneResult(plane),
+		    context
         );
     }
 
     public boolean invoke(
-        ShapeId shapeId, 
-        PlaneResult plane, 
+        ShapeId shapeId,
+        PlaneResult plane,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -75,12 +77,11 @@ public abstract class PlaneResultFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static PlaneResultFcn get(MemorySegment segment) {
+    public static @Nullable PlaneResultFcn get(MemorySegment segment) {
         WeakReference<PlaneResultFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

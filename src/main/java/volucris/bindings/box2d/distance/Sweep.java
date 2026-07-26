@@ -15,9 +15,11 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * This describes the motion of a body/shape for TOI computation. Shapes are defined with respect to the body origin, which may not coincide with the center of mass. However, to support dynamics we must interpolate the center of mass position.
- */
+/// ```
+/// This describes the motion of a body/shape for TOI computation. Shapes are defined with respect to the body origin,
+/// which may not coincide with the center of mass. However, to support dynamics we must interpolate the center of mass
+/// position.
+/// ```
 public final class Sweep
 		implements Struct<Sweep> {
 
@@ -73,74 +75,99 @@ public final class Sweep
         q2 = new Rot(segment.asSlice(Q2_BYTE_OFFSET, Rot.LAYOUT));
     }
 
+    /// @see #localCenter()
     public Sweep localCenter(Consumer<Vec2> consumer) {
-        consumer.accept(localCenter);
-        return this;
+    	consumer.accept(localCenter);
+    	return this;
     }
     
+    /// @see #localCenter()
     public Sweep localCenter(Vec2 other) {
-        localCenter.set(other);
-        return this;
+    	localCenter.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Local center of mass position
+    /// ```
     public Vec2 localCenter() {
-        return localCenter;
+    	return localCenter;
     }
     
+    /// @see #c1()
     public Sweep c1(Consumer<Vec2> consumer) {
-        consumer.accept(c1);
-        return this;
+    	consumer.accept(c1);
+    	return this;
     }
     
+    /// @see #c1()
     public Sweep c1(Vec2 other) {
-        c1.set(other);
-        return this;
+    	c1.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Starting center of mass world position
+    /// ```
     public Vec2 c1() {
-        return c1;
+    	return c1;
     }
     
+    /// @see #c2()
     public Sweep c2(Consumer<Vec2> consumer) {
-        consumer.accept(c2);
-        return this;
+    	consumer.accept(c2);
+    	return this;
     }
     
+    /// @see #c2()
     public Sweep c2(Vec2 other) {
-        c2.set(other);
-        return this;
+    	c2.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Ending center of mass world position
+    /// ```
     public Vec2 c2() {
-        return c2;
+    	return c2;
     }
     
+    /// @see #q1()
     public Sweep q1(Consumer<Rot> consumer) {
-        consumer.accept(q1);
-        return this;
+    	consumer.accept(q1);
+    	return this;
     }
     
+    /// @see #q1()
     public Sweep q1(Rot other) {
-        q1.set(other);
-        return this;
+    	q1.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Starting world rotation
+    /// ```
     public Rot q1() {
-        return q1;
+    	return q1;
     }
     
+    /// @see #q2()
     public Sweep q2(Consumer<Rot> consumer) {
-        consumer.accept(q2);
-        return this;
+    	consumer.accept(q2);
+    	return this;
     }
     
+    /// @see #q2()
     public Sweep q2(Rot other) {
-        q2.set(other);
-        return this;
+    	q2.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Ending world rotation
+    /// ```
     public Rot q2() {
-        return q2;
+    	return q2;
     }
     
     @Override

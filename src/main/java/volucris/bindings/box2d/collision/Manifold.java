@@ -15,9 +15,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A contact manifold describes the contact points between colliding shapes.
- */
+/// ```
+/// A contact manifold describes the contact points between colliding shapes.
+/// @note Box2D uses speculative collision so some contact points may be separated.
+/// ```
 public final class Manifold
 		implements Struct<Manifold> {
 
@@ -67,7 +68,6 @@ public final class Manifold
         this.segment = segment;
     
         normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
-    
         points = new ManifoldPoint[2];
         for (int i = 0; i < 2; i++) {
             long offset = POINTS_BYTE_OFFSET + i * ManifoldPoint.LAYOUT.byteSize();
@@ -76,50 +76,68 @@ public final class Manifold
     
     }
 
+    /// @see #rollingImpulse()
     public Manifold rollingImpulse(float rollingImpulse) {
-        ROLLING_IMPULSE_HANDLE.set(segment, 0L, rollingImpulse);
-        return this;
+    	ROLLING_IMPULSE_HANDLE.set(segment, 0L, rollingImpulse);
+    	return this;
     }
     
+    /// ```
+    /// Angular impulse applied for rolling resistance. N * m * s = kg * m^2 / s
+    /// ```
     public float rollingImpulse() {
-        return (float) ROLLING_IMPULSE_HANDLE.get(segment, 0L);
+    	return (float) ROLLING_IMPULSE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #pointCount()
     public Manifold pointCount(int pointCount) {
-        POINT_COUNT_HANDLE.set(segment, 0L, pointCount);
-        return this;
+    	POINT_COUNT_HANDLE.set(segment, 0L, pointCount);
+    	return this;
     }
     
+    /// ```
+    /// The number of contacts points, will be 0, 1, or 2
+    /// ```
     public int pointCount() {
-        return (int) POINT_COUNT_HANDLE.get(segment, 0L);
+    	return (int) POINT_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #normal()
     public Manifold normal(Consumer<Vec2> consumer) {
-        consumer.accept(normal);
-        return this;
+    	consumer.accept(normal);
+    	return this;
     }
     
+    /// @see #normal()
     public Manifold normal(Vec2 other) {
-        normal.set(other);
-        return this;
+    	normal.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The unit normal vector in world space, points from shape A to bodyB
+    /// ```
     public Vec2 normal() {
-        return normal;
+    	return normal;
     }
     
+    /// @see #points(int)
     public Manifold points(Consumer<ManifoldPoint> consumer, int index) {
-        consumer.accept(points[index]);
-        return this;
+    	consumer.accept(points[index]);
+    	return this;
     }
     
+    /// @see #points(int)
     public Manifold points(ManifoldPoint other, int index) {
-        points[index].set(other);
-        return this;
+    	points[index].set(other);
+    	return this;
     }
     
+    /// ```
+    /// The manifold points, up to two are possible in 2D
+    /// ```
     public ManifoldPoint points(int index) {
-        return points[index];
+    	return points[index];
     }
     
     @Override

@@ -21,9 +21,10 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A solid capsule can be viewed as two semicircles connected by a rectangle.
- */
+/// ```
+/// A solid capsule can be viewed as two semicircles connected
+/// by a rectangle.
+/// ```
 public final class Capsule
 		implements Struct<Capsule> {
 
@@ -83,227 +84,231 @@ public final class Capsule
         center2 = new Vec2(segment.asSlice(CENTER2_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Compute mass properties of a capsule
-     */
+    /// ```
+    /// Compute mass properties of a capsule
+    /// ```
     public static MemorySegment computeCapsuleMass(
-        SegmentAllocator allocator,
-        MemorySegment shape, 
-        float density
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	float density
     ) {
-        MethodHandle method = B2_COMPUTE_CAPSULE_MASS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shape, 
-                density
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COMPUTE_CAPSULE_MASS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			density
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #computeCapsuleMass}.
-     */
+    /// Typed method of [#computeCapsuleMass].
     public final @Nullable MassData computeCapsuleMass(
-        SegmentAllocator allocator,
-        float density
+    	SegmentAllocator allocator,
+    	float density
     ) {
-        MemorySegment segment = computeCapsuleMass(
-            allocator,
-            this.segment, 
-            density
-        );
+    	MemorySegment segment = computeCapsuleMass(
+    		allocator,
+    		this.segment,
+    		density
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new MassData(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MassData(segment);
     }
     
-    /**
-     * Compute the bounding box of a transformed capsule
-     */
+    /// ```
+    /// Compute the bounding box of a transformed capsule
+    /// ```
     public static MemorySegment computeCapsuleAABB(
-        SegmentAllocator allocator,
-        MemorySegment shape, 
-        MemorySegment transform
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	MemorySegment transform
     ) {
-        MethodHandle method = B2_COMPUTE_CAPSULE_AABB.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shape, 
-                transform
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COMPUTE_CAPSULE_AABB.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			transform
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #computeCapsuleAABB}.
-     */
+    /// Typed method of [#computeCapsuleAABB].
     public final @Nullable AABB computeCapsuleAABB(
-        SegmentAllocator allocator,
-        Transform transform
+    	SegmentAllocator allocator,
+    	Transform transform
     ) {
-        MemorySegment segment = computeCapsuleAABB(
-            allocator,
-            this.segment, 
-            transform.memorySegment()
-        );
+    	MemorySegment segment = computeCapsuleAABB(
+    		allocator,
+    		this.segment,
+    		transform.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
-    /**
-     * Test a point for overlap with a capsule in local space
-     */
+    /// ```
+    /// Test a point for overlap with a capsule in local space
+    /// ```
     public static boolean pointInCapsule(
-        MemorySegment point, 
-        MemorySegment shape
+    	MemorySegment point,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_POINT_IN_CAPSULE.get();
-        try {
-            return (boolean) method.invokeExact(
-                point, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_POINT_IN_CAPSULE.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			point,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #pointInCapsule}.
-     */
+    /// Typed method of [#pointInCapsule].
     public final boolean pointInCapsule(
-        Vec2 point
+    	Vec2 point
     ) {
-        return (boolean) pointInCapsule(
-            point.memorySegment(), 
-            this.segment
-        );
+    	return (boolean) pointInCapsule(
+    		point.memorySegment(),
+    		this.segment
+    	);
     }
     
-    /**
-     * Ray cast versus capsule shape in local space. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Ray cast versus capsule shape in local space. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment rayCastCapsule(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_RAY_CAST_CAPSULE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_RAY_CAST_CAPSULE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rayCastCapsule}.
-     */
+    /// Typed method of [#rayCastCapsule].
     public final @Nullable CastOutput rayCastCapsule(
-        SegmentAllocator allocator,
-        RayCastInput input
+    	SegmentAllocator allocator,
+    	RayCastInput input
     ) {
-        MemorySegment segment = rayCastCapsule(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = rayCastCapsule(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
-    /**
-     * Shape cast versus a capsule. Initial overlap is treated as a miss.
-     */
+    /// ```
+    /// Shape cast versus a capsule. Initial overlap is treated as a miss.
+    /// ```
     public static MemorySegment shapeCastCapsule(
-        SegmentAllocator allocator,
-        MemorySegment input, 
-        MemorySegment shape
+    	SegmentAllocator allocator,
+    	MemorySegment input,
+    	MemorySegment shape
     ) {
-        MethodHandle method = B2_SHAPE_CAST_CAPSULE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                input, 
-                shape
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_CAST_CAPSULE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			input,
+    			shape
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #shapeCastCapsule}.
-     */
+    /// Typed method of [#shapeCastCapsule].
     public final @Nullable CastOutput shapeCastCapsule(
-        SegmentAllocator allocator,
-        ShapeCastInput input
+    	SegmentAllocator allocator,
+    	ShapeCastInput input
     ) {
-        MemorySegment segment = shapeCastCapsule(
-            allocator,
-            input.memorySegment(), 
-            this.segment
-        );
+    	MemorySegment segment = shapeCastCapsule(
+    		allocator,
+    		input.memorySegment(),
+    		this.segment
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
+    /// @see #radius()
     public Capsule radius(float radius) {
-        RADIUS_HANDLE.set(segment, 0L, radius);
-        return this;
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
     }
     
+    /// ```
+    /// The radius of the semicircles
+    /// ```
     public float radius() {
-        return (float) RADIUS_HANDLE.get(segment, 0L);
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #center1()
     public Capsule center1(Consumer<Vec2> consumer) {
-        consumer.accept(center1);
-        return this;
+    	consumer.accept(center1);
+    	return this;
     }
     
+    /// @see #center1()
     public Capsule center1(Vec2 other) {
-        center1.set(other);
-        return this;
+    	center1.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Local center of the first semicircle
+    /// ```
     public Vec2 center1() {
-        return center1;
+    	return center1;
     }
     
+    /// @see #center2()
     public Capsule center2(Consumer<Vec2> consumer) {
-        consumer.accept(center2);
-        return this;
+    	consumer.accept(center2);
+    	return this;
     }
     
+    /// @see #center2()
     public Capsule center2(Vec2 other) {
-        center2.set(other);
-        return this;
+    	center2.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Local center of the second semicircle
+    /// ```
     public Vec2 center2() {
-        return center2;
+    	return center2;
     }
     
     @Override

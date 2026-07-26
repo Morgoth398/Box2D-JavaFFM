@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,15 +12,19 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.math.Transform;
 import volucris.bindings.box2d.math.Vec2;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Draw a solid closed polygon provided in CCW order.
+/// ```
 public abstract class DrawSolidPolygonFcn {
 
-    private static final HashMap<Long, WeakReference<DrawSolidPolygonFcn>> CACHE;
+    private static final Map<Long, WeakReference<DrawSolidPolygonFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -56,29 +61,29 @@ public abstract class DrawSolidPolygonFcn {
     }
 
     public void invoke(
-        MemorySegment transform, 
-        MemorySegment vertices, 
-        int vertexCount, 
-        float radius, 
-        int color, 
+        MemorySegment transform,
+        MemorySegment vertices,
+        int vertexCount,
+        float radius,
+        int color,
         MemorySegment context
     ) {
         invoke(
-            new Transform(transform), 
-            new Vec2(vertices), 
-            vertexCount, 
-            radius, 
-            color, 
-            context
+            new Transform(transform),
+            new Vec2(vertices),
+		    vertexCount,
+		    radius,
+		    color,
+		    context
         );
     }
 
     public void invoke(
-        Transform transform, 
-        Vec2 vertices, 
-        int vertexCount, 
-        float radius, 
-        int color, 
+        Transform transform,
+        Vec2 vertices,
+        int vertexCount,
+        float radius,
+        int color,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -86,12 +91,11 @@ public abstract class DrawSolidPolygonFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static DrawSolidPolygonFcn get(MemorySegment segment) {
+    public static @Nullable DrawSolidPolygonFcn get(MemorySegment segment) {
         WeakReference<DrawSolidPolygonFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

@@ -17,9 +17,10 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Surface materials allow chain shapes to have per segment surface properties.
- */
+/// ```
+/// Surface materials allow chain shapes to have per segment surface properties.
+/// @ingroup shape
+/// ```
 public final class SurfaceMaterial
 		implements Struct<SurfaceMaterial> {
 
@@ -77,88 +78,115 @@ public final class SurfaceMaterial
     
     }
 
-    /**
-     * Use this to initialize your surface material
-     */
+    /// ```
+    /// Use this to initialize your surface material
+    /// @ingroup shape
+    /// ```
     public static MemorySegment ndefaultSurfaceMaterial(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_SURFACE_MATERIAL.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_SURFACE_MATERIAL.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultSurfaceMaterial}.
-     */
+    /// Typed method of [#ndefaultSurfaceMaterial].
     public static @Nullable SurfaceMaterial defaultSurfaceMaterial(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultSurfaceMaterial(allocator);
+    	MemorySegment segment = ndefaultSurfaceMaterial(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new SurfaceMaterial(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new SurfaceMaterial(segment);
     }
     
+    /// @see #friction()
     public SurfaceMaterial friction(float friction) {
-        FRICTION_HANDLE.set(segment, 0L, friction);
-        return this;
+    	FRICTION_HANDLE.set(segment, 0L, friction);
+    	return this;
     }
     
+    /// ```
+    /// The Coulomb (dry) friction coefficient, usually in the range [0,1].
+    /// ```
     public float friction() {
-        return (float) FRICTION_HANDLE.get(segment, 0L);
+    	return (float) FRICTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #restitution()
     public SurfaceMaterial restitution(float restitution) {
-        RESTITUTION_HANDLE.set(segment, 0L, restitution);
-        return this;
+    	RESTITUTION_HANDLE.set(segment, 0L, restitution);
+    	return this;
     }
     
+    /// ```
+    /// The coefficient of restitution (bounce) usually in the range [0,1].
+    /// https://en.wikipedia.org/wiki/Coefficient_of_restitution
+    /// ```
     public float restitution() {
-        return (float) RESTITUTION_HANDLE.get(segment, 0L);
+    	return (float) RESTITUTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #rollingResistance()
     public SurfaceMaterial rollingResistance(float rollingResistance) {
-        ROLLING_RESISTANCE_HANDLE.set(segment, 0L, rollingResistance);
-        return this;
+    	ROLLING_RESISTANCE_HANDLE.set(segment, 0L, rollingResistance);
+    	return this;
     }
     
+    /// ```
+    /// The rolling resistance usually in the range [0,1].
+    /// ```
     public float rollingResistance() {
-        return (float) ROLLING_RESISTANCE_HANDLE.get(segment, 0L);
+    	return (float) ROLLING_RESISTANCE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #tangentSpeed()
     public SurfaceMaterial tangentSpeed(float tangentSpeed) {
-        TANGENT_SPEED_HANDLE.set(segment, 0L, tangentSpeed);
-        return this;
+    	TANGENT_SPEED_HANDLE.set(segment, 0L, tangentSpeed);
+    	return this;
     }
     
+    /// ```
+    /// The tangent speed for conveyor belts
+    /// ```
     public float tangentSpeed() {
-        return (float) TANGENT_SPEED_HANDLE.get(segment, 0L);
+    	return (float) TANGENT_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userMaterialId()
     public SurfaceMaterial userMaterialId(int userMaterialId) {
-        USER_MATERIAL_ID_HANDLE.set(segment, 0L, userMaterialId);
-        return this;
+    	USER_MATERIAL_ID_HANDLE.set(segment, 0L, userMaterialId);
+    	return this;
     }
     
+    /// ```
+    /// User material identifier. This is passed with query results and to friction and restitution
+    /// combining functions. It is not used internally.
+    /// ```
     public int userMaterialId() {
-        return (int) USER_MATERIAL_ID_HANDLE.get(segment, 0L);
+    	return (int) USER_MATERIAL_ID_HANDLE.get(segment, 0L);
     }
     
+    /// @see #customColor()
     public SurfaceMaterial customColor(int customColor) {
-        CUSTOM_COLOR_HANDLE.set(segment, 0L, customColor);
-        return this;
+    	CUSTOM_COLOR_HANDLE.set(segment, 0L, customColor);
+    	return this;
     }
     
+    /// ```
+    /// Custom debug draw color.
+    /// ```
     public int customColor() {
-        return (int) CUSTOM_COLOR_HANDLE.get(segment, 0L);
+    	return (int) CUSTOM_COLOR_HANDLE.get(segment, 0L);
     }
     
     @Override

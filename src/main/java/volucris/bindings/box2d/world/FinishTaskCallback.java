@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,13 +12,17 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
-import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Finishes a user task object that wraps a Box2D task.
+/// @ingroup world
+/// ```
 public abstract class FinishTaskCallback {
 
-    private static final HashMap<Long, WeakReference<FinishTaskCallback>> CACHE;
+    private static final Map<Long, WeakReference<FinishTaskCallback>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -50,7 +55,7 @@ public abstract class FinishTaskCallback {
     }
 
     public void invoke(
-        MemorySegment userTask, 
+        MemorySegment userTask,
         MemorySegment userContext
     ) {
         throw new UnsupportedOperationException(
@@ -62,7 +67,7 @@ public abstract class FinishTaskCallback {
         return segment;
     }
 
-    public static FinishTaskCallback get(MemorySegment segment) {
+    public static @Nullable FinishTaskCallback get(MemorySegment segment) {
         WeakReference<FinishTaskCallback> reference = CACHE.get(segment.address());
 
         if (reference == null)

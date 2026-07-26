@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Chain id references a chain instances. This should be treated as an opaque handle.
- */
+/// ```
+/// Chain id references a chain instances. This should be treated as an opaque handle.
+/// ```
 public final class ChainId
 		implements Struct<ChainId> {
 
@@ -62,31 +62,34 @@ public final class ChainId
     
     }
 
+    /// @see #index1()
     public ChainId index1(int index1) {
-        INDEX1_HANDLE.set(segment, 0L, index1);
-        return this;
+    	INDEX1_HANDLE.set(segment, 0L, index1);
+    	return this;
     }
     
     public int index1() {
-        return (int) INDEX1_HANDLE.get(segment, 0L);
+    	return (int) INDEX1_HANDLE.get(segment, 0L);
     }
     
+    /// @see #world0()
     public ChainId world0(short world0) {
-        WORLD0_HANDLE.set(segment, 0L, world0);
-        return this;
+    	WORLD0_HANDLE.set(segment, 0L, world0);
+    	return this;
     }
     
     public short world0() {
-        return (short) WORLD0_HANDLE.get(segment, 0L);
+    	return (short) WORLD0_HANDLE.get(segment, 0L);
     }
     
+    /// @see #generation()
     public ChainId generation(short generation) {
-        GENERATION_HANDLE.set(segment, 0L, generation);
-        return this;
+    	GENERATION_HANDLE.set(segment, 0L, generation);
+    	return this;
     }
     
     public short generation() {
-        return (short) GENERATION_HANDLE.get(segment, 0L);
+    	return (short) GENERATION_HANDLE.get(segment, 0L);
     }
     
     @Override

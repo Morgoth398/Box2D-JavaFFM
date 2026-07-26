@@ -21,9 +21,6 @@ import volucris.bindings.box2d.shape.QueryFilter;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class World {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_WORLD;
@@ -121,1478 +118,1429 @@ public final class World {
     private World() {
     }
 
-    /**
-     * Create a world for rigid body simulation. A world contains bodies, shapes, and constraints. You make create up to 128 worlds. Each world is completely independent and may be simulated in parallel.
-     */
+    /// ```
+    /// Create a world for rigid body simulation. A world contains bodies, shapes, and constraints. You make create
+    /// up to 128 worlds. Each world is completely independent and may be simulated in parallel.
+    /// @return the world id.
+    /// ```
     public static MemorySegment createWorld(
-        SegmentAllocator allocator,
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_WORLD.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_WORLD.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createWorld}.
-     */
+    /// Typed method of [#createWorld].
     public static @Nullable WorldId createWorld(
-        SegmentAllocator allocator,
-        WorldDef def
+    	SegmentAllocator allocator,
+    	WorldDef def
     ) {
-        MemorySegment segment = createWorld(
-            allocator,
-            def.memorySegment()
-        );
+    	MemorySegment segment = createWorld(
+    		allocator,
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new WorldId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new WorldId(segment);
     }
     
-    /**
-     * Destroy a world
-     */
+    /// ```
+    /// Destroy a world
+    /// ```
     public static void destroyWorld(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_DESTROY_WORLD.get();
-        try {
-            method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DESTROY_WORLD.get();
+    	try {
+    		 method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #destroyWorld}.
-     */
+    /// Typed method of [#destroyWorld].
     public static void destroyWorld(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        destroyWorld(
-            worldId.memorySegment()
-        );
+    	destroyWorld(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * World id validation. Provides validation for up to 64K allocations.
-     */
+    /// ```
+    /// World id validation. Provides validation for up to 64K allocations.
+    /// ```
     public static boolean isValid(
-        MemorySegment id
+    	MemorySegment id
     ) {
-        MethodHandle method = B2_WORLD_IS_VALID.get();
-        try {
-            return (boolean) method.invokeExact(
-                id
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_IS_VALID.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			id
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isValid}.
-     */
+    /// Typed method of [#isValid].
     public static boolean isValid(
-        WorldId id
+    	WorldId id
     ) {
-        return (boolean) isValid(
-            id.memorySegment()
-        );
+    	return (boolean) isValid(
+    		id.memorySegment()
+    	);
     }
     
-    /**
-     * Simulate a world for one time step. This performs collision detection, integration, and constraint solution.
-     */
+    /// ```
+    /// Simulate a world for one time step. This performs collision detection, integration, and constraint solution.
+    /// @param worldId The world to simulate
+    /// @param timeStep The amount of time to simulate, this should be a fixed number. Usually 1/60.
+    /// @param subStepCount The number of sub-steps, increasing the sub-step count can increase accuracy. Usually 4.
+    /// ```
     public static void step(
-        MemorySegment worldId, 
-        float timeStep, 
-        int subStepCount
+    	MemorySegment worldId,
+    	float timeStep,
+    	int subStepCount
     ) {
-        MethodHandle method = B2_WORLD_STEP.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                timeStep, 
-                subStepCount
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_STEP.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			timeStep,
+    			subStepCount
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #step}.
-     */
+    /// Typed method of [#step].
     public static void step(
-        WorldId worldId, 
-        float timeStep, 
-        int subStepCount
+    	WorldId worldId,
+    	float timeStep,
+    	int subStepCount
     ) {
-        step(
-            worldId.memorySegment(), 
-            timeStep, 
-            subStepCount
-        );
+    	step(
+    		worldId.memorySegment(),
+    		timeStep,
+    		subStepCount
+    	);
     }
     
-    /**
-     * Call this to draw shapes and other debug draw data
-     */
+    /// ```
+    /// Call this to draw shapes and other debug draw data
+    /// ```
     public static void draw(
-        MemorySegment worldId, 
-        MemorySegment draw
+    	MemorySegment worldId,
+    	MemorySegment draw
     ) {
-        MethodHandle method = B2_WORLD_DRAW.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                draw
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_DRAW.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			draw
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #draw}.
-     */
+    /// Typed method of [#draw].
     public static void draw(
-        WorldId worldId, 
-        DebugDraw draw
+    	WorldId worldId,
+    	DebugDraw draw
     ) {
-        draw(
-            worldId.memorySegment(), 
-            draw.memorySegment()
-        );
+    	draw(
+    		worldId.memorySegment(),
+    		draw.memorySegment()
+    	);
     }
     
-    /**
-     * Get the body events for the current time step. The event data is transient. Do not store a reference to this data.
-     */
+    /// ```
+    /// Get the body events for the current time step. The event data is transient. Do not store a reference to this data.
+    /// ```
     public static MemorySegment getBodyEvents(
-        SegmentAllocator allocator,
-        MemorySegment worldId
+    	SegmentAllocator allocator,
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_BODY_EVENTS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_BODY_EVENTS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getBodyEvents}.
-     */
+    /// Typed method of [#getBodyEvents].
     public static @Nullable BodyEvents getBodyEvents(
-        SegmentAllocator allocator,
-        WorldId worldId
+    	SegmentAllocator allocator,
+    	WorldId worldId
     ) {
-        MemorySegment segment = getBodyEvents(
-            allocator,
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getBodyEvents(
+    		allocator,
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new BodyEvents(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new BodyEvents(segment);
     }
     
-    /**
-     * Get sensor events for the current time step. The event data is transient. Do not store a reference to this data.
-     */
+    /// ```
+    /// Get sensor events for the current time step. The event data is transient. Do not store a reference to this data.
+    /// ```
     public static MemorySegment getSensorEvents(
-        SegmentAllocator allocator,
-        MemorySegment worldId
+    	SegmentAllocator allocator,
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_SENSOR_EVENTS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_SENSOR_EVENTS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSensorEvents}.
-     */
+    /// Typed method of [#getSensorEvents].
     public static @Nullable SensorEvents getSensorEvents(
-        SegmentAllocator allocator,
-        WorldId worldId
+    	SegmentAllocator allocator,
+    	WorldId worldId
     ) {
-        MemorySegment segment = getSensorEvents(
-            allocator,
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getSensorEvents(
+    		allocator,
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new SensorEvents(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new SensorEvents(segment);
     }
     
-    /**
-     * Get contact events for this current time step. The event data is transient. Do not store a reference to this data.
-     */
+    /// ```
+    /// Get contact events for this current time step. The event data is transient. Do not store a reference to this data.
+    /// ```
     public static MemorySegment getContactEvents(
-        SegmentAllocator allocator,
-        MemorySegment worldId
+    	SegmentAllocator allocator,
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_CONTACT_EVENTS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_CONTACT_EVENTS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getContactEvents}.
-     */
+    /// Typed method of [#getContactEvents].
     public static @Nullable ContactEvents getContactEvents(
-        SegmentAllocator allocator,
-        WorldId worldId
+    	SegmentAllocator allocator,
+    	WorldId worldId
     ) {
-        MemorySegment segment = getContactEvents(
-            allocator,
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getContactEvents(
+    		allocator,
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ContactEvents(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ContactEvents(segment);
     }
     
-    /**
-     * Overlap test for all shapes that *potentially* overlap the provided AABB
-     */
+    /// ```
+    /// Overlap test for all shapes that *potentially* overlap the provided AABB
+    /// ```
     public static MemorySegment overlapAABB(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment aabb, 
-        MemorySegment filter, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment aabb,
+    	MemorySegment filter,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_OVERLAP_AABB.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                aabb, 
-                filter, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_OVERLAP_AABB.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			aabb,
+    			filter,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #overlapAABB}.
-     */
+    /// Typed method of [#overlapAABB].
     public static @Nullable TreeStats overlapAABB(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        AABB aabb, 
-        QueryFilter filter, 
-        OverlapResultFcn fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	AABB aabb,
+    	QueryFilter filter,
+    	OverlapResultFcn fcn,
+    	MemorySegment context
     ) {
-        MemorySegment segment = overlapAABB(
-            allocator,
-            worldId.memorySegment(), 
-            aabb.memorySegment(), 
-            filter.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = overlapAABB(
+    		allocator,
+    		worldId.memorySegment(),
+    		aabb.memorySegment(),
+    		filter.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Overlap test for all shapes that overlap the provided shape proxy.
-     */
+    /// ```
+    /// Overlap test for all shapes that overlap the provided shape proxy.
+    /// ```
     public static MemorySegment overlapShape(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment proxy, 
-        MemorySegment filter, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment proxy,
+    	MemorySegment filter,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_OVERLAP_SHAPE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                proxy, 
-                filter, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_OVERLAP_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			proxy,
+    			filter,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #overlapShape}.
-     */
+    /// Typed method of [#overlapShape].
     public static @Nullable TreeStats overlapShape(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        ShapeProxy proxy, 
-        QueryFilter filter, 
-        OverlapResultFcn fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	ShapeProxy proxy,
+    	QueryFilter filter,
+    	OverlapResultFcn fcn,
+    	MemorySegment context
     ) {
-        MemorySegment segment = overlapShape(
-            allocator,
-            worldId.memorySegment(), 
-            proxy.memorySegment(), 
-            filter.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = overlapShape(
+    		allocator,
+    		worldId.memorySegment(),
+    		proxy.memorySegment(),
+    		filter.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Cast a ray into the world to collect shapes in the path of the ray. Your callback function controls whether you get the closest point, any point, or n-points.
-     */
+    /// ```
+    /// Cast a ray into the world to collect shapes in the path of the ray.
+    /// Your callback function controls whether you get the closest point, any point, or n-points.
+    /// @note The callback function may receive shapes in any order
+    /// @param worldId The world to cast the ray against
+    /// @param origin The start point of the ray
+    /// @param translation The translation of the ray from the start point to the end point
+    /// @param filter Contains bit flags to filter unwanted shapes from the results
+    /// @param fcn A user implemented callback function
+    /// @param context A user context that is passed along to the callback function
+    /// @return traversal performance counters
+    /// ```
     public static MemorySegment castRay(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment origin, 
-        MemorySegment translation, 
-        MemorySegment filter, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment origin,
+    	MemorySegment translation,
+    	MemorySegment filter,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_CAST_RAY.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                origin, 
-                translation, 
-                filter, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_CAST_RAY.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			origin,
+    			translation,
+    			filter,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #castRay}.
-     */
+    /// Typed method of [#castRay].
     public static @Nullable TreeStats castRay(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        Vec2 origin, 
-        Vec2 translation, 
-        QueryFilter filter, 
-        CastResultFcn fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	Vec2 origin,
+    	Vec2 translation,
+    	QueryFilter filter,
+    	CastResultFcn fcn,
+    	MemorySegment context
     ) {
-        MemorySegment segment = castRay(
-            allocator,
-            worldId.memorySegment(), 
-            origin.memorySegment(), 
-            translation.memorySegment(), 
-            filter.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = castRay(
+    		allocator,
+    		worldId.memorySegment(),
+    		origin.memorySegment(),
+    		translation.memorySegment(),
+    		filter.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Cast a ray into the world to collect the closest hit. This is a convenience function. Ignores initial overlap. This is less general than b2World_CastRay() and does not allow for custom filtering.
-     */
+    /// ```
+    /// Cast a ray into the world to collect the closest hit. This is a convenience function. Ignores initial overlap.
+    /// This is less general than b2World_CastRay() and does not allow for custom filtering.
+    /// ```
     public static MemorySegment castRayClosest(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment origin, 
-        MemorySegment translation, 
-        MemorySegment filter
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment origin,
+    	MemorySegment translation,
+    	MemorySegment filter
     ) {
-        MethodHandle method = B2_WORLD_CAST_RAY_CLOSEST.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                origin, 
-                translation, 
-                filter
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_CAST_RAY_CLOSEST.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			origin,
+    			translation,
+    			filter
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #castRayClosest}.
-     */
+    /// Typed method of [#castRayClosest].
     public static @Nullable RayResult castRayClosest(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        Vec2 origin, 
-        Vec2 translation, 
-        QueryFilter filter
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	Vec2 origin,
+    	Vec2 translation,
+    	QueryFilter filter
     ) {
-        MemorySegment segment = castRayClosest(
-            allocator,
-            worldId.memorySegment(), 
-            origin.memorySegment(), 
-            translation.memorySegment(), 
-            filter.memorySegment()
-        );
+    	MemorySegment segment = castRayClosest(
+    		allocator,
+    		worldId.memorySegment(),
+    		origin.memorySegment(),
+    		translation.memorySegment(),
+    		filter.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new RayResult(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new RayResult(segment);
     }
     
-    /**
-     * Cast a shape through the world. Similar to a cast ray except that a shape is cast instead of a point.
-     */
+    /// ```
+    /// Cast a shape through the world. Similar to a cast ray except that a shape is cast instead of a point.
+    /// @see b2World_CastRay
+    /// ```
     public static MemorySegment castShape(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment proxy, 
-        MemorySegment translation, 
-        MemorySegment filter, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment proxy,
+    	MemorySegment translation,
+    	MemorySegment filter,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_CAST_SHAPE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                proxy, 
-                translation, 
-                filter, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_CAST_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			proxy,
+    			translation,
+    			filter,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #castShape}.
-     */
+    /// Typed method of [#castShape].
     public static @Nullable TreeStats castShape(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        ShapeProxy proxy, 
-        Vec2 translation, 
-        QueryFilter filter, 
-        CastResultFcn fcn, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	ShapeProxy proxy,
+    	Vec2 translation,
+    	QueryFilter filter,
+    	CastResultFcn fcn,
+    	MemorySegment context
     ) {
-        MemorySegment segment = castShape(
-            allocator,
-            worldId.memorySegment(), 
-            proxy.memorySegment(), 
-            translation.memorySegment(), 
-            filter.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = castShape(
+    		allocator,
+    		worldId.memorySegment(),
+    		proxy.memorySegment(),
+    		translation.memorySegment(),
+    		filter.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Cast a capsule mover through the world. This is a special shape cast that handles sliding along other shapes while reducing clipping.
-     */
+    /// ```
+    /// Cast a capsule mover through the world. This is a special shape cast that handles sliding along other shapes while reducing
+    /// clipping.
+    /// ```
     public static float castMover(
-        MemorySegment worldId, 
-        MemorySegment mover, 
-        MemorySegment translation, 
-        MemorySegment filter
+    	MemorySegment worldId,
+    	MemorySegment mover,
+    	MemorySegment translation,
+    	MemorySegment filter
     ) {
-        MethodHandle method = B2_WORLD_CAST_MOVER.get();
-        try {
-            return (float) method.invokeExact(
-                worldId, 
-                mover, 
-                translation, 
-                filter
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_CAST_MOVER.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			worldId,
+    			mover,
+    			translation,
+    			filter
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #castMover}.
-     */
+    /// Typed method of [#castMover].
     public static float castMover(
-        WorldId worldId, 
-        Capsule mover, 
-        Vec2 translation, 
-        QueryFilter filter
+    	WorldId worldId,
+    	Capsule mover,
+    	Vec2 translation,
+    	QueryFilter filter
     ) {
-        return (float) castMover(
-            worldId.memorySegment(), 
-            mover.memorySegment(), 
-            translation.memorySegment(), 
-            filter.memorySegment()
-        );
+    	return (float) castMover(
+    		worldId.memorySegment(),
+    		mover.memorySegment(),
+    		translation.memorySegment(),
+    		filter.memorySegment()
+    	);
     }
     
-    /**
-     * Collide a capsule mover with the world, gathering collision planes that can be fed to b2SolvePlanes. Useful for kinematic character movement.
-     */
+    /// ```
+    /// Collide a capsule mover with the world, gathering collision planes that can be fed to b2SolvePlanes. Useful for
+    /// kinematic character movement.
+    /// ```
     public static void collideMover(
-        MemorySegment worldId, 
-        MemorySegment mover, 
-        MemorySegment filter, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	MemorySegment worldId,
+    	MemorySegment mover,
+    	MemorySegment filter,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_COLLIDE_MOVER.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                mover, 
-                filter, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_COLLIDE_MOVER.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			mover,
+    			filter,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideMover}.
-     */
+    /// Typed method of [#collideMover].
     public static void collideMover(
-        WorldId worldId, 
-        Capsule mover, 
-        QueryFilter filter, 
-        PlaneResultFcn fcn, 
-        MemorySegment context
+    	WorldId worldId,
+    	Capsule mover,
+    	QueryFilter filter,
+    	PlaneResultFcn fcn,
+    	MemorySegment context
     ) {
-        collideMover(
-            worldId.memorySegment(), 
-            mover.memorySegment(), 
-            filter.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	collideMover(
+    		worldId.memorySegment(),
+    		mover.memorySegment(),
+    		filter.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     }
     
-    /**
-     * Enable/disable sleep. If your application does not need sleeping, you can gain some performance by disabling sleep completely at the world level.
-     */
+    /// ```
+    /// Enable/disable sleep. If your application does not need sleeping, you can gain some performance
+    /// by disabling sleep completely at the world level.
+    /// @see b2WorldDef
+    /// ```
     public static void enableSleeping(
-        MemorySegment worldId, 
-        boolean flag
+    	MemorySegment worldId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_WORLD_ENABLE_SLEEPING.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_ENABLE_SLEEPING.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableSleeping}.
-     */
+    /// Typed method of [#enableSleeping].
     public static void enableSleeping(
-        WorldId worldId, 
-        boolean flag
+    	WorldId worldId,
+    	boolean flag
     ) {
-        enableSleeping(
-            worldId.memorySegment(), 
-            flag
-        );
+    	enableSleeping(
+    		worldId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Is body sleeping enabled?
-     */
+    /// ```
+    /// Is body sleeping enabled?
+    /// ```
     public static boolean isSleepingEnabled(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_IS_SLEEPING_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_IS_SLEEPING_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isSleepingEnabled}.
-     */
+    /// Typed method of [#isSleepingEnabled].
     public static boolean isSleepingEnabled(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (boolean) isSleepingEnabled(
-            worldId.memorySegment()
-        );
+    	return (boolean) isSleepingEnabled(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable/disable continuous collision between dynamic and static bodies. Generally you should keep continuous collision enabled to prevent fast moving objects from going through static objects. The performance gain from disabling continuous collision is minor.
-     */
+    /// ```
+    /// Enable/disable continuous collision between dynamic and static bodies. Generally you should keep continuous
+    /// collision enabled to prevent fast moving objects from going through static objects. The performance gain from
+    /// disabling continuous collision is minor.
+    /// @see b2WorldDef
+    /// ```
     public static void enableContinuous(
-        MemorySegment worldId, 
-        boolean flag
+    	MemorySegment worldId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_WORLD_ENABLE_CONTINUOUS.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_ENABLE_CONTINUOUS.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableContinuous}.
-     */
+    /// Typed method of [#enableContinuous].
     public static void enableContinuous(
-        WorldId worldId, 
-        boolean flag
+    	WorldId worldId,
+    	boolean flag
     ) {
-        enableContinuous(
-            worldId.memorySegment(), 
-            flag
-        );
+    	enableContinuous(
+    		worldId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Is continuous collision enabled?
-     */
+    /// ```
+    /// Is continuous collision enabled?
+    /// ```
     public static boolean isContinuousEnabled(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_IS_CONTINUOUS_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_IS_CONTINUOUS_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isContinuousEnabled}.
-     */
+    /// Typed method of [#isContinuousEnabled].
     public static boolean isContinuousEnabled(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (boolean) isContinuousEnabled(
-            worldId.memorySegment()
-        );
+    	return (boolean) isContinuousEnabled(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Adjust the restitution threshold. It is recommended not to make this value very small because it will prevent bodies from sleeping. Usually in meters per second.
-     */
+    /// ```
+    /// Adjust the restitution threshold. It is recommended not to make this value very small
+    /// because it will prevent bodies from sleeping. Usually in meters per second.
+    /// @see b2WorldDef
+    /// ```
     public static void setRestitutionThreshold(
-        MemorySegment worldId, 
-        float value
+    	MemorySegment worldId,
+    	float value
     ) {
-        MethodHandle method = B2_WORLD_SET_RESTITUTION_THRESHOLD.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                value
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_RESTITUTION_THRESHOLD.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			value
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setRestitutionThreshold}.
-     */
+    /// Typed method of [#setRestitutionThreshold].
     public static void setRestitutionThreshold(
-        WorldId worldId, 
-        float value
+    	WorldId worldId,
+    	float value
     ) {
-        setRestitutionThreshold(
-            worldId.memorySegment(), 
-            value
-        );
+    	setRestitutionThreshold(
+    		worldId.memorySegment(),
+    		value
+    	);
     }
     
-    /**
-     * Get the the restitution speed threshold. Usually in meters per second.
-     */
+    /// ```
+    /// Get the the restitution speed threshold. Usually in meters per second.
+    /// ```
     public static float getRestitutionThreshold(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_RESTITUTION_THRESHOLD.get();
-        try {
-            return (float) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_RESTITUTION_THRESHOLD.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getRestitutionThreshold}.
-     */
+    /// Typed method of [#getRestitutionThreshold].
     public static float getRestitutionThreshold(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (float) getRestitutionThreshold(
-            worldId.memorySegment()
-        );
+    	return (float) getRestitutionThreshold(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Adjust the hit event threshold. This controls the collision speed needed to generate a b2ContactHitEvent. Usually in meters per second.
-     */
+    /// ```
+    /// Adjust the hit event threshold. This controls the collision speed needed to generate a b2ContactHitEvent.
+    /// Usually in meters per second.
+    /// @see b2WorldDef::hitEventThreshold
+    /// ```
     public static void setHitEventThreshold(
-        MemorySegment worldId, 
-        float value
+    	MemorySegment worldId,
+    	float value
     ) {
-        MethodHandle method = B2_WORLD_SET_HIT_EVENT_THRESHOLD.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                value
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_HIT_EVENT_THRESHOLD.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			value
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setHitEventThreshold}.
-     */
+    /// Typed method of [#setHitEventThreshold].
     public static void setHitEventThreshold(
-        WorldId worldId, 
-        float value
+    	WorldId worldId,
+    	float value
     ) {
-        setHitEventThreshold(
-            worldId.memorySegment(), 
-            value
-        );
+    	setHitEventThreshold(
+    		worldId.memorySegment(),
+    		value
+    	);
     }
     
-    /**
-     * Get the the hit event speed threshold. Usually in meters per second.
-     */
+    /// ```
+    /// Get the the hit event speed threshold. Usually in meters per second.
+    /// ```
     public static float getHitEventThreshold(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_HIT_EVENT_THRESHOLD.get();
-        try {
-            return (float) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_HIT_EVENT_THRESHOLD.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getHitEventThreshold}.
-     */
+    /// Typed method of [#getHitEventThreshold].
     public static float getHitEventThreshold(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (float) getHitEventThreshold(
-            worldId.memorySegment()
-        );
+    	return (float) getHitEventThreshold(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Register the custom filter callback. This is optional.
-     */
+    /// ```
+    /// Register the custom filter callback. This is optional.
+    /// ```
     public static void setCustomFilterCallback(
-        MemorySegment worldId, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	MemorySegment worldId,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_SET_CUSTOM_FILTER_CALLBACK.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_CUSTOM_FILTER_CALLBACK.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setCustomFilterCallback}.
-     */
+    /// Typed method of [#setCustomFilterCallback].
     public static void setCustomFilterCallback(
-        WorldId worldId, 
-        CustomFilterFcn fcn, 
-        MemorySegment context
+    	WorldId worldId,
+    	CustomFilterFcn fcn,
+    	MemorySegment context
     ) {
-        setCustomFilterCallback(
-            worldId.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	setCustomFilterCallback(
+    		worldId.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     }
     
-    /**
-     * Register the pre-solve callback. This is optional.
-     */
+    /// ```
+    /// Register the pre-solve callback. This is optional.
+    /// ```
     public static void setPreSolveCallback(
-        MemorySegment worldId, 
-        MemorySegment fcn, 
-        MemorySegment context
+    	MemorySegment worldId,
+    	MemorySegment fcn,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_WORLD_SET_PRE_SOLVE_CALLBACK.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                fcn, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_PRE_SOLVE_CALLBACK.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			fcn,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setPreSolveCallback}.
-     */
+    /// Typed method of [#setPreSolveCallback].
     public static void setPreSolveCallback(
-        WorldId worldId, 
-        PreSolveFcn fcn, 
-        MemorySegment context
+    	WorldId worldId,
+    	PreSolveFcn fcn,
+    	MemorySegment context
     ) {
-        setPreSolveCallback(
-            worldId.memorySegment(), 
-            fcn.memorySegment(), 
-            context
-        );
+    	setPreSolveCallback(
+    		worldId.memorySegment(),
+    		fcn.memorySegment(),
+    		context
+    	);
     }
     
-    /**
-     * Set the gravity vector for the entire world. Box2D has no concept of an up direction and this is left as a decision for the application. Usually in m/s^2.
-     */
+    /// ```
+    /// Set the gravity vector for the entire world. Box2D has no concept of an up direction and this
+    /// is left as a decision for the application. Usually in m/s^2.
+    /// @see b2WorldDef
+    /// ```
     public static void setGravity(
-        MemorySegment worldId, 
-        MemorySegment gravity
+    	MemorySegment worldId,
+    	MemorySegment gravity
     ) {
-        MethodHandle method = B2_WORLD_SET_GRAVITY.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                gravity
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_GRAVITY.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			gravity
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setGravity}.
-     */
+    /// Typed method of [#setGravity].
     public static void setGravity(
-        WorldId worldId, 
-        Vec2 gravity
+    	WorldId worldId,
+    	Vec2 gravity
     ) {
-        setGravity(
-            worldId.memorySegment(), 
-            gravity.memorySegment()
-        );
+    	setGravity(
+    		worldId.memorySegment(),
+    		gravity.memorySegment()
+    	);
     }
     
-    /**
-     * Get the gravity vector
-     */
+    /// ```
+    /// Get the gravity vector
+    /// ```
     public static MemorySegment getGravity(
-        SegmentAllocator allocator,
-        MemorySegment worldId
+    	SegmentAllocator allocator,
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_GRAVITY.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_GRAVITY.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getGravity}.
-     */
+    /// Typed method of [#getGravity].
     public static @Nullable Vec2 getGravity(
-        SegmentAllocator allocator,
-        WorldId worldId
+    	SegmentAllocator allocator,
+    	WorldId worldId
     ) {
-        MemorySegment segment = getGravity(
-            allocator,
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getGravity(
+    		allocator,
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
-    /**
-     * Apply a radial explosion
-     */
+    /// ```
+    /// Apply a radial explosion
+    /// @param worldId The world id
+    /// @param explosionDef The explosion definition
+    /// ```
     public static void explode(
-        MemorySegment worldId, 
-        MemorySegment explosionDef
+    	MemorySegment worldId,
+    	MemorySegment explosionDef
     ) {
-        MethodHandle method = B2_WORLD_EXPLODE.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                explosionDef
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_EXPLODE.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			explosionDef
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #explode}.
-     */
+    /// Typed method of [#explode].
     public static void explode(
-        WorldId worldId, 
-        ExplosionDef explosionDef
+    	WorldId worldId,
+    	ExplosionDef explosionDef
     ) {
-        explode(
-            worldId.memorySegment(), 
-            explosionDef.memorySegment()
-        );
+    	explode(
+    		worldId.memorySegment(),
+    		explosionDef.memorySegment()
+    	);
     }
     
-    /**
-     * Adjust contact tuning parameters
-     */
+    /// ```
+    /// Adjust contact tuning parameters
+    /// @param worldId The world id
+    /// @param hertz The contact stiffness (cycles per second)
+    /// @param dampingRatio The contact bounciness with 1 being critical damping (non-dimensional)
+    /// @param pushSpeed The maximum contact constraint push out speed (meters per second)
+    /// @note Advanced feature
+    /// ```
     public static void setContactTuning(
-        MemorySegment worldId, 
-        float hertz, 
-        float dampingRatio, 
-        float pushSpeed
+    	MemorySegment worldId,
+    	float hertz,
+    	float dampingRatio,
+    	float pushSpeed
     ) {
-        MethodHandle method = B2_WORLD_SET_CONTACT_TUNING.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                hertz, 
-                dampingRatio, 
-                pushSpeed
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_CONTACT_TUNING.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			hertz,
+    			dampingRatio,
+    			pushSpeed
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setContactTuning}.
-     */
+    /// Typed method of [#setContactTuning].
     public static void setContactTuning(
-        WorldId worldId, 
-        float hertz, 
-        float dampingRatio, 
-        float pushSpeed
+    	WorldId worldId,
+    	float hertz,
+    	float dampingRatio,
+    	float pushSpeed
     ) {
-        setContactTuning(
-            worldId.memorySegment(), 
-            hertz, 
-            dampingRatio, 
-            pushSpeed
-        );
+    	setContactTuning(
+    		worldId.memorySegment(),
+    		hertz,
+    		dampingRatio,
+    		pushSpeed
+    	);
     }
     
-    /**
-     * Set the maximum linear speed. Usually in m/s.
-     */
+    /// ```
+    /// Set the maximum linear speed. Usually in m/s.
+    /// ```
     public static void setMaximumLinearSpeed(
-        MemorySegment worldId, 
-        float maximumLinearSpeed
+    	MemorySegment worldId,
+    	float maximumLinearSpeed
     ) {
-        MethodHandle method = B2_WORLD_SET_MAXIMUM_LINEAR_SPEED.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                maximumLinearSpeed
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_MAXIMUM_LINEAR_SPEED.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			maximumLinearSpeed
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMaximumLinearSpeed}.
-     */
+    /// Typed method of [#setMaximumLinearSpeed].
     public static void setMaximumLinearSpeed(
-        WorldId worldId, 
-        float maximumLinearSpeed
+    	WorldId worldId,
+    	float maximumLinearSpeed
     ) {
-        setMaximumLinearSpeed(
-            worldId.memorySegment(), 
-            maximumLinearSpeed
-        );
+    	setMaximumLinearSpeed(
+    		worldId.memorySegment(),
+    		maximumLinearSpeed
+    	);
     }
     
-    /**
-     * Get the maximum linear speed. Usually in m/s.
-     */
+    /// ```
+    /// Get the maximum linear speed. Usually in m/s.
+    /// ```
     public static float getMaximumLinearSpeed(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_MAXIMUM_LINEAR_SPEED.get();
-        try {
-            return (float) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_MAXIMUM_LINEAR_SPEED.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMaximumLinearSpeed}.
-     */
+    /// Typed method of [#getMaximumLinearSpeed].
     public static float getMaximumLinearSpeed(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (float) getMaximumLinearSpeed(
-            worldId.memorySegment()
-        );
+    	return (float) getMaximumLinearSpeed(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable/disable constraint warm starting. Advanced feature for testing. Disabling warm starting greatly reduces stability and provides no performance gain.
-     */
+    /// ```
+    /// Enable/disable constraint warm starting. Advanced feature for testing. Disabling
+    /// warm starting greatly reduces stability and provides no performance gain.
+    /// ```
     public static void enableWarmStarting(
-        MemorySegment worldId, 
-        boolean flag
+    	MemorySegment worldId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_WORLD_ENABLE_WARM_STARTING.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_ENABLE_WARM_STARTING.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableWarmStarting}.
-     */
+    /// Typed method of [#enableWarmStarting].
     public static void enableWarmStarting(
-        WorldId worldId, 
-        boolean flag
+    	WorldId worldId,
+    	boolean flag
     ) {
-        enableWarmStarting(
-            worldId.memorySegment(), 
-            flag
-        );
+    	enableWarmStarting(
+    		worldId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Is constraint warm starting enabled?
-     */
+    /// ```
+    /// Is constraint warm starting enabled?
+    /// ```
     public static boolean isWarmStartingEnabled(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_IS_WARM_STARTING_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_IS_WARM_STARTING_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isWarmStartingEnabled}.
-     */
+    /// Typed method of [#isWarmStartingEnabled].
     public static boolean isWarmStartingEnabled(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (boolean) isWarmStartingEnabled(
-            worldId.memorySegment()
-        );
+    	return (boolean) isWarmStartingEnabled(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the number of awake bodies.
-     */
+    /// ```
+    /// Get the number of awake bodies.
+    /// ```
     public static int getAwakeBodyCount(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_AWAKE_BODY_COUNT.get();
-        try {
-            return (int) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_AWAKE_BODY_COUNT.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAwakeBodyCount}.
-     */
+    /// Typed method of [#getAwakeBodyCount].
     public static int getAwakeBodyCount(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        return (int) getAwakeBodyCount(
-            worldId.memorySegment()
-        );
+    	return (int) getAwakeBodyCount(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the current world performance profile
-     */
+    /// ```
+    /// Get the current world performance profile
+    /// ```
     public static MemorySegment getProfile(
-        SegmentAllocator allocator,
-        MemorySegment worldId
+    	SegmentAllocator allocator,
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_PROFILE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_PROFILE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getProfile}.
-     */
+    /// Typed method of [#getProfile].
     public static @Nullable Profile getProfile(
-        SegmentAllocator allocator,
-        WorldId worldId
+    	SegmentAllocator allocator,
+    	WorldId worldId
     ) {
-        MemorySegment segment = getProfile(
-            allocator,
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getProfile(
+    		allocator,
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Profile(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Profile(segment);
     }
     
-    /**
-     * Get world counters and sizes
-     */
+    /// ```
+    /// Get world counters and sizes
+    /// ```
     public static MemorySegment getCounters(
-        SegmentAllocator allocator,
-        MemorySegment worldId
+    	SegmentAllocator allocator,
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_COUNTERS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_COUNTERS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getCounters}.
-     */
+    /// Typed method of [#getCounters].
     public static @Nullable Counters getCounters(
-        SegmentAllocator allocator,
-        WorldId worldId
+    	SegmentAllocator allocator,
+    	WorldId worldId
     ) {
-        MemorySegment segment = getCounters(
-            allocator,
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getCounters(
+    		allocator,
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Counters(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Counters(segment);
     }
     
-    /**
-     * Set the user data pointer.
-     */
+    /// ```
+    /// Set the user data pointer.
+    /// ```
     public static void setUserData(
-        MemorySegment worldId, 
-        MemorySegment userData
+    	MemorySegment worldId,
+    	MemorySegment userData
     ) {
-        MethodHandle method = B2_WORLD_SET_USER_DATA.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                userData
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_USER_DATA.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			userData
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setUserData}.
-     */
+    /// Typed method of [#setUserData].
     public static void setUserData(
-        WorldId worldId, 
-        MemorySegment userData
+    	WorldId worldId,
+    	MemorySegment userData
     ) {
-        setUserData(
-            worldId.memorySegment(), 
-            userData
-        );
+    	setUserData(
+    		worldId.memorySegment(),
+    		userData
+    	);
     }
     
-    /**
-     * Get the user data pointer.
-     */
+    /// ```
+    /// Get the user data pointer.
+    /// ```
     public static MemorySegment getUserData(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_GET_USER_DATA.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_GET_USER_DATA.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getUserData}.
-     */
+    /// Typed method of [#getUserData].
     public static @Nullable MemorySegment getUserData(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        MemorySegment segment = getUserData(
-            worldId.memorySegment()
-        );
+    	MemorySegment segment = getUserData(
+    		worldId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
-    /**
-     * Set the friction callback. Passing NULL resets to default.
-     */
+    /// ```
+    /// Set the friction callback. Passing NULL resets to default.
+    /// ```
     public static void setFrictionCallback(
-        MemorySegment worldId, 
-        MemorySegment callback
+    	MemorySegment worldId,
+    	MemorySegment callback
     ) {
-        MethodHandle method = B2_WORLD_SET_FRICTION_CALLBACK.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                callback
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_FRICTION_CALLBACK.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			callback
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setFrictionCallback}.
-     */
+    /// Typed method of [#setFrictionCallback].
     public static void setFrictionCallback(
-        WorldId worldId, 
-        FrictionCallback callback
+    	WorldId worldId,
+    	FrictionCallback callback
     ) {
-        setFrictionCallback(
-            worldId.memorySegment(), 
-            callback.memorySegment()
-        );
+    	setFrictionCallback(
+    		worldId.memorySegment(),
+    		callback.memorySegment()
+    	);
     }
     
-    /**
-     * Set the restitution callback. Passing NULL resets to default.
-     */
+    /// ```
+    /// Set the restitution callback. Passing NULL resets to default.
+    /// ```
     public static void setRestitutionCallback(
-        MemorySegment worldId, 
-        MemorySegment callback
+    	MemorySegment worldId,
+    	MemorySegment callback
     ) {
-        MethodHandle method = B2_WORLD_SET_RESTITUTION_CALLBACK.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                callback
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_SET_RESTITUTION_CALLBACK.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			callback
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setRestitutionCallback}.
-     */
+    /// Typed method of [#setRestitutionCallback].
     public static void setRestitutionCallback(
-        WorldId worldId, 
-        RestitutionCallback callback
+    	WorldId worldId,
+    	RestitutionCallback callback
     ) {
-        setRestitutionCallback(
-            worldId.memorySegment(), 
-            callback.memorySegment()
-        );
+    	setRestitutionCallback(
+    		worldId.memorySegment(),
+    		callback.memorySegment()
+    	);
     }
     
-    /**
-     * Dump memory stats to box2d_memory.txt
-     */
+    /// ```
+    /// Dump memory stats to box2d_memory.txt
+    /// ```
     public static void dumpMemoryStats(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_DUMP_MEMORY_STATS.get();
-        try {
-            method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_DUMP_MEMORY_STATS.get();
+    	try {
+    		 method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #dumpMemoryStats}.
-     */
+    /// Typed method of [#dumpMemoryStats].
     public static void dumpMemoryStats(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        dumpMemoryStats(
-            worldId.memorySegment()
-        );
+    	dumpMemoryStats(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * This is for internal testing
-     */
+    /// ```
+    /// This is for internal testing
+    /// ```
     public static void rebuildStaticTree(
-        MemorySegment worldId
+    	MemorySegment worldId
     ) {
-        MethodHandle method = B2_WORLD_REBUILD_STATIC_TREE.get();
-        try {
-            method.invokeExact(
-                worldId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_REBUILD_STATIC_TREE.get();
+    	try {
+    		 method.invokeExact(
+    			worldId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rebuildStaticTree}.
-     */
+    /// Typed method of [#rebuildStaticTree].
     public static void rebuildStaticTree(
-        WorldId worldId
+    	WorldId worldId
     ) {
-        rebuildStaticTree(
-            worldId.memorySegment()
-        );
+    	rebuildStaticTree(
+    		worldId.memorySegment()
+    	);
     }
     
-    /**
-     * This is for internal testing
-     */
+    /// ```
+    /// This is for internal testing
+    /// ```
     public static void enableSpeculative(
-        MemorySegment worldId, 
-        boolean flag
+    	MemorySegment worldId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_WORLD_ENABLE_SPECULATIVE.get();
-        try {
-            method.invokeExact(
-                worldId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WORLD_ENABLE_SPECULATIVE.get();
+    	try {
+    		 method.invokeExact(
+    			worldId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableSpeculative}.
-     */
+    /// Typed method of [#enableSpeculative].
     public static void enableSpeculative(
-        WorldId worldId, 
-        boolean flag
+    	WorldId worldId,
+    	boolean flag
     ) {
-        enableSpeculative(
-            worldId.memorySegment(), 
-            flag
-        );
+    	enableSpeculative(
+    		worldId.memorySegment(),
+    		flag
+    	);
     }
     
 }

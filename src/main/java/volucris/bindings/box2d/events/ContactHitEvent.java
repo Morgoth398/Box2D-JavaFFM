@@ -16,9 +16,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A hit touch event is generated when two shapes collide with a speed faster than the hit speed threshold. This may be reported for speculative contacts that have a confirmed impulse.
- */
+/// ```
+/// A hit touch event is generated when two shapes collide with a speed faster than the hit speed threshold.
+/// This may be reported for speculative contacts that have a confirmed impulse.
+/// ```
 public final class ContactHitEvent
 		implements Struct<ContactHitEvent> {
 
@@ -76,69 +77,95 @@ public final class ContactHitEvent
         normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #approachSpeed()
     public ContactHitEvent approachSpeed(float approachSpeed) {
-        APPROACH_SPEED_HANDLE.set(segment, 0L, approachSpeed);
-        return this;
+    	APPROACH_SPEED_HANDLE.set(segment, 0L, approachSpeed);
+    	return this;
     }
     
+    /// ```
+    /// The speed the shapes are approaching. Always positive. Typically in meters per second.
+    /// ```
     public float approachSpeed() {
-        return (float) APPROACH_SPEED_HANDLE.get(segment, 0L);
+    	return (float) APPROACH_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #shapeIdA()
     public ContactHitEvent shapeIdA(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdA);
-        return this;
+    	consumer.accept(shapeIdA);
+    	return this;
     }
     
+    /// @see #shapeIdA()
     public ContactHitEvent shapeIdA(ShapeId other) {
-        shapeIdA.set(other);
-        return this;
+    	shapeIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Id of the first shape
+    /// ```
     public ShapeId shapeIdA() {
-        return shapeIdA;
+    	return shapeIdA;
     }
     
+    /// @see #shapeIdB()
     public ContactHitEvent shapeIdB(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdB);
-        return this;
+    	consumer.accept(shapeIdB);
+    	return this;
     }
     
+    /// @see #shapeIdB()
     public ContactHitEvent shapeIdB(ShapeId other) {
-        shapeIdB.set(other);
-        return this;
+    	shapeIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Id of the second shape
+    /// ```
     public ShapeId shapeIdB() {
-        return shapeIdB;
+    	return shapeIdB;
     }
     
+    /// @see #point()
     public ContactHitEvent point(Consumer<Vec2> consumer) {
-        consumer.accept(point);
-        return this;
+    	consumer.accept(point);
+    	return this;
     }
     
+    /// @see #point()
     public ContactHitEvent point(Vec2 other) {
-        point.set(other);
-        return this;
+    	point.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Point where the shapes hit at the beginning of the time step.
+    /// This is a mid-point between the two surfaces. It could be at speculative
+    /// point where the two shapes were not touching at the beginning of the time step.
+    /// ```
     public Vec2 point() {
-        return point;
+    	return point;
     }
     
+    /// @see #normal()
     public ContactHitEvent normal(Consumer<Vec2> consumer) {
-        consumer.accept(normal);
-        return this;
+    	consumer.accept(normal);
+    	return this;
     }
     
+    /// @see #normal()
     public ContactHitEvent normal(Vec2 other) {
-        normal.set(other);
-        return this;
+    	normal.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Normal vector pointing from shape A to shape B
+    /// ```
     public Vec2 normal() {
-        return normal;
+    	return normal;
     }
     
     @Override

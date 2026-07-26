@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A begin touch event is generated when two shapes begin touching.
- */
+/// ```
+/// A begin touch event is generated when two shapes begin touching.
+/// ```
 public final class ContactBeginTouchEvent
 		implements Struct<ContactBeginTouchEvent> {
 
@@ -63,46 +63,62 @@ public final class ContactBeginTouchEvent
         manifold = new Manifold(segment.asSlice(MANIFOLD_BYTE_OFFSET, Manifold.LAYOUT));
     }
 
+    /// @see #shapeIdA()
     public ContactBeginTouchEvent shapeIdA(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdA);
-        return this;
+    	consumer.accept(shapeIdA);
+    	return this;
     }
     
+    /// @see #shapeIdA()
     public ContactBeginTouchEvent shapeIdA(ShapeId other) {
-        shapeIdA.set(other);
-        return this;
+    	shapeIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Id of the first shape
+    /// ```
     public ShapeId shapeIdA() {
-        return shapeIdA;
+    	return shapeIdA;
     }
     
+    /// @see #shapeIdB()
     public ContactBeginTouchEvent shapeIdB(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdB);
-        return this;
+    	consumer.accept(shapeIdB);
+    	return this;
     }
     
+    /// @see #shapeIdB()
     public ContactBeginTouchEvent shapeIdB(ShapeId other) {
-        shapeIdB.set(other);
-        return this;
+    	shapeIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Id of the second shape
+    /// ```
     public ShapeId shapeIdB() {
-        return shapeIdB;
+    	return shapeIdB;
     }
     
+    /// @see #manifold()
     public ContactBeginTouchEvent manifold(Consumer<Manifold> consumer) {
-        consumer.accept(manifold);
-        return this;
+    	consumer.accept(manifold);
+    	return this;
     }
     
+    /// @see #manifold()
     public ContactBeginTouchEvent manifold(Manifold other) {
-        manifold.set(other);
-        return this;
+    	manifold.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The initial contact manifold. This is recorded before the solver is called,
+    /// so all the impulses will be zero.
+    /// ```
     public Manifold manifold() {
-        return manifold;
+    	return manifold;
     }
     
     @Override

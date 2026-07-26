@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Output parameters for b2TimeOfImpact.
- */
+/// ```
+/// Output parameters for b2TimeOfImpact.
+/// ```
 public final class TOIOutput
 		implements Struct<TOIOutput> {
 
@@ -57,22 +57,30 @@ public final class TOIOutput
     
     }
 
+    /// @see #state()
     public TOIOutput state(int state) {
-        STATE_HANDLE.set(segment, 0L, state);
-        return this;
+    	STATE_HANDLE.set(segment, 0L, state);
+    	return this;
     }
     
+    /// ```
+    /// The type of result
+    /// ```
     public int state() {
-        return (int) STATE_HANDLE.get(segment, 0L);
+    	return (int) STATE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #fraction()
     public TOIOutput fraction(float fraction) {
-        FRACTION_HANDLE.set(segment, 0L, fraction);
-        return this;
+    	FRACTION_HANDLE.set(segment, 0L, fraction);
+    	return this;
     }
     
+    /// ```
+    /// The sweep time of the collision
+    /// ```
     public float fraction() {
-        return (float) FRACTION_HANDLE.get(segment, 0L);
+    	return (float) FRACTION_HANDLE.get(segment, 0L);
     }
     
     @Override

@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,14 +12,18 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.math.Vec2;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Draw a circle.
+/// ```
 public abstract class DrawCircleFcn {
 
-    private static final HashMap<Long, WeakReference<DrawCircleFcn>> CACHE;
+    private static final Map<Long, WeakReference<DrawCircleFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -53,23 +58,23 @@ public abstract class DrawCircleFcn {
     }
 
     public void invoke(
-        MemorySegment center, 
-        float radius, 
-        int color, 
+        MemorySegment center,
+        float radius,
+        int color,
         MemorySegment context
     ) {
         invoke(
-            new Vec2(center), 
-            radius, 
-            color, 
-            context
+            new Vec2(center),
+		    radius,
+		    color,
+		    context
         );
     }
 
     public void invoke(
-        Vec2 center, 
-        float radius, 
-        int color, 
+        Vec2 center,
+        float radius,
+        int color,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -77,12 +82,11 @@ public abstract class DrawCircleFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static DrawCircleFcn get(MemorySegment segment) {
+    public static @Nullable DrawCircleFcn get(MemorySegment segment) {
         WeakReference<DrawCircleFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

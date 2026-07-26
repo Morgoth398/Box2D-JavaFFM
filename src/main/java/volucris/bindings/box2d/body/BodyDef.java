@@ -21,9 +21,13 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A body definition holds all the data needed to construct a rigid body. You can safely re-use body definitions. Shapes are added to a body after construction. Body definitions are temporary objects used to bundle creation parameters. Must be initialized using b2DefaultBodyDef().
- */
+/// ```
+/// A body definition holds all the data needed to construct a rigid body.
+/// You can safely re-use body definitions. Shapes are added to a body after construction.
+/// Body definitions are temporary objects used to bundle creation parameters.
+/// Must be initialized using b2DefaultBodyDef().
+/// @ingroup body
+/// ```
 public final class BodyDef
 		implements Struct<BodyDef> {
 
@@ -144,221 +148,310 @@ public final class BodyDef
         linearVelocity = new Vec2(segment.asSlice(LINEAR_VELOCITY_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your body definition
-     */
+    /// ```
+    /// Use this to initialize your body definition
+    /// @ingroup body
+    /// ```
     public static MemorySegment ndefaultBodyDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_BODY_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_BODY_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultBodyDef}.
-     */
+    /// Typed method of [#ndefaultBodyDef].
     public static @Nullable BodyDef defaultBodyDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultBodyDef(allocator);
+    	MemorySegment segment = ndefaultBodyDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new BodyDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new BodyDef(segment);
     }
     
+    /// @see #type()
     public BodyDef type(int type) {
-        TYPE_HANDLE.set(segment, 0L, type);
-        return this;
+    	TYPE_HANDLE.set(segment, 0L, type);
+    	return this;
     }
     
+    /// ```
+    /// The body type: static, kinematic, or dynamic.
+    /// ```
     public int type() {
-        return (int) TYPE_HANDLE.get(segment, 0L);
+    	return (int) TYPE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #angularVelocity()
     public BodyDef angularVelocity(float angularVelocity) {
-        ANGULAR_VELOCITY_HANDLE.set(segment, 0L, angularVelocity);
-        return this;
+    	ANGULAR_VELOCITY_HANDLE.set(segment, 0L, angularVelocity);
+    	return this;
     }
     
+    /// ```
+    /// The initial angular velocity of the body. Radians per second.
+    /// ```
     public float angularVelocity() {
-        return (float) ANGULAR_VELOCITY_HANDLE.get(segment, 0L);
+    	return (float) ANGULAR_VELOCITY_HANDLE.get(segment, 0L);
     }
     
+    /// @see #linearDamping()
     public BodyDef linearDamping(float linearDamping) {
-        LINEAR_DAMPING_HANDLE.set(segment, 0L, linearDamping);
-        return this;
+    	LINEAR_DAMPING_HANDLE.set(segment, 0L, linearDamping);
+    	return this;
     }
     
+    /// ```
+    /// Linear damping is used to reduce the linear velocity. The damping parameter
+    /// can be larger than 1 but the damping effect becomes sensitive to the
+    /// time step when the damping parameter is large.
+    /// Generally linear damping is undesirable because it makes objects move slowly
+    /// as if they are floating.
+    /// ```
     public float linearDamping() {
-        return (float) LINEAR_DAMPING_HANDLE.get(segment, 0L);
+    	return (float) LINEAR_DAMPING_HANDLE.get(segment, 0L);
     }
     
+    /// @see #angularDamping()
     public BodyDef angularDamping(float angularDamping) {
-        ANGULAR_DAMPING_HANDLE.set(segment, 0L, angularDamping);
-        return this;
+    	ANGULAR_DAMPING_HANDLE.set(segment, 0L, angularDamping);
+    	return this;
     }
     
+    /// ```
+    /// Angular damping is used to reduce the angular velocity. The damping parameter
+    /// can be larger than 1.0f but the damping effect becomes sensitive to the
+    /// time step when the damping parameter is large.
+    /// Angular damping can be use slow down rotating bodies.
+    /// ```
     public float angularDamping() {
-        return (float) ANGULAR_DAMPING_HANDLE.get(segment, 0L);
+    	return (float) ANGULAR_DAMPING_HANDLE.get(segment, 0L);
     }
     
+    /// @see #gravityScale()
     public BodyDef gravityScale(float gravityScale) {
-        GRAVITY_SCALE_HANDLE.set(segment, 0L, gravityScale);
-        return this;
+    	GRAVITY_SCALE_HANDLE.set(segment, 0L, gravityScale);
+    	return this;
     }
     
+    /// ```
+    /// Scale the gravity applied to this body. Non-dimensional.
+    /// ```
     public float gravityScale() {
-        return (float) GRAVITY_SCALE_HANDLE.get(segment, 0L);
+    	return (float) GRAVITY_SCALE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #sleepThreshold()
     public BodyDef sleepThreshold(float sleepThreshold) {
-        SLEEP_THRESHOLD_HANDLE.set(segment, 0L, sleepThreshold);
-        return this;
+    	SLEEP_THRESHOLD_HANDLE.set(segment, 0L, sleepThreshold);
+    	return this;
     }
     
+    /// ```
+    /// Sleep speed threshold, default is 0.05 meters per second
+    /// ```
     public float sleepThreshold() {
-        return (float) SLEEP_THRESHOLD_HANDLE.get(segment, 0L);
+    	return (float) SLEEP_THRESHOLD_HANDLE.get(segment, 0L);
     }
     
+    /// @see #name()
     public BodyDef name(NativeByteArray name) {
-        NAME_HANDLE.set(segment, 0L, name.memorySegment());
-        return this;
+    	NAME_HANDLE.set(segment, 0L, name.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Optional body name for debugging. Up to 31 characters (excluding null termination)
+    /// ```
     public @Nullable NativeByteArray name() {
-        MemorySegment segment = (MemorySegment) NAME_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) NAME_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new NativeByteArray(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new NativeByteArray(segment);
     }
     
+    /// @see #userData()
     public BodyDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// Use this to store application specific body data.
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #enableSleep()
     public BodyDef enableSleep(boolean enableSleep) {
-        ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
-        return this;
+    	ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to false if this body should never fall asleep.
+    /// ```
     public boolean enableSleep() {
-        return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
     }
     
+    /// @see #isAwake()
     public BodyDef isAwake(boolean isAwake) {
-        IS_AWAKE_HANDLE.set(segment, 0L, isAwake);
-        return this;
+    	IS_AWAKE_HANDLE.set(segment, 0L, isAwake);
+    	return this;
     }
     
+    /// ```
+    /// Is this body initially awake or sleeping?
+    /// ```
     public boolean isAwake() {
-        return (boolean) IS_AWAKE_HANDLE.get(segment, 0L);
+    	return (boolean) IS_AWAKE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #fixedRotation()
     public BodyDef fixedRotation(boolean fixedRotation) {
-        FIXED_ROTATION_HANDLE.set(segment, 0L, fixedRotation);
-        return this;
+    	FIXED_ROTATION_HANDLE.set(segment, 0L, fixedRotation);
+    	return this;
     }
     
+    /// ```
+    /// Should this body be prevented from rotating? Useful for characters.
+    /// ```
     public boolean fixedRotation() {
-        return (boolean) FIXED_ROTATION_HANDLE.get(segment, 0L);
+    	return (boolean) FIXED_ROTATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #isBullet()
     public BodyDef isBullet(boolean isBullet) {
-        IS_BULLET_HANDLE.set(segment, 0L, isBullet);
-        return this;
+    	IS_BULLET_HANDLE.set(segment, 0L, isBullet);
+    	return this;
     }
     
+    /// ```
+    /// Treat this body as high speed object that performs continuous collision detection
+    /// against dynamic and kinematic bodies, but not other bullet bodies.
+    /// @warning Bullets should be used sparingly. They are not a solution for general dynamic-versus-dynamic
+    /// continuous collision. They may interfere with joint constraints.
+    /// ```
     public boolean isBullet() {
-        return (boolean) IS_BULLET_HANDLE.get(segment, 0L);
+    	return (boolean) IS_BULLET_HANDLE.get(segment, 0L);
     }
     
+    /// @see #isEnabled()
     public BodyDef isEnabled(boolean isEnabled) {
-        IS_ENABLED_HANDLE.set(segment, 0L, isEnabled);
-        return this;
+    	IS_ENABLED_HANDLE.set(segment, 0L, isEnabled);
+    	return this;
     }
     
+    /// ```
+    /// Used to disable a body. A disabled body does not move or collide.
+    /// ```
     public boolean isEnabled() {
-        return (boolean) IS_ENABLED_HANDLE.get(segment, 0L);
+    	return (boolean) IS_ENABLED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #allowFastRotation()
     public BodyDef allowFastRotation(boolean allowFastRotation) {
-        ALLOW_FAST_ROTATION_HANDLE.set(segment, 0L, allowFastRotation);
-        return this;
+    	ALLOW_FAST_ROTATION_HANDLE.set(segment, 0L, allowFastRotation);
+    	return this;
     }
     
+    /// ```
+    /// This allows this body to bypass rotational speed limits. Should only be used
+    /// for circular objects, like wheels.
+    /// ```
     public boolean allowFastRotation() {
-        return (boolean) ALLOW_FAST_ROTATION_HANDLE.get(segment, 0L);
+    	return (boolean) ALLOW_FAST_ROTATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #internalValue()
     public BodyDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #position()
     public BodyDef position(Consumer<Vec2> consumer) {
-        consumer.accept(position);
-        return this;
+    	consumer.accept(position);
+    	return this;
     }
     
+    /// @see #position()
     public BodyDef position(Vec2 other) {
-        position.set(other);
-        return this;
+    	position.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The initial world position of the body. Bodies should be created with the desired position.
+    /// @note Creating bodies at the origin and then moving them nearly doubles the cost of body creation, especially
+    /// if the body is moved after shapes have been added.
+    /// ```
     public Vec2 position() {
-        return position;
+    	return position;
     }
     
+    /// @see #rotation()
     public BodyDef rotation(Consumer<Rot> consumer) {
-        consumer.accept(rotation);
-        return this;
+    	consumer.accept(rotation);
+    	return this;
     }
     
+    /// @see #rotation()
     public BodyDef rotation(Rot other) {
-        rotation.set(other);
-        return this;
+    	rotation.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The initial world rotation of the body. Use b2MakeRot() if you have an angle.
+    /// ```
     public Rot rotation() {
-        return rotation;
+    	return rotation;
     }
     
+    /// @see #linearVelocity()
     public BodyDef linearVelocity(Consumer<Vec2> consumer) {
-        consumer.accept(linearVelocity);
-        return this;
+    	consumer.accept(linearVelocity);
+    	return this;
     }
     
+    /// @see #linearVelocity()
     public BodyDef linearVelocity(Vec2 other) {
-        linearVelocity.set(other);
-        return this;
+    	linearVelocity.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The initial linear velocity of the body's origin. Usually in meters per second.
+    /// ```
     public Vec2 linearVelocity() {
-        return linearVelocity;
+    	return linearVelocity;
     }
     
     @Override

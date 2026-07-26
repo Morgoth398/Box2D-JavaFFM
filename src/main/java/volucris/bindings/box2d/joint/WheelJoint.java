@@ -12,9 +12,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class WheelJoint {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_WHEEL_JOINT;
@@ -64,566 +61,529 @@ public final class WheelJoint {
     private WheelJoint() {
     }
 
-    /**
-     * Create a wheel joint
-     */
+    /// ```
+    /// Create a wheel joint
+    /// @see b2WheelJointDef for details
+    /// ```
     public static MemorySegment createWheelJoint(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_WHEEL_JOINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_WHEEL_JOINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createWheelJoint}.
-     */
+    /// Typed method of [#createWheelJoint].
     public static @Nullable JointId createWheelJoint(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        WheelJointDef def
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	WheelJointDef def
     ) {
-        MemorySegment segment = createWheelJoint(
-            allocator,
-            worldId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createWheelJoint(
+    		allocator,
+    		worldId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new JointId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new JointId(segment);
     }
     
-    /**
-     * Enable/disable the wheel joint spring
-     */
+    /// ```
+    /// Enable/disable the wheel joint spring
+    /// ```
     public static void wheelJoint_EnableSpring(
-        MemorySegment jointId, 
-        boolean enableSpring
+    	MemorySegment jointId,
+    	boolean enableSpring
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_ENABLE_SPRING.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableSpring
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_ENABLE_SPRING.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableSpring
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_EnableSpring}.
-     */
+    /// Typed method of [#wheelJoint_EnableSpring].
     public static void wheelJoint_EnableSpring(
-        JointId jointId, 
-        boolean enableSpring
+    	JointId jointId,
+    	boolean enableSpring
     ) {
-        wheelJoint_EnableSpring(
-            jointId.memorySegment(), 
-            enableSpring
-        );
+    	wheelJoint_EnableSpring(
+    		jointId.memorySegment(),
+    		enableSpring
+    	);
     }
     
-    /**
-     * Is the wheel joint spring enabled?
-     */
+    /// ```
+    /// Is the wheel joint spring enabled?
+    /// ```
     public static boolean wheelJoint_IsSpringEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_IS_SPRING_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_IS_SPRING_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_IsSpringEnabled}.
-     */
+    /// Typed method of [#wheelJoint_IsSpringEnabled].
     public static boolean wheelJoint_IsSpringEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) wheelJoint_IsSpringEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) wheelJoint_IsSpringEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the wheel joint stiffness in Hertz
-     */
+    /// ```
+    /// Set the wheel joint stiffness in Hertz
+    /// ```
     public static void wheelJoint_SetSpringHertz(
-        MemorySegment jointId, 
-        float hertz
+    	MemorySegment jointId,
+    	float hertz
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_SET_SPRING_HERTZ.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_SET_SPRING_HERTZ.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_SetSpringHertz}.
-     */
+    /// Typed method of [#wheelJoint_SetSpringHertz].
     public static void wheelJoint_SetSpringHertz(
-        JointId jointId, 
-        float hertz
+    	JointId jointId,
+    	float hertz
     ) {
-        wheelJoint_SetSpringHertz(
-            jointId.memorySegment(), 
-            hertz
-        );
+    	wheelJoint_SetSpringHertz(
+    		jointId.memorySegment(),
+    		hertz
+    	);
     }
     
-    /**
-     * Get the wheel joint stiffness in Hertz
-     */
+    /// ```
+    /// Get the wheel joint stiffness in Hertz
+    /// ```
     public static float wheelJoint_GetSpringHertz(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_SPRING_HERTZ.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_SPRING_HERTZ.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetSpringHertz}.
-     */
+    /// Typed method of [#wheelJoint_GetSpringHertz].
     public static float wheelJoint_GetSpringHertz(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetSpringHertz(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetSpringHertz(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the wheel joint damping ratio, non-dimensional
-     */
+    /// ```
+    /// Set the wheel joint damping ratio, non-dimensional
+    /// ```
     public static void wheelJoint_SetSpringDampingRatio(
-        MemorySegment jointId, 
-        float dampingRatio
+    	MemorySegment jointId,
+    	float dampingRatio
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_SetSpringDampingRatio}.
-     */
+    /// Typed method of [#wheelJoint_SetSpringDampingRatio].
     public static void wheelJoint_SetSpringDampingRatio(
-        JointId jointId, 
-        float dampingRatio
+    	JointId jointId,
+    	float dampingRatio
     ) {
-        wheelJoint_SetSpringDampingRatio(
-            jointId.memorySegment(), 
-            dampingRatio
-        );
+    	wheelJoint_SetSpringDampingRatio(
+    		jointId.memorySegment(),
+    		dampingRatio
+    	);
     }
     
-    /**
-     * Get the wheel joint damping ratio, non-dimensional
-     */
+    /// ```
+    /// Get the wheel joint damping ratio, non-dimensional
+    /// ```
     public static float wheelJoint_GetSpringDampingRatio(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetSpringDampingRatio}.
-     */
+    /// Typed method of [#wheelJoint_GetSpringDampingRatio].
     public static float wheelJoint_GetSpringDampingRatio(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetSpringDampingRatio(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetSpringDampingRatio(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable/disable the wheel joint limit
-     */
+    /// ```
+    /// Enable/disable the wheel joint limit
+    /// ```
     public static void wheelJoint_EnableLimit(
-        MemorySegment jointId, 
-        boolean enableLimit
+    	MemorySegment jointId,
+    	boolean enableLimit
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_ENABLE_LIMIT.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableLimit
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_ENABLE_LIMIT.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableLimit
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_EnableLimit}.
-     */
+    /// Typed method of [#wheelJoint_EnableLimit].
     public static void wheelJoint_EnableLimit(
-        JointId jointId, 
-        boolean enableLimit
+    	JointId jointId,
+    	boolean enableLimit
     ) {
-        wheelJoint_EnableLimit(
-            jointId.memorySegment(), 
-            enableLimit
-        );
+    	wheelJoint_EnableLimit(
+    		jointId.memorySegment(),
+    		enableLimit
+    	);
     }
     
-    /**
-     * Is the wheel joint limit enabled?
-     */
+    /// ```
+    /// Is the wheel joint limit enabled?
+    /// ```
     public static boolean wheelJoint_IsLimitEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_IS_LIMIT_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_IS_LIMIT_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_IsLimitEnabled}.
-     */
+    /// Typed method of [#wheelJoint_IsLimitEnabled].
     public static boolean wheelJoint_IsLimitEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) wheelJoint_IsLimitEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) wheelJoint_IsLimitEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the wheel joint lower limit
-     */
+    /// ```
+    /// Get the wheel joint lower limit
+    /// ```
     public static float wheelJoint_GetLowerLimit(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_LOWER_LIMIT.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_LOWER_LIMIT.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetLowerLimit}.
-     */
+    /// Typed method of [#wheelJoint_GetLowerLimit].
     public static float wheelJoint_GetLowerLimit(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetLowerLimit(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetLowerLimit(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the wheel joint upper limit
-     */
+    /// ```
+    /// Get the wheel joint upper limit
+    /// ```
     public static float wheelJoint_GetUpperLimit(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_UPPER_LIMIT.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_UPPER_LIMIT.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetUpperLimit}.
-     */
+    /// Typed method of [#wheelJoint_GetUpperLimit].
     public static float wheelJoint_GetUpperLimit(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetUpperLimit(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetUpperLimit(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the wheel joint limits
-     */
+    /// ```
+    /// Set the wheel joint limits
+    /// ```
     public static void wheelJoint_SetLimits(
-        MemorySegment jointId, 
-        float lower, 
-        float upper
+    	MemorySegment jointId,
+    	float lower,
+    	float upper
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_SET_LIMITS.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                lower, 
-                upper
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_SET_LIMITS.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			lower,
+    			upper
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_SetLimits}.
-     */
+    /// Typed method of [#wheelJoint_SetLimits].
     public static void wheelJoint_SetLimits(
-        JointId jointId, 
-        float lower, 
-        float upper
+    	JointId jointId,
+    	float lower,
+    	float upper
     ) {
-        wheelJoint_SetLimits(
-            jointId.memorySegment(), 
-            lower, 
-            upper
-        );
+    	wheelJoint_SetLimits(
+    		jointId.memorySegment(),
+    		lower,
+    		upper
+    	);
     }
     
-    /**
-     * Enable/disable the wheel joint motor
-     */
+    /// ```
+    /// Enable/disable the wheel joint motor
+    /// ```
     public static void wheelJoint_EnableMotor(
-        MemorySegment jointId, 
-        boolean enableMotor
+    	MemorySegment jointId,
+    	boolean enableMotor
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_ENABLE_MOTOR.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableMotor
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_ENABLE_MOTOR.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableMotor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_EnableMotor}.
-     */
+    /// Typed method of [#wheelJoint_EnableMotor].
     public static void wheelJoint_EnableMotor(
-        JointId jointId, 
-        boolean enableMotor
+    	JointId jointId,
+    	boolean enableMotor
     ) {
-        wheelJoint_EnableMotor(
-            jointId.memorySegment(), 
-            enableMotor
-        );
+    	wheelJoint_EnableMotor(
+    		jointId.memorySegment(),
+    		enableMotor
+    	);
     }
     
-    /**
-     * Is the wheel joint motor enabled?
-     */
+    /// ```
+    /// Is the wheel joint motor enabled?
+    /// ```
     public static boolean wheelJoint_IsMotorEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_IS_MOTOR_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_IS_MOTOR_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_IsMotorEnabled}.
-     */
+    /// Typed method of [#wheelJoint_IsMotorEnabled].
     public static boolean wheelJoint_IsMotorEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) wheelJoint_IsMotorEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) wheelJoint_IsMotorEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the wheel joint motor speed in radians per second
-     */
+    /// ```
+    /// Set the wheel joint motor speed in radians per second
+    /// ```
     public static void wheelJoint_SetMotorSpeed(
-        MemorySegment jointId, 
-        float motorSpeed
+    	MemorySegment jointId,
+    	float motorSpeed
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_SET_MOTOR_SPEED.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                motorSpeed
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_SET_MOTOR_SPEED.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			motorSpeed
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_SetMotorSpeed}.
-     */
+    /// Typed method of [#wheelJoint_SetMotorSpeed].
     public static void wheelJoint_SetMotorSpeed(
-        JointId jointId, 
-        float motorSpeed
+    	JointId jointId,
+    	float motorSpeed
     ) {
-        wheelJoint_SetMotorSpeed(
-            jointId.memorySegment(), 
-            motorSpeed
-        );
+    	wheelJoint_SetMotorSpeed(
+    		jointId.memorySegment(),
+    		motorSpeed
+    	);
     }
     
-    /**
-     * Get the wheel joint motor speed in radians per second
-     */
+    /// ```
+    /// Get the wheel joint motor speed in radians per second
+    /// ```
     public static float wheelJoint_GetMotorSpeed(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_SPEED.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_SPEED.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetMotorSpeed}.
-     */
+    /// Typed method of [#wheelJoint_GetMotorSpeed].
     public static float wheelJoint_GetMotorSpeed(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetMotorSpeed(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetMotorSpeed(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the wheel joint maximum motor torque, usually in newton-meters
-     */
+    /// ```
+    /// Set the wheel joint maximum motor torque, usually in newton-meters
+    /// ```
     public static void wheelJoint_SetMaxMotorTorque(
-        MemorySegment jointId, 
-        float torque
+    	MemorySegment jointId,
+    	float torque
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                torque
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			torque
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_SetMaxMotorTorque}.
-     */
+    /// Typed method of [#wheelJoint_SetMaxMotorTorque].
     public static void wheelJoint_SetMaxMotorTorque(
-        JointId jointId, 
-        float torque
+    	JointId jointId,
+    	float torque
     ) {
-        wheelJoint_SetMaxMotorTorque(
-            jointId.memorySegment(), 
-            torque
-        );
+    	wheelJoint_SetMaxMotorTorque(
+    		jointId.memorySegment(),
+    		torque
+    	);
     }
     
-    /**
-     * Get the wheel joint maximum motor torque, usually in newton-meters
-     */
+    /// ```
+    /// Get the wheel joint maximum motor torque, usually in newton-meters
+    /// ```
     public static float wheelJoint_GetMaxMotorTorque(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetMaxMotorTorque}.
-     */
+    /// Typed method of [#wheelJoint_GetMaxMotorTorque].
     public static float wheelJoint_GetMaxMotorTorque(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetMaxMotorTorque(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetMaxMotorTorque(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the wheel joint current motor torque, usually in newton-meters
-     */
+    /// ```
+    /// Get the wheel joint current motor torque, usually in newton-meters
+    /// ```
     public static float wheelJoint_GetMotorTorque(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_TORQUE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_TORQUE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #wheelJoint_GetMotorTorque}.
-     */
+    /// Typed method of [#wheelJoint_GetMotorTorque].
     public static float wheelJoint_GetMotorTorque(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) wheelJoint_GetMotorTorque(
-            jointId.memorySegment()
-        );
+    	return (float) wheelJoint_GetMotorTorque(
+    		jointId.memorySegment()
+    	);
     }
     
 }

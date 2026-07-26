@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,13 +12,19 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.foreign.ValueLayout.*;
-import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Optional restitution mixing callback. This intentionally provides no context objects because this is called
+/// from a worker thread.
+/// @warning This function should not attempt to modify Box2D state or user application state.
+/// @ingroup world
+/// ```
 public abstract class RestitutionCallback {
 
-    private static final HashMap<Long, WeakReference<RestitutionCallback>> CACHE;
+    private static final Map<Long, WeakReference<RestitutionCallback>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -53,9 +60,9 @@ public abstract class RestitutionCallback {
     }
 
     public float invoke(
-        float restitutionA, 
-        int userMaterialIdA, 
-        float restitutionB, 
+        float restitutionA,
+        int userMaterialIdA,
+        float restitutionB,
         int userMaterialIdB
     ) {
         throw new UnsupportedOperationException(
@@ -67,7 +74,7 @@ public abstract class RestitutionCallback {
         return segment;
     }
 
-    public static RestitutionCallback get(MemorySegment segment) {
+    public static @Nullable RestitutionCallback get(MemorySegment segment) {
         WeakReference<RestitutionCallback> reference = CACHE.get(segment.address());
 
         if (reference == null)

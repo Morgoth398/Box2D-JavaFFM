@@ -17,9 +17,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * This struct holds callbacks you can implement to draw a Box2D world. This structure should be zero initialized.
- */
+/// ```
+/// This struct holds callbacks you can implement to draw a Box2D world.
+/// This structure should be zero initialized.
+/// @ingroup world
+/// ```
 public final class DebugDraw
 		implements Struct<DebugDraw> {
 
@@ -178,284 +180,385 @@ public final class DebugDraw
         drawingBounds = new AABB(segment.asSlice(DRAWING_BOUNDS_BYTE_OFFSET, AABB.LAYOUT));
     }
 
+    /// @see #drawPolygonFcn()
     public DebugDraw drawPolygonFcn(DrawPolygonFcn drawPolygonFcn) {
-        DRAW_POLYGON_FCN_HANDLE.set(segment, 0L, drawPolygonFcn.memorySegment());
-        return this;
+    	DRAW_POLYGON_FCN_HANDLE.set(segment, 0L, drawPolygonFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a closed polygon provided in CCW order.
+    /// ```
     public @Nullable DrawPolygonFcn drawPolygonFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_POLYGON_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_POLYGON_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawPolygonFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawPolygonFcn.get(segment);
     }
     
+    /// @see #drawSolidPolygonFcn()
     public DebugDraw drawSolidPolygonFcn(DrawSolidPolygonFcn drawSolidPolygonFcn) {
-        DRAW_SOLID_POLYGON_FCN_HANDLE.set(segment, 0L, drawSolidPolygonFcn.memorySegment());
-        return this;
+    	DRAW_SOLID_POLYGON_FCN_HANDLE.set(segment, 0L, drawSolidPolygonFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a solid closed polygon provided in CCW order.
+    /// ```
     public @Nullable DrawSolidPolygonFcn drawSolidPolygonFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_SOLID_POLYGON_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_SOLID_POLYGON_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawSolidPolygonFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawSolidPolygonFcn.get(segment);
     }
     
+    /// @see #drawCircleFcn()
     public DebugDraw drawCircleFcn(DrawCircleFcn drawCircleFcn) {
-        DRAW_CIRCLE_FCN_HANDLE.set(segment, 0L, drawCircleFcn.memorySegment());
-        return this;
+    	DRAW_CIRCLE_FCN_HANDLE.set(segment, 0L, drawCircleFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a circle.
+    /// ```
     public @Nullable DrawCircleFcn drawCircleFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_CIRCLE_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_CIRCLE_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawCircleFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawCircleFcn.get(segment);
     }
     
+    /// @see #drawSolidCircleFcn()
     public DebugDraw drawSolidCircleFcn(DrawSolidCircleFcn drawSolidCircleFcn) {
-        DRAW_SOLID_CIRCLE_FCN_HANDLE.set(segment, 0L, drawSolidCircleFcn.memorySegment());
-        return this;
+    	DRAW_SOLID_CIRCLE_FCN_HANDLE.set(segment, 0L, drawSolidCircleFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a solid circle.
+    /// ```
     public @Nullable DrawSolidCircleFcn drawSolidCircleFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_SOLID_CIRCLE_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_SOLID_CIRCLE_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawSolidCircleFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawSolidCircleFcn.get(segment);
     }
     
+    /// @see #drawSolidCapsuleFcn()
     public DebugDraw drawSolidCapsuleFcn(DrawSolidCapsuleFcn drawSolidCapsuleFcn) {
-        DRAW_SOLID_CAPSULE_FCN_HANDLE.set(segment, 0L, drawSolidCapsuleFcn.memorySegment());
-        return this;
+    	DRAW_SOLID_CAPSULE_FCN_HANDLE.set(segment, 0L, drawSolidCapsuleFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a solid capsule.
+    /// ```
     public @Nullable DrawSolidCapsuleFcn drawSolidCapsuleFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_SOLID_CAPSULE_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_SOLID_CAPSULE_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawSolidCapsuleFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawSolidCapsuleFcn.get(segment);
     }
     
+    /// @see #drawSegmentFcn()
     public DebugDraw drawSegmentFcn(DrawSegmentFcn drawSegmentFcn) {
-        DRAW_SEGMENT_FCN_HANDLE.set(segment, 0L, drawSegmentFcn.memorySegment());
-        return this;
+    	DRAW_SEGMENT_FCN_HANDLE.set(segment, 0L, drawSegmentFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a line segment.
+    /// ```
     public @Nullable DrawSegmentFcn drawSegmentFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_SEGMENT_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_SEGMENT_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawSegmentFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawSegmentFcn.get(segment);
     }
     
+    /// @see #drawTransformFcn()
     public DebugDraw drawTransformFcn(DrawTransformFcn drawTransformFcn) {
-        DRAW_TRANSFORM_FCN_HANDLE.set(segment, 0L, drawTransformFcn.memorySegment());
-        return this;
+    	DRAW_TRANSFORM_FCN_HANDLE.set(segment, 0L, drawTransformFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a transform. Choose your own length scale.
+    /// ```
     public @Nullable DrawTransformFcn drawTransformFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_TRANSFORM_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_TRANSFORM_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawTransformFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawTransformFcn.get(segment);
     }
     
+    /// @see #drawPointFcn()
     public DebugDraw drawPointFcn(DrawPointFcn drawPointFcn) {
-        DRAW_POINT_FCN_HANDLE.set(segment, 0L, drawPointFcn.memorySegment());
-        return this;
+    	DRAW_POINT_FCN_HANDLE.set(segment, 0L, drawPointFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a point.
+    /// ```
     public @Nullable DrawPointFcn drawPointFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_POINT_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_POINT_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawPointFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawPointFcn.get(segment);
     }
     
+    /// @see #drawStringFcn()
     public DebugDraw drawStringFcn(DrawStringFcn drawStringFcn) {
-        DRAW_STRING_FCN_HANDLE.set(segment, 0L, drawStringFcn.memorySegment());
-        return this;
+    	DRAW_STRING_FCN_HANDLE.set(segment, 0L, drawStringFcn.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Draw a string in world space
+    /// ```
     public @Nullable DrawStringFcn drawStringFcn() {
-        MemorySegment segment = (MemorySegment) DRAW_STRING_FCN_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) DRAW_STRING_FCN_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return DrawStringFcn.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return DrawStringFcn.get(segment);
     }
     
+    /// @see #useDrawingBounds()
     public DebugDraw useDrawingBounds(boolean useDrawingBounds) {
-        USE_DRAWING_BOUNDS_HANDLE.set(segment, 0L, useDrawingBounds);
-        return this;
+    	USE_DRAWING_BOUNDS_HANDLE.set(segment, 0L, useDrawingBounds);
+    	return this;
     }
     
+    /// ```
+    /// Option to restrict drawing to a rectangular region. May suffer from unstable depth sorting.
+    /// ```
     public boolean useDrawingBounds() {
-        return (boolean) USE_DRAWING_BOUNDS_HANDLE.get(segment, 0L);
+    	return (boolean) USE_DRAWING_BOUNDS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawShapes()
     public DebugDraw drawShapes(boolean drawShapes) {
-        DRAW_SHAPES_HANDLE.set(segment, 0L, drawShapes);
-        return this;
+    	DRAW_SHAPES_HANDLE.set(segment, 0L, drawShapes);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw shapes
+    /// ```
     public boolean drawShapes() {
-        return (boolean) DRAW_SHAPES_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_SHAPES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawJoints()
     public DebugDraw drawJoints(boolean drawJoints) {
-        DRAW_JOINTS_HANDLE.set(segment, 0L, drawJoints);
-        return this;
+    	DRAW_JOINTS_HANDLE.set(segment, 0L, drawJoints);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw joints
+    /// ```
     public boolean drawJoints() {
-        return (boolean) DRAW_JOINTS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_JOINTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawJointExtras()
     public DebugDraw drawJointExtras(boolean drawJointExtras) {
-        DRAW_JOINT_EXTRAS_HANDLE.set(segment, 0L, drawJointExtras);
-        return this;
+    	DRAW_JOINT_EXTRAS_HANDLE.set(segment, 0L, drawJointExtras);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw additional information for joints
+    /// ```
     public boolean drawJointExtras() {
-        return (boolean) DRAW_JOINT_EXTRAS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_JOINT_EXTRAS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawBounds()
     public DebugDraw drawBounds(boolean drawBounds) {
-        DRAW_BOUNDS_HANDLE.set(segment, 0L, drawBounds);
-        return this;
+    	DRAW_BOUNDS_HANDLE.set(segment, 0L, drawBounds);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw the bounding boxes for shapes
+    /// ```
     public boolean drawBounds() {
-        return (boolean) DRAW_BOUNDS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_BOUNDS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawMass()
     public DebugDraw drawMass(boolean drawMass) {
-        DRAW_MASS_HANDLE.set(segment, 0L, drawMass);
-        return this;
+    	DRAW_MASS_HANDLE.set(segment, 0L, drawMass);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw the mass and center of mass of dynamic bodies
+    /// ```
     public boolean drawMass() {
-        return (boolean) DRAW_MASS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_MASS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawBodyNames()
     public DebugDraw drawBodyNames(boolean drawBodyNames) {
-        DRAW_BODY_NAMES_HANDLE.set(segment, 0L, drawBodyNames);
-        return this;
+    	DRAW_BODY_NAMES_HANDLE.set(segment, 0L, drawBodyNames);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw body names
+    /// ```
     public boolean drawBodyNames() {
-        return (boolean) DRAW_BODY_NAMES_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_BODY_NAMES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawContacts()
     public DebugDraw drawContacts(boolean drawContacts) {
-        DRAW_CONTACTS_HANDLE.set(segment, 0L, drawContacts);
-        return this;
+    	DRAW_CONTACTS_HANDLE.set(segment, 0L, drawContacts);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw contact points
+    /// ```
     public boolean drawContacts() {
-        return (boolean) DRAW_CONTACTS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_CONTACTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawGraphColors()
     public DebugDraw drawGraphColors(boolean drawGraphColors) {
-        DRAW_GRAPH_COLORS_HANDLE.set(segment, 0L, drawGraphColors);
-        return this;
+    	DRAW_GRAPH_COLORS_HANDLE.set(segment, 0L, drawGraphColors);
+    	return this;
     }
     
+    /// ```
+    /// Option to visualize the graph coloring used for contacts and joints
+    /// ```
     public boolean drawGraphColors() {
-        return (boolean) DRAW_GRAPH_COLORS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_GRAPH_COLORS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawContactNormals()
     public DebugDraw drawContactNormals(boolean drawContactNormals) {
-        DRAW_CONTACT_NORMALS_HANDLE.set(segment, 0L, drawContactNormals);
-        return this;
+    	DRAW_CONTACT_NORMALS_HANDLE.set(segment, 0L, drawContactNormals);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw contact normals
+    /// ```
     public boolean drawContactNormals() {
-        return (boolean) DRAW_CONTACT_NORMALS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_CONTACT_NORMALS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawContactImpulses()
     public DebugDraw drawContactImpulses(boolean drawContactImpulses) {
-        DRAW_CONTACT_IMPULSES_HANDLE.set(segment, 0L, drawContactImpulses);
-        return this;
+    	DRAW_CONTACT_IMPULSES_HANDLE.set(segment, 0L, drawContactImpulses);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw contact normal impulses
+    /// ```
     public boolean drawContactImpulses() {
-        return (boolean) DRAW_CONTACT_IMPULSES_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_CONTACT_IMPULSES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawContactFeatures()
     public DebugDraw drawContactFeatures(boolean drawContactFeatures) {
-        DRAW_CONTACT_FEATURES_HANDLE.set(segment, 0L, drawContactFeatures);
-        return this;
+    	DRAW_CONTACT_FEATURES_HANDLE.set(segment, 0L, drawContactFeatures);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw contact feature ids
+    /// ```
     public boolean drawContactFeatures() {
-        return (boolean) DRAW_CONTACT_FEATURES_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_CONTACT_FEATURES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawFrictionImpulses()
     public DebugDraw drawFrictionImpulses(boolean drawFrictionImpulses) {
-        DRAW_FRICTION_IMPULSES_HANDLE.set(segment, 0L, drawFrictionImpulses);
-        return this;
+    	DRAW_FRICTION_IMPULSES_HANDLE.set(segment, 0L, drawFrictionImpulses);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw contact friction impulses
+    /// ```
     public boolean drawFrictionImpulses() {
-        return (boolean) DRAW_FRICTION_IMPULSES_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_FRICTION_IMPULSES_HANDLE.get(segment, 0L);
     }
     
+    /// @see #drawIslands()
     public DebugDraw drawIslands(boolean drawIslands) {
-        DRAW_ISLANDS_HANDLE.set(segment, 0L, drawIslands);
-        return this;
+    	DRAW_ISLANDS_HANDLE.set(segment, 0L, drawIslands);
+    	return this;
     }
     
+    /// ```
+    /// Option to draw islands as bounding boxes
+    /// ```
     public boolean drawIslands() {
-        return (boolean) DRAW_ISLANDS_HANDLE.get(segment, 0L);
+    	return (boolean) DRAW_ISLANDS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #context()
     public DebugDraw context(MemorySegment context) {
-        CONTEXT_HANDLE.set(segment, 0L, context);
-        return this;
+    	CONTEXT_HANDLE.set(segment, 0L, context);
+    	return this;
     }
     
+    /// ```
+    /// User context that is passed as an argument to drawing callback functions
+    /// ```
     public @Nullable MemorySegment context() {
-        MemorySegment segment = (MemorySegment) CONTEXT_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) CONTEXT_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #drawingBounds()
     public DebugDraw drawingBounds(Consumer<AABB> consumer) {
-        consumer.accept(drawingBounds);
-        return this;
+    	consumer.accept(drawingBounds);
+    	return this;
     }
     
+    /// @see #drawingBounds()
     public DebugDraw drawingBounds(AABB other) {
-        drawingBounds.set(other);
-        return this;
+    	drawingBounds.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Bounds to use if restricting drawing to a rectangular region
+    /// ```
     public AABB drawingBounds() {
-        return drawingBounds;
+    	return drawingBounds;
     }
     
     @Override

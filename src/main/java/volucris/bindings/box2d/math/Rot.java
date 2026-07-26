@@ -13,9 +13,10 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * 2D rotation This is similar to using a complex number for rotation
- */
+/// ```
+/// 2D rotation
+/// This is similar to using a complex number for rotation
+/// ```
 public final class Rot
 		implements Struct<Rot> {
 
@@ -57,22 +58,30 @@ public final class Rot
     
     }
 
+    /// @see #c()
     public Rot c(float c) {
-        C_HANDLE.set(segment, 0L, c);
-        return this;
+    	C_HANDLE.set(segment, 0L, c);
+    	return this;
     }
     
+    /// ```
+    /// cosine and sine
+    /// ```
     public float c() {
-        return (float) C_HANDLE.get(segment, 0L);
+    	return (float) C_HANDLE.get(segment, 0L);
     }
     
+    /// @see #s()
     public Rot s(float s) {
-        S_HANDLE.set(segment, 0L, s);
-        return this;
+    	S_HANDLE.set(segment, 0L, s);
+    	return this;
     }
     
+    /// ```
+    /// cosine and sine
+    /// ```
     public float s() {
-        return (float) S_HANDLE.get(segment, 0L);
+    	return (float) S_HANDLE.get(segment, 0L);
     }
     
     @Override

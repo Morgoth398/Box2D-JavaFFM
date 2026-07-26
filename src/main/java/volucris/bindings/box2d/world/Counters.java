@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Counters that give details of the simulation size.
- */
+/// ```
+/// Counters that give details of the simulation size.
+/// ```
 public final class Counters
 		implements Struct<Counters> {
 
@@ -102,103 +102,114 @@ public final class Counters
     
     }
 
+    /// @see #bodyCount()
     public Counters bodyCount(int bodyCount) {
-        BODY_COUNT_HANDLE.set(segment, 0L, bodyCount);
-        return this;
+    	BODY_COUNT_HANDLE.set(segment, 0L, bodyCount);
+    	return this;
     }
     
     public int bodyCount() {
-        return (int) BODY_COUNT_HANDLE.get(segment, 0L);
+    	return (int) BODY_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #shapeCount()
     public Counters shapeCount(int shapeCount) {
-        SHAPE_COUNT_HANDLE.set(segment, 0L, shapeCount);
-        return this;
+    	SHAPE_COUNT_HANDLE.set(segment, 0L, shapeCount);
+    	return this;
     }
     
     public int shapeCount() {
-        return (int) SHAPE_COUNT_HANDLE.get(segment, 0L);
+    	return (int) SHAPE_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #contactCount()
     public Counters contactCount(int contactCount) {
-        CONTACT_COUNT_HANDLE.set(segment, 0L, contactCount);
-        return this;
+    	CONTACT_COUNT_HANDLE.set(segment, 0L, contactCount);
+    	return this;
     }
     
     public int contactCount() {
-        return (int) CONTACT_COUNT_HANDLE.get(segment, 0L);
+    	return (int) CONTACT_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #jointCount()
     public Counters jointCount(int jointCount) {
-        JOINT_COUNT_HANDLE.set(segment, 0L, jointCount);
-        return this;
+    	JOINT_COUNT_HANDLE.set(segment, 0L, jointCount);
+    	return this;
     }
     
     public int jointCount() {
-        return (int) JOINT_COUNT_HANDLE.get(segment, 0L);
+    	return (int) JOINT_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #islandCount()
     public Counters islandCount(int islandCount) {
-        ISLAND_COUNT_HANDLE.set(segment, 0L, islandCount);
-        return this;
+    	ISLAND_COUNT_HANDLE.set(segment, 0L, islandCount);
+    	return this;
     }
     
     public int islandCount() {
-        return (int) ISLAND_COUNT_HANDLE.get(segment, 0L);
+    	return (int) ISLAND_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #stackUsed()
     public Counters stackUsed(int stackUsed) {
-        STACK_USED_HANDLE.set(segment, 0L, stackUsed);
-        return this;
+    	STACK_USED_HANDLE.set(segment, 0L, stackUsed);
+    	return this;
     }
     
     public int stackUsed() {
-        return (int) STACK_USED_HANDLE.get(segment, 0L);
+    	return (int) STACK_USED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #staticTreeHeight()
     public Counters staticTreeHeight(int staticTreeHeight) {
-        STATIC_TREE_HEIGHT_HANDLE.set(segment, 0L, staticTreeHeight);
-        return this;
+    	STATIC_TREE_HEIGHT_HANDLE.set(segment, 0L, staticTreeHeight);
+    	return this;
     }
     
     public int staticTreeHeight() {
-        return (int) STATIC_TREE_HEIGHT_HANDLE.get(segment, 0L);
+    	return (int) STATIC_TREE_HEIGHT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #treeHeight()
     public Counters treeHeight(int treeHeight) {
-        TREE_HEIGHT_HANDLE.set(segment, 0L, treeHeight);
-        return this;
+    	TREE_HEIGHT_HANDLE.set(segment, 0L, treeHeight);
+    	return this;
     }
     
     public int treeHeight() {
-        return (int) TREE_HEIGHT_HANDLE.get(segment, 0L);
+    	return (int) TREE_HEIGHT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #byteCount()
     public Counters byteCount(int byteCount) {
-        BYTE_COUNT_HANDLE.set(segment, 0L, byteCount);
-        return this;
+    	BYTE_COUNT_HANDLE.set(segment, 0L, byteCount);
+    	return this;
     }
     
     public int byteCount() {
-        return (int) BYTE_COUNT_HANDLE.get(segment, 0L);
+    	return (int) BYTE_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #taskCount()
     public Counters taskCount(int taskCount) {
-        TASK_COUNT_HANDLE.set(segment, 0L, taskCount);
-        return this;
+    	TASK_COUNT_HANDLE.set(segment, 0L, taskCount);
+    	return this;
     }
     
     public int taskCount() {
-        return (int) TASK_COUNT_HANDLE.get(segment, 0L);
+    	return (int) TASK_COUNT_HANDLE.get(segment, 0L);
     }
     
-    public Counters colorCounts(int colorCounts, long index) {
-        COLOR_COUNTS_HANDLE.set(segment, 0L, index, colorCounts);
-        return this;
+    /// @see #colorCounts(int)
+    public Counters colorCounts(int colorCounts, int index0) {
+    	COLOR_COUNTS_HANDLE.set(segment, 0L, index0, colorCounts);
+    	return this;
     }
     
-    public int colorCounts(long index) {
-        return (int) COLOR_COUNTS_HANDLE.get(segment, 0L, index);
+    public int colorCounts(int index0) {
+    	return (int) COLOR_COUNTS_HANDLE.get(segment, 0L, index0);
     }
     
     @Override

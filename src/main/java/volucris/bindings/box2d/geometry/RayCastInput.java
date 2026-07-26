@@ -17,9 +17,9 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Low level ray cast input data
- */
+/// ```
+/// Low level ray cast input data
+/// ```
 public final class RayCastInput
 		implements Struct<RayCastInput> {
 
@@ -71,67 +71,78 @@ public final class RayCastInput
         translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Validate ray cast input data (NaN, etc)
-     */
+    /// ```
+    /// Validate ray cast input data (NaN, etc)
+    /// ```
     public static boolean isValidRay(
-        MemorySegment input
+    	MemorySegment input
     ) {
-        MethodHandle method = B2_IS_VALID_RAY.get();
-        try {
-            return (boolean) method.invokeExact(
-                input
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_IS_VALID_RAY.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			input
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isValidRay}.
-     */
-    public final boolean isValidRay(
-    ) {
-        return (boolean) isValidRay(
-            this.segment
-        );
+    /// Typed method of [#isValidRay].
+    public final boolean isValidRay() {
+    	return (boolean) isValidRay(
+    		this.segment
+    	);
     }
     
+    /// @see #maxFraction()
     public RayCastInput maxFraction(float maxFraction) {
-        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-        return this;
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
     }
     
+    /// ```
+    /// The maximum fraction of the translation to consider, typically 1
+    /// ```
     public float maxFraction() {
-        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #origin()
     public RayCastInput origin(Consumer<Vec2> consumer) {
-        consumer.accept(origin);
-        return this;
+    	consumer.accept(origin);
+    	return this;
     }
     
+    /// @see #origin()
     public RayCastInput origin(Vec2 other) {
-        origin.set(other);
-        return this;
+    	origin.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Start point of the ray cast
+    /// ```
     public Vec2 origin() {
-        return origin;
+    	return origin;
     }
     
+    /// @see #translation()
     public RayCastInput translation(Consumer<Vec2> consumer) {
-        consumer.accept(translation);
-        return this;
+    	consumer.accept(translation);
+    	return this;
     }
     
+    /// @see #translation()
     public RayCastInput translation(Vec2 other) {
-        translation.set(other);
-        return this;
+    	translation.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Translation of the ray cast
+    /// ```
     public Vec2 translation() {
-        return translation;
+    	return translation;
     }
     
     @Override

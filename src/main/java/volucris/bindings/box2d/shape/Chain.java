@@ -13,9 +13,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class Chain {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_CHAIN;
@@ -51,370 +48,351 @@ public final class Chain {
     private Chain() {
     }
 
-    /**
-     * Create a chain shape
-     */
+    /// ```
+    /// Create a chain shape
+    /// @see b2ChainDef for details
+    /// ```
     public static MemorySegment createChain(
-        SegmentAllocator allocator,
-        MemorySegment bodyId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment bodyId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_CHAIN.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                bodyId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_CHAIN.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			bodyId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createChain}.
-     */
+    /// Typed method of [#createChain].
     public static @Nullable ChainId createChain(
-        SegmentAllocator allocator,
-        BodyId bodyId, 
-        ChainDef def
+    	SegmentAllocator allocator,
+    	BodyId bodyId,
+    	ChainDef def
     ) {
-        MemorySegment segment = createChain(
-            allocator,
-            bodyId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createChain(
+    		allocator,
+    		bodyId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ChainId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ChainId(segment);
     }
     
-    /**
-     * Destroy a chain shape
-     */
+    /// ```
+    /// Destroy a chain shape
+    /// ```
     public static void destroyChain(
-        MemorySegment chainId
+    	MemorySegment chainId
     ) {
-        MethodHandle method = B2_DESTROY_CHAIN.get();
-        try {
-            method.invokeExact(
-                chainId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DESTROY_CHAIN.get();
+    	try {
+    		 method.invokeExact(
+    			chainId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #destroyChain}.
-     */
+    /// Typed method of [#destroyChain].
     public static void destroyChain(
-        ChainId chainId
+    	ChainId chainId
     ) {
-        destroyChain(
-            chainId.memorySegment()
-        );
+    	destroyChain(
+    		chainId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the world that owns this chain shape
-     */
+    /// ```
+    /// Get the world that owns this chain shape
+    /// ```
     public static MemorySegment chain_GetWorld(
-        SegmentAllocator allocator,
-        MemorySegment chainId
+    	SegmentAllocator allocator,
+    	MemorySegment chainId
     ) {
-        MethodHandle method = B2_CHAIN_GET_WORLD.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                chainId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_GET_WORLD.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			chainId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_GetWorld}.
-     */
+    /// Typed method of [#chain_GetWorld].
     public static @Nullable WorldId chain_GetWorld(
-        SegmentAllocator allocator,
-        ChainId chainId
+    	SegmentAllocator allocator,
+    	ChainId chainId
     ) {
-        MemorySegment segment = chain_GetWorld(
-            allocator,
-            chainId.memorySegment()
-        );
+    	MemorySegment segment = chain_GetWorld(
+    		allocator,
+    		chainId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new WorldId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new WorldId(segment);
     }
     
-    /**
-     * Get the number of segments on this chain
-     */
+    /// ```
+    /// Get the number of segments on this chain
+    /// ```
     public static int chain_GetSegmentCount(
-        MemorySegment chainId
+    	MemorySegment chainId
     ) {
-        MethodHandle method = B2_CHAIN_GET_SEGMENT_COUNT.get();
-        try {
-            return (int) method.invokeExact(
-                chainId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_GET_SEGMENT_COUNT.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			chainId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_GetSegmentCount}.
-     */
+    /// Typed method of [#chain_GetSegmentCount].
     public static int chain_GetSegmentCount(
-        ChainId chainId
+    	ChainId chainId
     ) {
-        return (int) chain_GetSegmentCount(
-            chainId.memorySegment()
-        );
+    	return (int) chain_GetSegmentCount(
+    		chainId.memorySegment()
+    	);
     }
     
-    /**
-     * Fill a user array with chain segment shape ids up to the specified capacity. Returns the actual number of segments returned.
-     */
+    /// ```
+    /// Fill a user array with chain segment shape ids up to the specified capacity. Returns
+    /// the actual number of segments returned.
+    /// ```
     public static int chain_GetSegments(
-        MemorySegment chainId, 
-        MemorySegment segmentArray, 
-        int capacity
+    	MemorySegment chainId,
+    	MemorySegment segmentArray,
+    	int capacity
     ) {
-        MethodHandle method = B2_CHAIN_GET_SEGMENTS.get();
-        try {
-            return (int) method.invokeExact(
-                chainId, 
-                segmentArray, 
-                capacity
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_GET_SEGMENTS.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			chainId,
+    			segmentArray,
+    			capacity
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_GetSegments}.
-     */
+    /// Typed method of [#chain_GetSegments].
     public static int chain_GetSegments(
-        ChainId chainId, 
-        ShapeId segmentArray, 
-        int capacity
+    	ChainId chainId,
+    	ShapeId segmentArray,
+    	int capacity
     ) {
-        return (int) chain_GetSegments(
-            chainId.memorySegment(), 
-            segmentArray.memorySegment(), 
-            capacity
-        );
+    	return (int) chain_GetSegments(
+    		chainId.memorySegment(),
+    		segmentArray.memorySegment(),
+    		capacity
+    	);
     }
     
-    /**
-     * Set the chain friction
-     */
+    /// ```
+    /// Set the chain friction
+    /// @see b2ChainDef::friction
+    /// ```
     public static void chain_SetFriction(
-        MemorySegment chainId, 
-        float friction
+    	MemorySegment chainId,
+    	float friction
     ) {
-        MethodHandle method = B2_CHAIN_SET_FRICTION.get();
-        try {
-            method.invokeExact(
-                chainId, 
-                friction
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_SET_FRICTION.get();
+    	try {
+    		 method.invokeExact(
+    			chainId,
+    			friction
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_SetFriction}.
-     */
+    /// Typed method of [#chain_SetFriction].
     public static void chain_SetFriction(
-        ChainId chainId, 
-        float friction
+    	ChainId chainId,
+    	float friction
     ) {
-        chain_SetFriction(
-            chainId.memorySegment(), 
-            friction
-        );
+    	chain_SetFriction(
+    		chainId.memorySegment(),
+    		friction
+    	);
     }
     
-    /**
-     * Get the chain friction
-     */
+    /// ```
+    /// Get the chain friction
+    /// ```
     public static float chain_GetFriction(
-        MemorySegment chainId
+    	MemorySegment chainId
     ) {
-        MethodHandle method = B2_CHAIN_GET_FRICTION.get();
-        try {
-            return (float) method.invokeExact(
-                chainId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_GET_FRICTION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			chainId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_GetFriction}.
-     */
+    /// Typed method of [#chain_GetFriction].
     public static float chain_GetFriction(
-        ChainId chainId
+    	ChainId chainId
     ) {
-        return (float) chain_GetFriction(
-            chainId.memorySegment()
-        );
+    	return (float) chain_GetFriction(
+    		chainId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the chain restitution (bounciness)
-     */
+    /// ```
+    /// Set the chain restitution (bounciness)
+    /// @see b2ChainDef::restitution
+    /// ```
     public static void chain_SetRestitution(
-        MemorySegment chainId, 
-        float restitution
+    	MemorySegment chainId,
+    	float restitution
     ) {
-        MethodHandle method = B2_CHAIN_SET_RESTITUTION.get();
-        try {
-            method.invokeExact(
-                chainId, 
-                restitution
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_SET_RESTITUTION.get();
+    	try {
+    		 method.invokeExact(
+    			chainId,
+    			restitution
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_SetRestitution}.
-     */
+    /// Typed method of [#chain_SetRestitution].
     public static void chain_SetRestitution(
-        ChainId chainId, 
-        float restitution
+    	ChainId chainId,
+    	float restitution
     ) {
-        chain_SetRestitution(
-            chainId.memorySegment(), 
-            restitution
-        );
+    	chain_SetRestitution(
+    		chainId.memorySegment(),
+    		restitution
+    	);
     }
     
-    /**
-     * Get the chain restitution
-     */
+    /// ```
+    /// Get the chain restitution
+    /// ```
     public static float chain_GetRestitution(
-        MemorySegment chainId
+    	MemorySegment chainId
     ) {
-        MethodHandle method = B2_CHAIN_GET_RESTITUTION.get();
-        try {
-            return (float) method.invokeExact(
-                chainId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_GET_RESTITUTION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			chainId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_GetRestitution}.
-     */
+    /// Typed method of [#chain_GetRestitution].
     public static float chain_GetRestitution(
-        ChainId chainId
+    	ChainId chainId
     ) {
-        return (float) chain_GetRestitution(
-            chainId.memorySegment()
-        );
+    	return (float) chain_GetRestitution(
+    		chainId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the chain material
-     */
+    /// ```
+    /// Set the chain material
+    /// @see b2ChainDef::material
+    /// ```
     public static void chain_SetMaterial(
-        MemorySegment chainId, 
-        int material
+    	MemorySegment chainId,
+    	int material
     ) {
-        MethodHandle method = B2_CHAIN_SET_MATERIAL.get();
-        try {
-            method.invokeExact(
-                chainId, 
-                material
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_SET_MATERIAL.get();
+    	try {
+    		 method.invokeExact(
+    			chainId,
+    			material
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_SetMaterial}.
-     */
+    /// Typed method of [#chain_SetMaterial].
     public static void chain_SetMaterial(
-        ChainId chainId, 
-        int material
+    	ChainId chainId,
+    	int material
     ) {
-        chain_SetMaterial(
-            chainId.memorySegment(), 
-            material
-        );
+    	chain_SetMaterial(
+    		chainId.memorySegment(),
+    		material
+    	);
     }
     
-    /**
-     * Get the chain material
-     */
+    /// ```
+    /// Get the chain material
+    /// ```
     public static int chain_GetMaterial(
-        MemorySegment chainId
+    	MemorySegment chainId
     ) {
-        MethodHandle method = B2_CHAIN_GET_MATERIAL.get();
-        try {
-            return (int) method.invokeExact(
-                chainId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_GET_MATERIAL.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			chainId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_GetMaterial}.
-     */
+    /// Typed method of [#chain_GetMaterial].
     public static int chain_GetMaterial(
-        ChainId chainId
+    	ChainId chainId
     ) {
-        return (int) chain_GetMaterial(
-            chainId.memorySegment()
-        );
+    	return (int) chain_GetMaterial(
+    		chainId.memorySegment()
+    	);
     }
     
-    /**
-     * Chain identifier validation. Provides validation for up to 64K allocations.
-     */
+    /// ```
+    /// Chain identifier validation. Provides validation for up to 64K allocations.
+    /// ```
     public static boolean chain_IsValid(
-        MemorySegment id
+    	MemorySegment id
     ) {
-        MethodHandle method = B2_CHAIN_IS_VALID.get();
-        try {
-            return (boolean) method.invokeExact(
-                id
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CHAIN_IS_VALID.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			id
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #chain_IsValid}.
-     */
+    /// Typed method of [#chain_IsValid].
     public static boolean chain_IsValid(
-        ChainId id
+    	ChainId id
     ) {
-        return (boolean) chain_IsValid(
-            id.memorySegment()
-        );
+    	return (boolean) chain_IsValid(
+    		id.memorySegment()
+    	);
     }
     
 }

@@ -19,9 +19,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * World definition used to create a simulation world. Must be initialized using b2DefaultWorldDef().
- */
+/// ```
+/// World definition used to create a simulation world.
+/// Must be initialized using b2DefaultWorldDef().
+/// @ingroup world
+/// ```
 public final class WorldDef
 		implements Struct<WorldDef> {
 
@@ -137,222 +139,302 @@ public final class WorldDef
         gravity = new Vec2(segment.asSlice(GRAVITY_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your world definition
-     */
+    /// ```
+    /// Use this to initialize your world definition
+    /// @ingroup world
+    /// ```
     public static MemorySegment ndefaultWorldDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_WORLD_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_WORLD_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultWorldDef}.
-     */
+    /// Typed method of [#ndefaultWorldDef].
     public static @Nullable WorldDef defaultWorldDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultWorldDef(allocator);
+    	MemorySegment segment = ndefaultWorldDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new WorldDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new WorldDef(segment);
     }
     
+    /// @see #restitutionThreshold()
     public WorldDef restitutionThreshold(float restitutionThreshold) {
-        RESTITUTION_THRESHOLD_HANDLE.set(segment, 0L, restitutionThreshold);
-        return this;
+    	RESTITUTION_THRESHOLD_HANDLE.set(segment, 0L, restitutionThreshold);
+    	return this;
     }
     
+    /// ```
+    /// Restitution speed threshold, usually in m/s. Collisions above this
+    /// speed have restitution applied (will bounce).
+    /// ```
     public float restitutionThreshold() {
-        return (float) RESTITUTION_THRESHOLD_HANDLE.get(segment, 0L);
+    	return (float) RESTITUTION_THRESHOLD_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hitEventThreshold()
     public WorldDef hitEventThreshold(float hitEventThreshold) {
-        HIT_EVENT_THRESHOLD_HANDLE.set(segment, 0L, hitEventThreshold);
-        return this;
+    	HIT_EVENT_THRESHOLD_HANDLE.set(segment, 0L, hitEventThreshold);
+    	return this;
     }
     
+    /// ```
+    /// Threshold speed for hit events. Usually meters per second.
+    /// ```
     public float hitEventThreshold() {
-        return (float) HIT_EVENT_THRESHOLD_HANDLE.get(segment, 0L);
+    	return (float) HIT_EVENT_THRESHOLD_HANDLE.get(segment, 0L);
     }
     
+    /// @see #contactHertz()
     public WorldDef contactHertz(float contactHertz) {
-        CONTACT_HERTZ_HANDLE.set(segment, 0L, contactHertz);
-        return this;
+    	CONTACT_HERTZ_HANDLE.set(segment, 0L, contactHertz);
+    	return this;
     }
     
+    /// ```
+    /// Contact stiffness. Cycles per second. Increasing this increases the speed of overlap recovery, but can introduce jitter.
+    /// ```
     public float contactHertz() {
-        return (float) CONTACT_HERTZ_HANDLE.get(segment, 0L);
+    	return (float) CONTACT_HERTZ_HANDLE.get(segment, 0L);
     }
     
+    /// @see #contactDampingRatio()
     public WorldDef contactDampingRatio(float contactDampingRatio) {
-        CONTACT_DAMPING_RATIO_HANDLE.set(segment, 0L, contactDampingRatio);
-        return this;
+    	CONTACT_DAMPING_RATIO_HANDLE.set(segment, 0L, contactDampingRatio);
+    	return this;
     }
     
+    /// ```
+    /// Contact bounciness. Non-dimensional. You can speed up overlap recovery by decreasing this with
+    /// the trade-off that overlap resolution becomes more energetic.
+    /// ```
     public float contactDampingRatio() {
-        return (float) CONTACT_DAMPING_RATIO_HANDLE.get(segment, 0L);
+    	return (float) CONTACT_DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxContactPushSpeed()
     public WorldDef maxContactPushSpeed(float maxContactPushSpeed) {
-        MAX_CONTACT_PUSH_SPEED_HANDLE.set(segment, 0L, maxContactPushSpeed);
-        return this;
+    	MAX_CONTACT_PUSH_SPEED_HANDLE.set(segment, 0L, maxContactPushSpeed);
+    	return this;
     }
     
+    /// ```
+    /// This parameter controls how fast overlap is resolved and usually has units of meters per second. This only
+    /// puts a cap on the resolution speed. The resolution speed is increased by increasing the hertz and/or
+    /// decreasing the damping ratio.
+    /// ```
     public float maxContactPushSpeed() {
-        return (float) MAX_CONTACT_PUSH_SPEED_HANDLE.get(segment, 0L);
+    	return (float) MAX_CONTACT_PUSH_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maximumLinearSpeed()
     public WorldDef maximumLinearSpeed(float maximumLinearSpeed) {
-        MAXIMUM_LINEAR_SPEED_HANDLE.set(segment, 0L, maximumLinearSpeed);
-        return this;
+    	MAXIMUM_LINEAR_SPEED_HANDLE.set(segment, 0L, maximumLinearSpeed);
+    	return this;
     }
     
+    /// ```
+    /// Maximum linear speed. Usually meters per second.
+    /// ```
     public float maximumLinearSpeed() {
-        return (float) MAXIMUM_LINEAR_SPEED_HANDLE.get(segment, 0L);
+    	return (float) MAXIMUM_LINEAR_SPEED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #frictionCallback()
     public WorldDef frictionCallback(FrictionCallback frictionCallback) {
-        FRICTION_CALLBACK_HANDLE.set(segment, 0L, frictionCallback.memorySegment());
-        return this;
+    	FRICTION_CALLBACK_HANDLE.set(segment, 0L, frictionCallback.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Optional mixing callback for friction. The default uses sqrt(frictionA * frictionB).
+    /// ```
     public @Nullable FrictionCallback frictionCallback() {
-        MemorySegment segment = (MemorySegment) FRICTION_CALLBACK_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) FRICTION_CALLBACK_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return FrictionCallback.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return FrictionCallback.get(segment);
     }
     
+    /// @see #restitutionCallback()
     public WorldDef restitutionCallback(RestitutionCallback restitutionCallback) {
-        RESTITUTION_CALLBACK_HANDLE.set(segment, 0L, restitutionCallback.memorySegment());
-        return this;
+    	RESTITUTION_CALLBACK_HANDLE.set(segment, 0L, restitutionCallback.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Optional mixing callback for restitution. The default uses max(restitutionA, restitutionB).
+    /// ```
     public @Nullable RestitutionCallback restitutionCallback() {
-        MemorySegment segment = (MemorySegment) RESTITUTION_CALLBACK_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) RESTITUTION_CALLBACK_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return RestitutionCallback.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return RestitutionCallback.get(segment);
     }
     
+    /// @see #enableSleep()
     public WorldDef enableSleep(boolean enableSleep) {
-        ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
-        return this;
+    	ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
+    	return this;
     }
     
+    /// ```
+    /// Can bodies go to sleep to improve performance
+    /// ```
     public boolean enableSleep() {
-        return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableContinuous()
     public WorldDef enableContinuous(boolean enableContinuous) {
-        ENABLE_CONTINUOUS_HANDLE.set(segment, 0L, enableContinuous);
-        return this;
+    	ENABLE_CONTINUOUS_HANDLE.set(segment, 0L, enableContinuous);
+    	return this;
     }
     
+    /// ```
+    /// Enable continuous collision
+    /// ```
     public boolean enableContinuous() {
-        return (boolean) ENABLE_CONTINUOUS_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_CONTINUOUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #workerCount()
     public WorldDef workerCount(int workerCount) {
-        WORKER_COUNT_HANDLE.set(segment, 0L, workerCount);
-        return this;
+    	WORKER_COUNT_HANDLE.set(segment, 0L, workerCount);
+    	return this;
     }
     
+    /// ```
+    /// Number of workers to use with the provided task system. Box2D performs best when using only
+    /// performance cores and accessing a single L2 cache. Efficiency cores and hyper-threading provide
+    /// little benefit and may even harm performance.
+    /// @note Box2D does not create threads. This is the number of threads your applications has created
+    /// that you are allocating to b2World_Step.
+    /// @warning Do not modify the default value unless you are also providing a task system and providing
+    /// task callbacks (enqueueTask and finishTask).
+    /// ```
     public int workerCount() {
-        return (int) WORKER_COUNT_HANDLE.get(segment, 0L);
+    	return (int) WORKER_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enqueueTask()
     public WorldDef enqueueTask(EnqueueTaskCallback enqueueTask) {
-        ENQUEUE_TASK_HANDLE.set(segment, 0L, enqueueTask.memorySegment());
-        return this;
+    	ENQUEUE_TASK_HANDLE.set(segment, 0L, enqueueTask.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Function to spawn tasks
+    /// ```
     public @Nullable EnqueueTaskCallback enqueueTask() {
-        MemorySegment segment = (MemorySegment) ENQUEUE_TASK_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) ENQUEUE_TASK_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return EnqueueTaskCallback.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return EnqueueTaskCallback.get(segment);
     }
     
+    /// @see #finishTask()
     public WorldDef finishTask(FinishTaskCallback finishTask) {
-        FINISH_TASK_HANDLE.set(segment, 0L, finishTask.memorySegment());
-        return this;
+    	FINISH_TASK_HANDLE.set(segment, 0L, finishTask.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Function to finish a task
+    /// ```
     public @Nullable FinishTaskCallback finishTask() {
-        MemorySegment segment = (MemorySegment) FINISH_TASK_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) FINISH_TASK_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return FinishTaskCallback.get(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return FinishTaskCallback.get(segment);
     }
     
+    /// @see #userTaskContext()
     public WorldDef userTaskContext(MemorySegment userTaskContext) {
-        USER_TASK_CONTEXT_HANDLE.set(segment, 0L, userTaskContext);
-        return this;
+    	USER_TASK_CONTEXT_HANDLE.set(segment, 0L, userTaskContext);
+    	return this;
     }
     
+    /// ```
+    /// User context that is provided to enqueueTask and finishTask
+    /// ```
     public @Nullable MemorySegment userTaskContext() {
-        MemorySegment segment = (MemorySegment) USER_TASK_CONTEXT_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_TASK_CONTEXT_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #userData()
     public WorldDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public WorldDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #gravity()
     public WorldDef gravity(Consumer<Vec2> consumer) {
-        consumer.accept(gravity);
-        return this;
+    	consumer.accept(gravity);
+    	return this;
     }
     
+    /// @see #gravity()
     public WorldDef gravity(Vec2 other) {
-        gravity.set(other);
-        return this;
+    	gravity.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Gravity vector. Box2D has no up-vector defined.
+    /// ```
     public Vec2 gravity() {
-        return gravity;
+    	return gravity;
     }
     
     @Override

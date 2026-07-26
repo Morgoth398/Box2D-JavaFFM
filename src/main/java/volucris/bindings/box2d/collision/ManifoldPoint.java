@@ -15,9 +15,13 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A manifold point is a contact point belonging to a contact manifold. It holds details related to the geometry and dynamics of the contact points. Box2D uses speculative collision so some contact points may be separated. You may use the totalNormalImpulse to determine if there was an interaction during the time step.
- */
+/// ```
+/// A manifold point is a contact point belonging to a contact manifold.
+/// It holds details related to the geometry and dynamics of the contact points.
+/// Box2D uses speculative collision so some contact points may be separated.
+/// You may use the totalNormalImpulse to determine if there was an interaction during
+/// the time step.
+/// ```
 public final class ManifoldPoint
 		implements Struct<ManifoldPoint> {
 
@@ -101,109 +105,157 @@ public final class ManifoldPoint
         anchorB = new Vec2(segment.asSlice(ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #separation()
     public ManifoldPoint separation(float separation) {
-        SEPARATION_HANDLE.set(segment, 0L, separation);
-        return this;
+    	SEPARATION_HANDLE.set(segment, 0L, separation);
+    	return this;
     }
     
+    /// ```
+    /// The separation of the contact point, negative if penetrating
+    /// ```
     public float separation() {
-        return (float) SEPARATION_HANDLE.get(segment, 0L);
+    	return (float) SEPARATION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #normalImpulse()
     public ManifoldPoint normalImpulse(float normalImpulse) {
-        NORMAL_IMPULSE_HANDLE.set(segment, 0L, normalImpulse);
-        return this;
+    	NORMAL_IMPULSE_HANDLE.set(segment, 0L, normalImpulse);
+    	return this;
     }
     
+    /// ```
+    /// The impulse along the manifold normal vector.
+    /// ```
     public float normalImpulse() {
-        return (float) NORMAL_IMPULSE_HANDLE.get(segment, 0L);
+    	return (float) NORMAL_IMPULSE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #tangentImpulse()
     public ManifoldPoint tangentImpulse(float tangentImpulse) {
-        TANGENT_IMPULSE_HANDLE.set(segment, 0L, tangentImpulse);
-        return this;
+    	TANGENT_IMPULSE_HANDLE.set(segment, 0L, tangentImpulse);
+    	return this;
     }
     
+    /// ```
+    /// The friction impulse
+    /// ```
     public float tangentImpulse() {
-        return (float) TANGENT_IMPULSE_HANDLE.get(segment, 0L);
+    	return (float) TANGENT_IMPULSE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #totalNormalImpulse()
     public ManifoldPoint totalNormalImpulse(float totalNormalImpulse) {
-        TOTAL_NORMAL_IMPULSE_HANDLE.set(segment, 0L, totalNormalImpulse);
-        return this;
+    	TOTAL_NORMAL_IMPULSE_HANDLE.set(segment, 0L, totalNormalImpulse);
+    	return this;
     }
     
+    /// ```
+    /// The total normal impulse applied across sub-stepping and restitution. This is important
+    /// to identify speculative contact points that had an interaction in the time step.
+    /// ```
     public float totalNormalImpulse() {
-        return (float) TOTAL_NORMAL_IMPULSE_HANDLE.get(segment, 0L);
+    	return (float) TOTAL_NORMAL_IMPULSE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #normalVelocity()
     public ManifoldPoint normalVelocity(float normalVelocity) {
-        NORMAL_VELOCITY_HANDLE.set(segment, 0L, normalVelocity);
-        return this;
+    	NORMAL_VELOCITY_HANDLE.set(segment, 0L, normalVelocity);
+    	return this;
     }
     
+    /// ```
+    /// Relative normal velocity pre-solve. Used for hit events. If the normal impulse is
+    /// zero then there was no hit. Negative means shapes are approaching.
+    /// ```
     public float normalVelocity() {
-        return (float) NORMAL_VELOCITY_HANDLE.get(segment, 0L);
+    	return (float) NORMAL_VELOCITY_HANDLE.get(segment, 0L);
     }
     
+    /// @see #id()
     public ManifoldPoint id(short id) {
-        ID_HANDLE.set(segment, 0L, id);
-        return this;
+    	ID_HANDLE.set(segment, 0L, id);
+    	return this;
     }
     
+    /// ```
+    /// Uniquely identifies a contact point between two shapes
+    /// ```
     public short id() {
-        return (short) ID_HANDLE.get(segment, 0L);
+    	return (short) ID_HANDLE.get(segment, 0L);
     }
     
+    /// @see #persisted()
     public ManifoldPoint persisted(boolean persisted) {
-        PERSISTED_HANDLE.set(segment, 0L, persisted);
-        return this;
+    	PERSISTED_HANDLE.set(segment, 0L, persisted);
+    	return this;
     }
     
+    /// ```
+    /// Did this contact point exist the previous step?
+    /// ```
     public boolean persisted() {
-        return (boolean) PERSISTED_HANDLE.get(segment, 0L);
+    	return (boolean) PERSISTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #point()
     public ManifoldPoint point(Consumer<Vec2> consumer) {
-        consumer.accept(point);
-        return this;
+    	consumer.accept(point);
+    	return this;
     }
     
+    /// @see #point()
     public ManifoldPoint point(Vec2 other) {
-        point.set(other);
-        return this;
+    	point.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Location of the contact point in world space. Subject to precision loss at large coordinates.
+    /// @note Should only be used for debugging.
+    /// ```
     public Vec2 point() {
-        return point;
+    	return point;
     }
     
+    /// @see #anchorA()
     public ManifoldPoint anchorA(Consumer<Vec2> consumer) {
-        consumer.accept(anchorA);
-        return this;
+    	consumer.accept(anchorA);
+    	return this;
     }
     
+    /// @see #anchorA()
     public ManifoldPoint anchorA(Vec2 other) {
-        anchorA.set(other);
-        return this;
+    	anchorA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Location of the contact point relative to shapeA's origin in world space
+    /// @note When used internally to the Box2D solver, this is relative to the body center of mass.
+    /// ```
     public Vec2 anchorA() {
-        return anchorA;
+    	return anchorA;
     }
     
+    /// @see #anchorB()
     public ManifoldPoint anchorB(Consumer<Vec2> consumer) {
-        consumer.accept(anchorB);
-        return this;
+    	consumer.accept(anchorB);
+    	return this;
     }
     
+    /// @see #anchorB()
     public ManifoldPoint anchorB(Vec2 other) {
-        anchorB.set(other);
-        return this;
+    	anchorB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Location of the contact point relative to shapeB's origin in world space
+    /// @note When used internally to the Box2D solver, this is relative to the body center of mass.
+    /// ```
     public Vec2 anchorB() {
-        return anchorB;
+    	return anchorB;
     }
     
     @Override

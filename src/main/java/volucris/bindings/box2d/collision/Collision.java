@@ -17,9 +17,6 @@ import volucris.bindings.box2d.math.Transform;
 
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class Collision {
 
     private static final LazyConstant<MethodHandle> B2_COLLIDE_CIRCLES;
@@ -55,588 +52,564 @@ public final class Collision {
     private Collision() {
     }
 
-    /**
-     * Compute the contact manifold between two circles
-     */
+    /// ```
+    /// Compute the contact manifold between two circles
+    /// ```
     public static MemorySegment collideCircles(
-        SegmentAllocator allocator,
-        MemorySegment circleA, 
-        MemorySegment xfA, 
-        MemorySegment circleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment circleA,
+    	MemorySegment xfA,
+    	MemorySegment circleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_CIRCLES.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                circleA, 
-                xfA, 
-                circleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_CIRCLES.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			circleA,
+    			xfA,
+    			circleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideCircles}.
-     */
+    /// Typed method of [#collideCircles].
     public static @Nullable Manifold collideCircles(
-        SegmentAllocator allocator,
-        Circle circleA, 
-        Transform xfA, 
-        Circle circleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Circle circleA,
+    	Transform xfA,
+    	Circle circleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideCircles(
-            allocator,
-            circleA.memorySegment(), 
-            xfA.memorySegment(), 
-            circleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideCircles(
+    		allocator,
+    		circleA.memorySegment(),
+    		xfA.memorySegment(),
+    		circleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a capsule and circle
-     */
+    /// ```
+    /// Compute the contact manifold between a capsule and circle
+    /// ```
     public static MemorySegment collideCapsuleAndCircle(
-        SegmentAllocator allocator,
-        MemorySegment capsuleA, 
-        MemorySegment xfA, 
-        MemorySegment circleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment capsuleA,
+    	MemorySegment xfA,
+    	MemorySegment circleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_CAPSULE_AND_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                capsuleA, 
-                xfA, 
-                circleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_CAPSULE_AND_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			capsuleA,
+    			xfA,
+    			circleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideCapsuleAndCircle}.
-     */
+    /// Typed method of [#collideCapsuleAndCircle].
     public static @Nullable Manifold collideCapsuleAndCircle(
-        SegmentAllocator allocator,
-        Capsule capsuleA, 
-        Transform xfA, 
-        Circle circleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Capsule capsuleA,
+    	Transform xfA,
+    	Circle circleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideCapsuleAndCircle(
-            allocator,
-            capsuleA.memorySegment(), 
-            xfA.memorySegment(), 
-            circleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideCapsuleAndCircle(
+    		allocator,
+    		capsuleA.memorySegment(),
+    		xfA.memorySegment(),
+    		circleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between an segment and a circle
-     */
+    /// ```
+    /// Compute the contact manifold between an segment and a circle
+    /// ```
     public static MemorySegment collideSegmentAndCircle(
-        SegmentAllocator allocator,
-        MemorySegment segmentA, 
-        MemorySegment xfA, 
-        MemorySegment circleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment segmentA,
+    	MemorySegment xfA,
+    	MemorySegment circleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_SEGMENT_AND_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                segmentA, 
-                xfA, 
-                circleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_SEGMENT_AND_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			segmentA,
+    			xfA,
+    			circleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideSegmentAndCircle}.
-     */
+    /// Typed method of [#collideSegmentAndCircle].
     public static @Nullable Manifold collideSegmentAndCircle(
-        SegmentAllocator allocator,
-        Segment segmentA, 
-        Transform xfA, 
-        Circle circleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Segment segmentA,
+    	Transform xfA,
+    	Circle circleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideSegmentAndCircle(
-            allocator,
-            segmentA.memorySegment(), 
-            xfA.memorySegment(), 
-            circleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideSegmentAndCircle(
+    		allocator,
+    		segmentA.memorySegment(),
+    		xfA.memorySegment(),
+    		circleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a polygon and a circle
-     */
+    /// ```
+    /// Compute the contact manifold between a polygon and a circle
+    /// ```
     public static MemorySegment collidePolygonAndCircle(
-        SegmentAllocator allocator,
-        MemorySegment polygonA, 
-        MemorySegment xfA, 
-        MemorySegment circleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment polygonA,
+    	MemorySegment xfA,
+    	MemorySegment circleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_POLYGON_AND_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                polygonA, 
-                xfA, 
-                circleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_POLYGON_AND_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			polygonA,
+    			xfA,
+    			circleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collidePolygonAndCircle}.
-     */
+    /// Typed method of [#collidePolygonAndCircle].
     public static @Nullable Manifold collidePolygonAndCircle(
-        SegmentAllocator allocator,
-        Polygon polygonA, 
-        Transform xfA, 
-        Circle circleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Polygon polygonA,
+    	Transform xfA,
+    	Circle circleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collidePolygonAndCircle(
-            allocator,
-            polygonA.memorySegment(), 
-            xfA.memorySegment(), 
-            circleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collidePolygonAndCircle(
+    		allocator,
+    		polygonA.memorySegment(),
+    		xfA.memorySegment(),
+    		circleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a capsule and circle
-     */
+    /// ```
+    /// Compute the contact manifold between a capsule and circle
+    /// ```
     public static MemorySegment collideCapsules(
-        SegmentAllocator allocator,
-        MemorySegment capsuleA, 
-        MemorySegment xfA, 
-        MemorySegment capsuleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment capsuleA,
+    	MemorySegment xfA,
+    	MemorySegment capsuleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_CAPSULES.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                capsuleA, 
-                xfA, 
-                capsuleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_CAPSULES.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			capsuleA,
+    			xfA,
+    			capsuleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideCapsules}.
-     */
+    /// Typed method of [#collideCapsules].
     public static @Nullable Manifold collideCapsules(
-        SegmentAllocator allocator,
-        Capsule capsuleA, 
-        Transform xfA, 
-        Capsule capsuleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Capsule capsuleA,
+    	Transform xfA,
+    	Capsule capsuleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideCapsules(
-            allocator,
-            capsuleA.memorySegment(), 
-            xfA.memorySegment(), 
-            capsuleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideCapsules(
+    		allocator,
+    		capsuleA.memorySegment(),
+    		xfA.memorySegment(),
+    		capsuleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between an segment and a capsule
-     */
+    /// ```
+    /// Compute the contact manifold between an segment and a capsule
+    /// ```
     public static MemorySegment collideSegmentAndCapsule(
-        SegmentAllocator allocator,
-        MemorySegment segmentA, 
-        MemorySegment xfA, 
-        MemorySegment capsuleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment segmentA,
+    	MemorySegment xfA,
+    	MemorySegment capsuleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_SEGMENT_AND_CAPSULE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                segmentA, 
-                xfA, 
-                capsuleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_SEGMENT_AND_CAPSULE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			segmentA,
+    			xfA,
+    			capsuleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideSegmentAndCapsule}.
-     */
+    /// Typed method of [#collideSegmentAndCapsule].
     public static @Nullable Manifold collideSegmentAndCapsule(
-        SegmentAllocator allocator,
-        Segment segmentA, 
-        Transform xfA, 
-        Capsule capsuleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Segment segmentA,
+    	Transform xfA,
+    	Capsule capsuleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideSegmentAndCapsule(
-            allocator,
-            segmentA.memorySegment(), 
-            xfA.memorySegment(), 
-            capsuleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideSegmentAndCapsule(
+    		allocator,
+    		segmentA.memorySegment(),
+    		xfA.memorySegment(),
+    		capsuleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a polygon and capsule
-     */
+    /// ```
+    /// Compute the contact manifold between a polygon and capsule
+    /// ```
     public static MemorySegment collidePolygonAndCapsule(
-        SegmentAllocator allocator,
-        MemorySegment polygonA, 
-        MemorySegment xfA, 
-        MemorySegment capsuleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment polygonA,
+    	MemorySegment xfA,
+    	MemorySegment capsuleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_POLYGON_AND_CAPSULE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                polygonA, 
-                xfA, 
-                capsuleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_POLYGON_AND_CAPSULE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			polygonA,
+    			xfA,
+    			capsuleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collidePolygonAndCapsule}.
-     */
+    /// Typed method of [#collidePolygonAndCapsule].
     public static @Nullable Manifold collidePolygonAndCapsule(
-        SegmentAllocator allocator,
-        Polygon polygonA, 
-        Transform xfA, 
-        Capsule capsuleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Polygon polygonA,
+    	Transform xfA,
+    	Capsule capsuleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collidePolygonAndCapsule(
-            allocator,
-            polygonA.memorySegment(), 
-            xfA.memorySegment(), 
-            capsuleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collidePolygonAndCapsule(
+    		allocator,
+    		polygonA.memorySegment(),
+    		xfA.memorySegment(),
+    		capsuleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between two polygons
-     */
+    /// ```
+    /// Compute the contact manifold between two polygons
+    /// ```
     public static MemorySegment collidePolygons(
-        SegmentAllocator allocator,
-        MemorySegment polygonA, 
-        MemorySegment xfA, 
-        MemorySegment polygonB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment polygonA,
+    	MemorySegment xfA,
+    	MemorySegment polygonB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_POLYGONS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                polygonA, 
-                xfA, 
-                polygonB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_POLYGONS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			polygonA,
+    			xfA,
+    			polygonB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collidePolygons}.
-     */
+    /// Typed method of [#collidePolygons].
     public static @Nullable Manifold collidePolygons(
-        SegmentAllocator allocator,
-        Polygon polygonA, 
-        Transform xfA, 
-        Polygon polygonB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Polygon polygonA,
+    	Transform xfA,
+    	Polygon polygonB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collidePolygons(
-            allocator,
-            polygonA.memorySegment(), 
-            xfA.memorySegment(), 
-            polygonB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collidePolygons(
+    		allocator,
+    		polygonA.memorySegment(),
+    		xfA.memorySegment(),
+    		polygonB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between an segment and a polygon
-     */
+    /// ```
+    /// Compute the contact manifold between an segment and a polygon
+    /// ```
     public static MemorySegment collideSegmentAndPolygon(
-        SegmentAllocator allocator,
-        MemorySegment segmentA, 
-        MemorySegment xfA, 
-        MemorySegment polygonB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment segmentA,
+    	MemorySegment xfA,
+    	MemorySegment polygonB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_SEGMENT_AND_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                segmentA, 
-                xfA, 
-                polygonB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_SEGMENT_AND_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			segmentA,
+    			xfA,
+    			polygonB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideSegmentAndPolygon}.
-     */
+    /// Typed method of [#collideSegmentAndPolygon].
     public static @Nullable Manifold collideSegmentAndPolygon(
-        SegmentAllocator allocator,
-        Segment segmentA, 
-        Transform xfA, 
-        Polygon polygonB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	Segment segmentA,
+    	Transform xfA,
+    	Polygon polygonB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideSegmentAndPolygon(
-            allocator,
-            segmentA.memorySegment(), 
-            xfA.memorySegment(), 
-            polygonB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideSegmentAndPolygon(
+    		allocator,
+    		segmentA.memorySegment(),
+    		xfA.memorySegment(),
+    		polygonB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a chain segment and a circle
-     */
+    /// ```
+    /// Compute the contact manifold between a chain segment and a circle
+    /// ```
     public static MemorySegment collideChainSegmentAndCircle(
-        SegmentAllocator allocator,
-        MemorySegment segmentA, 
-        MemorySegment xfA, 
-        MemorySegment circleB, 
-        MemorySegment xfB
+    	SegmentAllocator allocator,
+    	MemorySegment segmentA,
+    	MemorySegment xfA,
+    	MemorySegment circleB,
+    	MemorySegment xfB
     ) {
-        MethodHandle method = B2_COLLIDE_CHAIN_SEGMENT_AND_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                segmentA, 
-                xfA, 
-                circleB, 
-                xfB
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_CHAIN_SEGMENT_AND_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			segmentA,
+    			xfA,
+    			circleB,
+    			xfB
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideChainSegmentAndCircle}.
-     */
+    /// Typed method of [#collideChainSegmentAndCircle].
     public static @Nullable Manifold collideChainSegmentAndCircle(
-        SegmentAllocator allocator,
-        ChainSegment segmentA, 
-        Transform xfA, 
-        Circle circleB, 
-        Transform xfB
+    	SegmentAllocator allocator,
+    	ChainSegment segmentA,
+    	Transform xfA,
+    	Circle circleB,
+    	Transform xfB
     ) {
-        MemorySegment segment = collideChainSegmentAndCircle(
-            allocator,
-            segmentA.memorySegment(), 
-            xfA.memorySegment(), 
-            circleB.memorySegment(), 
-            xfB.memorySegment()
-        );
+    	MemorySegment segment = collideChainSegmentAndCircle(
+    		allocator,
+    		segmentA.memorySegment(),
+    		xfA.memorySegment(),
+    		circleB.memorySegment(),
+    		xfB.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a chain segment and a capsule
-     */
+    /// ```
+    /// Compute the contact manifold between a chain segment and a capsule
+    /// ```
     public static MemorySegment collideChainSegmentAndCapsule(
-        SegmentAllocator allocator,
-        MemorySegment segmentA, 
-        MemorySegment xfA, 
-        MemorySegment capsuleB, 
-        MemorySegment xfB, 
-        MemorySegment cache
+    	SegmentAllocator allocator,
+    	MemorySegment segmentA,
+    	MemorySegment xfA,
+    	MemorySegment capsuleB,
+    	MemorySegment xfB,
+    	MemorySegment cache
     ) {
-        MethodHandle method = B2_COLLIDE_CHAIN_SEGMENT_AND_CAPSULE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                segmentA, 
-                xfA, 
-                capsuleB, 
-                xfB, 
-                cache
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_CHAIN_SEGMENT_AND_CAPSULE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			segmentA,
+    			xfA,
+    			capsuleB,
+    			xfB,
+    			cache
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideChainSegmentAndCapsule}.
-     */
+    /// Typed method of [#collideChainSegmentAndCapsule].
     public static @Nullable Manifold collideChainSegmentAndCapsule(
-        SegmentAllocator allocator,
-        ChainSegment segmentA, 
-        Transform xfA, 
-        Capsule capsuleB, 
-        Transform xfB, 
-        SimplexCache cache
+    	SegmentAllocator allocator,
+    	ChainSegment segmentA,
+    	Transform xfA,
+    	Capsule capsuleB,
+    	Transform xfB,
+    	SimplexCache cache
     ) {
-        MemorySegment segment = collideChainSegmentAndCapsule(
-            allocator,
-            segmentA.memorySegment(), 
-            xfA.memorySegment(), 
-            capsuleB.memorySegment(), 
-            xfB.memorySegment(), 
-            cache.memorySegment()
-        );
+    	MemorySegment segment = collideChainSegmentAndCapsule(
+    		allocator,
+    		segmentA.memorySegment(),
+    		xfA.memorySegment(),
+    		capsuleB.memorySegment(),
+    		xfB.memorySegment(),
+    		cache.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
-    /**
-     * Compute the contact manifold between a chain segment and a rounded polygon
-     */
+    /// ```
+    /// Compute the contact manifold between a chain segment and a rounded polygon
+    /// ```
     public static MemorySegment collideChainSegmentAndPolygon(
-        SegmentAllocator allocator,
-        MemorySegment segmentA, 
-        MemorySegment xfA, 
-        MemorySegment polygonB, 
-        MemorySegment xfB, 
-        MemorySegment cache
+    	SegmentAllocator allocator,
+    	MemorySegment segmentA,
+    	MemorySegment xfA,
+    	MemorySegment polygonB,
+    	MemorySegment xfB,
+    	MemorySegment cache
     ) {
-        MethodHandle method = B2_COLLIDE_CHAIN_SEGMENT_AND_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                segmentA, 
-                xfA, 
-                polygonB, 
-                xfB, 
-                cache
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_COLLIDE_CHAIN_SEGMENT_AND_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			segmentA,
+    			xfA,
+    			polygonB,
+    			xfB,
+    			cache
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #collideChainSegmentAndPolygon}.
-     */
+    /// Typed method of [#collideChainSegmentAndPolygon].
     public static @Nullable Manifold collideChainSegmentAndPolygon(
-        SegmentAllocator allocator,
-        ChainSegment segmentA, 
-        Transform xfA, 
-        Polygon polygonB, 
-        Transform xfB, 
-        SimplexCache cache
+    	SegmentAllocator allocator,
+    	ChainSegment segmentA,
+    	Transform xfA,
+    	Polygon polygonB,
+    	Transform xfB,
+    	SimplexCache cache
     ) {
-        MemorySegment segment = collideChainSegmentAndPolygon(
-            allocator,
-            segmentA.memorySegment(), 
-            xfA.memorySegment(), 
-            polygonB.memorySegment(), 
-            xfB.memorySegment(), 
-            cache.memorySegment()
-        );
+    	MemorySegment segment = collideChainSegmentAndPolygon(
+    		allocator,
+    		segmentA.memorySegment(),
+    		xfA.memorySegment(),
+    		polygonB.memorySegment(),
+    		xfB.memorySegment(),
+    		cache.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Manifold(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Manifold(segment);
     }
     
 }

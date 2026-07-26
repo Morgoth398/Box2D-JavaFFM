@@ -19,9 +19,23 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Used to create a chain of line segments. This is designed to eliminate ghost collisions with some limitations. - chains are one-sided - chains have no mass and should be used on static bodies - chains have a counter-clockwise winding order (normal points right of segment direction) - chains are either a loop or open - a chain must have at least 4 points - the distance between any two points must be greater than B2_LINEAR_SLOP - a chain shape should not self intersect (this is not validated) - an open chain shape has NO COLLISION on the first and final edge - you may overlap two open chains on their first three and/or last three points to get smooth collision - a chain shape creates multiple line segment shapes on the body https://en.wikipedia.org/wiki/Polygonal_chain Must be initialized using b2DefaultChainDef().
- */
+/// ```
+/// Used to create a chain of line segments. This is designed to eliminate ghost collisions with some limitations.
+/// - chains are one-sided
+/// - chains have no mass and should be used on static bodies
+/// - chains have a counter-clockwise winding order (normal points right of segment direction)
+/// - chains are either a loop or open
+/// - a chain must have at least 4 points
+/// - the distance between any two points must be greater than B2_LINEAR_SLOP
+/// - a chain shape should not self intersect (this is not validated)
+/// - an open chain shape has NO COLLISION on the first and final edge
+/// - you may overlap two open chains on their first three and/or last three points to get smooth collision
+/// - a chain shape creates multiple line segment shapes on the body
+/// https://en.wikipedia.org/wiki/Polygonal_chain
+/// Must be initialized using b2DefaultChainDef().
+/// @warning Do not use chain shapes unless you understand the limitations. This is an advanced feature.
+/// @ingroup shape
+/// ```
 public final class ChainDef
 		implements Struct<ChainDef> {
 
@@ -98,135 +112,174 @@ public final class ChainDef
         filter = new Filter(segment.asSlice(FILTER_BYTE_OFFSET, Filter.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your chain definition
-     */
+    /// ```
+    /// Use this to initialize your chain definition
+    /// @ingroup shape
+    /// ```
     public static MemorySegment ndefaultChainDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_CHAIN_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_CHAIN_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultChainDef}.
-     */
+    /// Typed method of [#ndefaultChainDef].
     public static @Nullable ChainDef defaultChainDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultChainDef(allocator);
+    	MemorySegment segment = ndefaultChainDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ChainDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ChainDef(segment);
     }
     
+    /// @see #userData()
     public ChainDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// Use this to store application specific shape data.
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #points()
     public ChainDef points(Vec2 points) {
-        POINTS_HANDLE.set(segment, 0L, points.memorySegment());
-        return this;
+    	POINTS_HANDLE.set(segment, 0L, points.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// An array of at least 4 points. These are cloned and may be temporary.
+    /// ```
     public @Nullable Vec2 points() {
-        MemorySegment segment = (MemorySegment) POINTS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) POINTS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
+    /// @see #count()
     public ChainDef count(int count) {
-        COUNT_HANDLE.set(segment, 0L, count);
-        return this;
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
     }
     
+    /// ```
+    /// The point count, must be 4 or more.
+    /// ```
     public int count() {
-        return (int) COUNT_HANDLE.get(segment, 0L);
+    	return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #materials()
     public ChainDef materials(SurfaceMaterial materials) {
-        MATERIALS_HANDLE.set(segment, 0L, materials.memorySegment());
-        return this;
+    	MATERIALS_HANDLE.set(segment, 0L, materials.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Surface materials for each segment. These are cloned.
+    /// ```
     public @Nullable SurfaceMaterial materials() {
-        MemorySegment segment = (MemorySegment) MATERIALS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) MATERIALS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new SurfaceMaterial(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new SurfaceMaterial(segment);
     }
     
+    /// @see #materialCount()
     public ChainDef materialCount(int materialCount) {
-        MATERIAL_COUNT_HANDLE.set(segment, 0L, materialCount);
-        return this;
+    	MATERIAL_COUNT_HANDLE.set(segment, 0L, materialCount);
+    	return this;
     }
     
+    /// ```
+    /// The material count. Must be 1 or count. This allows you to provide one
+    /// material for all segments or a unique material per segment.
+    /// ```
     public int materialCount() {
-        return (int) MATERIAL_COUNT_HANDLE.get(segment, 0L);
+    	return (int) MATERIAL_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #isLoop()
     public ChainDef isLoop(boolean isLoop) {
-        IS_LOOP_HANDLE.set(segment, 0L, isLoop);
-        return this;
+    	IS_LOOP_HANDLE.set(segment, 0L, isLoop);
+    	return this;
     }
     
+    /// ```
+    /// Indicates a closed chain formed by connecting the first and last points
+    /// ```
     public boolean isLoop() {
-        return (boolean) IS_LOOP_HANDLE.get(segment, 0L);
+    	return (boolean) IS_LOOP_HANDLE.get(segment, 0L);
     }
     
+    /// @see #enableSensorEvents()
     public ChainDef enableSensorEvents(boolean enableSensorEvents) {
-        ENABLE_SENSOR_EVENTS_HANDLE.set(segment, 0L, enableSensorEvents);
-        return this;
+    	ENABLE_SENSOR_EVENTS_HANDLE.set(segment, 0L, enableSensorEvents);
+    	return this;
     }
     
+    /// ```
+    /// Enable sensors to detect this chain. False by default.
+    /// ```
     public boolean enableSensorEvents() {
-        return (boolean) ENABLE_SENSOR_EVENTS_HANDLE.get(segment, 0L);
+    	return (boolean) ENABLE_SENSOR_EVENTS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #internalValue()
     public ChainDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #filter()
     public ChainDef filter(Consumer<Filter> consumer) {
-        consumer.accept(filter);
-        return this;
+    	consumer.accept(filter);
+    	return this;
     }
     
+    /// @see #filter()
     public ChainDef filter(Filter other) {
-        filter.set(other);
-        return this;
+    	filter.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Contact filtering data.
+    /// ```
     public Filter filter() {
-        return filter;
+    	return filter;
     }
     
     @Override

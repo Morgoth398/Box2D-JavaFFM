@@ -24,9 +24,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class Shape {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_CIRCLE_SHAPE;
@@ -140,1676 +137,1622 @@ public final class Shape {
     private Shape() {
     }
 
-    /**
-     * Create a circle shape and attach it to a body. The shape definition and geometry are fully cloned. Contacts are not created until the next time step.
-     */
+    /// ```
+    /// Create a circle shape and attach it to a body. The shape definition and geometry are fully cloned.
+    /// Contacts are not created until the next time step.
+    /// @return the shape id for accessing the shape
+    /// ```
     public static MemorySegment createCircleShape(
-        SegmentAllocator allocator,
-        MemorySegment bodyId, 
-        MemorySegment def, 
-        MemorySegment circle
+    	SegmentAllocator allocator,
+    	MemorySegment bodyId,
+    	MemorySegment def,
+    	MemorySegment circle
     ) {
-        MethodHandle method = B2_CREATE_CIRCLE_SHAPE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                bodyId, 
-                def, 
-                circle
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_CIRCLE_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			bodyId,
+    			def,
+    			circle
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createCircleShape}.
-     */
+    /// Typed method of [#createCircleShape].
     public static @Nullable ShapeId createCircleShape(
-        SegmentAllocator allocator,
-        BodyId bodyId, 
-        ShapeDef def, 
-        Circle circle
+    	SegmentAllocator allocator,
+    	BodyId bodyId,
+    	ShapeDef def,
+    	Circle circle
     ) {
-        MemorySegment segment = createCircleShape(
-            allocator,
-            bodyId.memorySegment(), 
-            def.memorySegment(), 
-            circle.memorySegment()
-        );
+    	MemorySegment segment = createCircleShape(
+    		allocator,
+    		bodyId.memorySegment(),
+    		def.memorySegment(),
+    		circle.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ShapeId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ShapeId(segment);
     }
     
-    /**
-     * Create a line segment shape and attach it to a body. The shape definition and geometry are fully cloned. Contacts are not created until the next time step.
-     */
+    /// ```
+    /// Create a line segment shape and attach it to a body. The shape definition and geometry are fully cloned.
+    /// Contacts are not created until the next time step.
+    /// @return the shape id for accessing the shape
+    /// ```
     public static MemorySegment createSegmentShape(
-        SegmentAllocator allocator,
-        MemorySegment bodyId, 
-        MemorySegment def, 
-        MemorySegment paramSegment
+    	SegmentAllocator allocator,
+    	MemorySegment bodyId,
+    	MemorySegment def,
+    	MemorySegment segment
     ) {
-        MethodHandle method = B2_CREATE_SEGMENT_SHAPE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                bodyId, 
-                def, 
-                paramSegment
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_SEGMENT_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			bodyId,
+    			def,
+    			segment
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createSegmentShape}.
-     */
+    /// Typed method of [#createSegmentShape].
     public static @Nullable ShapeId createSegmentShape(
-        SegmentAllocator allocator,
-        BodyId bodyId, 
-        ShapeDef def, 
-        Segment paramSegment
+    	SegmentAllocator allocator,
+    	BodyId bodyId,
+    	ShapeDef def,
+    	Segment paramSegment
     ) {
-        MemorySegment segment = createSegmentShape(
-            allocator,
-            bodyId.memorySegment(), 
-            def.memorySegment(), 
-            paramSegment.memorySegment()
-        );
+    	MemorySegment segment = createSegmentShape(
+    		allocator,
+    		bodyId.memorySegment(),
+    		def.memorySegment(),
+    		paramSegment.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ShapeId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ShapeId(segment);
     }
     
-    /**
-     * Create a capsule shape and attach it to a body. The shape definition and geometry are fully cloned. Contacts are not created until the next time step.
-     */
+    /// ```
+    /// Create a capsule shape and attach it to a body. The shape definition and geometry are fully cloned.
+    /// Contacts are not created until the next time step.
+    /// @return the shape id for accessing the shape
+    /// ```
     public static MemorySegment createCapsuleShape(
-        SegmentAllocator allocator,
-        MemorySegment bodyId, 
-        MemorySegment def, 
-        MemorySegment capsule
+    	SegmentAllocator allocator,
+    	MemorySegment bodyId,
+    	MemorySegment def,
+    	MemorySegment capsule
     ) {
-        MethodHandle method = B2_CREATE_CAPSULE_SHAPE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                bodyId, 
-                def, 
-                capsule
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_CAPSULE_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			bodyId,
+    			def,
+    			capsule
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createCapsuleShape}.
-     */
+    /// Typed method of [#createCapsuleShape].
     public static @Nullable ShapeId createCapsuleShape(
-        SegmentAllocator allocator,
-        BodyId bodyId, 
-        ShapeDef def, 
-        Capsule capsule
+    	SegmentAllocator allocator,
+    	BodyId bodyId,
+    	ShapeDef def,
+    	Capsule capsule
     ) {
-        MemorySegment segment = createCapsuleShape(
-            allocator,
-            bodyId.memorySegment(), 
-            def.memorySegment(), 
-            capsule.memorySegment()
-        );
+    	MemorySegment segment = createCapsuleShape(
+    		allocator,
+    		bodyId.memorySegment(),
+    		def.memorySegment(),
+    		capsule.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ShapeId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ShapeId(segment);
     }
     
-    /**
-     * Create a polygon shape and attach it to a body. The shape definition and geometry are fully cloned. Contacts are not created until the next time step.
-     */
+    /// ```
+    /// Create a polygon shape and attach it to a body. The shape definition and geometry are fully cloned.
+    /// Contacts are not created until the next time step.
+    /// @return the shape id for accessing the shape
+    /// ```
     public static MemorySegment createPolygonShape(
-        SegmentAllocator allocator,
-        MemorySegment bodyId, 
-        MemorySegment def, 
-        MemorySegment polygon
+    	SegmentAllocator allocator,
+    	MemorySegment bodyId,
+    	MemorySegment def,
+    	MemorySegment polygon
     ) {
-        MethodHandle method = B2_CREATE_POLYGON_SHAPE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                bodyId, 
-                def, 
-                polygon
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_POLYGON_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			bodyId,
+    			def,
+    			polygon
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createPolygonShape}.
-     */
+    /// Typed method of [#createPolygonShape].
     public static @Nullable ShapeId createPolygonShape(
-        SegmentAllocator allocator,
-        BodyId bodyId, 
-        ShapeDef def, 
-        Polygon polygon
+    	SegmentAllocator allocator,
+    	BodyId bodyId,
+    	ShapeDef def,
+    	Polygon polygon
     ) {
-        MemorySegment segment = createPolygonShape(
-            allocator,
-            bodyId.memorySegment(), 
-            def.memorySegment(), 
-            polygon.memorySegment()
-        );
+    	MemorySegment segment = createPolygonShape(
+    		allocator,
+    		bodyId.memorySegment(),
+    		def.memorySegment(),
+    		polygon.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ShapeId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ShapeId(segment);
     }
     
-    /**
-     * Destroy a shape. You may defer the body mass update which can improve performance if several shapes on a body are destroyed at once.
-     */
+    /// ```
+    /// Destroy a shape. You may defer the body mass update which can improve performance if several shapes on a
+    /// body are destroyed at once.
+    /// @see b2Body_ApplyMassFromShapes
+    /// ```
     public static void destroyShape(
-        MemorySegment shapeId, 
-        boolean updateBodyMass
+    	MemorySegment shapeId,
+    	boolean updateBodyMass
     ) {
-        MethodHandle method = B2_DESTROY_SHAPE.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                updateBodyMass
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DESTROY_SHAPE.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			updateBodyMass
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #destroyShape}.
-     */
+    /// Typed method of [#destroyShape].
     public static void destroyShape(
-        ShapeId shapeId, 
-        boolean updateBodyMass
+    	ShapeId shapeId,
+    	boolean updateBodyMass
     ) {
-        destroyShape(
-            shapeId.memorySegment(), 
-            updateBodyMass
-        );
+    	destroyShape(
+    		shapeId.memorySegment(),
+    		updateBodyMass
+    	);
     }
     
-    /**
-     * Shape identifier validation. Provides validation for up to 64K allocations.
-     */
+    /// ```
+    /// Shape identifier validation. Provides validation for up to 64K allocations.
+    /// ```
     public static boolean isValid(
-        MemorySegment id
+    	MemorySegment id
     ) {
-        MethodHandle method = B2_SHAPE_IS_VALID.get();
-        try {
-            return (boolean) method.invokeExact(
-                id
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_IS_VALID.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			id
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isValid}.
-     */
+    /// Typed method of [#isValid].
     public static boolean isValid(
-        ShapeId id
+    	ShapeId id
     ) {
-        return (boolean) isValid(
-            id.memorySegment()
-        );
+    	return (boolean) isValid(
+    		id.memorySegment()
+    	);
     }
     
-    /**
-     * Get the type of a shape
-     */
+    /// ```
+    /// Get the type of a shape
+    /// ```
     public static int getType(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_TYPE.get();
-        try {
-            return (int) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_TYPE.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getType}.
-     */
+    /// Typed method of [#getType].
     public static int getType(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (int) getType(
-            shapeId.memorySegment()
-        );
+    	return (int) getType(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the id of the body that a shape is attached to
-     */
+    /// ```
+    /// Get the id of the body that a shape is attached to
+    /// ```
     public static MemorySegment getBody(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_BODY.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_BODY.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getBody}.
-     */
+    /// Typed method of [#getBody].
     public static @Nullable BodyId getBody(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getBody(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getBody(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new BodyId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new BodyId(segment);
     }
     
-    /**
-     * Get the world that owns this shape
-     */
+    /// ```
+    /// Get the world that owns this shape
+    /// ```
     public static MemorySegment getWorld(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_WORLD.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_WORLD.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getWorld}.
-     */
+    /// Typed method of [#getWorld].
     public static @Nullable WorldId getWorld(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getWorld(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getWorld(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new WorldId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new WorldId(segment);
     }
     
-    /**
-     * Returns true if the shape is a sensor. It is not possible to change a shape from sensor to solid dynamically because this breaks the contract for sensor events.
-     */
+    /// ```
+    /// Returns true if the shape is a sensor. It is not possible to change a shape
+    /// from sensor to solid dynamically because this breaks the contract for
+    /// sensor events.
+    /// ```
     public static boolean isSensor(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_IS_SENSOR.get();
-        try {
-            return (boolean) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_IS_SENSOR.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isSensor}.
-     */
+    /// Typed method of [#isSensor].
     public static boolean isSensor(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (boolean) isSensor(
-            shapeId.memorySegment()
-        );
+    	return (boolean) isSensor(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the user data for a shape
-     */
+    /// ```
+    /// Set the user data for a shape
+    /// ```
     public static void setUserData(
-        MemorySegment shapeId, 
-        MemorySegment userData
+    	MemorySegment shapeId,
+    	MemorySegment userData
     ) {
-        MethodHandle method = B2_SHAPE_SET_USER_DATA.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                userData
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_USER_DATA.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			userData
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setUserData}.
-     */
+    /// Typed method of [#setUserData].
     public static void setUserData(
-        ShapeId shapeId, 
-        MemorySegment userData
+    	ShapeId shapeId,
+    	MemorySegment userData
     ) {
-        setUserData(
-            shapeId.memorySegment(), 
-            userData
-        );
+    	setUserData(
+    		shapeId.memorySegment(),
+    		userData
+    	);
     }
     
-    /**
-     * Get the user data for a shape. This is useful when you get a shape id from an event or query.
-     */
+    /// ```
+    /// Get the user data for a shape. This is useful when you get a shape id
+    /// from an event or query.
+    /// ```
     public static MemorySegment getUserData(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_USER_DATA.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_USER_DATA.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getUserData}.
-     */
+    /// Typed method of [#getUserData].
     public static @Nullable MemorySegment getUserData(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getUserData(
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getUserData(
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
-    /**
-     * Set the mass density of a shape, usually in kg/m^2. This will optionally update the mass properties on the parent body.
-     */
+    /// ```
+    /// Set the mass density of a shape, usually in kg/m^2.
+    /// This will optionally update the mass properties on the parent body.
+    /// @see b2ShapeDef::density, b2Body_ApplyMassFromShapes
+    /// ```
     public static void setDensity(
-        MemorySegment shapeId, 
-        float density, 
-        boolean updateBodyMass
+    	MemorySegment shapeId,
+    	float density,
+    	boolean updateBodyMass
     ) {
-        MethodHandle method = B2_SHAPE_SET_DENSITY.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                density, 
-                updateBodyMass
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_DENSITY.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			density,
+    			updateBodyMass
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setDensity}.
-     */
+    /// Typed method of [#setDensity].
     public static void setDensity(
-        ShapeId shapeId, 
-        float density, 
-        boolean updateBodyMass
+    	ShapeId shapeId,
+    	float density,
+    	boolean updateBodyMass
     ) {
-        setDensity(
-            shapeId.memorySegment(), 
-            density, 
-            updateBodyMass
-        );
+    	setDensity(
+    		shapeId.memorySegment(),
+    		density,
+    		updateBodyMass
+    	);
     }
     
-    /**
-     * Get the density of a shape, usually in kg/m^2
-     */
+    /// ```
+    /// Get the density of a shape, usually in kg/m^2
+    /// ```
     public static float getDensity(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_DENSITY.get();
-        try {
-            return (float) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_DENSITY.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getDensity}.
-     */
+    /// Typed method of [#getDensity].
     public static float getDensity(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (float) getDensity(
-            shapeId.memorySegment()
-        );
+    	return (float) getDensity(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the friction on a shape
-     */
+    /// ```
+    /// Set the friction on a shape
+    /// @see b2ShapeDef::friction
+    /// ```
     public static void setFriction(
-        MemorySegment shapeId, 
-        float friction
+    	MemorySegment shapeId,
+    	float friction
     ) {
-        MethodHandle method = B2_SHAPE_SET_FRICTION.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                friction
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_FRICTION.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			friction
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setFriction}.
-     */
+    /// Typed method of [#setFriction].
     public static void setFriction(
-        ShapeId shapeId, 
-        float friction
+    	ShapeId shapeId,
+    	float friction
     ) {
-        setFriction(
-            shapeId.memorySegment(), 
-            friction
-        );
+    	setFriction(
+    		shapeId.memorySegment(),
+    		friction
+    	);
     }
     
-    /**
-     * Get the friction of a shape
-     */
+    /// ```
+    /// Get the friction of a shape
+    /// ```
     public static float getFriction(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_FRICTION.get();
-        try {
-            return (float) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_FRICTION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getFriction}.
-     */
+    /// Typed method of [#getFriction].
     public static float getFriction(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (float) getFriction(
-            shapeId.memorySegment()
-        );
+    	return (float) getFriction(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the shape restitution (bounciness)
-     */
+    /// ```
+    /// Set the shape restitution (bounciness)
+    /// @see b2ShapeDef::restitution
+    /// ```
     public static void setRestitution(
-        MemorySegment shapeId, 
-        float restitution
+    	MemorySegment shapeId,
+    	float restitution
     ) {
-        MethodHandle method = B2_SHAPE_SET_RESTITUTION.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                restitution
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_RESTITUTION.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			restitution
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setRestitution}.
-     */
+    /// Typed method of [#setRestitution].
     public static void setRestitution(
-        ShapeId shapeId, 
-        float restitution
+    	ShapeId shapeId,
+    	float restitution
     ) {
-        setRestitution(
-            shapeId.memorySegment(), 
-            restitution
-        );
+    	setRestitution(
+    		shapeId.memorySegment(),
+    		restitution
+    	);
     }
     
-    /**
-     * Get the shape restitution
-     */
+    /// ```
+    /// Get the shape restitution
+    /// ```
     public static float getRestitution(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_RESTITUTION.get();
-        try {
-            return (float) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_RESTITUTION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getRestitution}.
-     */
+    /// Typed method of [#getRestitution].
     public static float getRestitution(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (float) getRestitution(
-            shapeId.memorySegment()
-        );
+    	return (float) getRestitution(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the shape material identifier
-     */
+    /// ```
+    /// Set the shape material identifier
+    /// @see b2ShapeDef::material
+    /// ```
     public static void setMaterial(
-        MemorySegment shapeId, 
-        int material
+    	MemorySegment shapeId,
+    	int material
     ) {
-        MethodHandle method = B2_SHAPE_SET_MATERIAL.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                material
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_MATERIAL.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			material
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMaterial}.
-     */
+    /// Typed method of [#setMaterial].
     public static void setMaterial(
-        ShapeId shapeId, 
-        int material
+    	ShapeId shapeId,
+    	int material
     ) {
-        setMaterial(
-            shapeId.memorySegment(), 
-            material
-        );
+    	setMaterial(
+    		shapeId.memorySegment(),
+    		material
+    	);
     }
     
-    /**
-     * Get the shape material identifier
-     */
+    /// ```
+    /// Get the shape material identifier
+    /// ```
     public static int getMaterial(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_MATERIAL.get();
-        try {
-            return (int) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_MATERIAL.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMaterial}.
-     */
+    /// Typed method of [#getMaterial].
     public static int getMaterial(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (int) getMaterial(
-            shapeId.memorySegment()
-        );
+    	return (int) getMaterial(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the shape surface material
-     */
+    /// ```
+    /// Set the shape surface material
+    /// ```
     public static void setSurfaceMaterial(
-        MemorySegment shapeId, 
-        MemorySegment surfaceMaterial
+    	MemorySegment shapeId,
+    	MemorySegment surfaceMaterial
     ) {
-        MethodHandle method = B2_SHAPE_SET_SURFACE_MATERIAL.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                surfaceMaterial
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_SURFACE_MATERIAL.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			surfaceMaterial
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setSurfaceMaterial}.
-     */
+    /// Typed method of [#setSurfaceMaterial].
     public static void setSurfaceMaterial(
-        ShapeId shapeId, 
-        SurfaceMaterial surfaceMaterial
+    	ShapeId shapeId,
+    	SurfaceMaterial surfaceMaterial
     ) {
-        setSurfaceMaterial(
-            shapeId.memorySegment(), 
-            surfaceMaterial.memorySegment()
-        );
+    	setSurfaceMaterial(
+    		shapeId.memorySegment(),
+    		surfaceMaterial.memorySegment()
+    	);
     }
     
-    /**
-     * Get the shape surface material
-     */
+    /// ```
+    /// Get the shape surface material
+    /// ```
     public static MemorySegment getSurfaceMaterial(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_SURFACE_MATERIAL.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_SURFACE_MATERIAL.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSurfaceMaterial}.
-     */
+    /// Typed method of [#getSurfaceMaterial].
     public static @Nullable SurfaceMaterial getSurfaceMaterial(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getSurfaceMaterial(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getSurfaceMaterial(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new SurfaceMaterial(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new SurfaceMaterial(segment);
     }
     
-    /**
-     * Get the shape filter
-     */
+    /// ```
+    /// Get the shape filter
+    /// ```
     public static MemorySegment getFilter(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_FILTER.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_FILTER.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getFilter}.
-     */
+    /// Typed method of [#getFilter].
     public static @Nullable Filter getFilter(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getFilter(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getFilter(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Filter(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Filter(segment);
     }
     
-    /**
-     * Set the current filter. This is almost as expensive as recreating the shape. This may cause contacts to be immediately destroyed. However contacts are not created until the next world step. Sensor overlap state is also not updated until the next world step.
-     */
+    /// ```
+    /// Set the current filter. This is almost as expensive as recreating the shape. This may cause
+    /// contacts to be immediately destroyed. However contacts are not created until the next world step.
+    /// Sensor overlap state is also not updated until the next world step.
+    /// @see b2ShapeDef::filter
+    /// ```
     public static void setFilter(
-        MemorySegment shapeId, 
-        MemorySegment filter
+    	MemorySegment shapeId,
+    	MemorySegment filter
     ) {
-        MethodHandle method = B2_SHAPE_SET_FILTER.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                filter
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_FILTER.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			filter
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setFilter}.
-     */
+    /// Typed method of [#setFilter].
     public static void setFilter(
-        ShapeId shapeId, 
-        Filter filter
+    	ShapeId shapeId,
+    	Filter filter
     ) {
-        setFilter(
-            shapeId.memorySegment(), 
-            filter.memorySegment()
-        );
+    	setFilter(
+    		shapeId.memorySegment(),
+    		filter.memorySegment()
+    	);
     }
     
-    /**
-     * Enable sensor events for this shape.
-     */
+    /// ```
+    /// Enable sensor events for this shape.
+    /// @see b2ShapeDef::enableSensorEvents
+    /// ```
     public static void enableSensorEvents(
-        MemorySegment shapeId, 
-        boolean flag
+    	MemorySegment shapeId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_SHAPE_ENABLE_SENSOR_EVENTS.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ENABLE_SENSOR_EVENTS.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableSensorEvents}.
-     */
+    /// Typed method of [#enableSensorEvents].
     public static void enableSensorEvents(
-        ShapeId shapeId, 
-        boolean flag
+    	ShapeId shapeId,
+    	boolean flag
     ) {
-        enableSensorEvents(
-            shapeId.memorySegment(), 
-            flag
-        );
+    	enableSensorEvents(
+    		shapeId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Returns true if sensor events are enabled.
-     */
+    /// ```
+    /// Returns true if sensor events are enabled.
+    /// ```
     public static boolean areSensorEventsEnabled(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #areSensorEventsEnabled}.
-     */
+    /// Typed method of [#areSensorEventsEnabled].
     public static boolean areSensorEventsEnabled(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (boolean) areSensorEventsEnabled(
-            shapeId.memorySegment()
-        );
+    	return (boolean) areSensorEventsEnabled(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors.
-     */
+    /// ```
+    /// Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors.
+    /// @see b2ShapeDef::enableContactEvents
+    /// @warning changing this at run-time may lead to lost begin/end events
+    /// ```
     public static void enableContactEvents(
-        MemorySegment shapeId, 
-        boolean flag
+    	MemorySegment shapeId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_SHAPE_ENABLE_CONTACT_EVENTS.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ENABLE_CONTACT_EVENTS.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableContactEvents}.
-     */
+    /// Typed method of [#enableContactEvents].
     public static void enableContactEvents(
-        ShapeId shapeId, 
-        boolean flag
+    	ShapeId shapeId,
+    	boolean flag
     ) {
-        enableContactEvents(
-            shapeId.memorySegment(), 
-            flag
-        );
+    	enableContactEvents(
+    		shapeId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Returns true if contact events are enabled
-     */
+    /// ```
+    /// Returns true if contact events are enabled
+    /// ```
     public static boolean areContactEventsEnabled(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #areContactEventsEnabled}.
-     */
+    /// Typed method of [#areContactEventsEnabled].
     public static boolean areContactEventsEnabled(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (boolean) areContactEventsEnabled(
-            shapeId.memorySegment()
-        );
+    	return (boolean) areContactEventsEnabled(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive and must be carefully handled due to multithreading. Ignored for sensors.
-     */
+    /// ```
+    /// Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive
+    /// and must be carefully handled due to multithreading. Ignored for sensors.
+    /// @see b2PreSolveFcn
+    /// ```
     public static void enablePreSolveEvents(
-        MemorySegment shapeId, 
-        boolean flag
+    	MemorySegment shapeId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enablePreSolveEvents}.
-     */
+    /// Typed method of [#enablePreSolveEvents].
     public static void enablePreSolveEvents(
-        ShapeId shapeId, 
-        boolean flag
+    	ShapeId shapeId,
+    	boolean flag
     ) {
-        enablePreSolveEvents(
-            shapeId.memorySegment(), 
-            flag
-        );
+    	enablePreSolveEvents(
+    		shapeId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Returns true if pre-solve events are enabled
-     */
+    /// ```
+    /// Returns true if pre-solve events are enabled
+    /// ```
     public static boolean arePreSolveEventsEnabled(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #arePreSolveEventsEnabled}.
-     */
+    /// Typed method of [#arePreSolveEventsEnabled].
     public static boolean arePreSolveEventsEnabled(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (boolean) arePreSolveEventsEnabled(
-            shapeId.memorySegment()
-        );
+    	return (boolean) arePreSolveEventsEnabled(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable contact hit events for this shape. Ignored for sensors.
-     */
+    /// ```
+    /// Enable contact hit events for this shape. Ignored for sensors.
+    /// @see b2WorldDef.hitEventThreshold
+    /// ```
     public static void enableHitEvents(
-        MemorySegment shapeId, 
-        boolean flag
+    	MemorySegment shapeId,
+    	boolean flag
     ) {
-        MethodHandle method = B2_SHAPE_ENABLE_HIT_EVENTS.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                flag
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ENABLE_HIT_EVENTS.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableHitEvents}.
-     */
+    /// Typed method of [#enableHitEvents].
     public static void enableHitEvents(
-        ShapeId shapeId, 
-        boolean flag
+    	ShapeId shapeId,
+    	boolean flag
     ) {
-        enableHitEvents(
-            shapeId.memorySegment(), 
-            flag
-        );
+    	enableHitEvents(
+    		shapeId.memorySegment(),
+    		flag
+    	);
     }
     
-    /**
-     * Returns true if hit events are enabled
-     */
+    /// ```
+    /// Returns true if hit events are enabled
+    /// ```
     public static boolean areHitEventsEnabled(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_ARE_HIT_EVENTS_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_ARE_HIT_EVENTS_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #areHitEventsEnabled}.
-     */
+    /// Typed method of [#areHitEventsEnabled].
     public static boolean areHitEventsEnabled(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (boolean) areHitEventsEnabled(
-            shapeId.memorySegment()
-        );
+    	return (boolean) areHitEventsEnabled(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Test a point for overlap with a shape
-     */
+    /// ```
+    /// Test a point for overlap with a shape
+    /// ```
     public static boolean testPoint(
-        MemorySegment shapeId, 
-        MemorySegment point
+    	MemorySegment shapeId,
+    	MemorySegment point
     ) {
-        MethodHandle method = B2_SHAPE_TEST_POINT.get();
-        try {
-            return (boolean) method.invokeExact(
-                shapeId, 
-                point
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_TEST_POINT.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			shapeId,
+    			point
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #testPoint}.
-     */
+    /// Typed method of [#testPoint].
     public static boolean testPoint(
-        ShapeId shapeId, 
-        Vec2 point
+    	ShapeId shapeId,
+    	Vec2 point
     ) {
-        return (boolean) testPoint(
-            shapeId.memorySegment(), 
-            point.memorySegment()
-        );
+    	return (boolean) testPoint(
+    		shapeId.memorySegment(),
+    		point.memorySegment()
+    	);
     }
     
-    /**
-     * Ray cast a shape directly
-     */
+    /// ```
+    /// Ray cast a shape directly
+    /// ```
     public static MemorySegment rayCast(
-        SegmentAllocator allocator,
-        MemorySegment shapeId, 
-        MemorySegment input
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId,
+    	MemorySegment input
     ) {
-        MethodHandle method = B2_SHAPE_RAY_CAST.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId, 
-                input
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_RAY_CAST.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId,
+    			input
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rayCast}.
-     */
+    /// Typed method of [#rayCast].
     public static @Nullable CastOutput rayCast(
-        SegmentAllocator allocator,
-        ShapeId shapeId, 
-        RayCastInput input
+    	SegmentAllocator allocator,
+    	ShapeId shapeId,
+    	RayCastInput input
     ) {
-        MemorySegment segment = rayCast(
-            allocator,
-            shapeId.memorySegment(), 
-            input.memorySegment()
-        );
+    	MemorySegment segment = rayCast(
+    		allocator,
+    		shapeId.memorySegment(),
+    		input.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new CastOutput(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new CastOutput(segment);
     }
     
-    /**
-     * Get a copy of the shape's circle. Asserts the type is correct.
-     */
+    /// ```
+    /// Get a copy of the shape's circle. Asserts the type is correct.
+    /// ```
     public static MemorySegment getCircle(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_CIRCLE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_CIRCLE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getCircle}.
-     */
+    /// Typed method of [#getCircle].
     public static @Nullable Circle getCircle(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getCircle(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getCircle(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Circle(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Circle(segment);
     }
     
-    /**
-     * Get a copy of the shape's line segment. Asserts the type is correct.
-     */
+    /// ```
+    /// Get a copy of the shape's line segment. Asserts the type is correct.
+    /// ```
     public static MemorySegment getSegment(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_SEGMENT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_SEGMENT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSegment}.
-     */
+    /// Typed method of [#getSegment].
     public static @Nullable Segment getSegment(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getSegment(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getSegment(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Segment(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Segment(segment);
     }
     
-    /**
-     * Get a copy of the shape's chain segment. These come from chain shapes. Asserts the type is correct.
-     */
+    /// ```
+    /// Get a copy of the shape's chain segment. These come from chain shapes.
+    /// Asserts the type is correct.
+    /// ```
     public static MemorySegment getChainSegment(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_CHAIN_SEGMENT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_CHAIN_SEGMENT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getChainSegment}.
-     */
+    /// Typed method of [#getChainSegment].
     public static @Nullable ChainSegment getChainSegment(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getChainSegment(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getChainSegment(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ChainSegment(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ChainSegment(segment);
     }
     
-    /**
-     * Get a copy of the shape's capsule. Asserts the type is correct.
-     */
+    /// ```
+    /// Get a copy of the shape's capsule. Asserts the type is correct.
+    /// ```
     public static MemorySegment getCapsule(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_CAPSULE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_CAPSULE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getCapsule}.
-     */
+    /// Typed method of [#getCapsule].
     public static @Nullable Capsule getCapsule(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getCapsule(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getCapsule(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Capsule(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Capsule(segment);
     }
     
-    /**
-     * Get a copy of the shape's convex polygon. Asserts the type is correct.
-     */
+    /// ```
+    /// Get a copy of the shape's convex polygon. Asserts the type is correct.
+    /// ```
     public static MemorySegment getPolygon(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_POLYGON.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_POLYGON.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getPolygon}.
-     */
+    /// Typed method of [#getPolygon].
     public static @Nullable Polygon getPolygon(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getPolygon(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getPolygon(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Polygon(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Polygon(segment);
     }
     
-    /**
-     * Allows you to change a shape to be a circle or update the current circle. This does not modify the mass properties.
-     */
+    /// ```
+    /// Allows you to change a shape to be a circle or update the current circle.
+    /// This does not modify the mass properties.
+    /// @see b2Body_ApplyMassFromShapes
+    /// ```
     public static void setCircle(
-        MemorySegment shapeId, 
-        MemorySegment circle
+    	MemorySegment shapeId,
+    	MemorySegment circle
     ) {
-        MethodHandle method = B2_SHAPE_SET_CIRCLE.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                circle
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_CIRCLE.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			circle
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setCircle}.
-     */
+    /// Typed method of [#setCircle].
     public static void setCircle(
-        ShapeId shapeId, 
-        Circle circle
+    	ShapeId shapeId,
+    	Circle circle
     ) {
-        setCircle(
-            shapeId.memorySegment(), 
-            circle.memorySegment()
-        );
+    	setCircle(
+    		shapeId.memorySegment(),
+    		circle.memorySegment()
+    	);
     }
     
-    /**
-     * Allows you to change a shape to be a capsule or update the current capsule. This does not modify the mass properties.
-     */
+    /// ```
+    /// Allows you to change a shape to be a capsule or update the current capsule.
+    /// This does not modify the mass properties.
+    /// @see b2Body_ApplyMassFromShapes
+    /// ```
     public static void setCapsule(
-        MemorySegment shapeId, 
-        MemorySegment capsule
+    	MemorySegment shapeId,
+    	MemorySegment capsule
     ) {
-        MethodHandle method = B2_SHAPE_SET_CAPSULE.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                capsule
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_CAPSULE.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			capsule
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setCapsule}.
-     */
+    /// Typed method of [#setCapsule].
     public static void setCapsule(
-        ShapeId shapeId, 
-        Capsule capsule
+    	ShapeId shapeId,
+    	Capsule capsule
     ) {
-        setCapsule(
-            shapeId.memorySegment(), 
-            capsule.memorySegment()
-        );
+    	setCapsule(
+    		shapeId.memorySegment(),
+    		capsule.memorySegment()
+    	);
     }
     
-    /**
-     * Allows you to change a shape to be a segment or update the current segment.
-     */
+    /// ```
+    /// Allows you to change a shape to be a segment or update the current segment.
+    /// ```
     public static void setSegment(
-        MemorySegment shapeId, 
-        MemorySegment paramSegment
+    	MemorySegment shapeId,
+    	MemorySegment segment
     ) {
-        MethodHandle method = B2_SHAPE_SET_SEGMENT.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                paramSegment
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_SEGMENT.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			segment
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setSegment}.
-     */
+    /// Typed method of [#setSegment].
     public static void setSegment(
-        ShapeId shapeId, 
-        Segment paramSegment
+    	ShapeId shapeId,
+    	Segment paramSegment
     ) {
-        setSegment(
-            shapeId.memorySegment(), 
-            paramSegment.memorySegment()
-        );
+    	setSegment(
+    		shapeId.memorySegment(),
+    		paramSegment.memorySegment()
+    	);
     }
     
-    /**
-     * Allows you to change a shape to be a polygon or update the current polygon. This does not modify the mass properties.
-     */
+    /// ```
+    /// Allows you to change a shape to be a polygon or update the current polygon.
+    /// This does not modify the mass properties.
+    /// @see b2Body_ApplyMassFromShapes
+    /// ```
     public static void setPolygon(
-        MemorySegment shapeId, 
-        MemorySegment polygon
+    	MemorySegment shapeId,
+    	MemorySegment polygon
     ) {
-        MethodHandle method = B2_SHAPE_SET_POLYGON.get();
-        try {
-            method.invokeExact(
-                shapeId, 
-                polygon
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_SET_POLYGON.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			polygon
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setPolygon}.
-     */
+    /// Typed method of [#setPolygon].
     public static void setPolygon(
-        ShapeId shapeId, 
-        Polygon polygon
+    	ShapeId shapeId,
+    	Polygon polygon
     ) {
-        setPolygon(
-            shapeId.memorySegment(), 
-            polygon.memorySegment()
-        );
+    	setPolygon(
+    		shapeId.memorySegment(),
+    		polygon.memorySegment()
+    	);
     }
     
-    /**
-     * Get the parent chain id if the shape type is a chain segment, otherwise returns b2_nullChainId.
-     */
+    /// ```
+    /// Get the parent chain id if the shape type is a chain segment, otherwise
+    /// returns b2_nullChainId.
+    /// ```
     public static MemorySegment getParentChain(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_PARENT_CHAIN.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_PARENT_CHAIN.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getParentChain}.
-     */
+    /// Typed method of [#getParentChain].
     public static @Nullable ChainId getParentChain(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getParentChain(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getParentChain(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ChainId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ChainId(segment);
     }
     
-    /**
-     * Get the maximum capacity required for retrieving all the touching contacts on a shape
-     */
+    /// ```
+    /// Get the maximum capacity required for retrieving all the touching contacts on a shape
+    /// ```
     public static int getContactCapacity(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_CONTACT_CAPACITY.get();
-        try {
-            return (int) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_CONTACT_CAPACITY.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getContactCapacity}.
-     */
+    /// Typed method of [#getContactCapacity].
     public static int getContactCapacity(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (int) getContactCapacity(
-            shapeId.memorySegment()
-        );
+    	return (int) getContactCapacity(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the touching contact data for a shape. The provided shapeId will be either shapeIdA or shapeIdB on the contact data.
-     */
+    /// ```
+    /// Get the touching contact data for a shape. The provided shapeId will be either shapeIdA or shapeIdB on the contact data.
+    /// @note Box2D uses speculative collision so some contact points may be separated.
+    /// @returns the number of elements filled in the provided array
+    /// @warning do not ignore the return value, it specifies the valid number of elements
+    /// ```
     public static int getContactData(
-        MemorySegment shapeId, 
-        MemorySegment contactData, 
-        int capacity
+    	MemorySegment shapeId,
+    	MemorySegment contactData,
+    	int capacity
     ) {
-        MethodHandle method = B2_SHAPE_GET_CONTACT_DATA.get();
-        try {
-            return (int) method.invokeExact(
-                shapeId, 
-                contactData, 
-                capacity
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_CONTACT_DATA.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			shapeId,
+    			contactData,
+    			capacity
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getContactData}.
-     */
+    /// Typed method of [#getContactData].
     public static int getContactData(
-        ShapeId shapeId, 
-        ContactData contactData, 
-        int capacity
+    	ShapeId shapeId,
+    	ContactData contactData,
+    	int capacity
     ) {
-        return (int) getContactData(
-            shapeId.memorySegment(), 
-            contactData.memorySegment(), 
-            capacity
-        );
+    	return (int) getContactData(
+    		shapeId.memorySegment(),
+    		contactData.memorySegment(),
+    		capacity
+    	);
     }
     
-    /**
-     * Get the maximum capacity required for retrieving all the overlapped shapes on a sensor shape. This returns 0 if the provided shape is not a sensor.
-     */
+    /// ```
+    /// Get the maximum capacity required for retrieving all the overlapped shapes on a sensor shape.
+    /// This returns 0 if the provided shape is not a sensor.
+    /// @param shapeId the id of a sensor shape
+    /// @returns the required capacity to get all the overlaps in b2Shape_GetSensorOverlaps
+    /// ```
     public static int getSensorCapacity(
-        MemorySegment shapeId
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_SENSOR_CAPACITY.get();
-        try {
-            return (int) method.invokeExact(
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_SENSOR_CAPACITY.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSensorCapacity}.
-     */
+    /// Typed method of [#getSensorCapacity].
     public static int getSensorCapacity(
-        ShapeId shapeId
+    	ShapeId shapeId
     ) {
-        return (int) getSensorCapacity(
-            shapeId.memorySegment()
-        );
+    	return (int) getSensorCapacity(
+    		shapeId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the overlapped shapes for a sensor shape.
-     */
+    /// ```
+    /// Get the overlapped shapes for a sensor shape.
+    /// @param shapeId the id of a sensor shape
+    /// @param overlaps a user allocated array that is filled with the overlapping shapes
+    /// @param capacity the capacity of overlappedShapes
+    /// @returns the number of elements filled in the provided array
+    /// @warning do not ignore the return value, it specifies the valid number of elements
+    /// @warning overlaps may contain destroyed shapes so use b2Shape_IsValid to confirm each overlap
+    /// ```
     public static int getSensorOverlaps(
-        MemorySegment shapeId, 
-        MemorySegment overlaps, 
-        int capacity
+    	MemorySegment shapeId,
+    	MemorySegment overlaps,
+    	int capacity
     ) {
-        MethodHandle method = B2_SHAPE_GET_SENSOR_OVERLAPS.get();
-        try {
-            return (int) method.invokeExact(
-                shapeId, 
-                overlaps, 
-                capacity
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_SENSOR_OVERLAPS.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			shapeId,
+    			overlaps,
+    			capacity
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSensorOverlaps}.
-     */
+    /// Typed method of [#getSensorOverlaps].
     public static int getSensorOverlaps(
-        ShapeId shapeId, 
-        ShapeId overlaps, 
-        int capacity
+    	ShapeId shapeId,
+    	ShapeId overlaps,
+    	int capacity
     ) {
-        return (int) getSensorOverlaps(
-            shapeId.memorySegment(), 
-            overlaps.memorySegment(), 
-            capacity
-        );
+    	return (int) getSensorOverlaps(
+    		shapeId.memorySegment(),
+    		overlaps.memorySegment(),
+    		capacity
+    	);
     }
     
-    /**
-     * Get the current world AABB
-     */
+    /// ```
+    /// Get the current world AABB
+    /// ```
     public static MemorySegment getAABB(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_AABB.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_AABB.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAABB}.
-     */
+    /// Typed method of [#getAABB].
     public static @Nullable AABB getAABB(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getAABB(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getAABB(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
-    /**
-     * Get the mass data for a shape
-     */
+    /// ```
+    /// Get the mass data for a shape
+    /// ```
     public static MemorySegment getMassData(
-        SegmentAllocator allocator,
-        MemorySegment shapeId
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId
     ) {
-        MethodHandle method = B2_SHAPE_GET_MASS_DATA.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_MASS_DATA.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMassData}.
-     */
+    /// Typed method of [#getMassData].
     public static @Nullable MassData getMassData(
-        SegmentAllocator allocator,
-        ShapeId shapeId
+    	SegmentAllocator allocator,
+    	ShapeId shapeId
     ) {
-        MemorySegment segment = getMassData(
-            allocator,
-            shapeId.memorySegment()
-        );
+    	MemorySegment segment = getMassData(
+    		allocator,
+    		shapeId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new MassData(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MassData(segment);
     }
     
-    /**
-     * Get the closest point on a shape to a target point. Target and result are in world space. todo need sample
-     */
+    /// ```
+    /// Get the closest point on a shape to a target point. Target and result are in world space.
+    /// todo need sample
+    /// ```
     public static MemorySegment getClosestPoint(
-        SegmentAllocator allocator,
-        MemorySegment shapeId, 
-        MemorySegment target
+    	SegmentAllocator allocator,
+    	MemorySegment shapeId,
+    	MemorySegment target
     ) {
-        MethodHandle method = B2_SHAPE_GET_CLOSEST_POINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                shapeId, 
-                target
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_SHAPE_GET_CLOSEST_POINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shapeId,
+    			target
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getClosestPoint}.
-     */
+    /// Typed method of [#getClosestPoint].
     public static @Nullable Vec2 getClosestPoint(
-        SegmentAllocator allocator,
-        ShapeId shapeId, 
-        Vec2 target
+    	SegmentAllocator allocator,
+    	ShapeId shapeId,
+    	Vec2 target
     ) {
-        MemorySegment segment = getClosestPoint(
-            allocator,
-            shapeId.memorySegment(), 
-            target.memorySegment()
-        );
+    	MemorySegment segment = getClosestPoint(
+    		allocator,
+    		shapeId.memorySegment(),
+    		target.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
 }

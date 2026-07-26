@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.world;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,15 +12,31 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.box2d.collision.Manifold;
 import volucris.bindings.box2d.shape.ShapeId;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Prototype for a pre-solve callback.
+/// This is called after a contact is updated. This allows you to inspect a
+/// contact before it goes to the solver. If you are careful, you can modify the
+/// contact manifold (e.g. modify the normal).
+/// Notes:
+/// - this function must be thread-safe
+/// - this is only called if the shape has enabled pre-solve events
+/// - this is called only for awake dynamic bodies
+/// - this is not called for sensors
+/// - the supplied manifold has impulse values from the previous step
+/// Return false if you want to disable the contact this step
+/// @warning Do not attempt to modify the world inside this callback
+/// @ingroup world
+/// ```
 public abstract class PreSolveFcn {
 
-    private static final HashMap<Long, WeakReference<PreSolveFcn>> CACHE;
+    private static final Map<Long, WeakReference<PreSolveFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -55,23 +72,23 @@ public abstract class PreSolveFcn {
     }
 
     public boolean invoke(
-        MemorySegment shapeIdA, 
-        MemorySegment shapeIdB, 
-        MemorySegment manifold, 
+        MemorySegment shapeIdA,
+        MemorySegment shapeIdB,
+        MemorySegment manifold,
         MemorySegment context
     ) {
-        return (boolean) invoke(
-            new ShapeId(shapeIdA), 
-            new ShapeId(shapeIdB), 
-            new Manifold(manifold), 
-            context
+        return invoke(
+            new ShapeId(shapeIdA),
+            new ShapeId(shapeIdB),
+            new Manifold(manifold),
+		    context
         );
     }
 
     public boolean invoke(
-        ShapeId shapeIdA, 
-        ShapeId shapeIdB, 
-        Manifold manifold, 
+        ShapeId shapeIdA,
+        ShapeId shapeIdB,
+        Manifold manifold,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -79,12 +96,11 @@ public abstract class PreSolveFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static PreSolveFcn get(MemorySegment segment) {
+    public static @Nullable PreSolveFcn get(MemorySegment segment) {
         WeakReference<PreSolveFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Simplex vertex for debugging the GJK algorithm
- */
+/// ```
+/// Simplex vertex for debugging the GJK algorithm
+/// ```
 public final class SimplexVertex
 		implements Struct<SimplexVertex> {
 
@@ -80,73 +80,100 @@ public final class SimplexVertex
         w = new Vec2(segment.asSlice(W_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #a()
     public SimplexVertex a(float a) {
-        A_HANDLE.set(segment, 0L, a);
-        return this;
+    	A_HANDLE.set(segment, 0L, a);
+    	return this;
     }
     
+    /// ```
+    /// barycentric coordinate for closest point
+    /// ```
     public float a() {
-        return (float) A_HANDLE.get(segment, 0L);
+    	return (float) A_HANDLE.get(segment, 0L);
     }
     
+    /// @see #indexA()
     public SimplexVertex indexA(int indexA) {
-        INDEX_A_HANDLE.set(segment, 0L, indexA);
-        return this;
+    	INDEX_A_HANDLE.set(segment, 0L, indexA);
+    	return this;
     }
     
+    /// ```
+    /// wA index
+    /// ```
     public int indexA() {
-        return (int) INDEX_A_HANDLE.get(segment, 0L);
+    	return (int) INDEX_A_HANDLE.get(segment, 0L);
     }
     
+    /// @see #indexB()
     public SimplexVertex indexB(int indexB) {
-        INDEX_B_HANDLE.set(segment, 0L, indexB);
-        return this;
+    	INDEX_B_HANDLE.set(segment, 0L, indexB);
+    	return this;
     }
     
+    /// ```
+    /// wB index
+    /// ```
     public int indexB() {
-        return (int) INDEX_B_HANDLE.get(segment, 0L);
+    	return (int) INDEX_B_HANDLE.get(segment, 0L);
     }
     
+    /// @see #wA()
     public SimplexVertex wA(Consumer<Vec2> consumer) {
-        consumer.accept(wA);
-        return this;
+    	consumer.accept(wA);
+    	return this;
     }
     
+    /// @see #wA()
     public SimplexVertex wA(Vec2 other) {
-        wA.set(other);
-        return this;
+    	wA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// support point in proxyA
+    /// ```
     public Vec2 wA() {
-        return wA;
+    	return wA;
     }
     
+    /// @see #wB()
     public SimplexVertex wB(Consumer<Vec2> consumer) {
-        consumer.accept(wB);
-        return this;
+    	consumer.accept(wB);
+    	return this;
     }
     
+    /// @see #wB()
     public SimplexVertex wB(Vec2 other) {
-        wB.set(other);
-        return this;
+    	wB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// support point in proxyB
+    /// ```
     public Vec2 wB() {
-        return wB;
+    	return wB;
     }
     
+    /// @see #w()
     public SimplexVertex w(Consumer<Vec2> consumer) {
-        consumer.accept(w);
-        return this;
+    	consumer.accept(w);
+    	return this;
     }
     
+    /// @see #w()
     public SimplexVertex w(Vec2 other) {
-        w.set(other);
-        return this;
+    	w.set(other);
+    	return this;
     }
     
+    /// ```
+    /// wB - wA
+    /// ```
     public Vec2 w() {
-        return w;
+    	return w;
     }
     
     @Override

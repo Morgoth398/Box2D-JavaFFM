@@ -19,9 +19,11 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * The explosion definition is used to configure options for explosions. Explosions consider shape geometry when computing the impulse.
- */
+/// ```
+/// The explosion definition is used to configure options for explosions. Explosions
+/// consider shape geometry when computing the impulse.
+/// @ingroup world
+/// ```
 public final class ExplosionDef
 		implements Struct<ExplosionDef> {
 
@@ -76,84 +78,108 @@ public final class ExplosionDef
         position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your explosion definition
-     */
+    /// ```
+    /// Use this to initialize your explosion definition
+    /// @ingroup world
+    /// ```
     public static MemorySegment ndefaultExplosionDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_EXPLOSION_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_EXPLOSION_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultExplosionDef}.
-     */
+    /// Typed method of [#ndefaultExplosionDef].
     public static @Nullable ExplosionDef defaultExplosionDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultExplosionDef(allocator);
+    	MemorySegment segment = ndefaultExplosionDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new ExplosionDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ExplosionDef(segment);
     }
     
+    /// @see #maskBits()
     public ExplosionDef maskBits(long maskBits) {
-        MASK_BITS_HANDLE.set(segment, 0L, maskBits);
-        return this;
+    	MASK_BITS_HANDLE.set(segment, 0L, maskBits);
+    	return this;
     }
     
+    /// ```
+    /// Mask bits to filter shapes
+    /// ```
     public long maskBits() {
-        return (long) MASK_BITS_HANDLE.get(segment, 0L);
+    	return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #radius()
     public ExplosionDef radius(float radius) {
-        RADIUS_HANDLE.set(segment, 0L, radius);
-        return this;
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
     }
     
+    /// ```
+    /// The radius of the explosion
+    /// ```
     public float radius() {
-        return (float) RADIUS_HANDLE.get(segment, 0L);
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #falloff()
     public ExplosionDef falloff(float falloff) {
-        FALLOFF_HANDLE.set(segment, 0L, falloff);
-        return this;
+    	FALLOFF_HANDLE.set(segment, 0L, falloff);
+    	return this;
     }
     
+    /// ```
+    /// The falloff distance beyond the radius. Impulse is reduced to zero at this distance.
+    /// ```
     public float falloff() {
-        return (float) FALLOFF_HANDLE.get(segment, 0L);
+    	return (float) FALLOFF_HANDLE.get(segment, 0L);
     }
     
+    /// @see #impulsePerLength()
     public ExplosionDef impulsePerLength(float impulsePerLength) {
-        IMPULSE_PER_LENGTH_HANDLE.set(segment, 0L, impulsePerLength);
-        return this;
+    	IMPULSE_PER_LENGTH_HANDLE.set(segment, 0L, impulsePerLength);
+    	return this;
     }
     
+    /// ```
+    /// Impulse per unit length. This applies an impulse according to the shape perimeter that
+    /// is facing the explosion. Explosions only apply to circles, capsules, and polygons. This
+    /// may be negative for implosions.
+    /// ```
     public float impulsePerLength() {
-        return (float) IMPULSE_PER_LENGTH_HANDLE.get(segment, 0L);
+    	return (float) IMPULSE_PER_LENGTH_HANDLE.get(segment, 0L);
     }
     
+    /// @see #position()
     public ExplosionDef position(Consumer<Vec2> consumer) {
-        consumer.accept(position);
-        return this;
+    	consumer.accept(position);
+    	return this;
     }
     
+    /// @see #position()
     public ExplosionDef position(Vec2 other) {
-        position.set(other);
-        return this;
+    	position.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The center of the explosion in world space
+    /// ```
     public Vec2 position() {
-        return position;
+    	return position;
     }
     
     @Override

@@ -17,9 +17,10 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Version numbering scheme. See https://semver.org/
- */
+/// ```
+/// Version numbering scheme.
+/// See https://semver.org/
+/// ```
 public final class Version
 		implements Struct<Version> {
 
@@ -70,61 +71,73 @@ public final class Version
     
     }
 
-    /**
-     * Get the current version of Box2D
-     */
+    /// ```
+    /// Get the current version of Box2D
+    /// ```
     public static MemorySegment ngetVersion(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_GET_VERSION.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_GET_VERSION.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ngetVersion}.
-     */
+    /// Typed method of [#ngetVersion].
     public static @Nullable Version getVersion(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ngetVersion(allocator);
+    	MemorySegment segment = ngetVersion(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Version(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Version(segment);
     }
     
+    /// @see #major()
     public Version major(int major) {
-        MAJOR_HANDLE.set(segment, 0L, major);
-        return this;
+    	MAJOR_HANDLE.set(segment, 0L, major);
+    	return this;
     }
     
+    /// ```
+    /// Significant changes
+    /// ```
     public int major() {
-        return (int) MAJOR_HANDLE.get(segment, 0L);
+    	return (int) MAJOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #minor()
     public Version minor(int minor) {
-        MINOR_HANDLE.set(segment, 0L, minor);
-        return this;
+    	MINOR_HANDLE.set(segment, 0L, minor);
+    	return this;
     }
     
+    /// ```
+    /// Incremental changes
+    /// ```
     public int minor() {
-        return (int) MINOR_HANDLE.get(segment, 0L);
+    	return (int) MINOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #revision()
     public Version revision(int revision) {
-        REVISION_HANDLE.set(segment, 0L, revision);
-        return this;
+    	REVISION_HANDLE.set(segment, 0L, revision);
+    	return this;
     }
     
+    /// ```
+    /// Bug fixes
+    /// ```
     public int revision() {
-        return (int) REVISION_HANDLE.get(segment, 0L);
+    	return (int) REVISION_HANDLE.get(segment, 0L);
     }
     
     @Override

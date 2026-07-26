@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Output for b2ShapeDistance
- */
+/// ```
+/// Output for b2ShapeDistance
+/// ```
 public final class DistanceOutput
 		implements Struct<DistanceOutput> {
 
@@ -80,73 +80,100 @@ public final class DistanceOutput
         normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #distance()
     public DistanceOutput distance(float distance) {
-        DISTANCE_HANDLE.set(segment, 0L, distance);
-        return this;
+    	DISTANCE_HANDLE.set(segment, 0L, distance);
+    	return this;
     }
     
+    /// ```
+    /// The final distance, zero if overlapped
+    /// ```
     public float distance() {
-        return (float) DISTANCE_HANDLE.get(segment, 0L);
+    	return (float) DISTANCE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #iterations()
     public DistanceOutput iterations(int iterations) {
-        ITERATIONS_HANDLE.set(segment, 0L, iterations);
-        return this;
+    	ITERATIONS_HANDLE.set(segment, 0L, iterations);
+    	return this;
     }
     
+    /// ```
+    /// Number of GJK iterations used
+    /// ```
     public int iterations() {
-        return (int) ITERATIONS_HANDLE.get(segment, 0L);
+    	return (int) ITERATIONS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #simplexCount()
     public DistanceOutput simplexCount(int simplexCount) {
-        SIMPLEX_COUNT_HANDLE.set(segment, 0L, simplexCount);
-        return this;
+    	SIMPLEX_COUNT_HANDLE.set(segment, 0L, simplexCount);
+    	return this;
     }
     
+    /// ```
+    /// The number of simplexes stored in the simplex array
+    /// ```
     public int simplexCount() {
-        return (int) SIMPLEX_COUNT_HANDLE.get(segment, 0L);
+    	return (int) SIMPLEX_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #pointA()
     public DistanceOutput pointA(Consumer<Vec2> consumer) {
-        consumer.accept(pointA);
-        return this;
+    	consumer.accept(pointA);
+    	return this;
     }
     
+    /// @see #pointA()
     public DistanceOutput pointA(Vec2 other) {
-        pointA.set(other);
-        return this;
+    	pointA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Closest point on shapeA
+    /// ```
     public Vec2 pointA() {
-        return pointA;
+    	return pointA;
     }
     
+    /// @see #pointB()
     public DistanceOutput pointB(Consumer<Vec2> consumer) {
-        consumer.accept(pointB);
-        return this;
+    	consumer.accept(pointB);
+    	return this;
     }
     
+    /// @see #pointB()
     public DistanceOutput pointB(Vec2 other) {
-        pointB.set(other);
-        return this;
+    	pointB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Closest point on shapeB
+    /// ```
     public Vec2 pointB() {
-        return pointB;
+    	return pointB;
     }
     
+    /// @see #normal()
     public DistanceOutput normal(Consumer<Vec2> consumer) {
-        consumer.accept(normal);
-        return this;
+    	consumer.accept(normal);
+    	return this;
     }
     
+    /// @see #normal()
     public DistanceOutput normal(Vec2 other) {
-        normal.set(other);
-        return this;
+    	normal.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Normal vector that points from A to B. Invalid if distance is zero.
+    /// ```
     public Vec2 normal() {
-        return normal;
+    	return normal;
     }
     
     @Override

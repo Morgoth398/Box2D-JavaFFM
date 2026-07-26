@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Result returned by b2SolvePlanes
- */
+/// ```
+/// Result returned by b2SolvePlanes
+/// ```
 public final class PlaneSolverResult
 		implements Struct<PlaneSolverResult> {
 
@@ -60,27 +60,36 @@ public final class PlaneSolverResult
         translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #iterationCount()
     public PlaneSolverResult iterationCount(int iterationCount) {
-        ITERATION_COUNT_HANDLE.set(segment, 0L, iterationCount);
-        return this;
+    	ITERATION_COUNT_HANDLE.set(segment, 0L, iterationCount);
+    	return this;
     }
     
+    /// ```
+    /// The number of iterations used by the plane solver. For diagnostics.
+    /// ```
     public int iterationCount() {
-        return (int) ITERATION_COUNT_HANDLE.get(segment, 0L);
+    	return (int) ITERATION_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #translation()
     public PlaneSolverResult translation(Consumer<Vec2> consumer) {
-        consumer.accept(translation);
-        return this;
+    	consumer.accept(translation);
+    	return this;
     }
     
+    /// @see #translation()
     public PlaneSolverResult translation(Vec2 other) {
-        translation.set(other);
-        return this;
+    	translation.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The translation of the mover
+    /// ```
     public Vec2 translation() {
-        return translation;
+    	return translation;
     }
     
     @Override

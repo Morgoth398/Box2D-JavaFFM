@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * A 2D rigid transform
- */
+/// ```
+/// A 2D rigid transform
+/// ```
 public final class Transform
 		implements Struct<Transform> {
 
@@ -56,32 +56,36 @@ public final class Transform
         q = new Rot(segment.asSlice(Q_BYTE_OFFSET, Rot.LAYOUT));
     }
 
+    /// @see #p()
     public Transform p(Consumer<Vec2> consumer) {
-        consumer.accept(p);
-        return this;
+    	consumer.accept(p);
+    	return this;
     }
     
+    /// @see #p()
     public Transform p(Vec2 other) {
-        p.set(other);
-        return this;
+    	p.set(other);
+    	return this;
     }
     
     public Vec2 p() {
-        return p;
+    	return p;
     }
     
+    /// @see #q()
     public Transform q(Consumer<Rot> consumer) {
-        consumer.accept(q);
-        return this;
+    	consumer.accept(q);
+    	return this;
     }
     
+    /// @see #q()
     public Transform q(Rot other) {
-        q.set(other);
-        return this;
+    	q.set(other);
+    	return this;
     }
     
     public Rot q() {
-        return q;
+    	return q;
     }
     
     @Override

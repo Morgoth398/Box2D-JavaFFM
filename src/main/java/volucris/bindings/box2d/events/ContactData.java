@@ -15,9 +15,11 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * The contact data for two shapes. By convention the manifold normal points from shape A to shape B.
- */
+/// ```
+/// The contact data for two shapes. By convention the manifold normal points
+/// from shape A to shape B.
+/// @see b2Shape_GetContactData() and b2Body_GetContactData()
+/// ```
 public final class ContactData
 		implements Struct<ContactData> {
 
@@ -63,46 +65,52 @@ public final class ContactData
         manifold = new Manifold(segment.asSlice(MANIFOLD_BYTE_OFFSET, Manifold.LAYOUT));
     }
 
+    /// @see #shapeIdA()
     public ContactData shapeIdA(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdA);
-        return this;
+    	consumer.accept(shapeIdA);
+    	return this;
     }
     
+    /// @see #shapeIdA()
     public ContactData shapeIdA(ShapeId other) {
-        shapeIdA.set(other);
-        return this;
+    	shapeIdA.set(other);
+    	return this;
     }
     
     public ShapeId shapeIdA() {
-        return shapeIdA;
+    	return shapeIdA;
     }
     
+    /// @see #shapeIdB()
     public ContactData shapeIdB(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdB);
-        return this;
+    	consumer.accept(shapeIdB);
+    	return this;
     }
     
+    /// @see #shapeIdB()
     public ContactData shapeIdB(ShapeId other) {
-        shapeIdB.set(other);
-        return this;
+    	shapeIdB.set(other);
+    	return this;
     }
     
     public ShapeId shapeIdB() {
-        return shapeIdB;
+    	return shapeIdB;
     }
     
+    /// @see #manifold()
     public ContactData manifold(Consumer<Manifold> consumer) {
-        consumer.accept(manifold);
-        return this;
+    	consumer.accept(manifold);
+    	return this;
     }
     
+    /// @see #manifold()
     public ContactData manifold(Manifold other) {
-        manifold.set(other);
-        return this;
+    	manifold.set(other);
+    	return this;
     }
     
     public Manifold manifold() {
-        return manifold;
+    	return manifold;
     }
     
     @Override

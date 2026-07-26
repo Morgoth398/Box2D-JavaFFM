@@ -13,9 +13,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class MotorJoint {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_MOTOR_JOINT;
@@ -49,343 +46,323 @@ public final class MotorJoint {
     private MotorJoint() {
     }
 
-    /**
-     * Create a motor joint
-     */
+    /// ```
+    /// Create a motor joint
+    /// @see b2MotorJointDef for details
+    /// ```
     public static MemorySegment createMotorJoint(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_MOTOR_JOINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_MOTOR_JOINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createMotorJoint}.
-     */
+    /// Typed method of [#createMotorJoint].
     public static @Nullable JointId createMotorJoint(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        MotorJointDef def
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	MotorJointDef def
     ) {
-        MemorySegment segment = createMotorJoint(
-            allocator,
-            worldId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createMotorJoint(
+    		allocator,
+    		worldId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new JointId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new JointId(segment);
     }
     
-    /**
-     * Set the motor joint linear offset target
-     */
+    /// ```
+    /// Set the motor joint linear offset target
+    /// ```
     public static void setLinearOffset(
-        MemorySegment jointId, 
-        MemorySegment linearOffset
+    	MemorySegment jointId,
+    	MemorySegment linearOffset
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_SET_LINEAR_OFFSET.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                linearOffset
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_SET_LINEAR_OFFSET.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			linearOffset
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLinearOffset}.
-     */
+    /// Typed method of [#setLinearOffset].
     public static void setLinearOffset(
-        JointId jointId, 
-        Vec2 linearOffset
+    	JointId jointId,
+    	Vec2 linearOffset
     ) {
-        setLinearOffset(
-            jointId.memorySegment(), 
-            linearOffset.memorySegment()
-        );
+    	setLinearOffset(
+    		jointId.memorySegment(),
+    		linearOffset.memorySegment()
+    	);
     }
     
-    /**
-     * Get the motor joint linear offset target
-     */
+    /// ```
+    /// Get the motor joint linear offset target
+    /// ```
     public static MemorySegment getLinearOffset(
-        SegmentAllocator allocator,
-        MemorySegment jointId
+    	SegmentAllocator allocator,
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_GET_LINEAR_OFFSET.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_GET_LINEAR_OFFSET.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLinearOffset}.
-     */
+    /// Typed method of [#getLinearOffset].
     public static @Nullable Vec2 getLinearOffset(
-        SegmentAllocator allocator,
-        JointId jointId
+    	SegmentAllocator allocator,
+    	JointId jointId
     ) {
-        MemorySegment segment = getLinearOffset(
-            allocator,
-            jointId.memorySegment()
-        );
+    	MemorySegment segment = getLinearOffset(
+    		allocator,
+    		jointId.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
-    /**
-     * Set the motor joint angular offset target in radians. This angle will be unwound so the motor will drive along the shortest arc.
-     */
+    /// ```
+    /// Set the motor joint angular offset target in radians. This angle will be unwound
+    /// so the motor will drive along the shortest arc.
+    /// ```
     public static void setAngularOffset(
-        MemorySegment jointId, 
-        float angularOffset
+    	MemorySegment jointId,
+    	float angularOffset
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_SET_ANGULAR_OFFSET.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                angularOffset
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_SET_ANGULAR_OFFSET.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			angularOffset
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setAngularOffset}.
-     */
+    /// Typed method of [#setAngularOffset].
     public static void setAngularOffset(
-        JointId jointId, 
-        float angularOffset
+    	JointId jointId,
+    	float angularOffset
     ) {
-        setAngularOffset(
-            jointId.memorySegment(), 
-            angularOffset
-        );
+    	setAngularOffset(
+    		jointId.memorySegment(),
+    		angularOffset
+    	);
     }
     
-    /**
-     * Get the motor joint angular offset target in radians
-     */
+    /// ```
+    /// Get the motor joint angular offset target in radians
+    /// ```
     public static float getAngularOffset(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_OFFSET.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_OFFSET.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAngularOffset}.
-     */
+    /// Typed method of [#getAngularOffset].
     public static float getAngularOffset(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getAngularOffset(
-            jointId.memorySegment()
-        );
+    	return (float) getAngularOffset(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the motor joint maximum force, usually in newtons
-     */
+    /// ```
+    /// Set the motor joint maximum force, usually in newtons
+    /// ```
     public static void setMaxForce(
-        MemorySegment jointId, 
-        float maxForce
+    	MemorySegment jointId,
+    	float maxForce
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_SET_MAX_FORCE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                maxForce
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_FORCE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			maxForce
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMaxForce}.
-     */
+    /// Typed method of [#setMaxForce].
     public static void setMaxForce(
-        JointId jointId, 
-        float maxForce
+    	JointId jointId,
+    	float maxForce
     ) {
-        setMaxForce(
-            jointId.memorySegment(), 
-            maxForce
-        );
+    	setMaxForce(
+    		jointId.memorySegment(),
+    		maxForce
+    	);
     }
     
-    /**
-     * Get the motor joint maximum force, usually in newtons
-     */
+    /// ```
+    /// Get the motor joint maximum force, usually in newtons
+    /// ```
     public static float getMaxForce(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_GET_MAX_FORCE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_FORCE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMaxForce}.
-     */
+    /// Typed method of [#getMaxForce].
     public static float getMaxForce(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMaxForce(
-            jointId.memorySegment()
-        );
+    	return (float) getMaxForce(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the motor joint maximum torque, usually in newton-meters
-     */
+    /// ```
+    /// Set the motor joint maximum torque, usually in newton-meters
+    /// ```
     public static void setMaxTorque(
-        MemorySegment jointId, 
-        float maxTorque
+    	MemorySegment jointId,
+    	float maxTorque
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_SET_MAX_TORQUE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                maxTorque
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_TORQUE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			maxTorque
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMaxTorque}.
-     */
+    /// Typed method of [#setMaxTorque].
     public static void setMaxTorque(
-        JointId jointId, 
-        float maxTorque
+    	JointId jointId,
+    	float maxTorque
     ) {
-        setMaxTorque(
-            jointId.memorySegment(), 
-            maxTorque
-        );
+    	setMaxTorque(
+    		jointId.memorySegment(),
+    		maxTorque
+    	);
     }
     
-    /**
-     * Get the motor joint maximum torque, usually in newton-meters
-     */
+    /// ```
+    /// Get the motor joint maximum torque, usually in newton-meters
+    /// ```
     public static float getMaxTorque(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_GET_MAX_TORQUE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_TORQUE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMaxTorque}.
-     */
+    /// Typed method of [#getMaxTorque].
     public static float getMaxTorque(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMaxTorque(
-            jointId.memorySegment()
-        );
+    	return (float) getMaxTorque(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the motor joint correction factor, usually in [0, 1]
-     */
+    /// ```
+    /// Set the motor joint correction factor, usually in [0, 1]
+    /// ```
     public static void setCorrectionFactor(
-        MemorySegment jointId, 
-        float correctionFactor
+    	MemorySegment jointId,
+    	float correctionFactor
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_SET_CORRECTION_FACTOR.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                correctionFactor
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_SET_CORRECTION_FACTOR.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			correctionFactor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setCorrectionFactor}.
-     */
+    /// Typed method of [#setCorrectionFactor].
     public static void setCorrectionFactor(
-        JointId jointId, 
-        float correctionFactor
+    	JointId jointId,
+    	float correctionFactor
     ) {
-        setCorrectionFactor(
-            jointId.memorySegment(), 
-            correctionFactor
-        );
+    	setCorrectionFactor(
+    		jointId.memorySegment(),
+    		correctionFactor
+    	);
     }
     
-    /**
-     * Get the motor joint correction factor, usually in [0, 1]
-     */
+    /// ```
+    /// Get the motor joint correction factor, usually in [0, 1]
+    /// ```
     public static float getCorrectionFactor(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_MOTOR_JOINT_GET_CORRECTION_FACTOR.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_MOTOR_JOINT_GET_CORRECTION_FACTOR.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getCorrectionFactor}.
-     */
+    /// Typed method of [#getCorrectionFactor].
     public static float getCorrectionFactor(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getCorrectionFactor(
-            jointId.memorySegment()
-        );
+    	return (float) getCorrectionFactor(
+    		jointId.memorySegment()
+    	);
     }
     
 }

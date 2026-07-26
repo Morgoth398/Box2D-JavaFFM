@@ -17,9 +17,12 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * The query filter is used to filter collisions between queries and shapes. For example, you may want a ray-cast representing a projectile to hit players and the static environment but not debris.
- */
+/// ```
+/// The query filter is used to filter collisions between queries and shapes. For example,
+/// you may want a ray-cast representing a projectile to hit players and the static environment
+/// but not debris.
+/// @ingroup shape
+/// ```
 public final class QueryFilter
 		implements Struct<QueryFilter> {
 
@@ -57,52 +60,62 @@ public final class QueryFilter
     
     }
 
-    /**
-     * Use this to initialize your query filter
-     */
+    /// ```
+    /// Use this to initialize your query filter
+    /// @ingroup shape
+    /// ```
     public static MemorySegment ndefaultQueryFilter(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_QUERY_FILTER.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_QUERY_FILTER.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultQueryFilter}.
-     */
+    /// Typed method of [#ndefaultQueryFilter].
     public static @Nullable QueryFilter defaultQueryFilter(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultQueryFilter(allocator);
+    	MemorySegment segment = ndefaultQueryFilter(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new QueryFilter(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new QueryFilter(segment);
     }
     
+    /// @see #categoryBits()
     public QueryFilter categoryBits(long categoryBits) {
-        CATEGORY_BITS_HANDLE.set(segment, 0L, categoryBits);
-        return this;
+    	CATEGORY_BITS_HANDLE.set(segment, 0L, categoryBits);
+    	return this;
     }
     
+    /// ```
+    /// The collision category bits of this query. Normally you would just set one bit.
+    /// ```
     public long categoryBits() {
-        return (long) CATEGORY_BITS_HANDLE.get(segment, 0L);
+    	return (long) CATEGORY_BITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maskBits()
     public QueryFilter maskBits(long maskBits) {
-        MASK_BITS_HANDLE.set(segment, 0L, maskBits);
-        return this;
+    	MASK_BITS_HANDLE.set(segment, 0L, maskBits);
+    	return this;
     }
     
+    /// ```
+    /// The collision mask bits. This states the shape categories that this
+    /// query would accept for collision.
+    /// ```
     public long maskBits() {
-        return (long) MASK_BITS_HANDLE.get(segment, 0L);
+    	return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
     @Override

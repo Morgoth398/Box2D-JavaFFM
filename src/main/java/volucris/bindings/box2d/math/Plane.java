@@ -14,9 +14,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * separation = dot(normal, point) - offset
- */
+/// ```
+/// separation = dot(normal, point) - offset
+/// ```
 public final class Plane
 		implements Struct<Plane> {
 
@@ -59,27 +59,30 @@ public final class Plane
         normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #offset()
     public Plane offset(float offset) {
-        OFFSET_HANDLE.set(segment, 0L, offset);
-        return this;
+    	OFFSET_HANDLE.set(segment, 0L, offset);
+    	return this;
     }
     
     public float offset() {
-        return (float) OFFSET_HANDLE.get(segment, 0L);
+    	return (float) OFFSET_HANDLE.get(segment, 0L);
     }
     
+    /// @see #normal()
     public Plane normal(Consumer<Vec2> consumer) {
-        consumer.accept(normal);
-        return this;
+    	consumer.accept(normal);
+    	return this;
     }
     
+    /// @see #normal()
     public Plane normal(Vec2 other) {
-        normal.set(other);
-        return this;
+    	normal.set(other);
+    	return this;
     }
     
     public Vec2 normal() {
-        return normal;
+    	return normal;
     }
     
     @Override

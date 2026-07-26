@@ -69,48 +69,48 @@ callbacks:
     package-name: volucris.bindings.box2d
     directory: src/main/java/volucris/bindings/box2d
 
-  - name: DrawPolygonFcn
+  - name: b2DebugDraw_DrawPolygonFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.math.Vec2
-  - name: DrawSolidPolygonFcn
+  - name: b2DebugDraw_DrawSolidPolygonFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports:
       - volucris.bindings.box2d.math.Transform
       - volucris.bindings.box2d.math.Vec2
-  - name: DrawCircleFcn
+  - name: b2DebugDraw_DrawCircleFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.math.Vec2
-  - name: DrawSolidCircleFcn
+  - name: b2DebugDraw_DrawSolidCircleFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports:
       - volucris.bindings.box2d.math.Transform
-  - name: DrawSolidCapsuleFcn
+  - name: b2DebugDraw_DrawSolidCapsuleFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.math.Vec2
-  - name: DrawSegmentFcn
+  - name: b2DebugDraw_DrawSegmentFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.math.Vec2
-  - name: DrawTransformFcn
+  - name: b2DebugDraw_DrawTransformFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.math.Transform
-  - name: DrawPointFcn
+  - name: b2DebugDraw_DrawPointFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.math.Vec2
-  - name: DrawStringFcn
+  - name: b2DebugDraw_DrawStringFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports:

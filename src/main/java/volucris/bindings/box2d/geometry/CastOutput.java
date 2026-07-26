@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Low level ray cast or shape-cast output data. Returns a zero fraction and normal in the case of initial overlap.
- */
+/// ```
+/// Low level ray cast or shape-cast output data. Returns a zero fraction and normal in the case of initial overlap.
+/// ```
 public final class CastOutput
 		implements Struct<CastOutput> {
 
@@ -76,59 +76,81 @@ public final class CastOutput
         point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #fraction()
     public CastOutput fraction(float fraction) {
-        FRACTION_HANDLE.set(segment, 0L, fraction);
-        return this;
+    	FRACTION_HANDLE.set(segment, 0L, fraction);
+    	return this;
     }
     
+    /// ```
+    /// The fraction of the input translation at collision
+    /// ```
     public float fraction() {
-        return (float) FRACTION_HANDLE.get(segment, 0L);
+    	return (float) FRACTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #iterations()
     public CastOutput iterations(int iterations) {
-        ITERATIONS_HANDLE.set(segment, 0L, iterations);
-        return this;
+    	ITERATIONS_HANDLE.set(segment, 0L, iterations);
+    	return this;
     }
     
+    /// ```
+    /// The number of iterations used
+    /// ```
     public int iterations() {
-        return (int) ITERATIONS_HANDLE.get(segment, 0L);
+    	return (int) ITERATIONS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #hit()
     public CastOutput hit(boolean hit) {
-        HIT_HANDLE.set(segment, 0L, hit);
-        return this;
+    	HIT_HANDLE.set(segment, 0L, hit);
+    	return this;
     }
     
+    /// ```
+    /// Did the cast hit?
+    /// ```
     public boolean hit() {
-        return (boolean) HIT_HANDLE.get(segment, 0L);
+    	return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #normal()
     public CastOutput normal(Consumer<Vec2> consumer) {
-        consumer.accept(normal);
-        return this;
+    	consumer.accept(normal);
+    	return this;
     }
     
+    /// @see #normal()
     public CastOutput normal(Vec2 other) {
-        normal.set(other);
-        return this;
+    	normal.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The surface normal at the hit point
+    /// ```
     public Vec2 normal() {
-        return normal;
+    	return normal;
     }
     
+    /// @see #point()
     public CastOutput point(Consumer<Vec2> consumer) {
-        consumer.accept(point);
-        return this;
+    	consumer.accept(point);
+    	return this;
     }
     
+    /// @see #point()
     public CastOutput point(Vec2 other) {
-        point.set(other);
-        return this;
+    	point.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The surface hit point
+    /// ```
     public Vec2 point() {
-        return point;
+    	return point;
     }
     
     @Override

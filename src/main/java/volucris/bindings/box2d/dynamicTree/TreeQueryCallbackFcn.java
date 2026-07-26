@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d.dynamicTree;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,13 +12,18 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// This function receives proxies found in the AABB query.
+/// @return true if the query should continue
+/// ```
 public abstract class TreeQueryCallbackFcn {
 
-    private static final HashMap<Long, WeakReference<TreeQueryCallbackFcn>> CACHE;
+    private static final Map<Long, WeakReference<TreeQueryCallbackFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -52,8 +58,8 @@ public abstract class TreeQueryCallbackFcn {
     }
 
     public boolean invoke(
-        int proxyId, 
-        long userData, 
+        int proxyId,
+        long userData,
         MemorySegment context
     ) {
         throw new UnsupportedOperationException(
@@ -65,7 +71,7 @@ public abstract class TreeQueryCallbackFcn {
         return segment;
     }
 
-    public static TreeQueryCallbackFcn get(MemorySegment segment) {
+    public static @Nullable TreeQueryCallbackFcn get(MemorySegment segment) {
         WeakReference<TreeQueryCallbackFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

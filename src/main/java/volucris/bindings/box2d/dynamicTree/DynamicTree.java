@@ -22,9 +22,10 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * The dynamic tree structure. This should be considered private data. It is placed here for performance reasons.
- */
+/// ```
+/// The dynamic tree structure. This should be considered private data.
+/// It is placed here for performance reasons.
+/// ```
 public final class DynamicTree
 		implements Struct<DynamicTree> {
 
@@ -155,833 +156,856 @@ public final class DynamicTree
     
     }
 
-    /**
-     * Constructing the tree initializes the node pool.
-     */
+    /// ```
+    /// Constructing the tree initializes the node pool.
+    /// ```
     public static MemorySegment ncreate(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_CREATE.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_CREATE.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ncreate}.
-     */
+    /// Typed method of [#ncreate].
     public static @Nullable DynamicTree create(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ncreate(allocator);
+    	MemorySegment segment = ncreate(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new DynamicTree(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new DynamicTree(segment);
     }
     
-    /**
-     * Destroy the tree, freeing the node pool.
-     */
+    /// ```
+    /// Destroy the tree, freeing the node pool.
+    /// ```
     public static void destroy(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_DESTROY.get();
-        try {
-            method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_DESTROY.get();
+    	try {
+    		 method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #destroy}.
-     */
+    /// Typed method of [#destroy].
     public static void destroy(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        destroy(
-            tree.memorySegment()
-        );
+    	destroy(
+    		tree.memorySegment()
+    	);
     }
     
-    /**
-     * Create a proxy. Provide an AABB and a userData value.
-     */
+    /// ```
+    /// Create a proxy. Provide an AABB and a userData value.
+    /// ```
     public static int createProxy(
-        MemorySegment tree, 
-        MemorySegment aabb, 
-        long categoryBits, 
-        long userData
+    	MemorySegment tree,
+    	MemorySegment aabb,
+    	long categoryBits,
+    	long userData
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_CREATE_PROXY.get();
-        try {
-            return (int) method.invokeExact(
-                tree, 
-                aabb, 
-                categoryBits, 
-                userData
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_CREATE_PROXY.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			tree,
+    			aabb,
+    			categoryBits,
+    			userData
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createProxy}.
-     */
+    /// Typed method of [#createProxy].
     public static int createProxy(
-        DynamicTree tree, 
-        AABB aabb, 
-        long categoryBits, 
-        long userData
+    	DynamicTree tree,
+    	AABB aabb,
+    	long categoryBits,
+    	long userData
     ) {
-        return (int) createProxy(
-            tree.memorySegment(), 
-            aabb.memorySegment(), 
-            categoryBits, 
-            userData
-        );
+    	return (int) createProxy(
+    		tree.memorySegment(),
+    		aabb.memorySegment(),
+    		categoryBits,
+    		userData
+    	);
     }
     
-    /**
-     * Destroy a proxy. This asserts if the id is invalid.
-     */
+    /// ```
+    /// Destroy a proxy. This asserts if the id is invalid.
+    /// ```
     public static void destroyProxy(
-        MemorySegment tree, 
-        int proxyId
+    	MemorySegment tree,
+    	int proxyId
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_DESTROY_PROXY.get();
-        try {
-            method.invokeExact(
-                tree, 
-                proxyId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_DESTROY_PROXY.get();
+    	try {
+    		 method.invokeExact(
+    			tree,
+    			proxyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #destroyProxy}.
-     */
+    /// Typed method of [#destroyProxy].
     public static void destroyProxy(
-        DynamicTree tree, 
-        int proxyId
+    	DynamicTree tree,
+    	int proxyId
     ) {
-        destroyProxy(
-            tree.memorySegment(), 
-            proxyId
-        );
+    	destroyProxy(
+    		tree.memorySegment(),
+    		proxyId
+    	);
     }
     
-    /**
-     * Move a proxy to a new AABB by removing and reinserting into the tree.
-     */
+    /// ```
+    /// Move a proxy to a new AABB by removing and reinserting into the tree.
+    /// ```
     public static void moveProxy(
-        MemorySegment tree, 
-        int proxyId, 
-        MemorySegment aabb
+    	MemorySegment tree,
+    	int proxyId,
+    	MemorySegment aabb
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_MOVE_PROXY.get();
-        try {
-            method.invokeExact(
-                tree, 
-                proxyId, 
-                aabb
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_MOVE_PROXY.get();
+    	try {
+    		 method.invokeExact(
+    			tree,
+    			proxyId,
+    			aabb
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #moveProxy}.
-     */
+    /// Typed method of [#moveProxy].
     public static void moveProxy(
-        DynamicTree tree, 
-        int proxyId, 
-        AABB aabb
+    	DynamicTree tree,
+    	int proxyId,
+    	AABB aabb
     ) {
-        moveProxy(
-            tree.memorySegment(), 
-            proxyId, 
-            aabb.memorySegment()
-        );
+    	moveProxy(
+    		tree.memorySegment(),
+    		proxyId,
+    		aabb.memorySegment()
+    	);
     }
     
-    /**
-     * Enlarge a proxy and enlarge ancestors as necessary.
-     */
+    /// ```
+    /// Enlarge a proxy and enlarge ancestors as necessary.
+    /// ```
     public static void enlargeProxy(
-        MemorySegment tree, 
-        int proxyId, 
-        MemorySegment aabb
+    	MemorySegment tree,
+    	int proxyId,
+    	MemorySegment aabb
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_ENLARGE_PROXY.get();
-        try {
-            method.invokeExact(
-                tree, 
-                proxyId, 
-                aabb
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_ENLARGE_PROXY.get();
+    	try {
+    		 method.invokeExact(
+    			tree,
+    			proxyId,
+    			aabb
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enlargeProxy}.
-     */
+    /// Typed method of [#enlargeProxy].
     public static void enlargeProxy(
-        DynamicTree tree, 
-        int proxyId, 
-        AABB aabb
+    	DynamicTree tree,
+    	int proxyId,
+    	AABB aabb
     ) {
-        enlargeProxy(
-            tree.memorySegment(), 
-            proxyId, 
-            aabb.memorySegment()
-        );
+    	enlargeProxy(
+    		tree.memorySegment(),
+    		proxyId,
+    		aabb.memorySegment()
+    	);
     }
     
-    /**
-     * Modify the category bits on a proxy. This is an expensive operation.
-     */
+    /// ```
+    /// Modify the category bits on a proxy. This is an expensive operation.
+    /// ```
     public static void setCategoryBits(
-        MemorySegment tree, 
-        int proxyId, 
-        long categoryBits
+    	MemorySegment tree,
+    	int proxyId,
+    	long categoryBits
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_SET_CATEGORY_BITS.get();
-        try {
-            method.invokeExact(
-                tree, 
-                proxyId, 
-                categoryBits
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_SET_CATEGORY_BITS.get();
+    	try {
+    		 method.invokeExact(
+    			tree,
+    			proxyId,
+    			categoryBits
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setCategoryBits}.
-     */
+    /// Typed method of [#setCategoryBits].
     public static void setCategoryBits(
-        DynamicTree tree, 
-        int proxyId, 
-        long categoryBits
+    	DynamicTree tree,
+    	int proxyId,
+    	long categoryBits
     ) {
-        setCategoryBits(
-            tree.memorySegment(), 
-            proxyId, 
-            categoryBits
-        );
+    	setCategoryBits(
+    		tree.memorySegment(),
+    		proxyId,
+    		categoryBits
+    	);
     }
     
-    /**
-     * Get the category bits on a proxy.
-     */
+    /// ```
+    /// Get the category bits on a proxy.
+    /// ```
     public static long getCategoryBits(
-        MemorySegment tree, 
-        int proxyId
+    	MemorySegment tree,
+    	int proxyId
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_CATEGORY_BITS.get();
-        try {
-            return (long) method.invokeExact(
-                tree, 
-                proxyId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_CATEGORY_BITS.get();
+    	try {
+    		return (long)  method.invokeExact(
+    			tree,
+    			proxyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getCategoryBits}.
-     */
+    /// Typed method of [#getCategoryBits].
     public static long getCategoryBits(
-        DynamicTree tree, 
-        int proxyId
+    	DynamicTree tree,
+    	int proxyId
     ) {
-        return (long) getCategoryBits(
-            tree.memorySegment(), 
-            proxyId
-        );
+    	return (long) getCategoryBits(
+    		tree.memorySegment(),
+    		proxyId
+    	);
     }
     
-    /**
-     * Query an AABB for overlapping proxies. The callback class is called for each proxy that overlaps the supplied AABB.
-     */
+    /// ```
+    /// Query an AABB for overlapping proxies. The callback class is called for each proxy that overlaps the supplied AABB.
+    /// @return performance data
+    /// ```
     public static MemorySegment query(
-        SegmentAllocator allocator,
-        MemorySegment tree, 
-        MemorySegment aabb, 
-        long maskBits, 
-        MemorySegment callback, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment tree,
+    	MemorySegment aabb,
+    	long maskBits,
+    	MemorySegment callback,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_QUERY.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                tree, 
-                aabb, 
-                maskBits, 
-                callback, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_QUERY.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			tree,
+    			aabb,
+    			maskBits,
+    			callback,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #query}.
-     */
+    /// Typed method of [#query].
     public static @Nullable TreeStats query(
-        SegmentAllocator allocator,
-        DynamicTree tree, 
-        AABB aabb, 
-        long maskBits, 
-        TreeQueryCallbackFcn callback, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	DynamicTree tree,
+    	AABB aabb,
+    	long maskBits,
+    	TreeQueryCallbackFcn callback,
+    	MemorySegment context
     ) {
-        MemorySegment segment = query(
-            allocator,
-            tree.memorySegment(), 
-            aabb.memorySegment(), 
-            maskBits, 
-            callback.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = query(
+    		allocator,
+    		tree.memorySegment(),
+    		aabb.memorySegment(),
+    		maskBits,
+    		callback.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Ray cast against the proxies in the tree. This relies on the callback to perform a exact ray cast in the case were the proxy contains a shape. The callback also performs the any collision filtering. This has performance roughly equal to k * log(n), where k is the number of collisions and n is the number of proxies in the tree. Bit-wise filtering using mask bits can greatly improve performance in some scenarios. However, this filtering may be approximate, so the user should still apply filtering to results.
-     */
+    /// ```
+    /// Ray cast against the proxies in the tree. This relies on the callback
+    /// to perform a exact ray cast in the case were the proxy contains a shape.
+    /// The callback also performs the any collision filtering. This has performance
+    /// roughly equal to k * log(n), where k is the number of collisions and n is the
+    /// number of proxies in the tree.
+    /// Bit-wise filtering using mask bits can greatly improve performance in some scenarios.
+    /// However, this filtering may be approximate, so the user should still apply filtering to results.
+    /// @param tree the dynamic tree to ray cast
+    /// @param input the ray cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1)
+    /// @param maskBits mask bit hint: `bool accept = (maskBits & node->categoryBits) != 0;`
+    /// @param callback a callback class that is called for each proxy that is hit by the ray
+    /// @param context user context that is passed to the callback
+    /// @return performance data
+    /// ```
     public static MemorySegment rayCast(
-        SegmentAllocator allocator,
-        MemorySegment tree, 
-        MemorySegment input, 
-        long maskBits, 
-        MemorySegment callback, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment tree,
+    	MemorySegment input,
+    	long maskBits,
+    	MemorySegment callback,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_RAY_CAST.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                tree, 
-                input, 
-                maskBits, 
-                callback, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_RAY_CAST.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			tree,
+    			input,
+    			maskBits,
+    			callback,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rayCast}.
-     */
+    /// Typed method of [#rayCast].
     public static @Nullable TreeStats rayCast(
-        SegmentAllocator allocator,
-        DynamicTree tree, 
-        RayCastInput input, 
-        long maskBits, 
-        TreeRayCastCallbackFcn callback, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	DynamicTree tree,
+    	RayCastInput input,
+    	long maskBits,
+    	TreeRayCastCallbackFcn callback,
+    	MemorySegment context
     ) {
-        MemorySegment segment = rayCast(
-            allocator,
-            tree.memorySegment(), 
-            input.memorySegment(), 
-            maskBits, 
-            callback.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = rayCast(
+    		allocator,
+    		tree.memorySegment(),
+    		input.memorySegment(),
+    		maskBits,
+    		callback.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Ray cast against the proxies in the tree. This relies on the callback to perform a exact ray cast in the case were the proxy contains a shape. The callback also performs the any collision filtering. This has performance roughly equal to k * log(n), where k is the number of collisions and n is the number of proxies in the tree.
-     */
+    /// ```
+    /// Ray cast against the proxies in the tree. This relies on the callback
+    /// to perform a exact ray cast in the case were the proxy contains a shape.
+    /// The callback also performs the any collision filtering. This has performance
+    /// roughly equal to k * log(n), where k is the number of collisions and n is the
+    /// number of proxies in the tree.
+    /// @param tree the dynamic tree to ray cast
+    /// @param input the ray cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+    /// @param maskBits filter bits: `bool accept = (maskBits & node->categoryBits) != 0;`
+    /// @param callback a callback class that is called for each proxy that is hit by the shape
+    /// @param context user context that is passed to the callback
+    /// @return performance data
+    /// ```
     public static MemorySegment shapeCast(
-        SegmentAllocator allocator,
-        MemorySegment tree, 
-        MemorySegment input, 
-        long maskBits, 
-        MemorySegment callback, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	MemorySegment tree,
+    	MemorySegment input,
+    	long maskBits,
+    	MemorySegment callback,
+    	MemorySegment context
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_SHAPE_CAST.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                tree, 
-                input, 
-                maskBits, 
-                callback, 
-                context
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_SHAPE_CAST.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			tree,
+    			input,
+    			maskBits,
+    			callback,
+    			context
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #shapeCast}.
-     */
+    /// Typed method of [#shapeCast].
     public static @Nullable TreeStats shapeCast(
-        SegmentAllocator allocator,
-        DynamicTree tree, 
-        ShapeCastInput input, 
-        long maskBits, 
-        TreeShapeCastCallbackFcn callback, 
-        MemorySegment context
+    	SegmentAllocator allocator,
+    	DynamicTree tree,
+    	ShapeCastInput input,
+    	long maskBits,
+    	TreeShapeCastCallbackFcn callback,
+    	MemorySegment context
     ) {
-        MemorySegment segment = shapeCast(
-            allocator,
-            tree.memorySegment(), 
-            input.memorySegment(), 
-            maskBits, 
-            callback.memorySegment(), 
-            context
-        );
+    	MemorySegment segment = shapeCast(
+    		allocator,
+    		tree.memorySegment(),
+    		input.memorySegment(),
+    		maskBits,
+    		callback.memorySegment(),
+    		context
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new TreeStats(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new TreeStats(segment);
     }
     
-    /**
-     * Get the height of the binary tree.
-     */
+    /// ```
+    /// Get the height of the binary tree.
+    /// ```
     public static int getHeight(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_HEIGHT.get();
-        try {
-            return (int) method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_HEIGHT.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getHeight}.
-     */
+    /// Typed method of [#getHeight].
     public static int getHeight(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        return (int) getHeight(
-            tree.memorySegment()
-        );
+    	return (int) getHeight(
+    		tree.memorySegment()
+    	);
     }
     
-    /**
-     * Get the ratio of the sum of the node areas to the root area.
-     */
+    /// ```
+    /// Get the ratio of the sum of the node areas to the root area.
+    /// ```
     public static float getAreaRatio(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_AREA_RATIO.get();
-        try {
-            return (float) method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_AREA_RATIO.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAreaRatio}.
-     */
+    /// Typed method of [#getAreaRatio].
     public static float getAreaRatio(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        return (float) getAreaRatio(
-            tree.memorySegment()
-        );
+    	return (float) getAreaRatio(
+    		tree.memorySegment()
+    	);
     }
     
-    /**
-     * Get the bounding box that contains the entire tree
-     */
+    /// ```
+    /// Get the bounding box that contains the entire tree
+    /// ```
     public static MemorySegment getRootBounds(
-        SegmentAllocator allocator,
-        MemorySegment tree
+    	SegmentAllocator allocator,
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_ROOT_BOUNDS.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_ROOT_BOUNDS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getRootBounds}.
-     */
+    /// Typed method of [#getRootBounds].
     public static @Nullable AABB getRootBounds(
-        SegmentAllocator allocator,
-        DynamicTree tree
+    	SegmentAllocator allocator,
+    	DynamicTree tree
     ) {
-        MemorySegment segment = getRootBounds(
-            allocator,
-            tree.memorySegment()
-        );
+    	MemorySegment segment = getRootBounds(
+    		allocator,
+    		tree.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
-    /**
-     * Get the number of proxies created
-     */
+    /// ```
+    /// Get the number of proxies created
+    /// ```
     public static int getProxyCount(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_PROXY_COUNT.get();
-        try {
-            return (int) method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_PROXY_COUNT.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getProxyCount}.
-     */
+    /// Typed method of [#getProxyCount].
     public static int getProxyCount(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        return (int) getProxyCount(
-            tree.memorySegment()
-        );
+    	return (int) getProxyCount(
+    		tree.memorySegment()
+    	);
     }
     
-    /**
-     * Rebuild the tree while retaining subtrees that haven't changed. Returns the number of boxes sorted.
-     */
+    /// ```
+    /// Rebuild the tree while retaining subtrees that haven't changed. Returns the number of boxes sorted.
+    /// ```
     public static int rebuild(
-        MemorySegment tree, 
-        boolean fullBuild
+    	MemorySegment tree,
+    	boolean fullBuild
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_REBUILD.get();
-        try {
-            return (int) method.invokeExact(
-                tree, 
-                fullBuild
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_REBUILD.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			tree,
+    			fullBuild
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #rebuild}.
-     */
+    /// Typed method of [#rebuild].
     public static int rebuild(
-        DynamicTree tree, 
-        boolean fullBuild
+    	DynamicTree tree,
+    	boolean fullBuild
     ) {
-        return (int) rebuild(
-            tree.memorySegment(), 
-            fullBuild
-        );
+    	return (int) rebuild(
+    		tree.memorySegment(),
+    		fullBuild
+    	);
     }
     
-    /**
-     * Get the number of bytes used by this tree
-     */
+    /// ```
+    /// Get the number of bytes used by this tree
+    /// ```
     public static int getByteCount(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_BYTE_COUNT.get();
-        try {
-            return (int) method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_BYTE_COUNT.get();
+    	try {
+    		return (int)  method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getByteCount}.
-     */
+    /// Typed method of [#getByteCount].
     public static int getByteCount(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        return (int) getByteCount(
-            tree.memorySegment()
-        );
+    	return (int) getByteCount(
+    		tree.memorySegment()
+    	);
     }
     
-    /**
-     * Get proxy user data
-     */
+    /// ```
+    /// Get proxy user data
+    /// ```
     public static long getUserData(
-        MemorySegment tree, 
-        int proxyId
+    	MemorySegment tree,
+    	int proxyId
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_USER_DATA.get();
-        try {
-            return (long) method.invokeExact(
-                tree, 
-                proxyId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_USER_DATA.get();
+    	try {
+    		return (long)  method.invokeExact(
+    			tree,
+    			proxyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getUserData}.
-     */
+    /// Typed method of [#getUserData].
     public static long getUserData(
-        DynamicTree tree, 
-        int proxyId
+    	DynamicTree tree,
+    	int proxyId
     ) {
-        return (long) getUserData(
-            tree.memorySegment(), 
-            proxyId
-        );
+    	return (long) getUserData(
+    		tree.memorySegment(),
+    		proxyId
+    	);
     }
     
-    /**
-     * Get the AABB of a proxy
-     */
+    /// ```
+    /// Get the AABB of a proxy
+    /// ```
     public static MemorySegment getAABB(
-        SegmentAllocator allocator,
-        MemorySegment tree, 
-        int proxyId
+    	SegmentAllocator allocator,
+    	MemorySegment tree,
+    	int proxyId
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_GET_AABB.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                tree, 
-                proxyId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_GET_AABB.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			tree,
+    			proxyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAABB}.
-     */
+    /// Typed method of [#getAABB].
     public static @Nullable AABB getAABB(
-        SegmentAllocator allocator,
-        DynamicTree tree, 
-        int proxyId
+    	SegmentAllocator allocator,
+    	DynamicTree tree,
+    	int proxyId
     ) {
-        MemorySegment segment = getAABB(
-            allocator,
-            tree.memorySegment(), 
-            proxyId
-        );
+    	MemorySegment segment = getAABB(
+    		allocator,
+    		tree.memorySegment(),
+    		proxyId
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
-    /**
-     * Validate this tree. For testing.
-     */
+    /// ```
+    /// Validate this tree. For testing.
+    /// ```
     public static void validate(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_VALIDATE.get();
-        try {
-            method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_VALIDATE.get();
+    	try {
+    		 method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #validate}.
-     */
+    /// Typed method of [#validate].
     public static void validate(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        validate(
-            tree.memorySegment()
-        );
+    	validate(
+    		tree.memorySegment()
+    	);
     }
     
-    /**
-     * Validate this tree has no enlarged AABBs. For testing.
-     */
+    /// ```
+    /// Validate this tree has no enlarged AABBs. For testing.
+    /// ```
     public static void validateNoEnlarged(
-        MemorySegment tree
+    	MemorySegment tree
     ) {
-        MethodHandle method = B2_DYNAMIC_TREE_VALIDATE_NO_ENLARGED.get();
-        try {
-            method.invokeExact(
-                tree
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DYNAMIC_TREE_VALIDATE_NO_ENLARGED.get();
+    	try {
+    		 method.invokeExact(
+    			tree
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #validateNoEnlarged}.
-     */
+    /// Typed method of [#validateNoEnlarged].
     public static void validateNoEnlarged(
-        DynamicTree tree
+    	DynamicTree tree
     ) {
-        validateNoEnlarged(
-            tree.memorySegment()
-        );
+    	validateNoEnlarged(
+    		tree.memorySegment()
+    	);
     }
     
+    /// @see #root()
     public DynamicTree root(int root) {
-        ROOT_HANDLE.set(segment, 0L, root);
-        return this;
+    	ROOT_HANDLE.set(segment, 0L, root);
+    	return this;
     }
     
+    /// ```
+    /// The root index
+    /// ```
     public int root() {
-        return (int) ROOT_HANDLE.get(segment, 0L);
+    	return (int) ROOT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #nodeCount()
     public DynamicTree nodeCount(int nodeCount) {
-        NODE_COUNT_HANDLE.set(segment, 0L, nodeCount);
-        return this;
+    	NODE_COUNT_HANDLE.set(segment, 0L, nodeCount);
+    	return this;
     }
     
+    /// ```
+    /// The number of nodes
+    /// ```
     public int nodeCount() {
-        return (int) NODE_COUNT_HANDLE.get(segment, 0L);
+    	return (int) NODE_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #nodeCapacity()
     public DynamicTree nodeCapacity(int nodeCapacity) {
-        NODE_CAPACITY_HANDLE.set(segment, 0L, nodeCapacity);
-        return this;
+    	NODE_CAPACITY_HANDLE.set(segment, 0L, nodeCapacity);
+    	return this;
     }
     
+    /// ```
+    /// The allocated node space
+    /// ```
     public int nodeCapacity() {
-        return (int) NODE_CAPACITY_HANDLE.get(segment, 0L);
+    	return (int) NODE_CAPACITY_HANDLE.get(segment, 0L);
     }
     
+    /// @see #freeList()
     public DynamicTree freeList(int freeList) {
-        FREE_LIST_HANDLE.set(segment, 0L, freeList);
-        return this;
+    	FREE_LIST_HANDLE.set(segment, 0L, freeList);
+    	return this;
     }
     
+    /// ```
+    /// Node free list
+    /// ```
     public int freeList() {
-        return (int) FREE_LIST_HANDLE.get(segment, 0L);
+    	return (int) FREE_LIST_HANDLE.get(segment, 0L);
     }
     
+    /// @see #proxyCount()
     public DynamicTree proxyCount(int proxyCount) {
-        PROXY_COUNT_HANDLE.set(segment, 0L, proxyCount);
-        return this;
+    	PROXY_COUNT_HANDLE.set(segment, 0L, proxyCount);
+    	return this;
     }
     
+    /// ```
+    /// Number of proxies created
+    /// ```
     public int proxyCount() {
-        return (int) PROXY_COUNT_HANDLE.get(segment, 0L);
+    	return (int) PROXY_COUNT_HANDLE.get(segment, 0L);
     }
     
+    /// @see #leafIndices()
     public DynamicTree leafIndices(NativeIntArray leafIndices) {
-        LEAF_INDICES_HANDLE.set(segment, 0L, leafIndices.memorySegment());
-        return this;
+    	LEAF_INDICES_HANDLE.set(segment, 0L, leafIndices.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Leaf indices for rebuild
+    /// ```
     public @Nullable NativeIntArray leafIndices() {
-        MemorySegment segment = (MemorySegment) LEAF_INDICES_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) LEAF_INDICES_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new NativeIntArray(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new NativeIntArray(segment);
     }
     
+    /// @see #leafBoxes()
     public DynamicTree leafBoxes(AABB leafBoxes) {
-        LEAF_BOXES_HANDLE.set(segment, 0L, leafBoxes.memorySegment());
-        return this;
+    	LEAF_BOXES_HANDLE.set(segment, 0L, leafBoxes.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Leaf bounding boxes for rebuild
+    /// ```
     public @Nullable AABB leafBoxes() {
-        MemorySegment segment = (MemorySegment) LEAF_BOXES_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) LEAF_BOXES_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new AABB(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
     }
     
+    /// @see #leafCenters()
     public DynamicTree leafCenters(Vec2 leafCenters) {
-        LEAF_CENTERS_HANDLE.set(segment, 0L, leafCenters.memorySegment());
-        return this;
+    	LEAF_CENTERS_HANDLE.set(segment, 0L, leafCenters.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Leaf bounding box centers for rebuild
+    /// ```
     public @Nullable Vec2 leafCenters() {
-        MemorySegment segment = (MemorySegment) LEAF_CENTERS_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) LEAF_CENTERS_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new Vec2(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new Vec2(segment);
     }
     
+    /// @see #binIndices()
     public DynamicTree binIndices(NativeIntArray binIndices) {
-        BIN_INDICES_HANDLE.set(segment, 0L, binIndices.memorySegment());
-        return this;
+    	BIN_INDICES_HANDLE.set(segment, 0L, binIndices.memorySegment());
+    	return this;
     }
     
+    /// ```
+    /// Bins for sorting during rebuild
+    /// ```
     public @Nullable NativeIntArray binIndices() {
-        MemorySegment segment = (MemorySegment) BIN_INDICES_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) BIN_INDICES_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new NativeIntArray(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new NativeIntArray(segment);
     }
     
+    /// @see #rebuildCapacity()
     public DynamicTree rebuildCapacity(int rebuildCapacity) {
-        REBUILD_CAPACITY_HANDLE.set(segment, 0L, rebuildCapacity);
-        return this;
+    	REBUILD_CAPACITY_HANDLE.set(segment, 0L, rebuildCapacity);
+    	return this;
     }
     
+    /// ```
+    /// Allocated space for rebuilding
+    /// ```
     public int rebuildCapacity() {
-        return (int) REBUILD_CAPACITY_HANDLE.get(segment, 0L);
+    	return (int) REBUILD_CAPACITY_HANDLE.get(segment, 0L);
     }
     
     @Override

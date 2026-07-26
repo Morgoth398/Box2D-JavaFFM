@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Input parameters for b2TimeOfImpact
- */
+/// ```
+/// Input parameters for b2TimeOfImpact
+/// ```
 public final class TOIInput
 		implements Struct<TOIInput> {
 
@@ -75,69 +75,93 @@ public final class TOIInput
         sweepB = new Sweep(segment.asSlice(SWEEP_B_BYTE_OFFSET, Sweep.LAYOUT));
     }
 
+    /// @see #maxFraction()
     public TOIInput maxFraction(float maxFraction) {
-        MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-        return this;
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
     }
     
+    /// ```
+    /// Defines the sweep interval [0, maxFraction]
+    /// ```
     public float maxFraction() {
-        return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
+    /// @see #proxyA()
     public TOIInput proxyA(Consumer<ShapeProxy> consumer) {
-        consumer.accept(proxyA);
-        return this;
+    	consumer.accept(proxyA);
+    	return this;
     }
     
+    /// @see #proxyA()
     public TOIInput proxyA(ShapeProxy other) {
-        proxyA.set(other);
-        return this;
+    	proxyA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The proxy for shape A
+    /// ```
     public ShapeProxy proxyA() {
-        return proxyA;
+    	return proxyA;
     }
     
+    /// @see #proxyB()
     public TOIInput proxyB(Consumer<ShapeProxy> consumer) {
-        consumer.accept(proxyB);
-        return this;
+    	consumer.accept(proxyB);
+    	return this;
     }
     
+    /// @see #proxyB()
     public TOIInput proxyB(ShapeProxy other) {
-        proxyB.set(other);
-        return this;
+    	proxyB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The proxy for shape B
+    /// ```
     public ShapeProxy proxyB() {
-        return proxyB;
+    	return proxyB;
     }
     
+    /// @see #sweepA()
     public TOIInput sweepA(Consumer<Sweep> consumer) {
-        consumer.accept(sweepA);
-        return this;
+    	consumer.accept(sweepA);
+    	return this;
     }
     
+    /// @see #sweepA()
     public TOIInput sweepA(Sweep other) {
-        sweepA.set(other);
-        return this;
+    	sweepA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The movement of shape A
+    /// ```
     public Sweep sweepA() {
-        return sweepA;
+    	return sweepA;
     }
     
+    /// @see #sweepB()
     public TOIInput sweepB(Consumer<Sweep> consumer) {
-        consumer.accept(sweepB);
-        return this;
+    	consumer.accept(sweepB);
+    	return this;
     }
     
+    /// @see #sweepB()
     public TOIInput sweepB(Sweep other) {
-        sweepB.set(other);
-        return this;
+    	sweepB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The movement of shape B
+    /// ```
     public Sweep sweepB() {
-        return sweepB;
+    	return sweepB;
     }
     
     @Override

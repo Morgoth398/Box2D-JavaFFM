@@ -18,9 +18,18 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * Body move events triggered when a body moves. Triggered when a body moves due to simulation. Not reported for bodies moved by the user. This also has a flag to indicate that the body went to sleep so the application can also sleep that actor/entity/object associated with the body. On the other hand if the flag does not indicate the body went to sleep then the application can treat the actor/entity/object associated with the body as awake. This is an efficient way for an application to update game object transforms rather than calling functions such as b2Body_GetTransform() because this data is delivered as a contiguous array and it is only populated with bodies that have moved.
- */
+/// ```
+/// Body move events triggered when a body moves.
+/// Triggered when a body moves due to simulation. Not reported for bodies moved by the user.
+/// This also has a flag to indicate that the body went to sleep so the application can also
+/// sleep that actor/entity/object associated with the body.
+/// On the other hand if the flag does not indicate the body went to sleep then the application
+/// can treat the actor/entity/object associated with the body as awake.
+/// This is an efficient way for an application to update game object transforms rather than
+/// calling functions such as b2Body_GetTransform() because this data is delivered as a contiguous array
+/// and it is only populated with bodies that have moved.
+/// @note If sleeping is disabled all dynamic and kinematic bodies will trigger move events.
+/// ```
 public final class BodyMoveEvent
 		implements Struct<BodyMoveEvent> {
 
@@ -74,55 +83,61 @@ public final class BodyMoveEvent
         bodyId = new BodyId(segment.asSlice(BODY_ID_BYTE_OFFSET, BodyId.LAYOUT));
     }
 
+    /// @see #userData()
     public BodyMoveEvent userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #fellAsleep()
     public BodyMoveEvent fellAsleep(boolean fellAsleep) {
-        FELL_ASLEEP_HANDLE.set(segment, 0L, fellAsleep);
-        return this;
+    	FELL_ASLEEP_HANDLE.set(segment, 0L, fellAsleep);
+    	return this;
     }
     
     public boolean fellAsleep() {
-        return (boolean) FELL_ASLEEP_HANDLE.get(segment, 0L);
+    	return (boolean) FELL_ASLEEP_HANDLE.get(segment, 0L);
     }
     
+    /// @see #transform()
     public BodyMoveEvent transform(Consumer<Transform> consumer) {
-        consumer.accept(transform);
-        return this;
+    	consumer.accept(transform);
+    	return this;
     }
     
+    /// @see #transform()
     public BodyMoveEvent transform(Transform other) {
-        transform.set(other);
-        return this;
+    	transform.set(other);
+    	return this;
     }
     
     public Transform transform() {
-        return transform;
+    	return transform;
     }
     
+    /// @see #bodyId()
     public BodyMoveEvent bodyId(Consumer<BodyId> consumer) {
-        consumer.accept(bodyId);
-        return this;
+    	consumer.accept(bodyId);
+    	return this;
     }
     
+    /// @see #bodyId()
     public BodyMoveEvent bodyId(BodyId other) {
-        bodyId.set(other);
-        return this;
+    	bodyId.set(other);
+    	return this;
     }
     
     public BodyId bodyId() {
-        return bodyId;
+    	return bodyId;
     }
     
     @Override

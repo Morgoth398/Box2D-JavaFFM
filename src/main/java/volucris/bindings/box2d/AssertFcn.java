@@ -3,6 +3,7 @@
  */
 package volucris.bindings.box2d;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -11,14 +12,18 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import volucris.bindings.core.NativeByteArray;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Prototype for the user assert callback. Return 0 to skip the debugger break.
+/// ```
 public abstract class AssertFcn {
 
-    private static final HashMap<Long, WeakReference<AssertFcn>> CACHE;
+    private static final Map<Long, WeakReference<AssertFcn>> CACHE;
 
     public static final FunctionDescriptor DESCRIPTION;
     public static final MethodHandle HANDLE;
@@ -53,20 +58,20 @@ public abstract class AssertFcn {
     }
 
     public int invoke(
-        MemorySegment condition, 
-        MemorySegment fileName, 
+        MemorySegment condition,
+        MemorySegment fileName,
         int lineNumber
     ) {
-        return (int) invoke(
-            new NativeByteArray(condition), 
-            new NativeByteArray(fileName), 
-            lineNumber
+        return invoke(
+            new NativeByteArray(condition),
+            new NativeByteArray(fileName),
+		    lineNumber
         );
     }
 
     public int invoke(
-        NativeByteArray condition, 
-        NativeByteArray fileName, 
+        NativeByteArray condition,
+        NativeByteArray fileName,
         int lineNumber
     ) {
         throw new UnsupportedOperationException(
@@ -74,12 +79,11 @@ public abstract class AssertFcn {
         );
     };
 
-
     public MemorySegment memorySegment() {
         return segment;
     }
 
-    public static AssertFcn get(MemorySegment segment) {
+    public static @Nullable AssertFcn get(MemorySegment segment) {
         WeakReference<AssertFcn> reference = CACHE.get(segment.address());
 
         if (reference == null)

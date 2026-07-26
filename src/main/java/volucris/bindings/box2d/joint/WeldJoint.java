@@ -12,9 +12,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class WeldJoint {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_WELD_JOINT;
@@ -44,276 +41,259 @@ public final class WeldJoint {
     private WeldJoint() {
     }
 
-    /**
-     * Create a weld joint
-     */
+    /// ```
+    /// Create a weld joint
+    /// @see b2WeldJointDef for details
+    /// ```
     public static MemorySegment createWeldJoint(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_WELD_JOINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_WELD_JOINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createWeldJoint}.
-     */
+    /// Typed method of [#createWeldJoint].
     public static @Nullable JointId createWeldJoint(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        WeldJointDef def
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	WeldJointDef def
     ) {
-        MemorySegment segment = createWeldJoint(
-            allocator,
-            worldId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createWeldJoint(
+    		allocator,
+    		worldId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new JointId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new JointId(segment);
     }
     
-    /**
-     * Set the weld joint linear stiffness in Hertz. 0 is rigid.
-     */
+    /// ```
+    /// Set the weld joint linear stiffness in Hertz. 0 is rigid.
+    /// ```
     public static void setLinearHertz(
-        MemorySegment jointId, 
-        float hertz
+    	MemorySegment jointId,
+    	float hertz
     ) {
-        MethodHandle method = B2_WELD_JOINT_SET_LINEAR_HERTZ.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_SET_LINEAR_HERTZ.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLinearHertz}.
-     */
+    /// Typed method of [#setLinearHertz].
     public static void setLinearHertz(
-        JointId jointId, 
-        float hertz
+    	JointId jointId,
+    	float hertz
     ) {
-        setLinearHertz(
-            jointId.memorySegment(), 
-            hertz
-        );
+    	setLinearHertz(
+    		jointId.memorySegment(),
+    		hertz
+    	);
     }
     
-    /**
-     * Get the weld joint linear stiffness in Hertz
-     */
+    /// ```
+    /// Get the weld joint linear stiffness in Hertz
+    /// ```
     public static float getLinearHertz(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WELD_JOINT_GET_LINEAR_HERTZ.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_GET_LINEAR_HERTZ.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLinearHertz}.
-     */
+    /// Typed method of [#getLinearHertz].
     public static float getLinearHertz(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getLinearHertz(
-            jointId.memorySegment()
-        );
+    	return (float) getLinearHertz(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the weld joint linear damping ratio (non-dimensional)
-     */
+    /// ```
+    /// Set the weld joint linear damping ratio (non-dimensional)
+    /// ```
     public static void setLinearDampingRatio(
-        MemorySegment jointId, 
-        float dampingRatio
+    	MemorySegment jointId,
+    	float dampingRatio
     ) {
-        MethodHandle method = B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLinearDampingRatio}.
-     */
+    /// Typed method of [#setLinearDampingRatio].
     public static void setLinearDampingRatio(
-        JointId jointId, 
-        float dampingRatio
+    	JointId jointId,
+    	float dampingRatio
     ) {
-        setLinearDampingRatio(
-            jointId.memorySegment(), 
-            dampingRatio
-        );
+    	setLinearDampingRatio(
+    		jointId.memorySegment(),
+    		dampingRatio
+    	);
     }
     
-    /**
-     * Get the weld joint linear damping ratio (non-dimensional)
-     */
+    /// ```
+    /// Get the weld joint linear damping ratio (non-dimensional)
+    /// ```
     public static float getLinearDampingRatio(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLinearDampingRatio}.
-     */
+    /// Typed method of [#getLinearDampingRatio].
     public static float getLinearDampingRatio(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getLinearDampingRatio(
-            jointId.memorySegment()
-        );
+    	return (float) getLinearDampingRatio(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the weld joint angular stiffness in Hertz. 0 is rigid.
-     */
+    /// ```
+    /// Set the weld joint angular stiffness in Hertz. 0 is rigid.
+    /// ```
     public static void setAngularHertz(
-        MemorySegment jointId, 
-        float hertz
+    	MemorySegment jointId,
+    	float hertz
     ) {
-        MethodHandle method = B2_WELD_JOINT_SET_ANGULAR_HERTZ.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_SET_ANGULAR_HERTZ.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setAngularHertz}.
-     */
+    /// Typed method of [#setAngularHertz].
     public static void setAngularHertz(
-        JointId jointId, 
-        float hertz
+    	JointId jointId,
+    	float hertz
     ) {
-        setAngularHertz(
-            jointId.memorySegment(), 
-            hertz
-        );
+    	setAngularHertz(
+    		jointId.memorySegment(),
+    		hertz
+    	);
     }
     
-    /**
-     * Get the weld joint angular stiffness in Hertz
-     */
+    /// ```
+    /// Get the weld joint angular stiffness in Hertz
+    /// ```
     public static float getAngularHertz(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WELD_JOINT_GET_ANGULAR_HERTZ.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_GET_ANGULAR_HERTZ.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAngularHertz}.
-     */
+    /// Typed method of [#getAngularHertz].
     public static float getAngularHertz(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getAngularHertz(
-            jointId.memorySegment()
-        );
+    	return (float) getAngularHertz(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set weld joint angular damping ratio, non-dimensional
-     */
+    /// ```
+    /// Set weld joint angular damping ratio, non-dimensional
+    /// ```
     public static void setAngularDampingRatio(
-        MemorySegment jointId, 
-        float dampingRatio
+    	MemorySegment jointId,
+    	float dampingRatio
     ) {
-        MethodHandle method = B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setAngularDampingRatio}.
-     */
+    /// Typed method of [#setAngularDampingRatio].
     public static void setAngularDampingRatio(
-        JointId jointId, 
-        float dampingRatio
+    	JointId jointId,
+    	float dampingRatio
     ) {
-        setAngularDampingRatio(
-            jointId.memorySegment(), 
-            dampingRatio
-        );
+    	setAngularDampingRatio(
+    		jointId.memorySegment(),
+    		dampingRatio
+    	);
     }
     
-    /**
-     * Get the weld joint angular damping ratio, non-dimensional
-     */
+    /// ```
+    /// Get the weld joint angular damping ratio, non-dimensional
+    /// ```
     public static float getAngularDampingRatio(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getAngularDampingRatio}.
-     */
+    /// Typed method of [#getAngularDampingRatio].
     public static float getAngularDampingRatio(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getAngularDampingRatio(
-            jointId.memorySegment()
-        );
+    	return (float) getAngularDampingRatio(
+    		jointId.memorySegment()
+    	);
     }
     
 }

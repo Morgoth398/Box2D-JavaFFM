@@ -15,9 +15,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * This holds the mass data computed for a shape.
- */
+/// ```
+/// This holds the mass data computed for a shape.
+/// ```
 public final class MassData
 		implements Struct<MassData> {
 
@@ -65,36 +65,49 @@ public final class MassData
         center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #mass()
     public MassData mass(float mass) {
-        MASS_HANDLE.set(segment, 0L, mass);
-        return this;
+    	MASS_HANDLE.set(segment, 0L, mass);
+    	return this;
     }
     
+    /// ```
+    /// The mass of the shape, usually in kilograms.
+    /// ```
     public float mass() {
-        return (float) MASS_HANDLE.get(segment, 0L);
+    	return (float) MASS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #rotationalInertia()
     public MassData rotationalInertia(float rotationalInertia) {
-        ROTATIONAL_INERTIA_HANDLE.set(segment, 0L, rotationalInertia);
-        return this;
+    	ROTATIONAL_INERTIA_HANDLE.set(segment, 0L, rotationalInertia);
+    	return this;
     }
     
+    /// ```
+    /// The rotational inertia of the shape about the local origin.
+    /// ```
     public float rotationalInertia() {
-        return (float) ROTATIONAL_INERTIA_HANDLE.get(segment, 0L);
+    	return (float) ROTATIONAL_INERTIA_HANDLE.get(segment, 0L);
     }
     
+    /// @see #center()
     public MassData center(Consumer<Vec2> consumer) {
-        consumer.accept(center);
-        return this;
+    	consumer.accept(center);
+    	return this;
     }
     
+    /// @see #center()
     public MassData center(Vec2 other) {
-        center.set(other);
-        return this;
+    	center.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The position of the shape's centroid relative to the shape's origin.
+    /// ```
     public Vec2 center() {
-        return center;
+    	return center;
     }
     
     @Override

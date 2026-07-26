@@ -12,9 +12,6 @@ import volucris.bindings.box2d.world.WorldId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * 
- */
 public final class PrismaticJoint {
 
     private static final LazyConstant<MethodHandle> B2_CREATE_PRISMATIC_JOINT;
@@ -72,678 +69,635 @@ public final class PrismaticJoint {
     private PrismaticJoint() {
     }
 
-    /**
-     * Create a prismatic (slider) joint.
-     */
+    /// ```
+    /// Create a prismatic (slider) joint.
+    /// @see b2PrismaticJointDef for details
+    /// ```
     public static MemorySegment createPrismaticJoint(
-        SegmentAllocator allocator,
-        MemorySegment worldId, 
-        MemorySegment def
+    	SegmentAllocator allocator,
+    	MemorySegment worldId,
+    	MemorySegment def
     ) {
-        MethodHandle method = B2_CREATE_PRISMATIC_JOINT.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator,
-                worldId, 
-                def
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_CREATE_PRISMATIC_JOINT.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			worldId,
+    			def
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #createPrismaticJoint}.
-     */
+    /// Typed method of [#createPrismaticJoint].
     public static @Nullable JointId createPrismaticJoint(
-        SegmentAllocator allocator,
-        WorldId worldId, 
-        PrismaticJointDef def
+    	SegmentAllocator allocator,
+    	WorldId worldId,
+    	PrismaticJointDef def
     ) {
-        MemorySegment segment = createPrismaticJoint(
-            allocator,
-            worldId.memorySegment(), 
-            def.memorySegment()
-        );
+    	MemorySegment segment = createPrismaticJoint(
+    		allocator,
+    		worldId.memorySegment(),
+    		def.memorySegment()
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new JointId(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new JointId(segment);
     }
     
-    /**
-     * Enable/disable the joint spring.
-     */
+    /// ```
+    /// Enable/disable the joint spring.
+    /// ```
     public static void enableSpring(
-        MemorySegment jointId, 
-        boolean enableSpring
+    	MemorySegment jointId,
+    	boolean enableSpring
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_ENABLE_SPRING.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableSpring
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_ENABLE_SPRING.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableSpring
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableSpring}.
-     */
+    /// Typed method of [#enableSpring].
     public static void enableSpring(
-        JointId jointId, 
-        boolean enableSpring
+    	JointId jointId,
+    	boolean enableSpring
     ) {
-        enableSpring(
-            jointId.memorySegment(), 
-            enableSpring
-        );
+    	enableSpring(
+    		jointId.memorySegment(),
+    		enableSpring
+    	);
     }
     
-    /**
-     * Is the prismatic joint spring enabled or not?
-     */
+    /// ```
+    /// Is the prismatic joint spring enabled or not?
+    /// ```
     public static boolean isSpringEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_IS_SPRING_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_IS_SPRING_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isSpringEnabled}.
-     */
+    /// Typed method of [#isSpringEnabled].
     public static boolean isSpringEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) isSpringEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) isSpringEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the prismatic joint stiffness in Hertz. This should usually be less than a quarter of the simulation rate. For example, if the simulation runs at 60Hz then the joint stiffness should be 15Hz or less.
-     */
+    /// ```
+    /// Set the prismatic joint stiffness in Hertz.
+    /// This should usually be less than a quarter of the simulation rate. For example, if the simulation
+    /// runs at 60Hz then the joint stiffness should be 15Hz or less.
+    /// ```
     public static void setSpringHertz(
-        MemorySegment jointId, 
-        float hertz
+    	MemorySegment jointId,
+    	float hertz
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_SET_SPRING_HERTZ.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                hertz
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_SPRING_HERTZ.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setSpringHertz}.
-     */
+    /// Typed method of [#setSpringHertz].
     public static void setSpringHertz(
-        JointId jointId, 
-        float hertz
+    	JointId jointId,
+    	float hertz
     ) {
-        setSpringHertz(
-            jointId.memorySegment(), 
-            hertz
-        );
+    	setSpringHertz(
+    		jointId.memorySegment(),
+    		hertz
+    	);
     }
     
-    /**
-     * Get the prismatic joint stiffness in Hertz
-     */
+    /// ```
+    /// Get the prismatic joint stiffness in Hertz
+    /// ```
     public static float getSpringHertz(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_SPRING_HERTZ.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPRING_HERTZ.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSpringHertz}.
-     */
+    /// Typed method of [#getSpringHertz].
     public static float getSpringHertz(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getSpringHertz(
-            jointId.memorySegment()
-        );
+    	return (float) getSpringHertz(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the prismatic joint damping ratio (non-dimensional)
-     */
+    /// ```
+    /// Set the prismatic joint damping ratio (non-dimensional)
+    /// ```
     public static void setSpringDampingRatio(
-        MemorySegment jointId, 
-        float dampingRatio
+    	MemorySegment jointId,
+    	float dampingRatio
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                dampingRatio
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setSpringDampingRatio}.
-     */
+    /// Typed method of [#setSpringDampingRatio].
     public static void setSpringDampingRatio(
-        JointId jointId, 
-        float dampingRatio
+    	JointId jointId,
+    	float dampingRatio
     ) {
-        setSpringDampingRatio(
-            jointId.memorySegment(), 
-            dampingRatio
-        );
+    	setSpringDampingRatio(
+    		jointId.memorySegment(),
+    		dampingRatio
+    	);
     }
     
-    /**
-     * Get the prismatic spring damping ratio (non-dimensional)
-     */
+    /// ```
+    /// Get the prismatic spring damping ratio (non-dimensional)
+    /// ```
     public static float getSpringDampingRatio(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSpringDampingRatio}.
-     */
+    /// Typed method of [#getSpringDampingRatio].
     public static float getSpringDampingRatio(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getSpringDampingRatio(
-            jointId.memorySegment()
-        );
+    	return (float) getSpringDampingRatio(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the prismatic joint spring target angle, usually in meters
-     */
+    /// ```
+    /// Set the prismatic joint spring target angle, usually in meters
+    /// ```
     public static void setTargetTranslation(
-        MemorySegment jointId, 
-        float translation
+    	MemorySegment jointId,
+    	float translation
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_SET_TARGET_TRANSLATION.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                translation
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_TARGET_TRANSLATION.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			translation
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setTargetTranslation}.
-     */
+    /// Typed method of [#setTargetTranslation].
     public static void setTargetTranslation(
-        JointId jointId, 
-        float translation
+    	JointId jointId,
+    	float translation
     ) {
-        setTargetTranslation(
-            jointId.memorySegment(), 
-            translation
-        );
+    	setTargetTranslation(
+    		jointId.memorySegment(),
+    		translation
+    	);
     }
     
-    /**
-     * Get the prismatic joint spring target translation, usually in meters
-     */
+    /// ```
+    /// Get the prismatic joint spring target translation, usually in meters
+    /// ```
     public static float getTargetTranslation(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getTargetTranslation}.
-     */
+    /// Typed method of [#getTargetTranslation].
     public static float getTargetTranslation(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getTargetTranslation(
-            jointId.memorySegment()
-        );
+    	return (float) getTargetTranslation(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Enable/disable a prismatic joint limit
-     */
+    /// ```
+    /// Enable/disable a prismatic joint limit
+    /// ```
     public static void enableLimit(
-        MemorySegment jointId, 
-        boolean enableLimit
+    	MemorySegment jointId,
+    	boolean enableLimit
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_ENABLE_LIMIT.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableLimit
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_ENABLE_LIMIT.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableLimit
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableLimit}.
-     */
+    /// Typed method of [#enableLimit].
     public static void enableLimit(
-        JointId jointId, 
-        boolean enableLimit
+    	JointId jointId,
+    	boolean enableLimit
     ) {
-        enableLimit(
-            jointId.memorySegment(), 
-            enableLimit
-        );
+    	enableLimit(
+    		jointId.memorySegment(),
+    		enableLimit
+    	);
     }
     
-    /**
-     * Is the prismatic joint limit enabled?
-     */
+    /// ```
+    /// Is the prismatic joint limit enabled?
+    /// ```
     public static boolean isLimitEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isLimitEnabled}.
-     */
+    /// Typed method of [#isLimitEnabled].
     public static boolean isLimitEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) isLimitEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) isLimitEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the prismatic joint lower limit
-     */
+    /// ```
+    /// Get the prismatic joint lower limit
+    /// ```
     public static float getLowerLimit(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_LOWER_LIMIT.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_LOWER_LIMIT.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getLowerLimit}.
-     */
+    /// Typed method of [#getLowerLimit].
     public static float getLowerLimit(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getLowerLimit(
-            jointId.memorySegment()
-        );
+    	return (float) getLowerLimit(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the prismatic joint upper limit
-     */
+    /// ```
+    /// Get the prismatic joint upper limit
+    /// ```
     public static float getUpperLimit(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_UPPER_LIMIT.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_UPPER_LIMIT.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getUpperLimit}.
-     */
+    /// Typed method of [#getUpperLimit].
     public static float getUpperLimit(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getUpperLimit(
-            jointId.memorySegment()
-        );
+    	return (float) getUpperLimit(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the prismatic joint limits
-     */
+    /// ```
+    /// Set the prismatic joint limits
+    /// ```
     public static void setLimits(
-        MemorySegment jointId, 
-        float lower, 
-        float upper
+    	MemorySegment jointId,
+    	float lower,
+    	float upper
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_SET_LIMITS.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                lower, 
-                upper
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_LIMITS.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			lower,
+    			upper
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setLimits}.
-     */
+    /// Typed method of [#setLimits].
     public static void setLimits(
-        JointId jointId, 
-        float lower, 
-        float upper
+    	JointId jointId,
+    	float lower,
+    	float upper
     ) {
-        setLimits(
-            jointId.memorySegment(), 
-            lower, 
-            upper
-        );
+    	setLimits(
+    		jointId.memorySegment(),
+    		lower,
+    		upper
+    	);
     }
     
-    /**
-     * Enable/disable a prismatic joint motor
-     */
+    /// ```
+    /// Enable/disable a prismatic joint motor
+    /// ```
     public static void enableMotor(
-        MemorySegment jointId, 
-        boolean enableMotor
+    	MemorySegment jointId,
+    	boolean enableMotor
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_ENABLE_MOTOR.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                enableMotor
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_ENABLE_MOTOR.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			enableMotor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #enableMotor}.
-     */
+    /// Typed method of [#enableMotor].
     public static void enableMotor(
-        JointId jointId, 
-        boolean enableMotor
+    	JointId jointId,
+    	boolean enableMotor
     ) {
-        enableMotor(
-            jointId.memorySegment(), 
-            enableMotor
-        );
+    	enableMotor(
+    		jointId.memorySegment(),
+    		enableMotor
+    	);
     }
     
-    /**
-     * Is the prismatic joint motor enabled?
-     */
+    /// ```
+    /// Is the prismatic joint motor enabled?
+    /// ```
     public static boolean isMotorEnabled(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED.get();
-        try {
-            return (boolean) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED.get();
+    	try {
+    		return (boolean)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #isMotorEnabled}.
-     */
+    /// Typed method of [#isMotorEnabled].
     public static boolean isMotorEnabled(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (boolean) isMotorEnabled(
-            jointId.memorySegment()
-        );
+    	return (boolean) isMotorEnabled(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the prismatic joint motor speed, usually in meters per second
-     */
+    /// ```
+    /// Set the prismatic joint motor speed, usually in meters per second
+    /// ```
     public static void setMotorSpeed(
-        MemorySegment jointId, 
-        float motorSpeed
+    	MemorySegment jointId,
+    	float motorSpeed
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_SET_MOTOR_SPEED.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                motorSpeed
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_MOTOR_SPEED.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			motorSpeed
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMotorSpeed}.
-     */
+    /// Typed method of [#setMotorSpeed].
     public static void setMotorSpeed(
-        JointId jointId, 
-        float motorSpeed
+    	JointId jointId,
+    	float motorSpeed
     ) {
-        setMotorSpeed(
-            jointId.memorySegment(), 
-            motorSpeed
-        );
+    	setMotorSpeed(
+    		jointId.memorySegment(),
+    		motorSpeed
+    	);
     }
     
-    /**
-     * Get the prismatic joint motor speed, usually in meters per second
-     */
+    /// ```
+    /// Get the prismatic joint motor speed, usually in meters per second
+    /// ```
     public static float getMotorSpeed(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_SPEED.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_SPEED.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMotorSpeed}.
-     */
+    /// Typed method of [#getMotorSpeed].
     public static float getMotorSpeed(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMotorSpeed(
-            jointId.memorySegment()
-        );
+    	return (float) getMotorSpeed(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Set the prismatic joint maximum motor force, usually in newtons
-     */
+    /// ```
+    /// Set the prismatic joint maximum motor force, usually in newtons
+    /// ```
     public static void setMaxMotorForce(
-        MemorySegment jointId, 
-        float force
+    	MemorySegment jointId,
+    	float force
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE.get();
-        try {
-            method.invokeExact(
-                jointId, 
-                force
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			force
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #setMaxMotorForce}.
-     */
+    /// Typed method of [#setMaxMotorForce].
     public static void setMaxMotorForce(
-        JointId jointId, 
-        float force
+    	JointId jointId,
+    	float force
     ) {
-        setMaxMotorForce(
-            jointId.memorySegment(), 
-            force
-        );
+    	setMaxMotorForce(
+    		jointId.memorySegment(),
+    		force
+    	);
     }
     
-    /**
-     * Get the prismatic joint maximum motor force, usually in newtons
-     */
+    /// ```
+    /// Get the prismatic joint maximum motor force, usually in newtons
+    /// ```
     public static float getMaxMotorForce(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMaxMotorForce}.
-     */
+    /// Typed method of [#getMaxMotorForce].
     public static float getMaxMotorForce(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMaxMotorForce(
-            jointId.memorySegment()
-        );
+    	return (float) getMaxMotorForce(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the prismatic joint current motor force, usually in newtons
-     */
+    /// ```
+    /// Get the prismatic joint current motor force, usually in newtons
+    /// ```
     public static float getMotorForce(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_FORCE.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_FORCE.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getMotorForce}.
-     */
+    /// Typed method of [#getMotorForce].
     public static float getMotorForce(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getMotorForce(
-            jointId.memorySegment()
-        );
+    	return (float) getMotorForce(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the current joint translation, usually in meters.
-     */
+    /// ```
+    /// Get the current joint translation, usually in meters.
+    /// ```
     public static float getTranslation(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_TRANSLATION.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_TRANSLATION.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getTranslation}.
-     */
+    /// Typed method of [#getTranslation].
     public static float getTranslation(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getTranslation(
-            jointId.memorySegment()
-        );
+    	return (float) getTranslation(
+    		jointId.memorySegment()
+    	);
     }
     
-    /**
-     * Get the current joint translation speed, usually in meters per second.
-     */
+    /// ```
+    /// Get the current joint translation speed, usually in meters per second.
+    /// ```
     public static float getSpeed(
-        MemorySegment jointId
+    	MemorySegment jointId
     ) {
-        MethodHandle method = B2_PRISMATIC_JOINT_GET_SPEED.get();
-        try {
-            return (float) method.invokeExact(
-                jointId
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPEED.get();
+    	try {
+    		return (float)  method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #getSpeed}.
-     */
+    /// Typed method of [#getSpeed].
     public static float getSpeed(
-        JointId jointId
+    	JointId jointId
     ) {
-        return (float) getSpeed(
-            jointId.memorySegment()
-        );
+    	return (float) getSpeed(
+    		jointId.memorySegment()
+    	);
     }
     
 }

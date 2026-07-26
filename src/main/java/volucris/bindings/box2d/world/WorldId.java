@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * World id references a world instance. This should be treated as an opaque handle.
- */
+/// ```
+/// World id references a world instance. This should be treated as an opaque handle.
+/// ```
 public final class WorldId
 		implements Struct<WorldId> {
 
@@ -57,22 +57,24 @@ public final class WorldId
     
     }
 
+    /// @see #index1()
     public WorldId index1(short index1) {
-        INDEX1_HANDLE.set(segment, 0L, index1);
-        return this;
+    	INDEX1_HANDLE.set(segment, 0L, index1);
+    	return this;
     }
     
     public short index1() {
-        return (short) INDEX1_HANDLE.get(segment, 0L);
+    	return (short) INDEX1_HANDLE.get(segment, 0L);
     }
     
+    /// @see #generation()
     public WorldId generation(short generation) {
-        GENERATION_HANDLE.set(segment, 0L, generation);
-        return this;
+    	GENERATION_HANDLE.set(segment, 0L, generation);
+    	return this;
     }
     
     public short generation() {
-        return (short) GENERATION_HANDLE.get(segment, 0L);
+    	return (short) GENERATION_HANDLE.get(segment, 0L);
     }
     
     @Override

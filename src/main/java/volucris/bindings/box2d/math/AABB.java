@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * Axis-aligned bounding box
- */
+/// ```
+/// Axis-aligned bounding box
+/// ```
 public final class AABB
 		implements Struct<AABB> {
 
@@ -56,32 +56,36 @@ public final class AABB
         upperBound = new Vec2(segment.asSlice(UPPER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
+    /// @see #lowerBound()
     public AABB lowerBound(Consumer<Vec2> consumer) {
-        consumer.accept(lowerBound);
-        return this;
+    	consumer.accept(lowerBound);
+    	return this;
     }
     
+    /// @see #lowerBound()
     public AABB lowerBound(Vec2 other) {
-        lowerBound.set(other);
-        return this;
+    	lowerBound.set(other);
+    	return this;
     }
     
     public Vec2 lowerBound() {
-        return lowerBound;
+    	return lowerBound;
     }
     
+    /// @see #upperBound()
     public AABB upperBound(Consumer<Vec2> consumer) {
-        consumer.accept(upperBound);
-        return this;
+    	consumer.accept(upperBound);
+    	return this;
     }
     
+    /// @see #upperBound()
     public AABB upperBound(Vec2 other) {
-        upperBound.set(other);
-        return this;
+    	upperBound.set(other);
+    	return this;
     }
     
     public Vec2 upperBound() {
-        return upperBound;
+    	return upperBound;
     }
     
     @Override

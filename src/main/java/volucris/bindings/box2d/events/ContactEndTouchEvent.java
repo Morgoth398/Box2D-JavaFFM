@@ -14,9 +14,12 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * An end touch event is generated when two shapes stop touching. You will get an end event if you do anything that destroys contacts previous to the last world step. These include things like setting the transform, destroying a body or shape, or changing a filter or body type.
- */
+/// ```
+/// An end touch event is generated when two shapes stop touching.
+/// You will get an end event if you do anything that destroys contacts previous to the last
+/// world step. These include things like setting the transform, destroying a body
+/// or shape, or changing a filter or body type.
+/// ```
 public final class ContactEndTouchEvent
 		implements Struct<ContactEndTouchEvent> {
 
@@ -57,32 +60,46 @@ public final class ContactEndTouchEvent
         shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
     }
 
+    /// @see #shapeIdA()
     public ContactEndTouchEvent shapeIdA(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdA);
-        return this;
+    	consumer.accept(shapeIdA);
+    	return this;
     }
     
+    /// @see #shapeIdA()
     public ContactEndTouchEvent shapeIdA(ShapeId other) {
-        shapeIdA.set(other);
-        return this;
+    	shapeIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Id of the first shape
+    /// @warning this shape may have been destroyed
+    /// @see b2Shape_IsValid
+    /// ```
     public ShapeId shapeIdA() {
-        return shapeIdA;
+    	return shapeIdA;
     }
     
+    /// @see #shapeIdB()
     public ContactEndTouchEvent shapeIdB(Consumer<ShapeId> consumer) {
-        consumer.accept(shapeIdB);
-        return this;
+    	consumer.accept(shapeIdB);
+    	return this;
     }
     
+    /// @see #shapeIdB()
     public ContactEndTouchEvent shapeIdB(ShapeId other) {
-        shapeIdB.set(other);
-        return this;
+    	shapeIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Id of the second shape
+    /// @warning this shape may have been destroyed
+    /// @see b2Shape_IsValid
+    /// ```
     public ShapeId shapeIdB() {
-        return shapeIdB;
+    	return shapeIdB;
     }
     
     @Override

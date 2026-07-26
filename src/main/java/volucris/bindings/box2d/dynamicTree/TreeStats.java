@@ -13,9 +13,9 @@ import volucris.bindings.core.Struct;
 
 import static java.lang.foreign.ValueLayout.*;
 
-/**
- * These are performance results returned by dynamic tree queries.
- */
+/// ```
+/// These are performance results returned by dynamic tree queries.
+/// ```
 public final class TreeStats
 		implements Struct<TreeStats> {
 
@@ -57,22 +57,30 @@ public final class TreeStats
     
     }
 
+    /// @see #nodeVisits()
     public TreeStats nodeVisits(int nodeVisits) {
-        NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
-        return this;
+    	NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
+    	return this;
     }
     
+    /// ```
+    /// Number of internal nodes visited during the query
+    /// ```
     public int nodeVisits() {
-        return (int) NODE_VISITS_HANDLE.get(segment, 0L);
+    	return (int) NODE_VISITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #leafVisits()
     public TreeStats leafVisits(int leafVisits) {
-        LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
-        return this;
+    	LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
+    	return this;
     }
     
+    /// ```
+    /// Number of leaf nodes visited during the query
+    /// ```
     public int leafVisits() {
-        return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
+    	return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
     }
     
     @Override

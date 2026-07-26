@@ -20,9 +20,12 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
-/**
- * A motor joint is used to control the relative motion between two bodies
- */
+/// ```
+/// A motor joint is used to control the relative motion between two bodies
+/// 
+/// A typical usage is to control the movement of a dynamic body with respect to the ground.
+/// @ingroup motor_joint
+/// ```
 public final class MotorJointDef
 		implements Struct<MotorJointDef> {
 
@@ -103,144 +106,188 @@ public final class MotorJointDef
         linearOffset = new Vec2(segment.asSlice(LINEAR_OFFSET_BYTE_OFFSET, Vec2.LAYOUT));
     }
 
-    /**
-     * Use this to initialize your joint definition
-     */
+    /// ```
+    /// Use this to initialize your joint definition
+    /// @ingroup motor_joint
+    /// ```
     public static MemorySegment ndefaultMotorJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MethodHandle method = B2_DEFAULT_MOTOR_JOINT_DEF.get();
-        try {
-            return (MemorySegment) method.invokeExact(
-                allocator
-            );
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    	MethodHandle method = B2_DEFAULT_MOTOR_JOINT_DEF.get();
+    	try {
+    		return (MemorySegment)  method.invokeExact(
+    			allocator
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    /**
-     * Typed method of {@link #ndefaultMotorJointDef}.
-     */
+    /// Typed method of [#ndefaultMotorJointDef].
     public static @Nullable MotorJointDef defaultMotorJointDef(
-        SegmentAllocator allocator
+    	SegmentAllocator allocator
     ) {
-        MemorySegment segment = ndefaultMotorJointDef(allocator);
+    	MemorySegment segment = ndefaultMotorJointDef(
+    		allocator
+    	);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return new MotorJointDef(segment);
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MotorJointDef(segment);
     }
     
+    /// @see #angularOffset()
     public MotorJointDef angularOffset(float angularOffset) {
-        ANGULAR_OFFSET_HANDLE.set(segment, 0L, angularOffset);
-        return this;
+    	ANGULAR_OFFSET_HANDLE.set(segment, 0L, angularOffset);
+    	return this;
     }
     
+    /// ```
+    /// The bodyB angle minus bodyA angle in radians
+    /// ```
     public float angularOffset() {
-        return (float) ANGULAR_OFFSET_HANDLE.get(segment, 0L);
+    	return (float) ANGULAR_OFFSET_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxForce()
     public MotorJointDef maxForce(float maxForce) {
-        MAX_FORCE_HANDLE.set(segment, 0L, maxForce);
-        return this;
+    	MAX_FORCE_HANDLE.set(segment, 0L, maxForce);
+    	return this;
     }
     
+    /// ```
+    /// The maximum motor force in newtons
+    /// ```
     public float maxForce() {
-        return (float) MAX_FORCE_HANDLE.get(segment, 0L);
+    	return (float) MAX_FORCE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #maxTorque()
     public MotorJointDef maxTorque(float maxTorque) {
-        MAX_TORQUE_HANDLE.set(segment, 0L, maxTorque);
-        return this;
+    	MAX_TORQUE_HANDLE.set(segment, 0L, maxTorque);
+    	return this;
     }
     
+    /// ```
+    /// The maximum motor torque in newton-meters
+    /// ```
     public float maxTorque() {
-        return (float) MAX_TORQUE_HANDLE.get(segment, 0L);
+    	return (float) MAX_TORQUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #correctionFactor()
     public MotorJointDef correctionFactor(float correctionFactor) {
-        CORRECTION_FACTOR_HANDLE.set(segment, 0L, correctionFactor);
-        return this;
+    	CORRECTION_FACTOR_HANDLE.set(segment, 0L, correctionFactor);
+    	return this;
     }
     
+    /// ```
+    /// Position correction factor in the range [0,1]
+    /// ```
     public float correctionFactor() {
-        return (float) CORRECTION_FACTOR_HANDLE.get(segment, 0L);
+    	return (float) CORRECTION_FACTOR_HANDLE.get(segment, 0L);
     }
     
+    /// @see #collideConnected()
     public MotorJointDef collideConnected(boolean collideConnected) {
-        COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-        return this;
+    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    	return this;
     }
     
+    /// ```
+    /// Set this flag to true if the attached bodies should collide
+    /// ```
     public boolean collideConnected() {
-        return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
     }
     
+    /// @see #userData()
     public MotorJointDef userData(MemorySegment userData) {
-        USER_DATA_HANDLE.set(segment, 0L, userData);
-        return this;
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
     }
     
+    /// ```
+    /// User data pointer
+    /// ```
     public @Nullable MemorySegment userData() {
-        MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
     
-        if (segment.equals(MemorySegment.NULL))
-            return null;
-    
-        return segment;
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
     }
     
+    /// @see #internalValue()
     public MotorJointDef internalValue(int internalValue) {
-        INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-        return this;
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
     }
     
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
     public int internalValue() {
-        return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
+    /// @see #bodyIdA()
     public MotorJointDef bodyIdA(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdA);
-        return this;
+    	consumer.accept(bodyIdA);
+    	return this;
     }
     
+    /// @see #bodyIdA()
     public MotorJointDef bodyIdA(BodyId other) {
-        bodyIdA.set(other);
-        return this;
+    	bodyIdA.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The first attached body
+    /// ```
     public BodyId bodyIdA() {
-        return bodyIdA;
+    	return bodyIdA;
     }
     
+    /// @see #bodyIdB()
     public MotorJointDef bodyIdB(Consumer<BodyId> consumer) {
-        consumer.accept(bodyIdB);
-        return this;
+    	consumer.accept(bodyIdB);
+    	return this;
     }
     
+    /// @see #bodyIdB()
     public MotorJointDef bodyIdB(BodyId other) {
-        bodyIdB.set(other);
-        return this;
+    	bodyIdB.set(other);
+    	return this;
     }
     
+    /// ```
+    /// The second attached body
+    /// ```
     public BodyId bodyIdB() {
-        return bodyIdB;
+    	return bodyIdB;
     }
     
+    /// @see #linearOffset()
     public MotorJointDef linearOffset(Consumer<Vec2> consumer) {
-        consumer.accept(linearOffset);
-        return this;
+    	consumer.accept(linearOffset);
+    	return this;
     }
     
+    /// @see #linearOffset()
     public MotorJointDef linearOffset(Vec2 other) {
-        linearOffset.set(other);
-        return this;
+    	linearOffset.set(other);
+    	return this;
     }
     
+    /// ```
+    /// Position of bodyB minus the position of bodyA, in bodyA's frame
+    /// ```
     public Vec2 linearOffset() {
-        return linearOffset;
+    	return linearOffset;
     }
     
     @Override
