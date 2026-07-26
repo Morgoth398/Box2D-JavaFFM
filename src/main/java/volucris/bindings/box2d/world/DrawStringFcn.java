@@ -14,7 +14,6 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import volucris.bindings.box2d.math.Vec2;
-import volucris.bindings.core.NativeByteArray;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
@@ -66,15 +65,15 @@ public abstract class DrawStringFcn {
     ) {
         invoke(
             new Vec2(p),
-            new NativeByteArray(s),
-		    color,
-		    context
+            s.getString(0),
+            color,
+            context
         );
     }
 
     public void invoke(
         Vec2 p,
-        NativeByteArray s,
+        String s,
         int color,
         MemorySegment context
     ) {

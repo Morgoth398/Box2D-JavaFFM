@@ -71,10 +71,10 @@ public abstract class DrawSolidPolygonFcn {
         invoke(
             new Transform(transform),
             new Vec2(vertices),
-		    vertexCount,
-		    radius,
-		    color,
-		    context
+            vertexCount,
+            radius,
+            color,
+            context
         );
     }
 

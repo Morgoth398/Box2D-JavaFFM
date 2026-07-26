@@ -65,7 +65,7 @@ public abstract class AssertFcn {
         return invoke(
             new NativeByteArray(condition),
             new NativeByteArray(fileName),
-		    lineNumber
+            lineNumber
         );
     }
 

@@ -63,7 +63,7 @@ public abstract class PlaneResultFcn {
         return invoke(
             new ShapeId(shapeId),
             new PlaneResult(plane),
-		    context
+            context
         );
     }
 

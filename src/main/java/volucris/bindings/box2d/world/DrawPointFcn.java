@@ -65,9 +65,9 @@ public abstract class DrawPointFcn {
     ) {
         invoke(
             new Vec2(p),
-		    size,
-		    color,
-		    context
+            size,
+            color,
+            context
         );
     }
 

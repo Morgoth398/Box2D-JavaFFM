@@ -66,7 +66,7 @@ public abstract class OverlapResultFcn {
     ) {
         return invoke(
             new ShapeId(shapeId),
-		    context
+            context
         );
     }
 

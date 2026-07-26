@@ -68,9 +68,9 @@ public abstract class DrawSolidCapsuleFcn {
         invoke(
             new Vec2(p1),
             new Vec2(p2),
-		    radius,
-		    color,
-		    context
+            radius,
+            color,
+            context
         );
     }
 

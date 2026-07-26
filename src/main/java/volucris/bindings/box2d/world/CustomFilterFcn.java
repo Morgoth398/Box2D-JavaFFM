@@ -76,7 +76,7 @@ public abstract class CustomFilterFcn {
         return invoke(
             new ShapeId(shapeIdA),
             new ShapeId(shapeIdB),
-		    context
+            context
         );
     }
 

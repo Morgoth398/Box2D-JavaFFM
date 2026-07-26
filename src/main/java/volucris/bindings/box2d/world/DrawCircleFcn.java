@@ -65,9 +65,9 @@ public abstract class DrawCircleFcn {
     ) {
         invoke(
             new Vec2(center),
-		    radius,
-		    color,
-		    context
+            radius,
+            color,
+            context
         );
     }
 

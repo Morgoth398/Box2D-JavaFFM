@@ -66,8 +66,8 @@ public abstract class DrawSegmentFcn {
         invoke(
             new Vec2(p1),
             new Vec2(p2),
-		    color,
-		    context
+            color,
+            context
         );
     }
 

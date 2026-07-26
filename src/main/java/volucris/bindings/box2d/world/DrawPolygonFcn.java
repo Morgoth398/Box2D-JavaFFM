@@ -65,9 +65,9 @@ public abstract class DrawPolygonFcn {
     ) {
         invoke(
             new Vec2(vertices),
-		    vertexCount,
-		    color,
-		    context
+            vertexCount,
+            color,
+            context
         );
     }
 
