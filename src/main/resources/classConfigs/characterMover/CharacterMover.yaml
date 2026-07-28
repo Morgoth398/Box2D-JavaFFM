@@ -34,5 +34,9 @@ struct:
   
 native-functions:
   - name: b2SolvePlanes
+    struct-arrays:
+      - planes
   - name: b2ClipVector
+    struct-arrays:
+      - planes
 native-function-pointers:

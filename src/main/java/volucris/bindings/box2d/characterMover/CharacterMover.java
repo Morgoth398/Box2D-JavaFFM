@@ -8,6 +8,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 import volucris.bindings.box2d.math.Vec2;
+import volucris.bindings.core.NativeStructArray;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
@@ -56,7 +57,7 @@ public final class CharacterMover {
     public static @Nullable PlaneSolverResult solvePlanes(
     	SegmentAllocator allocator,
     	Vec2 targetDelta,
-    	CollisionPlane planes,
+    	NativeStructArray<CollisionPlane> planes,
     	int count
     ) {
     	MemorySegment segment = solvePlanes(
@@ -99,7 +100,7 @@ public final class CharacterMover {
     public static @Nullable Vec2 clipVector(
     	SegmentAllocator allocator,
     	Vec2 vector,
-    	CollisionPlane planes,
+    	NativeStructArray<CollisionPlane> planes,
     	int count
     ) {
     	MemorySegment segment = clipVector(
