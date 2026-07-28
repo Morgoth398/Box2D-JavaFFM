@@ -1,6 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-*.c linguist-vendored=true
-*.h linguist-vendored=true
-*.cpp linguist-vendored=true
+src/main/resources/box2d*/** linguist-vendored=true
