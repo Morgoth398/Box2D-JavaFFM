@@ -17,6 +17,7 @@ import volucris.bindings.box2d.math.Transform;
 import volucris.bindings.box2d.math.Vec2;
 import volucris.bindings.box2d.shape.ShapeId;
 import volucris.bindings.box2d.world.WorldId;
+import volucris.bindings.core.MemoryStack;
 import volucris.bindings.core.NativeStructArray;
 
 import static java.lang.foreign.ValueLayout.*;
@@ -338,7 +339,7 @@ public final class Body {
     	BodyId bodyId,
     	String name
     ) {
-    	try (Arena arena = Arena.ofConfined()) {
+    	try (Arena arena = MemoryStack.stackPush()) {
     		setName(
     			bodyId.memorySegment(),
     			arena.allocateFrom(name)

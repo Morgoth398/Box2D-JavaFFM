@@ -190,7 +190,7 @@ public final class Shape {
     	SegmentAllocator allocator,
     	MemorySegment bodyId,
     	MemorySegment def,
-    	MemorySegment segment
+    	MemorySegment paramSegment
     ) {
     	MethodHandle method = B2_CREATE_SEGMENT_SHAPE.get();
     	try {
@@ -198,7 +198,7 @@ public final class Shape {
     			allocator,
     			bodyId,
     			def,
-    			segment
+    			paramSegment
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
@@ -1430,13 +1430,13 @@ public final class Shape {
     /// ```
     public static void setSegment(
     	MemorySegment shapeId,
-    	MemorySegment segment
+    	MemorySegment paramSegment
     ) {
     	MethodHandle method = B2_SHAPE_SET_SEGMENT.get();
     	try {
     		 method.invokeExact(
     			shapeId,
-    			segment
+    			paramSegment
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
