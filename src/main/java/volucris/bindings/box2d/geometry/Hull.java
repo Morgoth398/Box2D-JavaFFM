@@ -126,7 +126,7 @@ public final class Hull
     ) {
     	MethodHandle method = B2_VALIDATE_HULL.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			hull
     		);
     	} catch (Throwable e) {
@@ -136,7 +136,7 @@ public final class Hull
     
     /// Typed method of [#validateHull].
     public final boolean validateHull() {
-    	return (boolean) validateHull(
+    	return validateHull(
     		this.segment
     	);
     }

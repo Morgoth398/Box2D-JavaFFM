@@ -87,7 +87,7 @@ public final class SurfaceMaterial
     ) {
     	MethodHandle method = B2_DEFAULT_SURFACE_MATERIAL.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

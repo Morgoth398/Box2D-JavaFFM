@@ -164,7 +164,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_CREATE.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {
@@ -222,7 +222,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_CREATE_PROXY.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			tree,
     			aabb,
     			categoryBits,
@@ -240,7 +240,7 @@ public final class DynamicTree
     	long categoryBits,
     	long userData
     ) {
-    	return (int) createProxy(
+    	return createProxy(
     		tree.memorySegment(),
     		aabb.memorySegment(),
     		categoryBits,
@@ -385,7 +385,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_GET_CATEGORY_BITS.get();
     	try {
-    		return (long)  method.invokeExact(
+    		return (long) method.invokeExact(
     			tree,
     			proxyId
     		);
@@ -399,7 +399,7 @@ public final class DynamicTree
     	DynamicTree tree,
     	int proxyId
     ) {
-    	return (long) getCategoryBits(
+    	return getCategoryBits(
     		tree.memorySegment(),
     		proxyId
     	);
@@ -586,7 +586,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_GET_HEIGHT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			tree
     		);
     	} catch (Throwable e) {
@@ -598,7 +598,7 @@ public final class DynamicTree
     public static int getHeight(
     	DynamicTree tree
     ) {
-    	return (int) getHeight(
+    	return getHeight(
     		tree.memorySegment()
     	);
     }
@@ -611,7 +611,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_GET_AREA_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			tree
     		);
     	} catch (Throwable e) {
@@ -623,7 +623,7 @@ public final class DynamicTree
     public static float getAreaRatio(
     	DynamicTree tree
     ) {
-    	return (float) getAreaRatio(
+    	return getAreaRatio(
     		tree.memorySegment()
     	);
     }
@@ -670,7 +670,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_GET_PROXY_COUNT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			tree
     		);
     	} catch (Throwable e) {
@@ -682,7 +682,7 @@ public final class DynamicTree
     public static int getProxyCount(
     	DynamicTree tree
     ) {
-    	return (int) getProxyCount(
+    	return getProxyCount(
     		tree.memorySegment()
     	);
     }
@@ -696,7 +696,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_REBUILD.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			tree,
     			fullBuild
     		);
@@ -710,7 +710,7 @@ public final class DynamicTree
     	DynamicTree tree,
     	boolean fullBuild
     ) {
-    	return (int) rebuild(
+    	return rebuild(
     		tree.memorySegment(),
     		fullBuild
     	);
@@ -724,7 +724,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_GET_BYTE_COUNT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			tree
     		);
     	} catch (Throwable e) {
@@ -736,7 +736,7 @@ public final class DynamicTree
     public static int getByteCount(
     	DynamicTree tree
     ) {
-    	return (int) getByteCount(
+    	return getByteCount(
     		tree.memorySegment()
     	);
     }
@@ -750,7 +750,7 @@ public final class DynamicTree
     ) {
     	MethodHandle method = B2_DYNAMIC_TREE_GET_USER_DATA.get();
     	try {
-    		return (long)  method.invokeExact(
+    		return (long) method.invokeExact(
     			tree,
     			proxyId
     		);
@@ -764,7 +764,7 @@ public final class DynamicTree
     	DynamicTree tree,
     	int proxyId
     ) {
-    	return (long) getUserData(
+    	return getUserData(
     		tree.memorySegment(),
     		proxyId
     	);

@@ -122,7 +122,7 @@ public final class Circle
     ) {
     	MethodHandle method = B2_POINT_IN_CIRCLE.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			point,
     			shape
     		);
@@ -135,7 +135,7 @@ public final class Circle
     public final boolean pointInCircle(
     	Vec2 point
     ) {
-    	return (boolean) pointInCircle(
+    	return pointInCircle(
     		point.memorySegment(),
     		this.segment
     	);

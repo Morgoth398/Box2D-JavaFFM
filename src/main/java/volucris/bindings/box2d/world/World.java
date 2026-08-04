@@ -187,7 +187,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_IS_VALID.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			id
     		);
     	} catch (Throwable e) {
@@ -199,7 +199,7 @@ public final class World {
     public static boolean isValid(
     	WorldId id
     ) {
-    	return (boolean) isValid(
+    	return isValid(
     		id.memorySegment()
     	);
     }
@@ -648,7 +648,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_CAST_MOVER.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			worldId,
     			mover,
     			translation,
@@ -666,7 +666,7 @@ public final class World {
     	Vec2 translation,
     	QueryFilter filter
     ) {
-    	return (float) castMover(
+    	return castMover(
     		worldId.memorySegment(),
     		mover.memorySegment(),
     		translation.memorySegment(),
@@ -755,7 +755,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_IS_SLEEPING_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -767,7 +767,7 @@ public final class World {
     public static boolean isSleepingEnabled(
     	WorldId worldId
     ) {
-    	return (boolean) isSleepingEnabled(
+    	return isSleepingEnabled(
     		worldId.memorySegment()
     	);
     }
@@ -812,7 +812,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_IS_CONTINUOUS_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -824,7 +824,7 @@ public final class World {
     public static boolean isContinuousEnabled(
     	WorldId worldId
     ) {
-    	return (boolean) isContinuousEnabled(
+    	return isContinuousEnabled(
     		worldId.memorySegment()
     	);
     }
@@ -868,7 +868,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_GET_RESTITUTION_THRESHOLD.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -880,7 +880,7 @@ public final class World {
     public static float getRestitutionThreshold(
     	WorldId worldId
     ) {
-    	return (float) getRestitutionThreshold(
+    	return getRestitutionThreshold(
     		worldId.memorySegment()
     	);
     }
@@ -924,7 +924,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_GET_HIT_EVENT_THRESHOLD.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -936,7 +936,7 @@ public final class World {
     public static float getHitEventThreshold(
     	WorldId worldId
     ) {
-    	return (float) getHitEventThreshold(
+    	return getHitEventThreshold(
     		worldId.memorySegment()
     	);
     }
@@ -1182,7 +1182,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_GET_MAXIMUM_LINEAR_SPEED.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -1194,7 +1194,7 @@ public final class World {
     public static float getMaximumLinearSpeed(
     	WorldId worldId
     ) {
-    	return (float) getMaximumLinearSpeed(
+    	return getMaximumLinearSpeed(
     		worldId.memorySegment()
     	);
     }
@@ -1237,7 +1237,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_IS_WARM_STARTING_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -1249,7 +1249,7 @@ public final class World {
     public static boolean isWarmStartingEnabled(
     	WorldId worldId
     ) {
-    	return (boolean) isWarmStartingEnabled(
+    	return isWarmStartingEnabled(
     		worldId.memorySegment()
     	);
     }
@@ -1262,7 +1262,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_GET_AWAKE_BODY_COUNT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {
@@ -1274,7 +1274,7 @@ public final class World {
     public static int getAwakeBodyCount(
     	WorldId worldId
     ) {
-    	return (int) getAwakeBodyCount(
+    	return getAwakeBodyCount(
     		worldId.memorySegment()
     	);
     }
@@ -1384,7 +1384,7 @@ public final class World {
     ) {
     	MethodHandle method = B2_WORLD_GET_USER_DATA.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			worldId
     		);
     	} catch (Throwable e) {

@@ -167,7 +167,7 @@ public final class Capsule
     ) {
     	MethodHandle method = B2_POINT_IN_CAPSULE.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			point,
     			shape
     		);
@@ -180,7 +180,7 @@ public final class Capsule
     public final boolean pointInCapsule(
     	Vec2 point
     ) {
-    	return (boolean) pointInCapsule(
+    	return pointInCapsule(
     		point.memorySegment(),
     		this.segment
     	);

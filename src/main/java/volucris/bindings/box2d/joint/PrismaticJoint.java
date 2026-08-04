@@ -145,7 +145,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_IS_SPRING_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -157,7 +157,7 @@ public final class PrismaticJoint {
     public static boolean isSpringEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isSpringEnabled(
+    	return isSpringEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -201,7 +201,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPRING_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -213,7 +213,7 @@ public final class PrismaticJoint {
     public static float getSpringHertz(
     	JointId jointId
     ) {
-    	return (float) getSpringHertz(
+    	return getSpringHertz(
     		jointId.memorySegment()
     	);
     }
@@ -255,7 +255,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -267,7 +267,7 @@ public final class PrismaticJoint {
     public static float getSpringDampingRatio(
     	JointId jointId
     ) {
-    	return (float) getSpringDampingRatio(
+    	return getSpringDampingRatio(
     		jointId.memorySegment()
     	);
     }
@@ -309,7 +309,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -321,7 +321,7 @@ public final class PrismaticJoint {
     public static float getTargetTranslation(
     	JointId jointId
     ) {
-    	return (float) getTargetTranslation(
+    	return getTargetTranslation(
     		jointId.memorySegment()
     	);
     }
@@ -363,7 +363,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -375,7 +375,7 @@ public final class PrismaticJoint {
     public static boolean isLimitEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isLimitEnabled(
+    	return isLimitEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -388,7 +388,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_LOWER_LIMIT.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -400,7 +400,7 @@ public final class PrismaticJoint {
     public static float getLowerLimit(
     	JointId jointId
     ) {
-    	return (float) getLowerLimit(
+    	return getLowerLimit(
     		jointId.memorySegment()
     	);
     }
@@ -413,7 +413,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_UPPER_LIMIT.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -425,7 +425,7 @@ public final class PrismaticJoint {
     public static float getUpperLimit(
     	JointId jointId
     ) {
-    	return (float) getUpperLimit(
+    	return getUpperLimit(
     		jointId.memorySegment()
     	);
     }
@@ -500,7 +500,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -512,7 +512,7 @@ public final class PrismaticJoint {
     public static boolean isMotorEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isMotorEnabled(
+    	return isMotorEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -554,7 +554,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_SPEED.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -566,7 +566,7 @@ public final class PrismaticJoint {
     public static float getMotorSpeed(
     	JointId jointId
     ) {
-    	return (float) getMotorSpeed(
+    	return getMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -608,7 +608,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -620,7 +620,7 @@ public final class PrismaticJoint {
     public static float getMaxMotorForce(
     	JointId jointId
     ) {
-    	return (float) getMaxMotorForce(
+    	return getMaxMotorForce(
     		jointId.memorySegment()
     	);
     }
@@ -633,7 +633,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_FORCE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -645,7 +645,7 @@ public final class PrismaticJoint {
     public static float getMotorForce(
     	JointId jointId
     ) {
-    	return (float) getMotorForce(
+    	return getMotorForce(
     		jointId.memorySegment()
     	);
     }
@@ -658,7 +658,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_TRANSLATION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -670,7 +670,7 @@ public final class PrismaticJoint {
     public static float getTranslation(
     	JointId jointId
     ) {
-    	return (float) getTranslation(
+    	return getTranslation(
     		jointId.memorySegment()
     	);
     }
@@ -683,7 +683,7 @@ public final class PrismaticJoint {
     ) {
     	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPEED.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -695,7 +695,7 @@ public final class PrismaticJoint {
     public static float getSpeed(
     	JointId jointId
     ) {
-    	return (float) getSpeed(
+    	return getSpeed(
     		jointId.memorySegment()
     	);
     }

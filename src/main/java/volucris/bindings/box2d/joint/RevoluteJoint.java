@@ -143,7 +143,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_IS_SPRING_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -155,7 +155,7 @@ public final class RevoluteJoint {
     public static boolean isSpringEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isSpringEnabled(
+    	return isSpringEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -197,7 +197,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_SPRING_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -209,7 +209,7 @@ public final class RevoluteJoint {
     public static float getSpringHertz(
     	JointId jointId
     ) {
-    	return (float) getSpringHertz(
+    	return getSpringHertz(
     		jointId.memorySegment()
     	);
     }
@@ -251,7 +251,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -263,7 +263,7 @@ public final class RevoluteJoint {
     public static float getSpringDampingRatio(
     	JointId jointId
     ) {
-    	return (float) getSpringDampingRatio(
+    	return getSpringDampingRatio(
     		jointId.memorySegment()
     	);
     }
@@ -305,7 +305,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_TARGET_ANGLE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -317,7 +317,7 @@ public final class RevoluteJoint {
     public static float getTargetAngle(
     	JointId jointId
     ) {
-    	return (float) getTargetAngle(
+    	return getTargetAngle(
     		jointId.memorySegment()
     	);
     }
@@ -331,7 +331,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_ANGLE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -343,7 +343,7 @@ public final class RevoluteJoint {
     public static float getAngle(
     	JointId jointId
     ) {
-    	return (float) getAngle(
+    	return getAngle(
     		jointId.memorySegment()
     	);
     }
@@ -385,7 +385,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -397,7 +397,7 @@ public final class RevoluteJoint {
     public static boolean isLimitEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isLimitEnabled(
+    	return isLimitEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -410,7 +410,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_LOWER_LIMIT.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -422,7 +422,7 @@ public final class RevoluteJoint {
     public static float getLowerLimit(
     	JointId jointId
     ) {
-    	return (float) getLowerLimit(
+    	return getLowerLimit(
     		jointId.memorySegment()
     	);
     }
@@ -435,7 +435,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_UPPER_LIMIT.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -447,7 +447,7 @@ public final class RevoluteJoint {
     public static float getUpperLimit(
     	JointId jointId
     ) {
-    	return (float) getUpperLimit(
+    	return getUpperLimit(
     		jointId.memorySegment()
     	);
     }
@@ -523,7 +523,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -535,7 +535,7 @@ public final class RevoluteJoint {
     public static boolean isMotorEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isMotorEnabled(
+    	return isMotorEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -577,7 +577,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_SPEED.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -589,7 +589,7 @@ public final class RevoluteJoint {
     public static float getMotorSpeed(
     	JointId jointId
     ) {
-    	return (float) getMotorSpeed(
+    	return getMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -602,7 +602,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_TORQUE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -614,7 +614,7 @@ public final class RevoluteJoint {
     public static float getMotorTorque(
     	JointId jointId
     ) {
-    	return (float) getMotorTorque(
+    	return getMotorTorque(
     		jointId.memorySegment()
     	);
     }
@@ -656,7 +656,7 @@ public final class RevoluteJoint {
     ) {
     	MethodHandle method = B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -668,7 +668,7 @@ public final class RevoluteJoint {
     public static float getMaxMotorTorque(
     	JointId jointId
     ) {
-    	return (float) getMaxMotorTorque(
+    	return getMaxMotorTorque(
     		jointId.memorySegment()
     	);
     }

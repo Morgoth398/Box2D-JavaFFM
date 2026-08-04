@@ -145,7 +145,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_LENGTH.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -157,7 +157,7 @@ public final class DistanceJoint {
     public static float getLength(
     	JointId jointId
     ) {
-    	return (float) getLength(
+    	return getLength(
     		jointId.memorySegment()
     	);
     }
@@ -199,7 +199,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_IS_SPRING_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -211,7 +211,7 @@ public final class DistanceJoint {
     public static boolean isSpringEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isSpringEnabled(
+    	return isSpringEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -282,7 +282,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_SPRING_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -294,7 +294,7 @@ public final class DistanceJoint {
     public static float getSpringHertz(
     	JointId jointId
     ) {
-    	return (float) getSpringHertz(
+    	return getSpringHertz(
     		jointId.memorySegment()
     	);
     }
@@ -307,7 +307,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_SPRING_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -319,7 +319,7 @@ public final class DistanceJoint {
     public static float getSpringDampingRatio(
     	JointId jointId
     ) {
-    	return (float) getSpringDampingRatio(
+    	return getSpringDampingRatio(
     		jointId.memorySegment()
     	);
     }
@@ -362,7 +362,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_IS_LIMIT_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -374,7 +374,7 @@ public final class DistanceJoint {
     public static boolean isLimitEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isLimitEnabled(
+    	return isLimitEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -420,7 +420,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_MIN_LENGTH.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -432,7 +432,7 @@ public final class DistanceJoint {
     public static float getMinLength(
     	JointId jointId
     ) {
-    	return (float) getMinLength(
+    	return getMinLength(
     		jointId.memorySegment()
     	);
     }
@@ -445,7 +445,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_MAX_LENGTH.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -457,7 +457,7 @@ public final class DistanceJoint {
     public static float getMaxLength(
     	JointId jointId
     ) {
-    	return (float) getMaxLength(
+    	return getMaxLength(
     		jointId.memorySegment()
     	);
     }
@@ -470,7 +470,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_CURRENT_LENGTH.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -482,7 +482,7 @@ public final class DistanceJoint {
     public static float getCurrentLength(
     	JointId jointId
     ) {
-    	return (float) getCurrentLength(
+    	return getCurrentLength(
     		jointId.memorySegment()
     	);
     }
@@ -524,7 +524,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_IS_MOTOR_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -536,7 +536,7 @@ public final class DistanceJoint {
     public static boolean isMotorEnabled(
     	JointId jointId
     ) {
-    	return (boolean) isMotorEnabled(
+    	return isMotorEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -578,7 +578,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_MOTOR_SPEED.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -590,7 +590,7 @@ public final class DistanceJoint {
     public static float getMotorSpeed(
     	JointId jointId
     ) {
-    	return (float) getMotorSpeed(
+    	return getMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -632,7 +632,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_MAX_MOTOR_FORCE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -644,7 +644,7 @@ public final class DistanceJoint {
     public static float getMaxMotorForce(
     	JointId jointId
     ) {
-    	return (float) getMaxMotorForce(
+    	return getMaxMotorForce(
     		jointId.memorySegment()
     	);
     }
@@ -657,7 +657,7 @@ public final class DistanceJoint {
     ) {
     	MethodHandle method = B2_DISTANCE_JOINT_GET_MOTOR_FORCE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -669,7 +669,7 @@ public final class DistanceJoint {
     public static float getMotorForce(
     	JointId jointId
     ) {
-    	return (float) getMotorForce(
+    	return getMotorForce(
     		jointId.memorySegment()
     	);
     }

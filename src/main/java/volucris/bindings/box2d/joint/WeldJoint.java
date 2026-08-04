@@ -117,7 +117,7 @@ public final class WeldJoint {
     ) {
     	MethodHandle method = B2_WELD_JOINT_GET_LINEAR_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -129,7 +129,7 @@ public final class WeldJoint {
     public static float getLinearHertz(
     	JointId jointId
     ) {
-    	return (float) getLinearHertz(
+    	return getLinearHertz(
     		jointId.memorySegment()
     	);
     }
@@ -171,7 +171,7 @@ public final class WeldJoint {
     ) {
     	MethodHandle method = B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -183,7 +183,7 @@ public final class WeldJoint {
     public static float getLinearDampingRatio(
     	JointId jointId
     ) {
-    	return (float) getLinearDampingRatio(
+    	return getLinearDampingRatio(
     		jointId.memorySegment()
     	);
     }
@@ -225,7 +225,7 @@ public final class WeldJoint {
     ) {
     	MethodHandle method = B2_WELD_JOINT_GET_ANGULAR_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -237,7 +237,7 @@ public final class WeldJoint {
     public static float getAngularHertz(
     	JointId jointId
     ) {
-    	return (float) getAngularHertz(
+    	return getAngularHertz(
     		jointId.memorySegment()
     	);
     }
@@ -279,7 +279,7 @@ public final class WeldJoint {
     ) {
     	MethodHandle method = B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -291,7 +291,7 @@ public final class WeldJoint {
     public static float getAngularDampingRatio(
     	JointId jointId
     ) {
-    	return (float) getAngularDampingRatio(
+    	return getAngularDampingRatio(
     		jointId.memorySegment()
     	);
     }

@@ -87,7 +87,7 @@ public final class ExplosionDef
     ) {
     	MethodHandle method = B2_DEFAULT_EXPLOSION_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

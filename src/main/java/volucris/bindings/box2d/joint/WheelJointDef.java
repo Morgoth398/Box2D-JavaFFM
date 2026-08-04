@@ -156,7 +156,7 @@ public final class WheelJointDef
     ) {
     	MethodHandle method = B2_DEFAULT_WHEEL_JOINT_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

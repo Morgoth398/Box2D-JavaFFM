@@ -79,7 +79,7 @@ public final class RayCastInput
     ) {
     	MethodHandle method = B2_IS_VALID_RAY.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			input
     		);
     	} catch (Throwable e) {
@@ -89,7 +89,7 @@ public final class RayCastInput
     
     /// Typed method of [#isValidRay].
     public final boolean isValidRay() {
-    	return (boolean) isValidRay(
+    	return isValidRay(
     		this.segment
     	);
     }

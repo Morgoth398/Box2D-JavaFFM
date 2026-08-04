@@ -525,7 +525,7 @@ public final class Polygon
     ) {
     	MethodHandle method = B2_POINT_IN_POLYGON.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			point,
     			shape
     		);
@@ -538,7 +538,7 @@ public final class Polygon
     public final boolean pointInPolygon(
     	Vec2 point
     ) {
-    	return (boolean) pointInPolygon(
+    	return pointInPolygon(
     		point.memorySegment(),
     		this.segment
     	);

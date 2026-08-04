@@ -243,7 +243,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_IS_VALID.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			id
     		);
     	} catch (Throwable e) {
@@ -255,7 +255,7 @@ public final class Body {
     public static boolean isValid(
     	BodyId id
     ) {
-    	return (boolean) isValid(
+    	return isValid(
     		id.memorySegment()
     	);
     }
@@ -268,7 +268,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_TYPE.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -280,7 +280,7 @@ public final class Body {
     public static int getType(
     	BodyId bodyId
     ) {
-    	return (int) getType(
+    	return getType(
     		bodyId.memorySegment()
     	);
     }
@@ -354,7 +354,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_NAME.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -413,7 +413,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_USER_DATA.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -766,7 +766,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_ANGULAR_VELOCITY.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -778,7 +778,7 @@ public final class Body {
     public static float getAngularVelocity(
     	BodyId bodyId
     ) {
-    	return (float) getAngularVelocity(
+    	return getAngularVelocity(
     		bodyId.memorySegment()
     	);
     }
@@ -1202,7 +1202,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_MASS.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1214,7 +1214,7 @@ public final class Body {
     public static float getMass(
     	BodyId bodyId
     ) {
-    	return (float) getMass(
+    	return getMass(
     		bodyId.memorySegment()
     	);
     }
@@ -1227,7 +1227,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_ROTATIONAL_INERTIA.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1239,7 +1239,7 @@ public final class Body {
     public static float getRotationalInertia(
     	BodyId bodyId
     ) {
-    	return (float) getRotationalInertia(
+    	return getRotationalInertia(
     		bodyId.memorySegment()
     	);
     }
@@ -1444,7 +1444,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_LINEAR_DAMPING.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1456,7 +1456,7 @@ public final class Body {
     public static float getLinearDamping(
     	BodyId bodyId
     ) {
-    	return (float) getLinearDamping(
+    	return getLinearDamping(
     		bodyId.memorySegment()
     	);
     }
@@ -1498,7 +1498,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_ANGULAR_DAMPING.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1510,7 +1510,7 @@ public final class Body {
     public static float getAngularDamping(
     	BodyId bodyId
     ) {
-    	return (float) getAngularDamping(
+    	return getAngularDamping(
     		bodyId.memorySegment()
     	);
     }
@@ -1553,7 +1553,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_GRAVITY_SCALE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1565,7 +1565,7 @@ public final class Body {
     public static float getGravityScale(
     	BodyId bodyId
     ) {
-    	return (float) getGravityScale(
+    	return getGravityScale(
     		bodyId.memorySegment()
     	);
     }
@@ -1578,7 +1578,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_IS_AWAKE.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1590,7 +1590,7 @@ public final class Body {
     public static boolean isAwake(
     	BodyId bodyId
     ) {
-    	return (boolean) isAwake(
+    	return isAwake(
     		bodyId.memorySegment()
     	);
     }
@@ -1663,7 +1663,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_IS_SLEEP_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1675,7 +1675,7 @@ public final class Body {
     public static boolean isSleepEnabled(
     	BodyId bodyId
     ) {
-    	return (boolean) isSleepEnabled(
+    	return isSleepEnabled(
     		bodyId.memorySegment()
     	);
     }
@@ -1717,7 +1717,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_SLEEP_THRESHOLD.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1729,7 +1729,7 @@ public final class Body {
     public static float getSleepThreshold(
     	BodyId bodyId
     ) {
-    	return (float) getSleepThreshold(
+    	return getSleepThreshold(
     		bodyId.memorySegment()
     	);
     }
@@ -1742,7 +1742,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_IS_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1754,7 +1754,7 @@ public final class Body {
     public static boolean isEnabled(
     	BodyId bodyId
     ) {
-    	return (boolean) isEnabled(
+    	return isEnabled(
     		bodyId.memorySegment()
     	);
     }
@@ -1846,7 +1846,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_IS_FIXED_ROTATION.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1858,7 +1858,7 @@ public final class Body {
     public static boolean isFixedRotation(
     	BodyId bodyId
     ) {
-    	return (boolean) isFixedRotation(
+    	return isFixedRotation(
     		bodyId.memorySegment()
     	);
     }
@@ -1901,7 +1901,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_IS_BULLET.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1913,7 +1913,7 @@ public final class Body {
     public static boolean isBullet(
     	BodyId bodyId
     ) {
-    	return (boolean) isBullet(
+    	return isBullet(
     		bodyId.memorySegment()
     	);
     }
@@ -2021,7 +2021,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_SHAPE_COUNT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -2033,7 +2033,7 @@ public final class Body {
     public static int getShapeCount(
     	BodyId bodyId
     ) {
-    	return (int) getShapeCount(
+    	return getShapeCount(
     		bodyId.memorySegment()
     	);
     }
@@ -2049,7 +2049,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_SHAPES.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId,
     			shapeArray,
     			capacity
@@ -2065,7 +2065,7 @@ public final class Body {
     	NativeStructArray<ShapeId> shapeArray,
     	int capacity
     ) {
-    	return (int) getShapes(
+    	return getShapes(
     		bodyId.memorySegment(),
     		shapeArray.memorySegment(),
     		capacity
@@ -2080,7 +2080,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_JOINT_COUNT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -2092,7 +2092,7 @@ public final class Body {
     public static int getJointCount(
     	BodyId bodyId
     ) {
-    	return (int) getJointCount(
+    	return getJointCount(
     		bodyId.memorySegment()
     	);
     }
@@ -2108,7 +2108,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_JOINTS.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId,
     			jointArray,
     			capacity
@@ -2124,7 +2124,7 @@ public final class Body {
     	NativeStructArray<JointId> jointArray,
     	int capacity
     ) {
-    	return (int) getJoints(
+    	return getJoints(
     		bodyId.memorySegment(),
     		jointArray.memorySegment(),
     		capacity
@@ -2139,7 +2139,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_CONTACT_CAPACITY.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -2151,7 +2151,7 @@ public final class Body {
     public static int getContactCapacity(
     	BodyId bodyId
     ) {
-    	return (int) getContactCapacity(
+    	return getContactCapacity(
     		bodyId.memorySegment()
     	);
     }
@@ -2169,7 +2169,7 @@ public final class Body {
     ) {
     	MethodHandle method = B2_BODY_GET_CONTACT_DATA.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			bodyId,
     			contactData,
     			capacity
@@ -2185,7 +2185,7 @@ public final class Body {
     	ContactData contactData,
     	int capacity
     ) {
-    	return (int) getContactData(
+    	return getContactData(
     		bodyId.memorySegment(),
     		contactData.memorySegment(),
     		capacity

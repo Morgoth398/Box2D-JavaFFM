@@ -79,7 +79,7 @@ public final class Version
     ) {
     	MethodHandle method = B2_GET_VERSION.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

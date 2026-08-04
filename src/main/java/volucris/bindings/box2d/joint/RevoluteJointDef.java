@@ -171,7 +171,7 @@ public final class RevoluteJointDef
     ) {
     	MethodHandle method = B2_DEFAULT_REVOLUTE_JOINT_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

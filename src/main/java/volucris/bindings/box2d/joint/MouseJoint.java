@@ -181,7 +181,7 @@ public final class MouseJoint {
     ) {
     	MethodHandle method = B2_MOUSE_JOINT_GET_SPRING_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -193,7 +193,7 @@ public final class MouseJoint {
     public static float getSpringHertz(
     	JointId jointId
     ) {
-    	return (float) getSpringHertz(
+    	return getSpringHertz(
     		jointId.memorySegment()
     	);
     }
@@ -235,7 +235,7 @@ public final class MouseJoint {
     ) {
     	MethodHandle method = B2_MOUSE_JOINT_GET_SPRING_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -247,7 +247,7 @@ public final class MouseJoint {
     public static float getSpringDampingRatio(
     	JointId jointId
     ) {
-    	return (float) getSpringDampingRatio(
+    	return getSpringDampingRatio(
     		jointId.memorySegment()
     	);
     }
@@ -289,7 +289,7 @@ public final class MouseJoint {
     ) {
     	MethodHandle method = B2_MOUSE_JOINT_GET_MAX_FORCE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -301,7 +301,7 @@ public final class MouseJoint {
     public static float getMaxForce(
     	JointId jointId
     ) {
-    	return (float) getMaxForce(
+    	return getMaxForce(
     		jointId.memorySegment()
     	);
     }

@@ -137,7 +137,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_IS_SPRING_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -149,7 +149,7 @@ public final class WheelJoint {
     public static boolean wheelJoint_IsSpringEnabled(
     	JointId jointId
     ) {
-    	return (boolean) wheelJoint_IsSpringEnabled(
+    	return wheelJoint_IsSpringEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -191,7 +191,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_SPRING_HERTZ.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -203,7 +203,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetSpringHertz(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetSpringHertz(
+    	return wheelJoint_GetSpringHertz(
     		jointId.memorySegment()
     	);
     }
@@ -245,7 +245,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -257,7 +257,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetSpringDampingRatio(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetSpringDampingRatio(
+    	return wheelJoint_GetSpringDampingRatio(
     		jointId.memorySegment()
     	);
     }
@@ -299,7 +299,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_IS_LIMIT_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -311,7 +311,7 @@ public final class WheelJoint {
     public static boolean wheelJoint_IsLimitEnabled(
     	JointId jointId
     ) {
-    	return (boolean) wheelJoint_IsLimitEnabled(
+    	return wheelJoint_IsLimitEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -324,7 +324,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_LOWER_LIMIT.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -336,7 +336,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetLowerLimit(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetLowerLimit(
+    	return wheelJoint_GetLowerLimit(
     		jointId.memorySegment()
     	);
     }
@@ -349,7 +349,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_UPPER_LIMIT.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -361,7 +361,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetUpperLimit(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetUpperLimit(
+    	return wheelJoint_GetUpperLimit(
     		jointId.memorySegment()
     	);
     }
@@ -436,7 +436,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_IS_MOTOR_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -448,7 +448,7 @@ public final class WheelJoint {
     public static boolean wheelJoint_IsMotorEnabled(
     	JointId jointId
     ) {
-    	return (boolean) wheelJoint_IsMotorEnabled(
+    	return wheelJoint_IsMotorEnabled(
     		jointId.memorySegment()
     	);
     }
@@ -490,7 +490,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_SPEED.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -502,7 +502,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetMotorSpeed(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetMotorSpeed(
+    	return wheelJoint_GetMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -544,7 +544,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -556,7 +556,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetMaxMotorTorque(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetMaxMotorTorque(
+    	return wheelJoint_GetMaxMotorTorque(
     		jointId.memorySegment()
     	);
     }
@@ -569,7 +569,7 @@ public final class WheelJoint {
     ) {
     	MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_TORQUE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -581,7 +581,7 @@ public final class WheelJoint {
     public static float wheelJoint_GetMotorTorque(
     	JointId jointId
     ) {
-    	return (float) wheelJoint_GetMotorTorque(
+    	return wheelJoint_GetMotorTorque(
     		jointId.memorySegment()
     	);
     }

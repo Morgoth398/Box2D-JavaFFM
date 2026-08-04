@@ -109,7 +109,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_IS_VALID.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			id
     		);
     	} catch (Throwable e) {
@@ -121,7 +121,7 @@ public final class Joint {
     public static boolean isValid(
     	JointId id
     ) {
-    	return (boolean) isValid(
+    	return isValid(
     		id.memorySegment()
     	);
     }
@@ -134,7 +134,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_TYPE.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -146,7 +146,7 @@ public final class Joint {
     public static int getType(
     	JointId jointId
     ) {
-    	return (int) getType(
+    	return getType(
     		jointId.memorySegment()
     	);
     }
@@ -387,7 +387,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_REFERENCE_ANGLE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -399,7 +399,7 @@ public final class Joint {
     public static float getReferenceAngle(
     	JointId jointId
     ) {
-    	return (float) getReferenceAngle(
+    	return getReferenceAngle(
     		jointId.memorySegment()
     	);
     }
@@ -533,7 +533,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_COLLIDE_CONNECTED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -545,7 +545,7 @@ public final class Joint {
     public static boolean getCollideConnected(
     	JointId jointId
     ) {
-    	return (boolean) getCollideConnected(
+    	return getCollideConnected(
     		jointId.memorySegment()
     	);
     }
@@ -587,7 +587,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_USER_DATA.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -676,7 +676,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_CONSTRAINT_TORQUE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -688,7 +688,7 @@ public final class Joint {
     public static float getConstraintTorque(
     	JointId jointId
     ) {
-    	return (float) getConstraintTorque(
+    	return getConstraintTorque(
     		jointId.memorySegment()
     	);
     }
@@ -701,7 +701,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_LINEAR_SEPARATION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -713,7 +713,7 @@ public final class Joint {
     public static float getLinearSeparation(
     	JointId jointId
     ) {
-    	return (float) getLinearSeparation(
+    	return getLinearSeparation(
     		jointId.memorySegment()
     	);
     }
@@ -726,7 +726,7 @@ public final class Joint {
     ) {
     	MethodHandle method = B2_JOINT_GET_ANGULAR_SEPARATION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -738,7 +738,7 @@ public final class Joint {
     public static float getAngularSeparation(
     	JointId jointId
     ) {
-    	return (float) getAngularSeparation(
+    	return getAngularSeparation(
     		jointId.memorySegment()
     	);
     }

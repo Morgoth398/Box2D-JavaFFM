@@ -157,7 +157,7 @@ public final class BodyDef
     ) {
     	MethodHandle method = B2_DEFAULT_BODY_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

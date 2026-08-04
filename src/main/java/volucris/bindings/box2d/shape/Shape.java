@@ -352,7 +352,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_IS_VALID.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			id
     		);
     	} catch (Throwable e) {
@@ -364,7 +364,7 @@ public final class Shape {
     public static boolean isValid(
     	ShapeId id
     ) {
-    	return (boolean) isValid(
+    	return isValid(
     		id.memorySegment()
     	);
     }
@@ -377,7 +377,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_TYPE.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -389,7 +389,7 @@ public final class Shape {
     public static int getType(
     	ShapeId shapeId
     ) {
-    	return (int) getType(
+    	return getType(
     		shapeId.memorySegment()
     	);
     }
@@ -472,7 +472,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_IS_SENSOR.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -484,7 +484,7 @@ public final class Shape {
     public static boolean isSensor(
     	ShapeId shapeId
     ) {
-    	return (boolean) isSensor(
+    	return isSensor(
     		shapeId.memorySegment()
     	);
     }
@@ -527,7 +527,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_USER_DATA.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -592,7 +592,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_DENSITY.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -604,7 +604,7 @@ public final class Shape {
     public static float getDensity(
     	ShapeId shapeId
     ) {
-    	return (float) getDensity(
+    	return getDensity(
     		shapeId.memorySegment()
     	);
     }
@@ -647,7 +647,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_FRICTION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -659,7 +659,7 @@ public final class Shape {
     public static float getFriction(
     	ShapeId shapeId
     ) {
-    	return (float) getFriction(
+    	return getFriction(
     		shapeId.memorySegment()
     	);
     }
@@ -702,7 +702,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_RESTITUTION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -714,7 +714,7 @@ public final class Shape {
     public static float getRestitution(
     	ShapeId shapeId
     ) {
-    	return (float) getRestitution(
+    	return getRestitution(
     		shapeId.memorySegment()
     	);
     }
@@ -757,7 +757,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_MATERIAL.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -769,7 +769,7 @@ public final class Shape {
     public static int getMaterial(
     	ShapeId shapeId
     ) {
-    	return (int) getMaterial(
+    	return getMaterial(
     		shapeId.memorySegment()
     	);
     }
@@ -941,7 +941,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -953,7 +953,7 @@ public final class Shape {
     public static boolean areSensorEventsEnabled(
     	ShapeId shapeId
     ) {
-    	return (boolean) areSensorEventsEnabled(
+    	return areSensorEventsEnabled(
     		shapeId.memorySegment()
     	);
     }
@@ -997,7 +997,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -1009,7 +1009,7 @@ public final class Shape {
     public static boolean areContactEventsEnabled(
     	ShapeId shapeId
     ) {
-    	return (boolean) areContactEventsEnabled(
+    	return areContactEventsEnabled(
     		shapeId.memorySegment()
     	);
     }
@@ -1053,7 +1053,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -1065,7 +1065,7 @@ public final class Shape {
     public static boolean arePreSolveEventsEnabled(
     	ShapeId shapeId
     ) {
-    	return (boolean) arePreSolveEventsEnabled(
+    	return arePreSolveEventsEnabled(
     		shapeId.memorySegment()
     	);
     }
@@ -1108,7 +1108,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_ARE_HIT_EVENTS_ENABLED.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -1120,7 +1120,7 @@ public final class Shape {
     public static boolean areHitEventsEnabled(
     	ShapeId shapeId
     ) {
-    	return (boolean) areHitEventsEnabled(
+    	return areHitEventsEnabled(
     		shapeId.memorySegment()
     	);
     }
@@ -1134,7 +1134,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_TEST_POINT.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			shapeId,
     			point
     		);
@@ -1148,7 +1148,7 @@ public final class Shape {
     	ShapeId shapeId,
     	Vec2 point
     ) {
-    	return (boolean) testPoint(
+    	return testPoint(
     		shapeId.memorySegment(),
     		point.memorySegment()
     	);
@@ -1528,7 +1528,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_CONTACT_CAPACITY.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -1540,7 +1540,7 @@ public final class Shape {
     public static int getContactCapacity(
     	ShapeId shapeId
     ) {
-    	return (int) getContactCapacity(
+    	return getContactCapacity(
     		shapeId.memorySegment()
     	);
     }
@@ -1558,7 +1558,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_CONTACT_DATA.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			shapeId,
     			contactData,
     			capacity
@@ -1574,7 +1574,7 @@ public final class Shape {
     	ContactData contactData,
     	int capacity
     ) {
-    	return (int) getContactData(
+    	return getContactData(
     		shapeId.memorySegment(),
     		contactData.memorySegment(),
     		capacity
@@ -1592,7 +1592,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_SENSOR_CAPACITY.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -1604,7 +1604,7 @@ public final class Shape {
     public static int getSensorCapacity(
     	ShapeId shapeId
     ) {
-    	return (int) getSensorCapacity(
+    	return getSensorCapacity(
     		shapeId.memorySegment()
     	);
     }
@@ -1625,7 +1625,7 @@ public final class Shape {
     ) {
     	MethodHandle method = B2_SHAPE_GET_SENSOR_OVERLAPS.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			shapeId,
     			overlaps,
     			capacity
@@ -1641,7 +1641,7 @@ public final class Shape {
     	ShapeId overlaps,
     	int capacity
     ) {
-    	return (int) getSensorOverlaps(
+    	return getSensorOverlaps(
     		shapeId.memorySegment(),
     		overlaps.memorySegment(),
     		capacity

@@ -125,7 +125,7 @@ public final class ShapeDef
     ) {
     	MethodHandle method = B2_DEFAULT_SHAPE_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

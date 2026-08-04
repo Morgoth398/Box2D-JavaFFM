@@ -166,7 +166,7 @@ public final class PrismaticJointDef
     ) {
     	MethodHandle method = B2_DEFAULT_PRISMATIC_JOINT_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

@@ -154,7 +154,7 @@ public final class Chain {
     ) {
     	MethodHandle method = B2_CHAIN_GET_SEGMENT_COUNT.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			chainId
     		);
     	} catch (Throwable e) {
@@ -166,7 +166,7 @@ public final class Chain {
     public static int chain_GetSegmentCount(
     	ChainId chainId
     ) {
-    	return (int) chain_GetSegmentCount(
+    	return chain_GetSegmentCount(
     		chainId.memorySegment()
     	);
     }
@@ -182,7 +182,7 @@ public final class Chain {
     ) {
     	MethodHandle method = B2_CHAIN_GET_SEGMENTS.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			chainId,
     			segmentArray,
     			capacity
@@ -198,7 +198,7 @@ public final class Chain {
     	ShapeId segmentArray,
     	int capacity
     ) {
-    	return (int) chain_GetSegments(
+    	return chain_GetSegments(
     		chainId.memorySegment(),
     		segmentArray.memorySegment(),
     		capacity
@@ -243,7 +243,7 @@ public final class Chain {
     ) {
     	MethodHandle method = B2_CHAIN_GET_FRICTION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			chainId
     		);
     	} catch (Throwable e) {
@@ -255,7 +255,7 @@ public final class Chain {
     public static float chain_GetFriction(
     	ChainId chainId
     ) {
-    	return (float) chain_GetFriction(
+    	return chain_GetFriction(
     		chainId.memorySegment()
     	);
     }
@@ -298,7 +298,7 @@ public final class Chain {
     ) {
     	MethodHandle method = B2_CHAIN_GET_RESTITUTION.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			chainId
     		);
     	} catch (Throwable e) {
@@ -310,7 +310,7 @@ public final class Chain {
     public static float chain_GetRestitution(
     	ChainId chainId
     ) {
-    	return (float) chain_GetRestitution(
+    	return chain_GetRestitution(
     		chainId.memorySegment()
     	);
     }
@@ -353,7 +353,7 @@ public final class Chain {
     ) {
     	MethodHandle method = B2_CHAIN_GET_MATERIAL.get();
     	try {
-    		return (int)  method.invokeExact(
+    		return (int) method.invokeExact(
     			chainId
     		);
     	} catch (Throwable e) {
@@ -365,7 +365,7 @@ public final class Chain {
     public static int chain_GetMaterial(
     	ChainId chainId
     ) {
-    	return (int) chain_GetMaterial(
+    	return chain_GetMaterial(
     		chainId.memorySegment()
     	);
     }
@@ -378,7 +378,7 @@ public final class Chain {
     ) {
     	MethodHandle method = B2_CHAIN_IS_VALID.get();
     	try {
-    		return (boolean)  method.invokeExact(
+    		return (boolean) method.invokeExact(
     			id
     		);
     	} catch (Throwable e) {
@@ -390,7 +390,7 @@ public final class Chain {
     public static boolean chain_IsValid(
     	ChainId id
     ) {
-    	return (boolean) chain_IsValid(
+    	return chain_IsValid(
     		id.memorySegment()
     	);
     }

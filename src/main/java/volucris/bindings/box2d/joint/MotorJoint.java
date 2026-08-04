@@ -186,7 +186,7 @@ public final class MotorJoint {
     ) {
     	MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_OFFSET.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -198,7 +198,7 @@ public final class MotorJoint {
     public static float getAngularOffset(
     	JointId jointId
     ) {
-    	return (float) getAngularOffset(
+    	return getAngularOffset(
     		jointId.memorySegment()
     	);
     }
@@ -240,7 +240,7 @@ public final class MotorJoint {
     ) {
     	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_FORCE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -252,7 +252,7 @@ public final class MotorJoint {
     public static float getMaxForce(
     	JointId jointId
     ) {
-    	return (float) getMaxForce(
+    	return getMaxForce(
     		jointId.memorySegment()
     	);
     }
@@ -294,7 +294,7 @@ public final class MotorJoint {
     ) {
     	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_TORQUE.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -306,7 +306,7 @@ public final class MotorJoint {
     public static float getMaxTorque(
     	JointId jointId
     ) {
-    	return (float) getMaxTorque(
+    	return getMaxTorque(
     		jointId.memorySegment()
     	);
     }
@@ -348,7 +348,7 @@ public final class MotorJoint {
     ) {
     	MethodHandle method = B2_MOTOR_JOINT_GET_CORRECTION_FACTOR.get();
     	try {
-    		return (float)  method.invokeExact(
+    		return (float) method.invokeExact(
     			jointId
     		);
     	} catch (Throwable e) {
@@ -360,7 +360,7 @@ public final class MotorJoint {
     public static float getCorrectionFactor(
     	JointId jointId
     ) {
-    	return (float) getCorrectionFactor(
+    	return getCorrectionFactor(
     		jointId.memorySegment()
     	);
     }

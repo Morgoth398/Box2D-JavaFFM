@@ -115,7 +115,7 @@ public final class MotorJointDef
     ) {
     	MethodHandle method = B2_DEFAULT_MOTOR_JOINT_DEF.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {

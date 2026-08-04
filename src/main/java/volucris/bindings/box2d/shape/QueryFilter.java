@@ -69,7 +69,7 @@ public final class QueryFilter
     ) {
     	MethodHandle method = B2_DEFAULT_QUERY_FILTER.get();
     	try {
-    		return (MemorySegment)  method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
     			allocator
     		);
     	} catch (Throwable e) {
