@@ -3,7 +3,8 @@ package volucris.bindings.box2d;
 import java.lang.foreign.Arena;
 import java.lang.invoke.MethodHandle;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+
 import volucris.bindings.box2d.body.BodyId;
 import volucris.bindings.box2d.joint.JointId;
 import volucris.bindings.box2d.shape.ChainId;

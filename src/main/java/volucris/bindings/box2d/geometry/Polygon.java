@@ -3,7 +3,6 @@
  */
 package volucris.bindings.box2d.geometry;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -12,6 +11,7 @@ import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.function.Consumer;
+import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.math.Rot;
 import volucris.bindings.box2d.math.Transform;
 import volucris.bindings.box2d.math.Vec2;

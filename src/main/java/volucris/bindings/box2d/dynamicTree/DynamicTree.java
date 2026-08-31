@@ -3,7 +3,6 @@
  */
 package volucris.bindings.box2d.dynamicTree;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -11,6 +10,7 @@ import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.StructLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
+import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.geometry.RayCastInput;
 import volucris.bindings.box2d.geometry.ShapeCastInput;
 import volucris.bindings.box2d.math.AABB;

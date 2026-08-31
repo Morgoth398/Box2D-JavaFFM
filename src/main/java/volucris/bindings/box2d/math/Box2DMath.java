@@ -3,10 +3,11 @@
  */
 package volucris.bindings.box2d.math;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
+
+import org.jspecify.annotations.Nullable;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;;

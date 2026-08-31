@@ -3,10 +3,10 @@
  */
 package volucris.bindings.box2d.distance;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
+import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.geometry.CastOutput;
 import volucris.bindings.box2d.geometry.ShapeProxy;
 import volucris.bindings.box2d.math.Rot;

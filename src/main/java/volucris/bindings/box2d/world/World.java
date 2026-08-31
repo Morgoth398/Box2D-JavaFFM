@@ -3,10 +3,10 @@
  */
 package volucris.bindings.box2d.world;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
+import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.Profile;
 import volucris.bindings.box2d.dynamicTree.TreeStats;
 import volucris.bindings.box2d.events.BodyEvents;

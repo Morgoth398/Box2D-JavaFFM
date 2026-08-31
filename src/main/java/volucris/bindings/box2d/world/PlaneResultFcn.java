@@ -3,7 +3,6 @@
  */
 package volucris.bindings.box2d.world;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
@@ -13,6 +12,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.characterMover.PlaneResult;
 import volucris.bindings.box2d.shape.ShapeId;
 
