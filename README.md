@@ -115,3 +115,7 @@ public class HelloBox2D {
 	
 }
 ```
+
+# Other Bindings
+- [JoltPhysics-JavaFFM](https://github.com/Morgoth398/JoltPhysics-JavaFFM)
+- [Box3D-JavaFFM](https://github.com/Morgoth398/Box3D-JavaFFM)
