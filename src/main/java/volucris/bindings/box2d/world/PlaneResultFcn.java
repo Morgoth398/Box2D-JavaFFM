@@ -19,6 +19,10 @@ import volucris.bindings.box2d.shape.ShapeId;
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
+/// ```
+/// Used to collect collision planes for character movers. Return true to continue gathering planes.
+/// @ingroup character
+/// ```
 public abstract class PlaneResultFcn {
 
     private static final Map<Long, WeakReference<PlaneResultFcn>> CACHE;

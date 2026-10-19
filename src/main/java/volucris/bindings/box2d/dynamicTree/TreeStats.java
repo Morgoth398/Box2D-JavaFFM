@@ -19,43 +19,43 @@ import static java.lang.foreign.ValueLayout.*;
 public final class TreeStats
 		implements Struct<TreeStats> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle NODE_VISITS_HANDLE;
-    public static final VarHandle LEAF_VISITS_HANDLE;
+	public static final VarHandle NODE_VISITS_HANDLE;
+	public static final VarHandle LEAF_VISITS_HANDLE;
 
-    public static final long NODE_VISITS_BYTE_OFFSET;
-    public static final long LEAF_VISITS_BYTE_OFFSET;
+	public static final long NODE_VISITS_BYTE_OFFSET;
+	public static final long LEAF_VISITS_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_INT.withName("nodeVisits"),
-            JAVA_INT.withName("leafVisits")
-        ).withName("b2TreeStats").withByteAlignment(4);
-        
-        NODE_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
-        
-        NODE_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_INT.withName("nodeVisits"),
+		    JAVA_INT.withName("leafVisits")
+		).withName("b2TreeStats").withByteAlignment(4);
+		
+		NODE_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
+		LEAF_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
+		
+		NODE_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
+		LEAF_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
+		//@formatter:on
+	}
 
-    public TreeStats() {
-        this(Arena.ofAuto());
-    }
-    
-    public TreeStats(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public TreeStats(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public TreeStats() {
+	    this(Arena.ofAuto());
+	}
+	
+	public TreeStats(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public TreeStats(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #nodeVisits()
     public TreeStats nodeVisits(int nodeVisits) {
@@ -134,5 +134,5 @@ public final class TreeStats
             segment -> new TreeStats(segment)
         );
     }
-    
+
 }

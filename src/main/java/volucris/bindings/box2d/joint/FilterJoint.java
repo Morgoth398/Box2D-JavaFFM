@@ -13,16 +13,16 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class FilterJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_FILTER_JOINT;
+	private static final LazyConstant<MethodHandle> B2_CREATE_FILTER_JOINT;
 
-    static {
-        //@formatter:off
-        B2_CREATE_FILTER_JOINT = downcallHandle("b2CreateFilterJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_FILTER_JOINT = downcallHandle("b2CreateFilterJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		//@formatter:on
+	}
 
-    private FilterJoint() {
-    }
+	private FilterJoint() {
+	}
 
     /// ```
     /// Create a filter joint.
@@ -62,5 +62,5 @@ public final class FilterJoint {
     	
     	return new JointId(segment);
     }
-    
+
 }

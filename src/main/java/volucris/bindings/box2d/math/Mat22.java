@@ -19,42 +19,42 @@ import static java.lang.foreign.ValueLayout.*;
 public final class Mat22
 		implements Struct<Mat22> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long CX_BYTE_OFFSET;
-    public static final long CY_BYTE_OFFSET;
+	public static final long CX_BYTE_OFFSET;
+	public static final long CY_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 cx;
-    private final Vec2 cy;
+	private final Vec2 cx;
+	private final Vec2 cy;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("cx"),
-            Vec2.LAYOUT.withName("cy")
-        ).withName("b2Mat22").withByteAlignment(4);
-        
-        CX_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cx"));
-        CY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cy"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("cx"),
+		    Vec2.LAYOUT.withName("cy")
+		).withName("b2Mat22").withByteAlignment(4);
+		
+		CX_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cx"));
+		CY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cy"));
+		//@formatter:on
+	}
 
-    public Mat22() {
-        this(Arena.ofAuto());
-    }
-    
-    public Mat22(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Mat22(MemorySegment segment) {
-        this.segment = segment;
-    
-        cx = new Vec2(segment.asSlice(CX_BYTE_OFFSET, Vec2.LAYOUT));
-        cy = new Vec2(segment.asSlice(CY_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public Mat22() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Mat22(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Mat22(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    cx = new Vec2(segment.asSlice(CX_BYTE_OFFSET, Vec2.LAYOUT));
+	    cy = new Vec2(segment.asSlice(CY_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// @see #cx()
     public Mat22 cx(Consumer<Vec2> consumer) {
@@ -145,5 +145,5 @@ public final class Mat22
             segment -> new Mat22(segment)
         );
     }
-    
+
 }

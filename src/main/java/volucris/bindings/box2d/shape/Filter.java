@@ -18,52 +18,52 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// This is used to filter collision on shapes. It affects shape-vs-shape collision
-/// and shape-versus-query collision (such as b2World_CastRay).
+/// This is used to filter collision on shapes. It affects shape-vs-shape collision and
+/// shape-versus-query collision (such as b2World_CastRay).
 /// @ingroup shape
 /// ```
 public final class Filter
 		implements Struct<Filter> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_FILTER;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_FILTER;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle CATEGORY_BITS_HANDLE;
-    public static final VarHandle MASK_BITS_HANDLE;
-    public static final VarHandle GROUP_INDEX_HANDLE;
+	public static final VarHandle CATEGORY_BITS_HANDLE;
+	public static final VarHandle MASK_BITS_HANDLE;
+	public static final VarHandle GROUP_INDEX_HANDLE;
 
-    public static final long CATEGORY_BITS_BYTE_OFFSET;
-    public static final long MASK_BITS_BYTE_OFFSET;
-    public static final long GROUP_INDEX_BYTE_OFFSET;
+	public static final long CATEGORY_BITS_BYTE_OFFSET;
+	public static final long MASK_BITS_BYTE_OFFSET;
+	public static final long GROUP_INDEX_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_LONG.withName("categoryBits"),
-            JAVA_LONG.withName("maskBits"),
-            JAVA_INT.withName("groupIndex"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2Filter").withByteAlignment(8);
-        
-        B2_DEFAULT_FILTER = downcallHandle("b2DefaultFilter", Filter.LAYOUT);
-        
-        CATEGORY_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
-        MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
-        GROUP_INDEX_HANDLE = LAYOUT.varHandle(PathElement.groupElement("groupIndex"));
-        
-        CATEGORY_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
-        MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
-        GROUP_INDEX_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("groupIndex"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_LONG.withName("categoryBits"),
+		    JAVA_LONG.withName("maskBits"),
+		    JAVA_INT.withName("groupIndex"),
+		    MemoryLayout.paddingLayout(4)
+		).withName("b2Filter").withByteAlignment(8);
+		
+		B2_DEFAULT_FILTER = downcallHandle("b2DefaultFilter", Filter.LAYOUT);
+		
+		CATEGORY_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
+		MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
+		GROUP_INDEX_HANDLE = LAYOUT.varHandle(PathElement.groupElement("groupIndex"));
+		
+		CATEGORY_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
+		MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
+		GROUP_INDEX_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("groupIndex"));
+		//@formatter:on
+	}
 
-    public Filter(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public Filter(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// ```
     /// Use this to initialize your filter
@@ -127,10 +127,9 @@ public final class Filter
     }
     
     /// ```
-    /// The collision mask bits. This states the categories that this
-    /// shape would accept for collision.
-    /// For example, you may want your player to only collide with static objects
-    /// and other players.
+    /// The collision mask bits. This states the categories that this shape would accept for
+    /// collision. For example, you may want your player to only collide with static objects and
+    /// other players.
     /// @code{.c}
     /// maskBits = Static | Player;
     /// @endcode
@@ -146,12 +145,11 @@ public final class Filter
     }
     
     /// ```
-    /// Collision groups allow a certain group of objects to never collide (negative)
-    /// or always collide (positive). A group index of zero has no effect. Non-zero group filtering
-    /// always wins against the mask bits.
-    /// For example, you may want ragdolls to collide with other ragdolls but you don't want
-    /// ragdoll self-collision. In this case you would give each ragdoll a unique negative group index
-    /// and apply that group index to all shapes on the ragdoll.
+    /// Collision groups allow a certain group of objects to never collide (negative) or always
+    /// collide (positive). A group index of zero has no effect. Non-zero group filtering always
+    /// wins against the mask bits. For example, you may want ragdolls to collide with other
+    /// ragdolls but you don't want ragdoll self-collision. In this case you would give each ragdoll
+    /// a unique negative group index and apply that group index to all shapes on the ragdoll.
     /// ```
     public int groupIndex() {
     	return (int) GROUP_INDEX_HANDLE.get(segment, 0L);
@@ -208,5 +206,5 @@ public final class Filter
             segment -> new Filter(segment)
         );
     }
-    
+
 }

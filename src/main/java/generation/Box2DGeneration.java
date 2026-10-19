@@ -9,18 +9,17 @@
 //import java.util.HashMap;
 //import java.util.Map;
 //
-//import org.lwjgl.llvm.ClangIndex;
-//
 //import volucris.bindings.generator.generation.Generator;
 //import volucris.bindings.generator.parsing.HeaderFile;
 //import volucris.bindings.generator.parsing.NativeFunctionPointer;
+//import volucris.bindings.libclang.enums.CXTranslationUnit_Flags;
 //
 //public class Box2DGeneration {
 //
 //	public static void main(String[] args) {
-//		int options = ClangIndex.CXTranslationUnit_DetailedPreprocessingRecord;
+//		int options = CXTranslationUnit_Flags.CX_TRANSLATION_UNIT_DETAILED_PREPROCESSING_RECORD;
 //		
-//		HeaderFile headerFile = new HeaderFile("src/main/resources/box2d-3.1.1/include/box2d/box2d.h", options);
+//		HeaderFile headerFile = new HeaderFile("src/main/resources/box2d-3.2.0/include/box2d/box2d.h", options);
 //		
 //		Generator generator = new Generator("src/main/resources/globalConfig/globalConfig.yaml", headerFile);
 //		

@@ -38,8 +38,9 @@ struct:
   name: b2Circle
   
 native-functions:
-  - name: b2ComputeCircleAABB
+  - name: b2ComputeCircleMass
   - name: b2PointInCircle
-  - name: b2RayCastCircle
-  - name: b2ShapeCastCircle
+  - name: b2CastRayCircle
+  - name: b2CastShapeCircle
+  - name: b2ComputeCircleBounds
 native-function-pointers:

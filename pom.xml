@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dev.morgoth398</groupId>
 	<artifactId>Box2D-JavaFFM</artifactId>
-	<version>3.1.1</version>
+	<version>3.2.0</version>
 	<build>
 		<plugins>
 			<plugin>

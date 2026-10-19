@@ -14,49 +14,48 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Cosine and sine pair
-/// This uses a custom implementation designed for cross-platform determinism
+/// Cosine and sine pair This uses a custom implementation designed for cross-platform determinism
 /// ```
 public final class CosSin
 		implements Struct<CosSin> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle COSINE_HANDLE;
-    public static final VarHandle SINE_HANDLE;
+	public static final VarHandle COSINE_HANDLE;
+	public static final VarHandle SINE_HANDLE;
 
-    public static final long COSINE_BYTE_OFFSET;
-    public static final long SINE_BYTE_OFFSET;
+	public static final long COSINE_BYTE_OFFSET;
+	public static final long SINE_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_FLOAT.withName("cosine"),
-            JAVA_FLOAT.withName("sine")
-        ).withName("b2CosSin").withByteAlignment(4);
-        
-        COSINE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("cosine"));
-        SINE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sine"));
-        
-        COSINE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cosine"));
-        SINE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sine"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_FLOAT.withName("cosine"),
+		    JAVA_FLOAT.withName("sine")
+		).withName("b2CosSin").withByteAlignment(4);
+		
+		COSINE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("cosine"));
+		SINE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sine"));
+		
+		COSINE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("cosine"));
+		SINE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sine"));
+		//@formatter:on
+	}
 
-    public CosSin() {
-        this(Arena.ofAuto());
-    }
-    
-    public CosSin(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public CosSin(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public CosSin() {
+	    this(Arena.ofAuto());
+	}
+	
+	public CosSin(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public CosSin(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #cosine()
     public CosSin cosine(float cosine) {
@@ -132,5 +131,5 @@ public final class CosSin
             segment -> new CosSin(segment)
         );
     }
-    
+
 }

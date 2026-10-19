@@ -16,54 +16,53 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// Body events are buffered in the Box2D world and are available
-/// as event arrays after the time step is complete.
-/// Note: this data becomes invalid if bodies are destroyed
+/// Body events are buffered in the Box2D world and are available as event arrays after the time
+/// step is complete. Note: this data becomes invalid if bodies are destroyed
 /// ```
 public final class BodyEvents
 		implements Struct<BodyEvents> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MOVE_EVENTS_HANDLE;
-    public static final VarHandle MOVE_COUNT_HANDLE;
+	public static final VarHandle MOVE_EVENTS_HANDLE;
+	public static final VarHandle MOVE_COUNT_HANDLE;
 
-    public static final long MOVE_EVENTS_BYTE_OFFSET;
-    public static final long MOVE_COUNT_BYTE_OFFSET;
+	public static final long MOVE_EVENTS_BYTE_OFFSET;
+	public static final long MOVE_COUNT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            UNBOUNDED_ADDRESS.withName("moveEvents"),
-            JAVA_INT.withName("moveCount"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2BodyEvents").withByteAlignment(8);
-        
-        MOVE_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("moveEvents"));
-        MOVE_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("moveCount"));
-        
-        MOVE_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveEvents"));
-        MOVE_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveCount"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    UNBOUNDED_ADDRESS.withName("moveEvents"),
+		    JAVA_INT.withName("moveCount"),
+		    MemoryLayout.paddingLayout(4)
+		).withName("b2BodyEvents").withByteAlignment(8);
+		
+		MOVE_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("moveEvents"));
+		MOVE_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("moveCount"));
+		
+		MOVE_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveEvents"));
+		MOVE_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("moveCount"));
+		//@formatter:on
+	}
 
-    public BodyEvents() {
-        this(Arena.ofAuto());
-    }
-    
-    public BodyEvents(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public BodyEvents(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public BodyEvents() {
+	    this(Arena.ofAuto());
+	}
+	
+	public BodyEvents(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public BodyEvents(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #moveEvents()
-    public BodyEvents moveEvents(BodyMoveEvent moveEvents) {
+    public BodyEvents moveEvents(NativeStructArray<BodyMoveEvent> moveEvents) {
     	MOVE_EVENTS_HANDLE.set(segment, 0L, moveEvents.memorySegment());
     	return this;
     }
@@ -71,13 +70,13 @@ public final class BodyEvents
     /// ```
     /// Array of move events
     /// ```
-    public @Nullable BodyMoveEvent moveEvents() {
+    public @Nullable NativeStructArray<BodyMoveEvent> moveEvents() {
     	MemorySegment segment = (MemorySegment) MOVE_EVENTS_HANDLE.get(this.segment, 0L);
     
     	if (segment.equals(MemorySegment.NULL))
     		return null;
-    	
-    	return new BodyMoveEvent(segment);
+    
+    	return BodyMoveEvent.array(segment);
     }
     
     /// @see #moveCount()
@@ -144,5 +143,5 @@ public final class BodyEvents
             segment -> new BodyEvents(segment)
         );
     }
-    
+
 }

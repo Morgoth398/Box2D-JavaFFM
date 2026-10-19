@@ -16,6 +16,7 @@ imports:
   - volucris.bindings.box2d.math.Vec2
   - volucris.bindings.box2d.math.Rot
   - volucris.bindings.box2d.math.Transform
+  - volucris.bindings.box2d.math.AABB
 static-imports:
   - java.lang.foreign.ValueLayout.*
   - volucris.bindings.core.FFMUtils.*
@@ -59,6 +60,8 @@ native-functions:
   - name: b2TransformPolygon
     is-static: true
   - name: b2PointInPolygon
-  - name: b2RayCastPolygon
-  - name: b2ShapeCastPolygon
+  - name: b2CastRayPolygon
+  - name: b2CastShapePolygon
+  - name: b2ComputePolygonMass
+  - name: b2ComputePolygonBounds
 native-function-pointers:

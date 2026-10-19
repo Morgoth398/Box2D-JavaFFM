@@ -19,48 +19,48 @@ import static java.lang.foreign.ValueLayout.*;
 public final class ShapeId
 		implements Struct<ShapeId> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle INDEX1_HANDLE;
-    public static final VarHandle WORLD0_HANDLE;
-    public static final VarHandle GENERATION_HANDLE;
+	public static final VarHandle INDEX1_HANDLE;
+	public static final VarHandle WORLD0_HANDLE;
+	public static final VarHandle GENERATION_HANDLE;
 
-    public static final long INDEX1_BYTE_OFFSET;
-    public static final long WORLD0_BYTE_OFFSET;
-    public static final long GENERATION_BYTE_OFFSET;
+	public static final long INDEX1_BYTE_OFFSET;
+	public static final long WORLD0_BYTE_OFFSET;
+	public static final long GENERATION_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_INT.withName("index1"),
-            JAVA_SHORT.withName("world0"),
-            JAVA_SHORT.withName("generation")
-        ).withName("b2ShapeId").withByteAlignment(4);
-        
-        INDEX1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("index1"));
-        WORLD0_HANDLE = LAYOUT.varHandle(PathElement.groupElement("world0"));
-        GENERATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("generation"));
-        
-        INDEX1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("index1"));
-        WORLD0_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("world0"));
-        GENERATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("generation"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_INT.withName("index1"),
+		    JAVA_SHORT.withName("world0"),
+		    JAVA_SHORT.withName("generation")
+		).withName("b2ShapeId").withByteAlignment(4);
+		
+		INDEX1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("index1"));
+		WORLD0_HANDLE = LAYOUT.varHandle(PathElement.groupElement("world0"));
+		GENERATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("generation"));
+		
+		INDEX1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("index1"));
+		WORLD0_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("world0"));
+		GENERATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("generation"));
+		//@formatter:on
+	}
 
-    public ShapeId() {
-        this(Arena.ofAuto());
-    }
-    
-    public ShapeId(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public ShapeId(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public ShapeId() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ShapeId(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ShapeId(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #index1()
     public ShapeId index1(int index1) {
@@ -143,5 +143,5 @@ public final class ShapeId
             segment -> new ShapeId(segment)
         );
     }
-    
+
 }

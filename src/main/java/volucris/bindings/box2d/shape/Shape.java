@@ -8,6 +8,7 @@ import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.body.BodyId;
+import volucris.bindings.box2d.chain.ChainId;
 import volucris.bindings.box2d.events.ContactData;
 import volucris.bindings.box2d.geometry.Capsule;
 import volucris.bindings.box2d.geometry.CastOutput;
@@ -15,7 +16,6 @@ import volucris.bindings.box2d.geometry.ChainSegment;
 import volucris.bindings.box2d.geometry.Circle;
 import volucris.bindings.box2d.geometry.MassData;
 import volucris.bindings.box2d.geometry.Polygon;
-import volucris.bindings.box2d.geometry.RayCastInput;
 import volucris.bindings.box2d.geometry.Segment;
 import volucris.bindings.box2d.math.AABB;
 import volucris.bindings.box2d.math.Vec2;
@@ -26,120 +26,126 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class Shape {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_CIRCLE_SHAPE;
-    private static final LazyConstant<MethodHandle> B2_CREATE_SEGMENT_SHAPE;
-    private static final LazyConstant<MethodHandle> B2_CREATE_CAPSULE_SHAPE;
-    private static final LazyConstant<MethodHandle> B2_CREATE_POLYGON_SHAPE;
-    private static final LazyConstant<MethodHandle> B2_DESTROY_SHAPE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_IS_VALID;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_TYPE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_BODY;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_WORLD;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_IS_SENSOR;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_USER_DATA;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_USER_DATA;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_DENSITY;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_DENSITY;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_FRICTION;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_FRICTION;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_RESTITUTION;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_RESTITUTION;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_MATERIAL;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_MATERIAL;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_SURFACE_MATERIAL;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SURFACE_MATERIAL;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_FILTER;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_FILTER;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_SENSOR_EVENTS;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_CONTACT_EVENTS;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_HIT_EVENTS;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_HIT_EVENTS_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_TEST_POINT;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_RAY_CAST;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CIRCLE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SEGMENT;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CHAIN_SEGMENT;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CAPSULE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_CIRCLE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_CAPSULE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_SEGMENT;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_SET_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_PARENT_CHAIN;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CONTACT_CAPACITY;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CONTACT_DATA;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SENSOR_CAPACITY;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SENSOR_OVERLAPS;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_AABB;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_MASS_DATA;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CLOSEST_POINT;
+	private static final LazyConstant<MethodHandle> B2_CREATE_CIRCLE_SHAPE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_SEGMENT_SHAPE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_CHAIN_SEGMENT_SHAPE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_CAPSULE_SHAPE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_POLYGON_SHAPE;
+	private static final LazyConstant<MethodHandle> B2_DESTROY_SHAPE;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_IS_VALID;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_TYPE;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_BODY;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_WORLD;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_IS_SENSOR;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_USER_DATA;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_USER_DATA;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_DENSITY;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_DENSITY;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_FRICTION;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_FRICTION;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_RESTITUTION;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_RESTITUTION;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_USER_MATERIAL;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_USER_MATERIAL;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_SURFACE_MATERIAL;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SURFACE_MATERIAL;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_FILTER;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_FILTER;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_SENSOR_EVENTS;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_CONTACT_EVENTS;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ENABLE_HIT_EVENTS;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_ARE_HIT_EVENTS_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_TEST_POINT;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_CAST_RAY;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CIRCLE;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SEGMENT;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CHAIN_SEGMENT;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CAPSULE;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_CIRCLE;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_CAPSULE;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_SEGMENT;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_SET_CHAIN_SEGMENT;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_PARENT_CHAIN;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CONTACT_CAPACITY;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CONTACT_DATA;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SENSOR_CAPACITY;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_SENSOR_DATA;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_BOUNDS;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_COMPUTE_MASS_DATA;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_GET_CLOSEST_POINT;
+	private static final LazyConstant<MethodHandle> B2_SHAPE_APPLY_WIND;
 
-    static {
-        //@formatter:off
-        B2_CREATE_CIRCLE_SHAPE = downcallHandle("b2CreateCircleShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_CREATE_SEGMENT_SHAPE = downcallHandle("b2CreateSegmentShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_CREATE_CAPSULE_SHAPE = downcallHandle("b2CreateCapsuleShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_CREATE_POLYGON_SHAPE = downcallHandle("b2CreatePolygonShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_DESTROY_SHAPE = downcallHandleVoid("b2DestroyShape", ShapeId.LAYOUT, JAVA_BOOLEAN);
-        B2_SHAPE_IS_VALID = downcallHandle("b2Shape_IsValid", JAVA_BOOLEAN, ShapeId.LAYOUT);
-        B2_SHAPE_GET_TYPE = downcallHandle("b2Shape_GetType", JAVA_INT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_BODY = downcallHandle("b2Shape_GetBody", BodyId.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_WORLD = downcallHandle("b2Shape_GetWorld", WorldId.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_IS_SENSOR = downcallHandle("b2Shape_IsSensor", JAVA_BOOLEAN, ShapeId.LAYOUT);
-        B2_SHAPE_SET_USER_DATA = downcallHandleVoid("b2Shape_SetUserData", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_SHAPE_GET_USER_DATA = downcallHandle("b2Shape_GetUserData", UNBOUNDED_ADDRESS, ShapeId.LAYOUT);
-        B2_SHAPE_SET_DENSITY = downcallHandleVoid("b2Shape_SetDensity", ShapeId.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
-        B2_SHAPE_GET_DENSITY = downcallHandle("b2Shape_GetDensity", JAVA_FLOAT, ShapeId.LAYOUT);
-        B2_SHAPE_SET_FRICTION = downcallHandleVoid("b2Shape_SetFriction", ShapeId.LAYOUT, JAVA_FLOAT);
-        B2_SHAPE_GET_FRICTION = downcallHandle("b2Shape_GetFriction", JAVA_FLOAT, ShapeId.LAYOUT);
-        B2_SHAPE_SET_RESTITUTION = downcallHandleVoid("b2Shape_SetRestitution", ShapeId.LAYOUT, JAVA_FLOAT);
-        B2_SHAPE_GET_RESTITUTION = downcallHandle("b2Shape_GetRestitution", JAVA_FLOAT, ShapeId.LAYOUT);
-        B2_SHAPE_SET_MATERIAL = downcallHandleVoid("b2Shape_SetMaterial", ShapeId.LAYOUT, JAVA_INT);
-        B2_SHAPE_GET_MATERIAL = downcallHandle("b2Shape_GetMaterial", JAVA_INT, ShapeId.LAYOUT);
-        B2_SHAPE_SET_SURFACE_MATERIAL = downcallHandleVoid("b2Shape_SetSurfaceMaterial", ShapeId.LAYOUT, SurfaceMaterial.LAYOUT);
-        B2_SHAPE_GET_SURFACE_MATERIAL = downcallHandle("b2Shape_GetSurfaceMaterial", SurfaceMaterial.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_FILTER = downcallHandle("b2Shape_GetFilter", Filter.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_SET_FILTER = downcallHandleVoid("b2Shape_SetFilter", ShapeId.LAYOUT, Filter.LAYOUT);
-        B2_SHAPE_ENABLE_SENSOR_EVENTS = downcallHandleVoid("b2Shape_EnableSensorEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
-        B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED = downcallHandle("b2Shape_AreSensorEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
-        B2_SHAPE_ENABLE_CONTACT_EVENTS = downcallHandleVoid("b2Shape_EnableContactEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
-        B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED = downcallHandle("b2Shape_AreContactEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
-        B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS = downcallHandleVoid("b2Shape_EnablePreSolveEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
-        B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED = downcallHandle("b2Shape_ArePreSolveEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
-        B2_SHAPE_ENABLE_HIT_EVENTS = downcallHandleVoid("b2Shape_EnableHitEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
-        B2_SHAPE_ARE_HIT_EVENTS_ENABLED = downcallHandle("b2Shape_AreHitEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
-        B2_SHAPE_TEST_POINT = downcallHandle("b2Shape_TestPoint", JAVA_BOOLEAN, ShapeId.LAYOUT, Vec2.LAYOUT);
-        B2_SHAPE_RAY_CAST = downcallHandle("b2Shape_RayCast", CastOutput.LAYOUT, ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_SHAPE_GET_CIRCLE = downcallHandle("b2Shape_GetCircle", Circle.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_SEGMENT = downcallHandle("b2Shape_GetSegment", Segment.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_CHAIN_SEGMENT = downcallHandle("b2Shape_GetChainSegment", ChainSegment.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_CAPSULE = downcallHandle("b2Shape_GetCapsule", Capsule.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_POLYGON = downcallHandle("b2Shape_GetPolygon", Polygon.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_SET_CIRCLE = downcallHandleVoid("b2Shape_SetCircle", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_SHAPE_SET_CAPSULE = downcallHandleVoid("b2Shape_SetCapsule", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_SHAPE_SET_SEGMENT = downcallHandleVoid("b2Shape_SetSegment", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_SHAPE_SET_POLYGON = downcallHandleVoid("b2Shape_SetPolygon", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_SHAPE_GET_PARENT_CHAIN = downcallHandle("b2Shape_GetParentChain", ChainId.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_CONTACT_CAPACITY = downcallHandle("b2Shape_GetContactCapacity", JAVA_INT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_CONTACT_DATA = downcallHandle("b2Shape_GetContactData", JAVA_INT, ShapeId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_SHAPE_GET_SENSOR_CAPACITY = downcallHandle("b2Shape_GetSensorCapacity", JAVA_INT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_SENSOR_OVERLAPS = downcallHandle("b2Shape_GetSensorOverlaps", JAVA_INT, ShapeId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_SHAPE_GET_AABB = downcallHandle("b2Shape_GetAABB", AABB.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_MASS_DATA = downcallHandle("b2Shape_GetMassData", MassData.LAYOUT, ShapeId.LAYOUT);
-        B2_SHAPE_GET_CLOSEST_POINT = downcallHandle("b2Shape_GetClosestPoint", Vec2.LAYOUT, ShapeId.LAYOUT, Vec2.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_CIRCLE_SHAPE = downcallHandle("b2CreateCircleShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CREATE_SEGMENT_SHAPE = downcallHandle("b2CreateSegmentShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CREATE_CHAIN_SEGMENT_SHAPE = downcallHandle("b2CreateChainSegmentShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CREATE_CAPSULE_SHAPE = downcallHandle("b2CreateCapsuleShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CREATE_POLYGON_SHAPE = downcallHandle("b2CreatePolygonShape", ShapeId.LAYOUT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_DESTROY_SHAPE = downcallHandleVoid("b2DestroyShape", ShapeId.LAYOUT, JAVA_BOOLEAN);
+		B2_SHAPE_IS_VALID = downcallHandle("b2Shape_IsValid", JAVA_BOOLEAN, ShapeId.LAYOUT);
+		B2_SHAPE_GET_TYPE = downcallHandle("b2Shape_GetType", JAVA_INT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_BODY = downcallHandle("b2Shape_GetBody", BodyId.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_WORLD = downcallHandle("b2Shape_GetWorld", WorldId.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_IS_SENSOR = downcallHandle("b2Shape_IsSensor", JAVA_BOOLEAN, ShapeId.LAYOUT);
+		B2_SHAPE_SET_USER_DATA = downcallHandleVoid("b2Shape_SetUserData", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_GET_USER_DATA = downcallHandle("b2Shape_GetUserData", UNBOUNDED_ADDRESS, ShapeId.LAYOUT);
+		B2_SHAPE_SET_DENSITY = downcallHandleVoid("b2Shape_SetDensity", ShapeId.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
+		B2_SHAPE_GET_DENSITY = downcallHandle("b2Shape_GetDensity", JAVA_FLOAT, ShapeId.LAYOUT);
+		B2_SHAPE_SET_FRICTION = downcallHandleVoid("b2Shape_SetFriction", ShapeId.LAYOUT, JAVA_FLOAT);
+		B2_SHAPE_GET_FRICTION = downcallHandle("b2Shape_GetFriction", JAVA_FLOAT, ShapeId.LAYOUT);
+		B2_SHAPE_SET_RESTITUTION = downcallHandleVoid("b2Shape_SetRestitution", ShapeId.LAYOUT, JAVA_FLOAT);
+		B2_SHAPE_GET_RESTITUTION = downcallHandle("b2Shape_GetRestitution", JAVA_FLOAT, ShapeId.LAYOUT);
+		B2_SHAPE_SET_USER_MATERIAL = downcallHandleVoid("b2Shape_SetUserMaterial", ShapeId.LAYOUT, JAVA_LONG);
+		B2_SHAPE_GET_USER_MATERIAL = downcallHandle("b2Shape_GetUserMaterial", JAVA_LONG, ShapeId.LAYOUT);
+		B2_SHAPE_SET_SURFACE_MATERIAL = downcallHandleVoid("b2Shape_SetSurfaceMaterial", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_GET_SURFACE_MATERIAL = downcallHandle("b2Shape_GetSurfaceMaterial", SurfaceMaterial.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_FILTER = downcallHandle("b2Shape_GetFilter", Filter.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_SET_FILTER = downcallHandleVoid("b2Shape_SetFilter", ShapeId.LAYOUT, Filter.LAYOUT);
+		B2_SHAPE_ENABLE_SENSOR_EVENTS = downcallHandleVoid("b2Shape_EnableSensorEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
+		B2_SHAPE_ARE_SENSOR_EVENTS_ENABLED = downcallHandle("b2Shape_AreSensorEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
+		B2_SHAPE_ENABLE_CONTACT_EVENTS = downcallHandleVoid("b2Shape_EnableContactEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
+		B2_SHAPE_ARE_CONTACT_EVENTS_ENABLED = downcallHandle("b2Shape_AreContactEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
+		B2_SHAPE_ENABLE_PRE_SOLVE_EVENTS = downcallHandleVoid("b2Shape_EnablePreSolveEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
+		B2_SHAPE_ARE_PRE_SOLVE_EVENTS_ENABLED = downcallHandle("b2Shape_ArePreSolveEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
+		B2_SHAPE_ENABLE_HIT_EVENTS = downcallHandleVoid("b2Shape_EnableHitEvents", ShapeId.LAYOUT, JAVA_BOOLEAN);
+		B2_SHAPE_ARE_HIT_EVENTS_ENABLED = downcallHandle("b2Shape_AreHitEventsEnabled", JAVA_BOOLEAN, ShapeId.LAYOUT);
+		B2_SHAPE_TEST_POINT = downcallHandle("b2Shape_TestPoint", JAVA_BOOLEAN, ShapeId.LAYOUT, Vec2.LAYOUT);
+		B2_SHAPE_CAST_RAY = downcallHandle("b2Shape_CastRay", CastOutput.LAYOUT, ShapeId.LAYOUT, Vec2.LAYOUT, Vec2.LAYOUT);
+		B2_SHAPE_GET_CIRCLE = downcallHandle("b2Shape_GetCircle", Circle.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_SEGMENT = downcallHandle("b2Shape_GetSegment", Segment.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_CHAIN_SEGMENT = downcallHandle("b2Shape_GetChainSegment", ChainSegment.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_CAPSULE = downcallHandle("b2Shape_GetCapsule", Capsule.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_POLYGON = downcallHandle("b2Shape_GetPolygon", Polygon.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_SET_CIRCLE = downcallHandleVoid("b2Shape_SetCircle", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_SET_CAPSULE = downcallHandleVoid("b2Shape_SetCapsule", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_SET_SEGMENT = downcallHandleVoid("b2Shape_SetSegment", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_SET_POLYGON = downcallHandleVoid("b2Shape_SetPolygon", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_SET_CHAIN_SEGMENT = downcallHandleVoid("b2Shape_SetChainSegment", ShapeId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_SHAPE_GET_PARENT_CHAIN = downcallHandle("b2Shape_GetParentChain", ChainId.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_CONTACT_CAPACITY = downcallHandle("b2Shape_GetContactCapacity", JAVA_INT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_CONTACT_DATA = downcallHandle("b2Shape_GetContactData", JAVA_INT, ShapeId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_SHAPE_GET_SENSOR_CAPACITY = downcallHandle("b2Shape_GetSensorCapacity", JAVA_INT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_SENSOR_DATA = downcallHandle("b2Shape_GetSensorData", JAVA_INT, ShapeId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_SHAPE_GET_BOUNDS = downcallHandle("b2Shape_GetBounds", AABB.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_COMPUTE_MASS_DATA = downcallHandle("b2Shape_ComputeMassData", MassData.LAYOUT, ShapeId.LAYOUT);
+		B2_SHAPE_GET_CLOSEST_POINT = downcallHandle("b2Shape_GetClosestPoint", Vec2.LAYOUT, ShapeId.LAYOUT, Vec2.LAYOUT);
+		B2_SHAPE_APPLY_WIND = downcallHandleVoid("b2Shape_ApplyWind", ShapeId.LAYOUT, Vec2.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, JAVA_BOOLEAN);
+		//@formatter:on
+	}
 
-    private Shape() {
-    }
+	private Shape() {
+	}
 
     /// ```
-    /// Create a circle shape and attach it to a body. The shape definition and geometry are fully cloned.
-    /// Contacts are not created until the next time step.
+    /// Create a circle shape and attach it to a body. The shape definition and geometry are fully
+    /// cloned. Contacts are not created until the next time step.
     /// @return the shape id for accessing the shape
     /// ```
     public static MemorySegment createCircleShape(
@@ -182,9 +188,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Create a line segment shape and attach it to a body. The shape definition and geometry are fully cloned.
-    /// Contacts are not created until the next time step.
-    /// @return the shape id for accessing the shape
+    /// Create a line segment shape and attach it to a body. The shape definition and geometry are fully
+    /// cloned. Contacts are not created until the next time step.
+    /// @return the shape id or b2_nullShapeId if the segment is too short.
     /// ```
     public static MemorySegment createSegmentShape(
     	SegmentAllocator allocator,
@@ -226,9 +232,56 @@ public final class Shape {
     }
     
     /// ```
-    /// Create a capsule shape and attach it to a body. The shape definition and geometry are fully cloned.
-    /// Contacts are not created until the next time step.
-    /// @return the shape id for accessing the shape
+    /// Create a chain segment shape and attach it to a body. The shape definition and geometry are
+    /// fully cloned. The segment is not owned by any chain shape (b2Shape_GetParentChain returns
+    /// b2_nullChainId). Contacts are not created until the next time step. The chainId on the segment
+    /// is ignored. This uses more memory than using a chain shape, so I don't recommend using this.
+    /// @return the shape id, or b2_nullShapeId if the segment is too short.
+    /// ```
+    public static MemorySegment createChainSegmentShape(
+    	SegmentAllocator allocator,
+    	MemorySegment bodyId,
+    	MemorySegment def,
+    	MemorySegment chainSegment
+    ) {
+    	MethodHandle method = B2_CREATE_CHAIN_SEGMENT_SHAPE.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			bodyId,
+    			def,
+    			chainSegment
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#createChainSegmentShape].
+    public static @Nullable ShapeId createChainSegmentShape(
+    	SegmentAllocator allocator,
+    	BodyId bodyId,
+    	ShapeDef def,
+    	ChainSegment chainSegment
+    ) {
+    	MemorySegment segment = createChainSegmentShape(
+    		allocator,
+    		bodyId.memorySegment(),
+    		def.memorySegment(),
+    		chainSegment.memorySegment()
+    	);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new ShapeId(segment);
+    }
+    
+    /// ```
+    /// Create a capsule shape and attach it to a body. The shape definition and geometry are fully
+    /// cloned. Contacts are not created until the next time step.
+    /// @return the shape id for accessing the shape, this will be b2_nullShapeId if the length is too
+    /// small.
     /// ```
     public static MemorySegment createCapsuleShape(
     	SegmentAllocator allocator,
@@ -270,8 +323,8 @@ public final class Shape {
     }
     
     /// ```
-    /// Create a polygon shape and attach it to a body. The shape definition and geometry are fully cloned.
-    /// Contacts are not created until the next time step.
+    /// Create a polygon shape and attach it to a body. The shape definition and geometry are fully
+    /// cloned. Contacts are not created until the next time step.
     /// @return the shape id for accessing the shape
     /// ```
     public static MemorySegment createPolygonShape(
@@ -314,9 +367,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Destroy a shape. You may defer the body mass update which can improve performance if several shapes on a
-    /// body are destroyed at once.
-    /// @see b2Body_ApplyMassFromShapes
+    /// Destroy a shape. You may defer the body mass update which can improve performance if several
+    /// shapes on a body are destroyed at once.
+    /// @see b2Body_UpdateMassFromShapes
     /// ```
     public static void destroyShape(
     	MemorySegment shapeId,
@@ -463,9 +516,8 @@ public final class Shape {
     }
     
     /// ```
-    /// Returns true if the shape is a sensor. It is not possible to change a shape
-    /// from sensor to solid dynamically because this breaks the contract for
-    /// sensor events.
+    /// Returns true if the shape is a sensor. It is not possible to change a shape from sensor to solid
+    /// dynamically because this breaks the contract for sensor events.
     /// ```
     public static boolean isSensor(
     	MemorySegment shapeId
@@ -519,8 +571,7 @@ public final class Shape {
     }
     
     /// ```
-    /// Get the user data for a shape. This is useful when you get a shape id
-    /// from an event or query.
+    /// Get the user data for a shape. This is useful when you get a shape id from an event or query.
     /// ```
     public static MemorySegment getUserData(
     	MemorySegment shapeId
@@ -550,9 +601,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Set the mass density of a shape, usually in kg/m^2.
-    /// This will optionally update the mass properties on the parent body.
-    /// @see b2ShapeDef::density, b2Body_ApplyMassFromShapes
+    /// Set the mass density of a shape, usually in kg/m^2. This will optionally update the mass
+    /// properties on the parent body.
+    /// @see b2ShapeDef::density, b2Body_UpdateMassFromShapes
     /// ```
     public static void setDensity(
     	MemorySegment shapeId,
@@ -611,7 +662,6 @@ public final class Shape {
     
     /// ```
     /// Set the friction on a shape
-    /// @see b2ShapeDef::friction
     /// ```
     public static void setFriction(
     	MemorySegment shapeId,
@@ -666,7 +716,6 @@ public final class Shape {
     
     /// ```
     /// Set the shape restitution (bounciness)
-    /// @see b2ShapeDef::restitution
     /// ```
     public static void setRestitution(
     	MemorySegment shapeId,
@@ -720,14 +769,13 @@ public final class Shape {
     }
     
     /// ```
-    /// Set the shape material identifier
-    /// @see b2ShapeDef::material
+    /// Set the user material identifier
     /// ```
-    public static void setMaterial(
+    public static void setUserMaterial(
     	MemorySegment shapeId,
-    	int material
+    	long material
     ) {
-    	MethodHandle method = B2_SHAPE_SET_MATERIAL.get();
+    	MethodHandle method = B2_SHAPE_SET_USER_MATERIAL.get();
     	try {
     		 method.invokeExact(
     			shapeId,
@@ -738,26 +786,26 @@ public final class Shape {
     	}
     }
     
-    /// Typed method of [#setMaterial].
-    public static void setMaterial(
+    /// Typed method of [#setUserMaterial].
+    public static void setUserMaterial(
     	ShapeId shapeId,
-    	int material
+    	long material
     ) {
-    	setMaterial(
+    	setUserMaterial(
     		shapeId.memorySegment(),
     		material
     	);
     }
     
     /// ```
-    /// Get the shape material identifier
+    /// Get the user material identifier
     /// ```
-    public static int getMaterial(
+    public static long getUserMaterial(
     	MemorySegment shapeId
     ) {
-    	MethodHandle method = B2_SHAPE_GET_MATERIAL.get();
+    	MethodHandle method = B2_SHAPE_GET_USER_MATERIAL.get();
     	try {
-    		return (int) method.invokeExact(
+    		return (long) method.invokeExact(
     			shapeId
     		);
     	} catch (Throwable e) {
@@ -765,11 +813,11 @@ public final class Shape {
     	}
     }
     
-    /// Typed method of [#getMaterial].
-    public static int getMaterial(
+    /// Typed method of [#getUserMaterial].
+    public static long getUserMaterial(
     	ShapeId shapeId
     ) {
-    	return getMaterial(
+    	return getUserMaterial(
     		shapeId.memorySegment()
     	);
     }
@@ -873,8 +921,8 @@ public final class Shape {
     
     /// ```
     /// Set the current filter. This is almost as expensive as recreating the shape. This may cause
-    /// contacts to be immediately destroyed. However contacts are not created until the next world step.
-    /// Sensor overlap state is also not updated until the next world step.
+    /// contacts to be immediately destroyed. However contacts are not created until the next world
+    /// step. Sensor overlap state is also not updated until the next world step.
     /// @see b2ShapeDef::filter
     /// ```
     public static void setFilter(
@@ -959,7 +1007,8 @@ public final class Shape {
     }
     
     /// ```
-    /// Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors.
+    /// Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for
+    /// sensors.
     /// @see b2ShapeDef::enableContactEvents
     /// @warning changing this at run-time may lead to lost begin/end events
     /// ```
@@ -1015,9 +1064,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive
-    /// and must be carefully handled due to multithreading. Ignored for sensors.
-    /// @see b2PreSolveFcn
+    /// Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are
+    /// expensive and must be carefully handled due to multithreading. Ignored for sensors.
+    /// @see b2PreSolveCallbackFcn
     /// ```
     public static void enablePreSolveEvents(
     	MemorySegment shapeId,
@@ -1072,7 +1121,7 @@ public final class Shape {
     
     /// ```
     /// Enable contact hit events for this shape. Ignored for sensors.
-    /// @see b2WorldDef.hitEventThreshold
+    /// @see b2WorldDef::hitEventThreshold
     /// ```
     public static void enableHitEvents(
     	MemorySegment shapeId,
@@ -1126,7 +1175,7 @@ public final class Shape {
     }
     
     /// ```
-    /// Test a point for overlap with a shape
+    /// Test a world point for overlap with a shape
     /// ```
     public static boolean testPoint(
     	MemorySegment shapeId,
@@ -1155,35 +1204,40 @@ public final class Shape {
     }
     
     /// ```
-    /// Ray cast a shape directly
+    /// Ray cast a single shape. The ray starts at the origin and extends by the translation. The output
+    /// point is a world position.
     /// ```
-    public static MemorySegment rayCast(
+    public static MemorySegment castRay(
     	SegmentAllocator allocator,
     	MemorySegment shapeId,
-    	MemorySegment input
+    	MemorySegment origin,
+    	MemorySegment translation
     ) {
-    	MethodHandle method = B2_SHAPE_RAY_CAST.get();
+    	MethodHandle method = B2_SHAPE_CAST_RAY.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
     			shapeId,
-    			input
+    			origin,
+    			translation
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#rayCast].
-    public static @Nullable CastOutput rayCast(
+    /// Typed method of [#castRay].
+    public static @Nullable CastOutput castRay(
     	SegmentAllocator allocator,
     	ShapeId shapeId,
-    	RayCastInput input
+    	Vec2 origin,
+    	Vec2 translation
     ) {
-    	MemorySegment segment = rayCast(
+    	MemorySegment segment = castRay(
     		allocator,
     		shapeId.memorySegment(),
-    		input.memorySegment()
+    		origin.memorySegment(),
+    		translation.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
@@ -1261,8 +1315,8 @@ public final class Shape {
     }
     
     /// ```
-    /// Get a copy of the shape's chain segment. These come from chain shapes.
-    /// Asserts the type is correct.
+    /// Get a copy of the shape's chain segment. These come from chain shapes. Asserts the type is
+    /// correct.
     /// ```
     public static MemorySegment getChainSegment(
     	SegmentAllocator allocator,
@@ -1364,9 +1418,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Allows you to change a shape to be a circle or update the current circle.
-    /// This does not modify the mass properties.
-    /// @see b2Body_ApplyMassFromShapes
+    /// Allows you to change a shape to be a circle or update the current circle. This does not modify
+    /// the mass properties.
+    /// @see b2Body_UpdateMassFromShapes
     /// ```
     public static void setCircle(
     	MemorySegment shapeId,
@@ -1395,9 +1449,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Allows you to change a shape to be a capsule or update the current capsule.
-    /// This does not modify the mass properties.
-    /// @see b2Body_ApplyMassFromShapes
+    /// Allows you to change a shape to be a capsule or update the current capsule. This does not modify
+    /// the mass properties.
+    /// @see b2Body_UpdateMassFromShapes
     /// ```
     public static void setCapsule(
     	MemorySegment shapeId,
@@ -1455,9 +1509,9 @@ public final class Shape {
     }
     
     /// ```
-    /// Allows you to change a shape to be a polygon or update the current polygon.
-    /// This does not modify the mass properties.
-    /// @see b2Body_ApplyMassFromShapes
+    /// Allows you to change a shape to be a polygon or update the current polygon. This does not modify
+    /// the mass properties.
+    /// @see b2Body_UpdateMassFromShapes
     /// ```
     public static void setPolygon(
     	MemorySegment shapeId,
@@ -1486,8 +1540,38 @@ public final class Shape {
     }
     
     /// ```
-    /// Get the parent chain id if the shape type is a chain segment, otherwise
-    /// returns b2_nullChainId.
+    /// Allows you to change a shape to be a loose chain segment or update the current chain segment.
+    /// The resulting shape does not belong to a chain shape. Asserts if the shape is already a chain
+    /// segment owned by a chain shape (chainId != B2_NULL_INDEX).
+    /// ```
+    public static void setChainSegment(
+    	MemorySegment shapeId,
+    	MemorySegment chainSegment
+    ) {
+    	MethodHandle method = B2_SHAPE_SET_CHAIN_SEGMENT.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			chainSegment
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setChainSegment].
+    public static void setChainSegment(
+    	ShapeId shapeId,
+    	ChainSegment chainSegment
+    ) {
+    	setChainSegment(
+    		shapeId.memorySegment(),
+    		chainSegment.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Get the parent chain id if the shape type is a chain segment, otherwise returns b2_nullChainId.
     /// ```
     public static MemorySegment getParentChain(
     	SegmentAllocator allocator,
@@ -1546,7 +1630,8 @@ public final class Shape {
     }
     
     /// ```
-    /// Get the touching contact data for a shape. The provided shapeId will be either shapeIdA or shapeIdB on the contact data.
+    /// Get the touching contact data for a shape. The provided shapeId will be either shapeIdA or
+    /// shapeIdB on the contact data.
     /// @note Box2D uses speculative collision so some contact points may be separated.
     /// @returns the number of elements filled in the provided array
     /// @warning do not ignore the return value, it specifies the valid number of elements
@@ -1585,7 +1670,7 @@ public final class Shape {
     /// Get the maximum capacity required for retrieving all the overlapped shapes on a sensor shape.
     /// This returns 0 if the provided shape is not a sensor.
     /// @param shapeId the id of a sensor shape
-    /// @returns the required capacity to get all the overlaps in b2Shape_GetSensorOverlaps
+    /// @returns the required capacity to get all the overlaps in b2Shape_GetSensorData
     /// ```
     public static int getSensorCapacity(
     	MemorySegment shapeId
@@ -1610,24 +1695,24 @@ public final class Shape {
     }
     
     /// ```
-    /// Get the overlapped shapes for a sensor shape.
+    /// Get the overlap data for a sensor shape computed during the previous world step.
     /// @param shapeId the id of a sensor shape
-    /// @param overlaps a user allocated array that is filled with the overlapping shapes
-    /// @param capacity the capacity of overlappedShapes
+    /// @param visitorIds a user allocated array that is filled with the overlapping shapes (visitors)
+    /// @param capacity the capacity of visitorIds
     /// @returns the number of elements filled in the provided array
     /// @warning do not ignore the return value, it specifies the valid number of elements
     /// @warning overlaps may contain destroyed shapes so use b2Shape_IsValid to confirm each overlap
     /// ```
-    public static int getSensorOverlaps(
+    public static int getSensorData(
     	MemorySegment shapeId,
-    	MemorySegment overlaps,
+    	MemorySegment visitorIds,
     	int capacity
     ) {
-    	MethodHandle method = B2_SHAPE_GET_SENSOR_OVERLAPS.get();
+    	MethodHandle method = B2_SHAPE_GET_SENSOR_DATA.get();
     	try {
     		return (int) method.invokeExact(
     			shapeId,
-    			overlaps,
+    			visitorIds,
     			capacity
     		);
     	} catch (Throwable e) {
@@ -1635,15 +1720,15 @@ public final class Shape {
     	}
     }
     
-    /// Typed method of [#getSensorOverlaps].
-    public static int getSensorOverlaps(
+    /// Typed method of [#getSensorData].
+    public static int getSensorData(
     	ShapeId shapeId,
-    	ShapeId overlaps,
+    	ShapeId visitorIds,
     	int capacity
     ) {
-    	return getSensorOverlaps(
+    	return getSensorData(
     		shapeId.memorySegment(),
-    		overlaps.memorySegment(),
+    		visitorIds.memorySegment(),
     		capacity
     	);
     }
@@ -1651,11 +1736,11 @@ public final class Shape {
     /// ```
     /// Get the current world AABB
     /// ```
-    public static MemorySegment getAABB(
+    public static MemorySegment getBounds(
     	SegmentAllocator allocator,
     	MemorySegment shapeId
     ) {
-    	MethodHandle method = B2_SHAPE_GET_AABB.get();
+    	MethodHandle method = B2_SHAPE_GET_BOUNDS.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -1666,12 +1751,12 @@ public final class Shape {
     	}
     }
     
-    /// Typed method of [#getAABB].
-    public static @Nullable AABB getAABB(
+    /// Typed method of [#getBounds].
+    public static @Nullable AABB getBounds(
     	SegmentAllocator allocator,
     	ShapeId shapeId
     ) {
-    	MemorySegment segment = getAABB(
+    	MemorySegment segment = getBounds(
     		allocator,
     		shapeId.memorySegment()
     	);
@@ -1683,13 +1768,13 @@ public final class Shape {
     }
     
     /// ```
-    /// Get the mass data for a shape
+    /// Compute the mass data for a shape
     /// ```
-    public static MemorySegment getMassData(
+    public static MemorySegment computeMassData(
     	SegmentAllocator allocator,
     	MemorySegment shapeId
     ) {
-    	MethodHandle method = B2_SHAPE_GET_MASS_DATA.get();
+    	MethodHandle method = B2_SHAPE_COMPUTE_MASS_DATA.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -1700,12 +1785,12 @@ public final class Shape {
     	}
     }
     
-    /// Typed method of [#getMassData].
-    public static @Nullable MassData getMassData(
+    /// Typed method of [#computeMassData].
+    public static @Nullable MassData computeMassData(
     	SegmentAllocator allocator,
     	ShapeId shapeId
     ) {
-    	MemorySegment segment = getMassData(
+    	MemorySegment segment = computeMassData(
     		allocator,
     		shapeId.memorySegment()
     	);
@@ -1717,8 +1802,7 @@ public final class Shape {
     }
     
     /// ```
-    /// Get the closest point on a shape to a target point. Target and result are in world space.
-    /// todo need sample
+    /// Get the closest point on a shape to a target point. Target and result are world positions.
     /// ```
     public static MemorySegment getClosestPoint(
     	SegmentAllocator allocator,
@@ -1755,4 +1839,52 @@ public final class Shape {
     	return new Vec2(segment);
     }
     
+    /// ```
+    /// Apply a wind force to the body for this shape using the density of air. This considers the
+    /// projected area of the shape in the wind direction. This also considers the relative velocity of
+    /// the shape.
+    /// @param shapeId the shape id
+    /// @param wind the wind velocity in world space
+    /// @param drag the drag coefficient, the force that opposes the relative velocity
+    /// @param lift the lift coefficient, the force that is perpendicular to the relative velocity
+    /// @param wake should this wake the body
+    /// ```
+    public static void applyWind(
+    	MemorySegment shapeId,
+    	MemorySegment wind,
+    	float drag,
+    	float lift,
+    	boolean wake
+    ) {
+    	MethodHandle method = B2_SHAPE_APPLY_WIND.get();
+    	try {
+    		 method.invokeExact(
+    			shapeId,
+    			wind,
+    			drag,
+    			lift,
+    			wake
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#applyWind].
+    public static void applyWind(
+    	ShapeId shapeId,
+    	Vec2 wind,
+    	float drag,
+    	float lift,
+    	boolean wake
+    ) {
+    	applyWind(
+    		shapeId.memorySegment(),
+    		wind.memorySegment(),
+    		drag,
+    		lift,
+    		wake
+    	);
+    }
+
 }

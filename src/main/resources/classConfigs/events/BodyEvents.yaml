@@ -32,6 +32,8 @@ excluded-function-name-postfixes:
 constructors:
 struct:
   name: b2BodyEvents
+  struct-arrays:
+    - moveEvents
   
 native-functions:
 native-function-pointers:

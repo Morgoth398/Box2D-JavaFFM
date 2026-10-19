@@ -20,68 +20,55 @@ import static java.lang.foreign.ValueLayout.*;
 public final class Simplex
 		implements Struct<Simplex> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle COUNT_HANDLE;
+	public static final VarHandle COUNT_HANDLE;
 
-    public static final long V1_BYTE_OFFSET;
-    public static final long V2_BYTE_OFFSET;
-    public static final long V3_BYTE_OFFSET;
-    public static final long COUNT_BYTE_OFFSET;
+	public static final long V1_BYTE_OFFSET;
+	public static final long V2_BYTE_OFFSET;
+	public static final long V3_BYTE_OFFSET;
+	public static final long COUNT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final SimplexVertex v1;
-    private final SimplexVertex v2;
-    private final SimplexVertex v3;
+	private final SimplexVertex v1;
+	private final SimplexVertex v2;
+	private final SimplexVertex v3;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            SimplexVertex.LAYOUT.withName("v1"),
-            SimplexVertex.LAYOUT.withName("v2"),
-            SimplexVertex.LAYOUT.withName("v3"),
-            JAVA_INT.withName("count")
-        ).withName("b2Simplex").withByteAlignment(4);
-        
-        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
-        
-        V1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v1"));
-        V2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v2"));
-        V3_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v3"));
-        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    SimplexVertex.LAYOUT.withName("v1"),
+		    SimplexVertex.LAYOUT.withName("v2"),
+		    SimplexVertex.LAYOUT.withName("v3"),
+		    JAVA_INT.withName("count")
+		).withName("b2Simplex").withByteAlignment(4);
+		
+		COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
+		
+		V1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v1"));
+		V2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v2"));
+		V3_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("v3"));
+		COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+		//@formatter:on
+	}
 
-    public Simplex() {
-        this(Arena.ofAuto());
-    }
-    
-    public Simplex(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Simplex(MemorySegment segment) {
-        this.segment = segment;
-    
-        v1 = new SimplexVertex(segment.asSlice(V1_BYTE_OFFSET, SimplexVertex.LAYOUT));
-        v2 = new SimplexVertex(segment.asSlice(V2_BYTE_OFFSET, SimplexVertex.LAYOUT));
-        v3 = new SimplexVertex(segment.asSlice(V3_BYTE_OFFSET, SimplexVertex.LAYOUT));
-    }
+	public Simplex() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Simplex(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Simplex(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    v1 = new SimplexVertex(segment.asSlice(V1_BYTE_OFFSET, SimplexVertex.LAYOUT));
+	    v2 = new SimplexVertex(segment.asSlice(V2_BYTE_OFFSET, SimplexVertex.LAYOUT));
+	    v3 = new SimplexVertex(segment.asSlice(V3_BYTE_OFFSET, SimplexVertex.LAYOUT));
+	}
 
-    /// @see #count()
-    public Simplex count(int count) {
-    	COUNT_HANDLE.set(segment, 0L, count);
-    	return this;
-    }
-    
-    /// ```
-    /// number of valid vertices
-    /// ```
-    public int count() {
-    	return (int) COUNT_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #v1()
     public Simplex v1(Consumer<SimplexVertex> consumer) {
     	consumer.accept(v1);
@@ -139,6 +126,19 @@ public final class Simplex
     	return v3;
     }
     
+    /// @see #count()
+    public Simplex count(int count) {
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
+    }
+    
+    /// ```
+    /// number of valid vertices
+    /// ```
+    public int count() {
+    	return (int) COUNT_HANDLE.get(segment, 0L);
+    }
+    
     @Override
     public Simplex set(Simplex other) {
         return set(other.segment);
@@ -190,5 +190,5 @@ public final class Simplex
             segment -> new Simplex(segment)
         );
     }
-    
+
 }

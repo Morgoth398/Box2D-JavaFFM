@@ -20,63 +20,63 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// The explosion definition is used to configure options for explosions. Explosions
-/// consider shape geometry when computing the impulse.
+/// The explosion definition is used to configure options for explosions. Explosions consider shape
+/// geometry when computing the impulse.
 /// @ingroup world
 /// ```
 public final class ExplosionDef
 		implements Struct<ExplosionDef> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_EXPLOSION_DEF;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_EXPLOSION_DEF;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MASK_BITS_HANDLE;
-    public static final VarHandle RADIUS_HANDLE;
-    public static final VarHandle FALLOFF_HANDLE;
-    public static final VarHandle IMPULSE_PER_LENGTH_HANDLE;
+	public static final VarHandle MASK_BITS_HANDLE;
+	public static final VarHandle RADIUS_HANDLE;
+	public static final VarHandle FALLOFF_HANDLE;
+	public static final VarHandle IMPULSE_PER_LENGTH_HANDLE;
 
-    public static final long MASK_BITS_BYTE_OFFSET;
-    public static final long POSITION_BYTE_OFFSET;
-    public static final long RADIUS_BYTE_OFFSET;
-    public static final long FALLOFF_BYTE_OFFSET;
-    public static final long IMPULSE_PER_LENGTH_BYTE_OFFSET;
+	public static final long MASK_BITS_BYTE_OFFSET;
+	public static final long POSITION_BYTE_OFFSET;
+	public static final long RADIUS_BYTE_OFFSET;
+	public static final long FALLOFF_BYTE_OFFSET;
+	public static final long IMPULSE_PER_LENGTH_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 position;
+	private final Vec2 position;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_LONG.withName("maskBits"),
-            Vec2.LAYOUT.withName("position"),
-            JAVA_FLOAT.withName("radius"),
-            JAVA_FLOAT.withName("falloff"),
-            JAVA_FLOAT.withName("impulsePerLength"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2ExplosionDef").withByteAlignment(8);
-        
-        B2_DEFAULT_EXPLOSION_DEF = downcallHandle("b2DefaultExplosionDef", ExplosionDef.LAYOUT);
-        
-        MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
-        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        FALLOFF_HANDLE = LAYOUT.varHandle(PathElement.groupElement("falloff"));
-        IMPULSE_PER_LENGTH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("impulsePerLength"));
-        
-        MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
-        POSITION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
-        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        FALLOFF_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("falloff"));
-        IMPULSE_PER_LENGTH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("impulsePerLength"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_LONG.withName("maskBits"),
+		    Vec2.LAYOUT.withName("position"),
+		    JAVA_FLOAT.withName("radius"),
+		    JAVA_FLOAT.withName("falloff"),
+		    JAVA_FLOAT.withName("impulsePerLength"),
+		    MemoryLayout.paddingLayout(4)
+		).withName("b2ExplosionDef").withByteAlignment(8);
+		
+		B2_DEFAULT_EXPLOSION_DEF = downcallHandle("b2DefaultExplosionDef", ExplosionDef.LAYOUT);
+		
+		MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
+		RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+		FALLOFF_HANDLE = LAYOUT.varHandle(PathElement.groupElement("falloff"));
+		IMPULSE_PER_LENGTH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("impulsePerLength"));
+		
+		MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
+		POSITION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
+		RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+		FALLOFF_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("falloff"));
+		IMPULSE_PER_LENGTH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("impulsePerLength"));
+		//@formatter:on
+	}
 
-    public ExplosionDef(MemorySegment segment) {
-        this.segment = segment;
-    
-        position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public ExplosionDef(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
     /// Use this to initialize your explosion definition
@@ -122,6 +122,25 @@ public final class ExplosionDef
     	return (long) MASK_BITS_HANDLE.get(segment, 0L);
     }
     
+    /// @see #position()
+    public ExplosionDef position(Consumer<Vec2> consumer) {
+    	consumer.accept(position);
+    	return this;
+    }
+    
+    /// @see #position()
+    public ExplosionDef position(Vec2 other) {
+    	position.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// The center of the explosion in world space
+    /// ```
+    public Vec2 position() {
+    	return position;
+    }
+    
     /// @see #radius()
     public ExplosionDef radius(float radius) {
     	RADIUS_HANDLE.set(segment, 0L, radius);
@@ -155,31 +174,12 @@ public final class ExplosionDef
     }
     
     /// ```
-    /// Impulse per unit length. This applies an impulse according to the shape perimeter that
-    /// is facing the explosion. Explosions only apply to circles, capsules, and polygons. This
-    /// may be negative for implosions.
+    /// Impulse per unit length. This applies an impulse according to the shape perimeter that is
+    /// facing the explosion. Explosions only apply to circles, capsules, and polygons. This may be
+    /// negative for implosions.
     /// ```
     public float impulsePerLength() {
     	return (float) IMPULSE_PER_LENGTH_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #position()
-    public ExplosionDef position(Consumer<Vec2> consumer) {
-    	consumer.accept(position);
-    	return this;
-    }
-    
-    /// @see #position()
-    public ExplosionDef position(Vec2 other) {
-    	position.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The center of the explosion in world space
-    /// ```
-    public Vec2 position() {
-    	return position;
     }
     
     @Override
@@ -233,5 +233,5 @@ public final class ExplosionDef
             segment -> new ExplosionDef(segment)
         );
     }
-    
+
 }

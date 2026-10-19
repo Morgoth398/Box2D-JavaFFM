@@ -26,60 +26,60 @@ import static volucris.bindings.core.FFMUtils.*;
 public final class Segment
 		implements Struct<Segment> {
 
-    private static final LazyConstant<MethodHandle> B2_COMPUTE_SEGMENT_AABB;
-    private static final LazyConstant<MethodHandle> B2_RAY_CAST_SEGMENT;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_CAST_SEGMENT;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_SEGMENT_BOUNDS;
+	private static final LazyConstant<MethodHandle> B2_CAST_RAY_SEGMENT;
+	private static final LazyConstant<MethodHandle> B2_CAST_SHAPE_SEGMENT;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long POINT1_BYTE_OFFSET;
-    public static final long POINT2_BYTE_OFFSET;
+	public static final long POINT1_BYTE_OFFSET;
+	public static final long POINT2_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 point1;
-    private final Vec2 point2;
+	private final Vec2 point1;
+	private final Vec2 point2;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("point1"),
-            Vec2.LAYOUT.withName("point2")
-        ).withName("b2Segment").withByteAlignment(4);
-        
-        B2_COMPUTE_SEGMENT_AABB = downcallHandle("b2ComputeSegmentAABB", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
-        B2_RAY_CAST_SEGMENT = downcallHandle("b2RayCastSegment", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS, JAVA_BOOLEAN);
-        B2_SHAPE_CAST_SEGMENT = downcallHandle("b2ShapeCastSegment", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        
-        POINT1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point1"));
-        POINT2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point2"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("point1"),
+		    Vec2.LAYOUT.withName("point2")
+		).withName("b2Segment").withByteAlignment(4);
+		
+		B2_COMPUTE_SEGMENT_BOUNDS = downcallHandle("b2ComputeSegmentBounds", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
+		B2_CAST_RAY_SEGMENT = downcallHandle("b2CastRaySegment", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS, JAVA_BOOLEAN);
+		B2_CAST_SHAPE_SEGMENT = downcallHandle("b2CastShapeSegment", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		
+		POINT1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point1"));
+		POINT2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point2"));
+		//@formatter:on
+	}
 
-    public Segment() {
-        this(Arena.ofAuto());
-    }
-    
-    public Segment(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Segment(MemorySegment segment) {
-        this.segment = segment;
-    
-        point1 = new Vec2(segment.asSlice(POINT1_BYTE_OFFSET, Vec2.LAYOUT));
-        point2 = new Vec2(segment.asSlice(POINT2_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public Segment() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Segment(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Segment(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    point1 = new Vec2(segment.asSlice(POINT1_BYTE_OFFSET, Vec2.LAYOUT));
+	    point2 = new Vec2(segment.asSlice(POINT2_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
     /// Compute the bounding box of a transformed line segment
     /// ```
-    public static MemorySegment computeSegmentAABB(
+    public static MemorySegment computeSegmentBounds(
     	SegmentAllocator allocator,
     	MemorySegment shape,
     	MemorySegment transform
     ) {
-    	MethodHandle method = B2_COMPUTE_SEGMENT_AABB.get();
+    	MethodHandle method = B2_COMPUTE_SEGMENT_BOUNDS.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -91,12 +91,12 @@ public final class Segment
     	}
     }
     
-    /// Typed method of [#computeSegmentAABB].
-    public final @Nullable AABB computeSegmentAABB(
+    /// Typed method of [#computeSegmentBounds].
+    public final @Nullable AABB computeSegmentBounds(
     	SegmentAllocator allocator,
     	Transform transform
     ) {
-    	MemorySegment segment = computeSegmentAABB(
+    	MemorySegment segment = computeSegmentBounds(
     		allocator,
     		this.segment,
     		transform.memorySegment()
@@ -109,21 +109,21 @@ public final class Segment
     }
     
     /// ```
-    /// Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with hits from
-    /// the left side being treated as a miss.
+    /// Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with
+    /// hits from the left side being treated as a miss.
     /// ```
-    public static MemorySegment rayCastSegment(
+    public static MemorySegment castRaySegment(
     	SegmentAllocator allocator,
-    	MemorySegment input,
     	MemorySegment shape,
+    	MemorySegment input,
     	boolean oneSided
     ) {
-    	MethodHandle method = B2_RAY_CAST_SEGMENT.get();
+    	MethodHandle method = B2_CAST_RAY_SEGMENT.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
     			shape,
+    			input,
     			oneSided
     		);
     	} catch (Throwable e) {
@@ -131,16 +131,16 @@ public final class Segment
     	}
     }
     
-    /// Typed method of [#rayCastSegment].
-    public final @Nullable CastOutput rayCastSegment(
+    /// Typed method of [#castRaySegment].
+    public final @Nullable CastOutput castRaySegment(
     	SegmentAllocator allocator,
     	RayCastInput input,
     	boolean oneSided
     ) {
-    	MemorySegment segment = rayCastSegment(
+    	MemorySegment segment = castRaySegment(
     		allocator,
-    		input.memorySegment(),
     		this.segment,
+    		input.memorySegment(),
     		oneSided
     	);
     
@@ -151,34 +151,34 @@ public final class Segment
     }
     
     /// ```
-    /// Shape cast versus a line segment. Initial overlap is treated as a miss.
+    /// Shape cast versus a line segment.
     /// ```
-    public static MemorySegment shapeCastSegment(
+    public static MemorySegment castShapeSegment(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_SHAPE_CAST_SEGMENT.get();
+    	MethodHandle method = B2_CAST_SHAPE_SEGMENT.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#shapeCastSegment].
-    public final @Nullable CastOutput shapeCastSegment(
+    /// Typed method of [#castShapeSegment].
+    public final @Nullable CastOutput castShapeSegment(
     	SegmentAllocator allocator,
     	ShapeCastInput input
     ) {
-    	MemorySegment segment = shapeCastSegment(
+    	MemorySegment segment = castShapeSegment(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
@@ -276,5 +276,5 @@ public final class Segment
             segment -> new Segment(segment)
         );
     }
-    
+
 }

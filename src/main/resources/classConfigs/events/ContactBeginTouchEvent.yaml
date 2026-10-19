@@ -12,10 +12,8 @@ class-description:
   instance-parameter:
 
 imports:
-  - volucris.bindings.box2d.collision.Manifold
   - volucris.bindings.box2d.shape.ShapeId
 static-imports:
-  - java.lang.foreign.ValueLayout.*
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:

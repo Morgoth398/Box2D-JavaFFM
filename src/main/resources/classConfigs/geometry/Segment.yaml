@@ -38,7 +38,7 @@ struct:
   name: b2Segment
   
 native-functions:
-  - name: b2ComputeSegmentAABB
-  - name: b2RayCastSegment
-  - name: b2ShapeCastSegment
+  - name: b2ComputeSegmentBounds
+  - name: b2CastRaySegment
+  - name: b2CastShapeSegment
 native-function-pointers:

@@ -15,50 +15,54 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// An end touch event is generated when two shapes stop touching.
-/// You will get an end event if you do anything that destroys contacts previous to the last
-/// world step. These include things like setting the transform, destroying a body
-/// or shape, or changing a filter or body type.
+/// An end touch event is generated when two shapes stop touching. You will get an end event if you
+/// do anything that destroys contacts previous to the last world step. These include things like
+/// setting the transform, destroying a body or shape, or changing a filter or body type.
 /// ```
 public final class ContactEndTouchEvent
 		implements Struct<ContactEndTouchEvent> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long SHAPE_ID_A_BYTE_OFFSET;
-    public static final long SHAPE_ID_B_BYTE_OFFSET;
+	public static final long SHAPE_ID_A_BYTE_OFFSET;
+	public static final long SHAPE_ID_B_BYTE_OFFSET;
+	public static final long CONTACT_ID_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeId shapeIdA;
-    private final ShapeId shapeIdB;
+	private final ShapeId shapeIdA;
+	private final ShapeId shapeIdB;
+	private final ContactId contactId;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeId.LAYOUT.withName("shapeIdA"),
-            ShapeId.LAYOUT.withName("shapeIdB")
-        ).withName("b2ContactEndTouchEvent").withByteAlignment(4);
-        
-        SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
-        SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeId.LAYOUT.withName("shapeIdA"),
+		    ShapeId.LAYOUT.withName("shapeIdB"),
+		    ContactId.LAYOUT.withName("contactId")
+		).withName("b2ContactEndTouchEvent").withByteAlignment(4);
+		
+		SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
+		SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
+		CONTACT_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactId"));
+		//@formatter:on
+	}
 
-    public ContactEndTouchEvent() {
-        this(Arena.ofAuto());
-    }
-    
-    public ContactEndTouchEvent(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public ContactEndTouchEvent(MemorySegment segment) {
-        this.segment = segment;
-    
-        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
-        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
-    }
+	public ContactEndTouchEvent() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ContactEndTouchEvent(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ContactEndTouchEvent(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
+	    shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
+	    contactId = new ContactId(segment.asSlice(CONTACT_ID_BYTE_OFFSET, ContactId.LAYOUT));
+	}
 
     /// @see #shapeIdA()
     public ContactEndTouchEvent shapeIdA(Consumer<ShapeId> consumer) {
@@ -100,6 +104,27 @@ public final class ContactEndTouchEvent
     /// ```
     public ShapeId shapeIdB() {
     	return shapeIdB;
+    }
+    
+    /// @see #contactId()
+    public ContactEndTouchEvent contactId(Consumer<ContactId> consumer) {
+    	consumer.accept(contactId);
+    	return this;
+    }
+    
+    /// @see #contactId()
+    public ContactEndTouchEvent contactId(ContactId other) {
+    	contactId.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// Id of the contact.
+    /// @warning this contact may have been destroyed
+    /// @see b2Contact_IsValid
+    /// ```
+    public ContactId contactId() {
+    	return contactId;
     }
     
     @Override
@@ -153,5 +178,5 @@ public final class ContactEndTouchEvent
             segment -> new ContactEndTouchEvent(segment)
         );
     }
-    
+
 }

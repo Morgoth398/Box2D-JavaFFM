@@ -12,7 +12,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
-import volucris.bindings.box2d.body.BodyId;
 import volucris.bindings.box2d.math.Vec2;
 import volucris.bindings.core.NativeStructArray;
 import volucris.bindings.core.Struct;
@@ -21,90 +20,97 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// A motor joint is used to control the relative motion between two bodies
-/// 
-/// A typical usage is to control the movement of a dynamic body with respect to the ground.
+/// A motor joint is used to control the relative velocity and/or transform between two bodies. With
+/// a velocity of zero this acts like top-down friction.
 /// @ingroup motor_joint
 /// ```
 public final class MotorJointDef
 		implements Struct<MotorJointDef> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_MOTOR_JOINT_DEF;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_MOTOR_JOINT_DEF;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle ANGULAR_OFFSET_HANDLE;
-    public static final VarHandle MAX_FORCE_HANDLE;
-    public static final VarHandle MAX_TORQUE_HANDLE;
-    public static final VarHandle CORRECTION_FACTOR_HANDLE;
-    public static final VarHandle COLLIDE_CONNECTED_HANDLE;
-    public static final VarHandle USER_DATA_HANDLE;
-    public static final VarHandle INTERNAL_VALUE_HANDLE;
+	public static final VarHandle MAX_VELOCITY_FORCE_HANDLE;
+	public static final VarHandle ANGULAR_VELOCITY_HANDLE;
+	public static final VarHandle MAX_VELOCITY_TORQUE_HANDLE;
+	public static final VarHandle LINEAR_HERTZ_HANDLE;
+	public static final VarHandle LINEAR_DAMPING_RATIO_HANDLE;
+	public static final VarHandle MAX_SPRING_FORCE_HANDLE;
+	public static final VarHandle ANGULAR_HERTZ_HANDLE;
+	public static final VarHandle ANGULAR_DAMPING_RATIO_HANDLE;
+	public static final VarHandle MAX_SPRING_TORQUE_HANDLE;
+	public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long BODY_ID_A_BYTE_OFFSET;
-    public static final long BODY_ID_B_BYTE_OFFSET;
-    public static final long LINEAR_OFFSET_BYTE_OFFSET;
-    public static final long ANGULAR_OFFSET_BYTE_OFFSET;
-    public static final long MAX_FORCE_BYTE_OFFSET;
-    public static final long MAX_TORQUE_BYTE_OFFSET;
-    public static final long CORRECTION_FACTOR_BYTE_OFFSET;
-    public static final long COLLIDE_CONNECTED_BYTE_OFFSET;
-    public static final long USER_DATA_BYTE_OFFSET;
-    public static final long INTERNAL_VALUE_BYTE_OFFSET;
+	public static final long BASE_BYTE_OFFSET;
+	public static final long LINEAR_VELOCITY_BYTE_OFFSET;
+	public static final long MAX_VELOCITY_FORCE_BYTE_OFFSET;
+	public static final long ANGULAR_VELOCITY_BYTE_OFFSET;
+	public static final long MAX_VELOCITY_TORQUE_BYTE_OFFSET;
+	public static final long LINEAR_HERTZ_BYTE_OFFSET;
+	public static final long LINEAR_DAMPING_RATIO_BYTE_OFFSET;
+	public static final long MAX_SPRING_FORCE_BYTE_OFFSET;
+	public static final long ANGULAR_HERTZ_BYTE_OFFSET;
+	public static final long ANGULAR_DAMPING_RATIO_BYTE_OFFSET;
+	public static final long MAX_SPRING_TORQUE_BYTE_OFFSET;
+	public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final BodyId bodyIdA;
-    private final BodyId bodyIdB;
-    private final Vec2 linearOffset;
+	private final JointDef base;
+	private final Vec2 linearVelocity;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            BodyId.LAYOUT.withName("bodyIdA"),
-            BodyId.LAYOUT.withName("bodyIdB"),
-            Vec2.LAYOUT.withName("linearOffset"),
-            JAVA_FLOAT.withName("angularOffset"),
-            JAVA_FLOAT.withName("maxForce"),
-            JAVA_FLOAT.withName("maxTorque"),
-            JAVA_FLOAT.withName("correctionFactor"),
-            JAVA_BOOLEAN.withName("collideConnected"),
-            MemoryLayout.paddingLayout(7),
-            UNBOUNDED_ADDRESS.withName("userData"),
-            JAVA_INT.withName("internalValue"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2MotorJointDef").withByteAlignment(8);
-        
-        B2_DEFAULT_MOTOR_JOINT_DEF = downcallHandle("b2DefaultMotorJointDef", MotorJointDef.LAYOUT);
-        
-        ANGULAR_OFFSET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularOffset"));
-        MAX_FORCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxForce"));
-        MAX_TORQUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxTorque"));
-        CORRECTION_FACTOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("correctionFactor"));
-        COLLIDE_CONNECTED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("collideConnected"));
-        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
-        
-        BODY_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
-        BODY_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
-        LINEAR_OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearOffset"));
-        ANGULAR_OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularOffset"));
-        MAX_FORCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxForce"));
-        MAX_TORQUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxTorque"));
-        CORRECTION_FACTOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("correctionFactor"));
-        COLLIDE_CONNECTED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("collideConnected"));
-        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JointDef.LAYOUT.withName("base"),
+		    Vec2.LAYOUT.withName("linearVelocity"),
+		    JAVA_FLOAT.withName("maxVelocityForce"),
+		    JAVA_FLOAT.withName("angularVelocity"),
+		    JAVA_FLOAT.withName("maxVelocityTorque"),
+		    JAVA_FLOAT.withName("linearHertz"),
+		    JAVA_FLOAT.withName("linearDampingRatio"),
+		    JAVA_FLOAT.withName("maxSpringForce"),
+		    JAVA_FLOAT.withName("angularHertz"),
+		    JAVA_FLOAT.withName("angularDampingRatio"),
+		    JAVA_FLOAT.withName("maxSpringTorque"),
+		    JAVA_INT.withName("internalValue")
+		).withName("b2MotorJointDef").withByteAlignment(8);
+		
+		B2_DEFAULT_MOTOR_JOINT_DEF = downcallHandle("b2DefaultMotorJointDef", MotorJointDef.LAYOUT);
+		
+		MAX_VELOCITY_FORCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxVelocityForce"));
+		ANGULAR_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularVelocity"));
+		MAX_VELOCITY_TORQUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxVelocityTorque"));
+		LINEAR_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearHertz"));
+		LINEAR_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearDampingRatio"));
+		MAX_SPRING_FORCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxSpringForce"));
+		ANGULAR_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularHertz"));
+		ANGULAR_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularDampingRatio"));
+		MAX_SPRING_TORQUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxSpringTorque"));
+		INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+		
+		BASE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("base"));
+		LINEAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
+		MAX_VELOCITY_FORCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxVelocityForce"));
+		ANGULAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularVelocity"));
+		MAX_VELOCITY_TORQUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxVelocityTorque"));
+		LINEAR_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearHertz"));
+		LINEAR_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDampingRatio"));
+		MAX_SPRING_FORCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxSpringForce"));
+		ANGULAR_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularHertz"));
+		ANGULAR_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDampingRatio"));
+		MAX_SPRING_TORQUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxSpringTorque"));
+		INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+		//@formatter:on
+	}
 
-    public MotorJointDef(MemorySegment segment) {
-        this.segment = segment;
-    
-        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_BYTE_OFFSET, BodyId.LAYOUT));
-        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_BYTE_OFFSET, BodyId.LAYOUT));
-        linearOffset = new Vec2(segment.asSlice(LINEAR_OFFSET_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public MotorJointDef(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    base = new JointDef(segment.asSlice(BASE_BYTE_OFFSET, JointDef.LAYOUT));
+	    linearVelocity = new Vec2(segment.asSlice(LINEAR_VELOCITY_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
     /// Use this to initialize your joint definition
@@ -137,87 +143,159 @@ public final class MotorJointDef
     	return new MotorJointDef(segment);
     }
     
-    /// @see #angularOffset()
-    public MotorJointDef angularOffset(float angularOffset) {
-    	ANGULAR_OFFSET_HANDLE.set(segment, 0L, angularOffset);
+    /// @see #base()
+    public MotorJointDef base(Consumer<JointDef> consumer) {
+    	consumer.accept(base);
+    	return this;
+    }
+    
+    /// @see #base()
+    public MotorJointDef base(JointDef other) {
+    	base.set(other);
     	return this;
     }
     
     /// ```
-    /// The bodyB angle minus bodyA angle in radians
+    /// Base joint definition
     /// ```
-    public float angularOffset() {
-    	return (float) ANGULAR_OFFSET_HANDLE.get(segment, 0L);
+    public JointDef base() {
+    	return base;
     }
     
-    /// @see #maxForce()
-    public MotorJointDef maxForce(float maxForce) {
-    	MAX_FORCE_HANDLE.set(segment, 0L, maxForce);
+    /// @see #linearVelocity()
+    public MotorJointDef linearVelocity(Consumer<Vec2> consumer) {
+    	consumer.accept(linearVelocity);
+    	return this;
+    }
+    
+    /// @see #linearVelocity()
+    public MotorJointDef linearVelocity(Vec2 other) {
+    	linearVelocity.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// The desired linear velocity
+    /// ```
+    public Vec2 linearVelocity() {
+    	return linearVelocity;
+    }
+    
+    /// @see #maxVelocityForce()
+    public MotorJointDef maxVelocityForce(float maxVelocityForce) {
+    	MAX_VELOCITY_FORCE_HANDLE.set(segment, 0L, maxVelocityForce);
     	return this;
     }
     
     /// ```
     /// The maximum motor force in newtons
     /// ```
-    public float maxForce() {
-    	return (float) MAX_FORCE_HANDLE.get(segment, 0L);
+    public float maxVelocityForce() {
+    	return (float) MAX_VELOCITY_FORCE_HANDLE.get(segment, 0L);
     }
     
-    /// @see #maxTorque()
-    public MotorJointDef maxTorque(float maxTorque) {
-    	MAX_TORQUE_HANDLE.set(segment, 0L, maxTorque);
+    /// @see #angularVelocity()
+    public MotorJointDef angularVelocity(float angularVelocity) {
+    	ANGULAR_VELOCITY_HANDLE.set(segment, 0L, angularVelocity);
+    	return this;
+    }
+    
+    /// ```
+    /// The desired angular velocity
+    /// ```
+    public float angularVelocity() {
+    	return (float) ANGULAR_VELOCITY_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #maxVelocityTorque()
+    public MotorJointDef maxVelocityTorque(float maxVelocityTorque) {
+    	MAX_VELOCITY_TORQUE_HANDLE.set(segment, 0L, maxVelocityTorque);
     	return this;
     }
     
     /// ```
     /// The maximum motor torque in newton-meters
     /// ```
-    public float maxTorque() {
-    	return (float) MAX_TORQUE_HANDLE.get(segment, 0L);
+    public float maxVelocityTorque() {
+    	return (float) MAX_VELOCITY_TORQUE_HANDLE.get(segment, 0L);
     }
     
-    /// @see #correctionFactor()
-    public MotorJointDef correctionFactor(float correctionFactor) {
-    	CORRECTION_FACTOR_HANDLE.set(segment, 0L, correctionFactor);
+    /// @see #linearHertz()
+    public MotorJointDef linearHertz(float linearHertz) {
+    	LINEAR_HERTZ_HANDLE.set(segment, 0L, linearHertz);
     	return this;
     }
     
     /// ```
-    /// Position correction factor in the range [0,1]
+    /// Linear spring hertz for position control
     /// ```
-    public float correctionFactor() {
-    	return (float) CORRECTION_FACTOR_HANDLE.get(segment, 0L);
+    public float linearHertz() {
+    	return (float) LINEAR_HERTZ_HANDLE.get(segment, 0L);
     }
     
-    /// @see #collideConnected()
-    public MotorJointDef collideConnected(boolean collideConnected) {
-    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
+    /// @see #linearDampingRatio()
+    public MotorJointDef linearDampingRatio(float linearDampingRatio) {
+    	LINEAR_DAMPING_RATIO_HANDLE.set(segment, 0L, linearDampingRatio);
     	return this;
     }
     
     /// ```
-    /// Set this flag to true if the attached bodies should collide
+    /// Linear spring damping ratio
     /// ```
-    public boolean collideConnected() {
-    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
+    public float linearDampingRatio() {
+    	return (float) LINEAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
     }
     
-    /// @see #userData()
-    public MotorJointDef userData(MemorySegment userData) {
-    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    /// @see #maxSpringForce()
+    public MotorJointDef maxSpringForce(float maxSpringForce) {
+    	MAX_SPRING_FORCE_HANDLE.set(segment, 0L, maxSpringForce);
     	return this;
     }
     
     /// ```
-    /// User data pointer
+    /// Maximum spring force in newtons
     /// ```
-    public @Nullable MemorySegment userData() {
-    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    public float maxSpringForce() {
+    	return (float) MAX_SPRING_FORCE_HANDLE.get(segment, 0L);
+    }
     
-    	if (segment.equals(MemorySegment.NULL))
-    		return null;
-    	
-    	return segment;
+    /// @see #angularHertz()
+    public MotorJointDef angularHertz(float angularHertz) {
+    	ANGULAR_HERTZ_HANDLE.set(segment, 0L, angularHertz);
+    	return this;
+    }
+    
+    /// ```
+    /// Angular spring hertz for position control
+    /// ```
+    public float angularHertz() {
+    	return (float) ANGULAR_HERTZ_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #angularDampingRatio()
+    public MotorJointDef angularDampingRatio(float angularDampingRatio) {
+    	ANGULAR_DAMPING_RATIO_HANDLE.set(segment, 0L, angularDampingRatio);
+    	return this;
+    }
+    
+    /// ```
+    /// Angular spring damping ratio
+    /// ```
+    public float angularDampingRatio() {
+    	return (float) ANGULAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #maxSpringTorque()
+    public MotorJointDef maxSpringTorque(float maxSpringTorque) {
+    	MAX_SPRING_TORQUE_HANDLE.set(segment, 0L, maxSpringTorque);
+    	return this;
+    }
+    
+    /// ```
+    /// Maximum spring torque in newton-meters
+    /// ```
+    public float maxSpringTorque() {
+    	return (float) MAX_SPRING_TORQUE_HANDLE.get(segment, 0L);
     }
     
     /// @see #internalValue()
@@ -231,63 +309,6 @@ public final class MotorJointDef
     /// ```
     public int internalValue() {
     	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #bodyIdA()
-    public MotorJointDef bodyIdA(Consumer<BodyId> consumer) {
-    	consumer.accept(bodyIdA);
-    	return this;
-    }
-    
-    /// @see #bodyIdA()
-    public MotorJointDef bodyIdA(BodyId other) {
-    	bodyIdA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The first attached body
-    /// ```
-    public BodyId bodyIdA() {
-    	return bodyIdA;
-    }
-    
-    /// @see #bodyIdB()
-    public MotorJointDef bodyIdB(Consumer<BodyId> consumer) {
-    	consumer.accept(bodyIdB);
-    	return this;
-    }
-    
-    /// @see #bodyIdB()
-    public MotorJointDef bodyIdB(BodyId other) {
-    	bodyIdB.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The second attached body
-    /// ```
-    public BodyId bodyIdB() {
-    	return bodyIdB;
-    }
-    
-    /// @see #linearOffset()
-    public MotorJointDef linearOffset(Consumer<Vec2> consumer) {
-    	consumer.accept(linearOffset);
-    	return this;
-    }
-    
-    /// @see #linearOffset()
-    public MotorJointDef linearOffset(Vec2 other) {
-    	linearOffset.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Position of bodyB minus the position of bodyA, in bodyA's frame
-    /// ```
-    public Vec2 linearOffset() {
-    	return linearOffset;
     }
     
     @Override
@@ -341,5 +362,5 @@ public final class MotorJointDef
             segment -> new MotorJointDef(segment)
         );
     }
-    
+
 }

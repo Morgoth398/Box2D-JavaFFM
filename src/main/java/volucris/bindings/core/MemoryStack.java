@@ -8,7 +8,7 @@ import java.lang.foreign.MemorySegment.Scope;
 /// 
 /// For every allocation a slice of the backing memory is returned. This memory is zero initialized.
 /// 
-/// Each thread that calls [#stackPush()] obtains its own MemoryStack instance.
+/// Each (non virtual) thread that calls [#stackPush()] obtains its own MemoryStack instance.
 /// Allocations bump a single offset downward through the backing segment.
 /// There is no per-allocation bookkeeping and no individual deallocation.
 /// Instead, allocations are released in bulk by popping the frame they were allocated in.
@@ -47,6 +47,13 @@ import java.lang.foreign.MemorySegment.Scope;
 /// ### Capacity
 /// Both the byte capacity and the maximum frame nesting depth are fixed at construction and do not grow.
 /// Exceeding the byte capacity throws an [OutOfMemoryError] and exceeding the frame depth throws a runtime exception.
+/// 
+/// ### Usage in Virtual Threads
+/// To support the usage in virtual threads without putting the memory allocation in the hands of the gc,
+/// the method [#stackPush()] returns just a new [Arena#ofConfined()] when called on a virtual thread.
+/// 
+/// This means that the bump-allocation and fixed capacity/ frame-depth limits described above do not
+/// apply on virtual threads.
 public class MemoryStack implements Arena {
 
 	private static final int DEFAULT_STACK_SIZE = 1024 * 1024;
@@ -80,7 +87,10 @@ public class MemoryStack implements Arena {
 		this.pointer = memory.byteSize();
 	}
 
-	public static MemoryStack stackPush() {
+	public static Arena stackPush() {
+		if (Thread.currentThread().isVirtual())
+			return Arena.ofConfined();
+		
 		return TL.get().push();
 	}
 

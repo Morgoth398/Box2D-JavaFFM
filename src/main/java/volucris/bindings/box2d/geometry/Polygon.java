@@ -12,6 +12,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
+import volucris.bindings.box2d.math.AABB;
 import volucris.bindings.box2d.math.Rot;
 import volucris.bindings.box2d.math.Transform;
 import volucris.bindings.box2d.math.Vec2;
@@ -22,107 +23,108 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// A solid convex polygon. It is assumed that the interior of the polygon is to
-/// the left of each edge.
-/// Polygons have a maximum number of vertices equal to B2_MAX_POLYGON_VERTICES.
-/// In most cases you should not need many vertices for a convex polygon.
-/// @warning DO NOT fill this out manually, instead use a helper function like
-/// b2MakePolygon or b2MakeBox.
+/// A solid convex polygon. It is assumed that the interior of the polygon is to the left of each
+/// edge. Polygons have a maximum number of vertices equal to B2_MAX_POLYGON_VERTICES. In most cases
+/// you should not need many vertices for a convex polygon.
+/// @warning DO NOT fill this out manually, instead use a helper function like b2MakePolygon or
+/// b2MakeBox.
 /// ```
 public final class Polygon
 		implements Struct<Polygon> {
 
-    public static final int MAX_POLYGON_VERTICES = 8;
+	public static final int MAX_POLYGON_VERTICES = 8;
 
-    private static final LazyConstant<MethodHandle> B2_MAKE_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_ROUNDED_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_MAKE_SQUARE;
-    private static final LazyConstant<MethodHandle> B2_MAKE_BOX;
-    private static final LazyConstant<MethodHandle> B2_MAKE_ROUNDED_BOX;
-    private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_BOX;
-    private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_ROUNDED_BOX;
-    private static final LazyConstant<MethodHandle> B2_TRANSFORM_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_POINT_IN_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_RAY_CAST_POLYGON;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_CAST_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_MAKE_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_ROUNDED_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_MAKE_SQUARE;
+	private static final LazyConstant<MethodHandle> B2_MAKE_BOX;
+	private static final LazyConstant<MethodHandle> B2_MAKE_ROUNDED_BOX;
+	private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_BOX;
+	private static final LazyConstant<MethodHandle> B2_MAKE_OFFSET_ROUNDED_BOX;
+	private static final LazyConstant<MethodHandle> B2_TRANSFORM_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_POLYGON_MASS;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_POLYGON_BOUNDS;
+	private static final LazyConstant<MethodHandle> B2_POINT_IN_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_CAST_RAY_POLYGON;
+	private static final LazyConstant<MethodHandle> B2_CAST_SHAPE_POLYGON;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS_HANDLE;
-    public static final VarHandle COUNT_HANDLE;
+	public static final VarHandle RADIUS_HANDLE;
+	public static final VarHandle COUNT_HANDLE;
 
-    public static final long VERTICES_BYTE_OFFSET;
-    public static final long NORMALS_BYTE_OFFSET;
-    public static final long CENTROID_BYTE_OFFSET;
-    public static final long RADIUS_BYTE_OFFSET;
-    public static final long COUNT_BYTE_OFFSET;
+	public static final long VERTICES_BYTE_OFFSET;
+	public static final long NORMALS_BYTE_OFFSET;
+	public static final long CENTROID_BYTE_OFFSET;
+	public static final long RADIUS_BYTE_OFFSET;
+	public static final long COUNT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2[] vertices;
-    private final Vec2[] normals;
-    private final Vec2 centroid;
+	private final Vec2[] vertices;
+	private final Vec2[] normals;
+	private final Vec2 centroid;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            MemoryLayout.sequenceLayout(8, Vec2.LAYOUT).withName("vertices"),
-            MemoryLayout.sequenceLayout(8, Vec2.LAYOUT).withName("normals"),
-            Vec2.LAYOUT.withName("centroid"),
-            JAVA_FLOAT.withName("radius"),
-            JAVA_INT.withName("count")
-        ).withName("b2Polygon").withByteAlignment(4);
-        
-        B2_MAKE_POLYGON = downcallHandle("b2MakePolygon", Polygon.LAYOUT, UNBOUNDED_ADDRESS, JAVA_FLOAT);
-        B2_MAKE_OFFSET_POLYGON = downcallHandle("b2MakeOffsetPolygon", Polygon.LAYOUT, UNBOUNDED_ADDRESS, Vec2.LAYOUT, Rot.LAYOUT);
-        B2_MAKE_OFFSET_ROUNDED_POLYGON = downcallHandle("b2MakeOffsetRoundedPolygon", Polygon.LAYOUT, UNBOUNDED_ADDRESS, Vec2.LAYOUT, Rot.LAYOUT, JAVA_FLOAT);
-        B2_MAKE_SQUARE = downcallHandle("b2MakeSquare", Polygon.LAYOUT, JAVA_FLOAT);
-        B2_MAKE_BOX = downcallHandle("b2MakeBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
-        B2_MAKE_ROUNDED_BOX = downcallHandle("b2MakeRoundedBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, JAVA_FLOAT);
-        B2_MAKE_OFFSET_BOX = downcallHandle("b2MakeOffsetBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, Vec2.LAYOUT, Rot.LAYOUT);
-        B2_MAKE_OFFSET_ROUNDED_BOX = downcallHandle("b2MakeOffsetRoundedBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, Vec2.LAYOUT, Rot.LAYOUT, JAVA_FLOAT);
-        B2_TRANSFORM_POLYGON = downcallHandle("b2TransformPolygon", Polygon.LAYOUT, Transform.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_POINT_IN_POLYGON = downcallHandle("b2PointInPolygon", JAVA_BOOLEAN, Vec2.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_RAY_CAST_POLYGON = downcallHandle("b2RayCastPolygon", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_SHAPE_CAST_POLYGON = downcallHandle("b2ShapeCastPolygon", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        
-        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
-        
-        VERTICES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("vertices"));
-        NORMALS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normals"));
-        CENTROID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("centroid"));
-        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    MemoryLayout.sequenceLayout(8, Vec2.LAYOUT).withName("vertices"),
+		    MemoryLayout.sequenceLayout(8, Vec2.LAYOUT).withName("normals"),
+		    Vec2.LAYOUT.withName("centroid"),
+		    JAVA_FLOAT.withName("radius"),
+		    JAVA_INT.withName("count")
+		).withName("b2Polygon").withByteAlignment(4);
+		
+		B2_MAKE_POLYGON = downcallHandle("b2MakePolygon", Polygon.LAYOUT, UNBOUNDED_ADDRESS, JAVA_FLOAT);
+		B2_MAKE_OFFSET_POLYGON = downcallHandle("b2MakeOffsetPolygon", Polygon.LAYOUT, UNBOUNDED_ADDRESS, Vec2.LAYOUT, Rot.LAYOUT);
+		B2_MAKE_OFFSET_ROUNDED_POLYGON = downcallHandle("b2MakeOffsetRoundedPolygon", Polygon.LAYOUT, UNBOUNDED_ADDRESS, Vec2.LAYOUT, Rot.LAYOUT, JAVA_FLOAT);
+		B2_MAKE_SQUARE = downcallHandle("b2MakeSquare", Polygon.LAYOUT, JAVA_FLOAT);
+		B2_MAKE_BOX = downcallHandle("b2MakeBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_MAKE_ROUNDED_BOX = downcallHandle("b2MakeRoundedBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_MAKE_OFFSET_BOX = downcallHandle("b2MakeOffsetBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, Vec2.LAYOUT, Rot.LAYOUT);
+		B2_MAKE_OFFSET_ROUNDED_BOX = downcallHandle("b2MakeOffsetRoundedBox", Polygon.LAYOUT, JAVA_FLOAT, JAVA_FLOAT, Vec2.LAYOUT, Rot.LAYOUT, JAVA_FLOAT);
+		B2_TRANSFORM_POLYGON = downcallHandle("b2TransformPolygon", Polygon.LAYOUT, Transform.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_COMPUTE_POLYGON_MASS = downcallHandle("b2ComputePolygonMass", MassData.LAYOUT, UNBOUNDED_ADDRESS, JAVA_FLOAT);
+		B2_COMPUTE_POLYGON_BOUNDS = downcallHandle("b2ComputePolygonBounds", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
+		B2_POINT_IN_POLYGON = downcallHandle("b2PointInPolygon", JAVA_BOOLEAN, UNBOUNDED_ADDRESS, Vec2.LAYOUT);
+		B2_CAST_RAY_POLYGON = downcallHandle("b2CastRayPolygon", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CAST_SHAPE_POLYGON = downcallHandle("b2CastShapePolygon", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		
+		RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+		COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
+		
+		VERTICES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("vertices"));
+		NORMALS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normals"));
+		CENTROID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("centroid"));
+		RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+		COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+		//@formatter:on
+	}
 
-    public Polygon() {
-        this(Arena.ofAuto());
-    }
-    
-    public Polygon(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Polygon(MemorySegment segment) {
-        this.segment = segment;
-    
-        vertices = new Vec2[8];
-        for (int i = 0; i < 8; i++) {
-            long offset = VERTICES_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
-            vertices[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
-        }
-    
-        normals = new Vec2[8];
-        for (int i = 0; i < 8; i++) {
-            long offset = NORMALS_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
-            normals[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
-        }
-    
-        centroid = new Vec2(segment.asSlice(CENTROID_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public Polygon() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Polygon(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Polygon(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    vertices = new Vec2[8];
+	    for (int i = 0; i < 8; i++) {
+	        long offset = VERTICES_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
+	        vertices[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
+	    }
+	    normals = new Vec2[8];
+	    for (int i = 0; i < 8; i++) {
+	        long offset = NORMALS_BYTE_OFFSET + i * Vec2.LAYOUT.byteSize();
+	        normals[i] = new Vec2(segment.asSlice(offset, Vec2.LAYOUT));
+	    }
+	    centroid = new Vec2(segment.asSlice(CENTROID_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
     /// Make a convex polygon from a convex hull. This will assert if the hull is not valid.
@@ -207,7 +209,8 @@ public final class Polygon
     }
     
     /// ```
-    /// Make an offset convex polygon from a convex hull. This will assert if the hull is not valid.
+    /// Make an offset convex polygon from a convex hull with a radius. This will assert if the hull is
+    /// not valid.
     /// @warning Do not manually fill in the hull data, it must come directly from b2ComputeHull
     /// ```
     public static MemorySegment makeOffsetRoundedPolygon(
@@ -517,17 +520,91 @@ public final class Polygon
     }
     
     /// ```
+    /// Compute mass properties of a polygon
+    /// ```
+    public static MemorySegment computePolygonMass(
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	float density
+    ) {
+    	MethodHandle method = B2_COMPUTE_POLYGON_MASS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			density
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#computePolygonMass].
+    public final @Nullable MassData computePolygonMass(
+    	SegmentAllocator allocator,
+    	float density
+    ) {
+    	MemorySegment segment = computePolygonMass(
+    		allocator,
+    		this.segment,
+    		density
+    	);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MassData(segment);
+    }
+    
+    /// ```
+    /// Compute the bounding box of a transformed polygon
+    /// ```
+    public static MemorySegment computePolygonBounds(
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	MemorySegment transform
+    ) {
+    	MethodHandle method = B2_COMPUTE_POLYGON_BOUNDS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			transform
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#computePolygonBounds].
+    public final @Nullable AABB computePolygonBounds(
+    	SegmentAllocator allocator,
+    	Transform transform
+    ) {
+    	MemorySegment segment = computePolygonBounds(
+    		allocator,
+    		this.segment,
+    		transform.memorySegment()
+    	);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new AABB(segment);
+    }
+    
+    /// ```
     /// Test a point for overlap with a convex polygon in local space
     /// ```
     public static boolean pointInPolygon(
-    	MemorySegment point,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment point
     ) {
     	MethodHandle method = B2_POINT_IN_POLYGON.get();
     	try {
     		return (boolean) method.invokeExact(
-    			point,
-    			shape
+    			shape,
+    			point
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
@@ -539,40 +616,40 @@ public final class Polygon
     	Vec2 point
     ) {
     	return pointInPolygon(
-    		point.memorySegment(),
-    		this.segment
+    		this.segment,
+    		point.memorySegment()
     	);
     }
     
     /// ```
-    /// Ray cast versus polygon shape in local space. Initial overlap is treated as a miss.
+    /// Ray cast versus polygon shape in local space.
     /// ```
-    public static MemorySegment rayCastPolygon(
+    public static MemorySegment castRayPolygon(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_RAY_CAST_POLYGON.get();
+    	MethodHandle method = B2_CAST_RAY_POLYGON.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#rayCastPolygon].
-    public final @Nullable CastOutput rayCastPolygon(
+    /// Typed method of [#castRayPolygon].
+    public final @Nullable CastOutput castRayPolygon(
     	SegmentAllocator allocator,
     	RayCastInput input
     ) {
-    	MemorySegment segment = rayCastPolygon(
+    	MemorySegment segment = castRayPolygon(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
@@ -582,66 +659,40 @@ public final class Polygon
     }
     
     /// ```
-    /// Shape cast versus a convex polygon. Initial overlap is treated as a miss.
+    /// Shape cast versus a convex polygon.
     /// ```
-    public static MemorySegment shapeCastPolygon(
+    public static MemorySegment castShapePolygon(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_SHAPE_CAST_POLYGON.get();
+    	MethodHandle method = B2_CAST_SHAPE_POLYGON.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#shapeCastPolygon].
-    public final @Nullable CastOutput shapeCastPolygon(
+    /// Typed method of [#castShapePolygon].
+    public final @Nullable CastOutput castShapePolygon(
     	SegmentAllocator allocator,
     	ShapeCastInput input
     ) {
-    	MemorySegment segment = shapeCastPolygon(
+    	MemorySegment segment = castShapePolygon(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
     		return null;
     	
     	return new CastOutput(segment);
-    }
-    
-    /// @see #radius()
-    public Polygon radius(float radius) {
-    	RADIUS_HANDLE.set(segment, 0L, radius);
-    	return this;
-    }
-    
-    /// ```
-    /// The external radius for rounded polygons
-    /// ```
-    public float radius() {
-    	return (float) RADIUS_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #count()
-    public Polygon count(int count) {
-    	COUNT_HANDLE.set(segment, 0L, count);
-    	return this;
-    }
-    
-    /// ```
-    /// The number of polygon vertices
-    /// ```
-    public int count() {
-    	return (int) COUNT_HANDLE.get(segment, 0L);
     }
     
     /// @see #vertices(int)
@@ -701,6 +752,32 @@ public final class Polygon
     	return centroid;
     }
     
+    /// @see #radius()
+    public Polygon radius(float radius) {
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
+    }
+    
+    /// ```
+    /// The external radius for rounded polygons
+    /// ```
+    public float radius() {
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #count()
+    public Polygon count(int count) {
+    	COUNT_HANDLE.set(segment, 0L, count);
+    	return this;
+    }
+    
+    /// ```
+    /// The number of polygon vertices
+    /// ```
+    public int count() {
+    	return (int) COUNT_HANDLE.get(segment, 0L);
+    }
+    
     @Override
     public Polygon set(Polygon other) {
         return set(other.segment);
@@ -752,5 +829,5 @@ public final class Polygon
             segment -> new Polygon(segment)
         );
     }
-    
+
 }

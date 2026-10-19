@@ -14,60 +14,60 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class PrismaticJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_PRISMATIC_JOINT;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_ENABLE_SPRING;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_IS_SPRING_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_TARGET_TRANSLATION;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_ENABLE_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_LOWER_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_UPPER_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_LIMITS;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_ENABLE_MOTOR;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_MOTOR_FORCE;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_TRANSLATION;
-    private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_SPEED;
+	private static final LazyConstant<MethodHandle> B2_CREATE_PRISMATIC_JOINT;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_ENABLE_SPRING;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_IS_SPRING_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_TARGET_TRANSLATION;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_ENABLE_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_LOWER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_UPPER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_LIMITS;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_ENABLE_MOTOR;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_CURRENT_TRANSLATION;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_CURRENT_SPEED;
+	private static final LazyConstant<MethodHandle> B2_PRISMATIC_JOINT_GET_CURRENT_MOTOR_FORCE;
 
-    static {
-        //@formatter:off
-        B2_CREATE_PRISMATIC_JOINT = downcallHandle("b2CreatePrismaticJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_PRISMATIC_JOINT_ENABLE_SPRING = downcallHandleVoid("b2PrismaticJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_PRISMATIC_JOINT_IS_SPRING_ENABLED = downcallHandle("b2PrismaticJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2PrismaticJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
-        B2_PRISMATIC_JOINT_GET_SPRING_HERTZ = downcallHandle("b2PrismaticJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2PrismaticJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
-        B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2PrismaticJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_SET_TARGET_TRANSLATION = downcallHandleVoid("b2PrismaticJoint_SetTargetTranslation", JointId.LAYOUT, JAVA_FLOAT);
-        B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION = downcallHandle("b2PrismaticJoint_GetTargetTranslation", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2PrismaticJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2PrismaticJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_GET_LOWER_LIMIT = downcallHandle("b2PrismaticJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_GET_UPPER_LIMIT = downcallHandle("b2PrismaticJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_SET_LIMITS = downcallHandleVoid("b2PrismaticJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
-        B2_PRISMATIC_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2PrismaticJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2PrismaticJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_SET_MOTOR_SPEED = downcallHandleVoid("b2PrismaticJoint_SetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
-        B2_PRISMATIC_JOINT_GET_MOTOR_SPEED = downcallHandle("b2PrismaticJoint_GetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE = downcallHandleVoid("b2PrismaticJoint_SetMaxMotorForce", JointId.LAYOUT, JAVA_FLOAT);
-        B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE = downcallHandle("b2PrismaticJoint_GetMaxMotorForce", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_GET_MOTOR_FORCE = downcallHandle("b2PrismaticJoint_GetMotorForce", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_GET_TRANSLATION = downcallHandle("b2PrismaticJoint_GetTranslation", JAVA_FLOAT, JointId.LAYOUT);
-        B2_PRISMATIC_JOINT_GET_SPEED = downcallHandle("b2PrismaticJoint_GetSpeed", JAVA_FLOAT, JointId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_PRISMATIC_JOINT = downcallHandle("b2CreatePrismaticJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_PRISMATIC_JOINT_ENABLE_SPRING = downcallHandleVoid("b2PrismaticJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_PRISMATIC_JOINT_IS_SPRING_ENABLED = downcallHandle("b2PrismaticJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2PrismaticJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_PRISMATIC_JOINT_GET_SPRING_HERTZ = downcallHandle("b2PrismaticJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2PrismaticJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_PRISMATIC_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2PrismaticJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_SET_TARGET_TRANSLATION = downcallHandleVoid("b2PrismaticJoint_SetTargetTranslation", JointId.LAYOUT, JAVA_FLOAT);
+		B2_PRISMATIC_JOINT_GET_TARGET_TRANSLATION = downcallHandle("b2PrismaticJoint_GetTargetTranslation", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2PrismaticJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_PRISMATIC_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2PrismaticJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_GET_LOWER_LIMIT = downcallHandle("b2PrismaticJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_GET_UPPER_LIMIT = downcallHandle("b2PrismaticJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_SET_LIMITS = downcallHandleVoid("b2PrismaticJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_PRISMATIC_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2PrismaticJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_PRISMATIC_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2PrismaticJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_SET_TARGET_MOTOR_SPEED = downcallHandleVoid("b2PrismaticJoint_SetTargetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
+		B2_PRISMATIC_JOINT_GET_TARGET_MOTOR_SPEED = downcallHandle("b2PrismaticJoint_GetTargetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_SET_MAX_MOTOR_FORCE = downcallHandleVoid("b2PrismaticJoint_SetMaxMotorForce", JointId.LAYOUT, JAVA_FLOAT);
+		B2_PRISMATIC_JOINT_GET_MAX_MOTOR_FORCE = downcallHandle("b2PrismaticJoint_GetMaxMotorForce", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_GET_CURRENT_TRANSLATION = downcallHandle("b2PrismaticJoint_GetCurrentTranslation", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_GET_CURRENT_SPEED = downcallHandle("b2PrismaticJoint_GetCurrentSpeed", JAVA_FLOAT, JointId.LAYOUT);
+		B2_PRISMATIC_JOINT_GET_CURRENT_MOTOR_FORCE = downcallHandle("b2PrismaticJoint_GetCurrentMotorForce", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private PrismaticJoint() {
-    }
+	private PrismaticJoint() {
+	}
 
     /// ```
     /// Create a prismatic (slider) joint.
@@ -163,9 +163,9 @@ public final class PrismaticJoint {
     }
     
     /// ```
-    /// Set the prismatic joint stiffness in Hertz.
-    /// This should usually be less than a quarter of the simulation rate. For example, if the simulation
-    /// runs at 60Hz then the joint stiffness should be 15Hz or less.
+    /// Set the prismatic joint stiffness in Hertz. This should usually be less than a quarter of the
+    /// simulation rate. For example, if the simulation runs at 60Hz then the joint stiffness should be
+    /// 15Hz or less.
     /// ```
     public static void setSpringHertz(
     	MemorySegment jointId,
@@ -273,7 +273,7 @@ public final class PrismaticJoint {
     }
     
     /// ```
-    /// Set the prismatic joint spring target angle, usually in meters
+    /// Set the prismatic joint spring target translation, usually in meters
     /// ```
     public static void setTargetTranslation(
     	MemorySegment jointId,
@@ -520,11 +520,11 @@ public final class PrismaticJoint {
     /// ```
     /// Set the prismatic joint motor speed, usually in meters per second
     /// ```
-    public static void setMotorSpeed(
+    public static void setTargetMotorSpeed(
     	MemorySegment jointId,
     	float motorSpeed
     ) {
-    	MethodHandle method = B2_PRISMATIC_JOINT_SET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_PRISMATIC_JOINT_SET_TARGET_MOTOR_SPEED.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -535,12 +535,12 @@ public final class PrismaticJoint {
     	}
     }
     
-    /// Typed method of [#setMotorSpeed].
-    public static void setMotorSpeed(
+    /// Typed method of [#setTargetMotorSpeed].
+    public static void setTargetMotorSpeed(
     	JointId jointId,
     	float motorSpeed
     ) {
-    	setMotorSpeed(
+    	setTargetMotorSpeed(
     		jointId.memorySegment(),
     		motorSpeed
     	);
@@ -549,10 +549,10 @@ public final class PrismaticJoint {
     /// ```
     /// Get the prismatic joint motor speed, usually in meters per second
     /// ```
-    public static float getMotorSpeed(
+    public static float getTargetMotorSpeed(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_TARGET_MOTOR_SPEED.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -562,11 +562,11 @@ public final class PrismaticJoint {
     	}
     }
     
-    /// Typed method of [#getMotorSpeed].
-    public static float getMotorSpeed(
+    /// Typed method of [#getTargetMotorSpeed].
+    public static float getTargetMotorSpeed(
     	JointId jointId
     ) {
-    	return getMotorSpeed(
+    	return getTargetMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -626,37 +626,12 @@ public final class PrismaticJoint {
     }
     
     /// ```
-    /// Get the prismatic joint current motor force, usually in newtons
-    /// ```
-    public static float getMotorForce(
-    	MemorySegment jointId
-    ) {
-    	MethodHandle method = B2_PRISMATIC_JOINT_GET_MOTOR_FORCE.get();
-    	try {
-    		return (float) method.invokeExact(
-    			jointId
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#getMotorForce].
-    public static float getMotorForce(
-    	JointId jointId
-    ) {
-    	return getMotorForce(
-    		jointId.memorySegment()
-    	);
-    }
-    
-    /// ```
     /// Get the current joint translation, usually in meters.
     /// ```
-    public static float getTranslation(
+    public static float getCurrentTranslation(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_PRISMATIC_JOINT_GET_TRANSLATION.get();
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_CURRENT_TRANSLATION.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -666,22 +641,22 @@ public final class PrismaticJoint {
     	}
     }
     
-    /// Typed method of [#getTranslation].
-    public static float getTranslation(
+    /// Typed method of [#getCurrentTranslation].
+    public static float getCurrentTranslation(
     	JointId jointId
     ) {
-    	return getTranslation(
+    	return getCurrentTranslation(
     		jointId.memorySegment()
     	);
     }
     
     /// ```
-    /// Get the current joint translation speed, usually in meters per second.
+    /// Get the current joint translation velocity, usually in meters per second.
     /// ```
-    public static float getSpeed(
+    public static float getCurrentSpeed(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_PRISMATIC_JOINT_GET_SPEED.get();
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_CURRENT_SPEED.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -691,13 +666,38 @@ public final class PrismaticJoint {
     	}
     }
     
-    /// Typed method of [#getSpeed].
-    public static float getSpeed(
+    /// Typed method of [#getCurrentSpeed].
+    public static float getCurrentSpeed(
     	JointId jointId
     ) {
-    	return getSpeed(
+    	return getCurrentSpeed(
     		jointId.memorySegment()
     	);
     }
     
+    /// ```
+    /// Get the prismatic joint current motor force, usually in newtons
+    /// ```
+    public static float getCurrentMotorForce(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_PRISMATIC_JOINT_GET_CURRENT_MOTOR_FORCE.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getCurrentMotorForce].
+    public static float getCurrentMotorForce(
+    	JointId jointId
+    ) {
+    	return getCurrentMotorForce(
+    		jointId.memorySegment()
+    	);
+    }
+
 }

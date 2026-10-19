@@ -23,53 +23,53 @@ import static volucris.bindings.core.FFMUtils.*;
 public final class RayCastInput
 		implements Struct<RayCastInput> {
 
-    private static final LazyConstant<MethodHandle> B2_IS_VALID_RAY;
+	private static final LazyConstant<MethodHandle> B2_IS_VALID_RAY;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAX_FRACTION_HANDLE;
+	public static final VarHandle MAX_FRACTION_HANDLE;
 
-    public static final long ORIGIN_BYTE_OFFSET;
-    public static final long TRANSLATION_BYTE_OFFSET;
-    public static final long MAX_FRACTION_BYTE_OFFSET;
+	public static final long ORIGIN_BYTE_OFFSET;
+	public static final long TRANSLATION_BYTE_OFFSET;
+	public static final long MAX_FRACTION_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 origin;
-    private final Vec2 translation;
+	private final Vec2 origin;
+	private final Vec2 translation;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("origin"),
-            Vec2.LAYOUT.withName("translation"),
-            JAVA_FLOAT.withName("maxFraction")
-        ).withName("b2RayCastInput").withByteAlignment(4);
-        
-        B2_IS_VALID_RAY = downcallHandle("b2IsValidRay", JAVA_BOOLEAN, UNBOUNDED_ADDRESS);
-        
-        MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
-        
-        ORIGIN_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("origin"));
-        TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
-        MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("origin"),
+		    Vec2.LAYOUT.withName("translation"),
+		    JAVA_FLOAT.withName("maxFraction")
+		).withName("b2RayCastInput").withByteAlignment(4);
+		
+		B2_IS_VALID_RAY = downcallHandle("b2IsValidRay", JAVA_BOOLEAN, UNBOUNDED_ADDRESS);
+		
+		MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+		
+		ORIGIN_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("origin"));
+		TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
+		MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+		//@formatter:on
+	}
 
-    public RayCastInput() {
-        this(Arena.ofAuto());
-    }
-    
-    public RayCastInput(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public RayCastInput(MemorySegment segment) {
-        this.segment = segment;
-    
-        origin = new Vec2(segment.asSlice(ORIGIN_BYTE_OFFSET, Vec2.LAYOUT));
-        translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public RayCastInput() {
+	    this(Arena.ofAuto());
+	}
+	
+	public RayCastInput(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public RayCastInput(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    origin = new Vec2(segment.asSlice(ORIGIN_BYTE_OFFSET, Vec2.LAYOUT));
+	    translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
     /// Validate ray cast input data (NaN, etc)
@@ -92,19 +92,6 @@ public final class RayCastInput
     	return isValidRay(
     		this.segment
     	);
-    }
-    
-    /// @see #maxFraction()
-    public RayCastInput maxFraction(float maxFraction) {
-    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-    	return this;
-    }
-    
-    /// ```
-    /// The maximum fraction of the translation to consider, typically 1
-    /// ```
-    public float maxFraction() {
-    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
     /// @see #origin()
@@ -143,6 +130,19 @@ public final class RayCastInput
     /// ```
     public Vec2 translation() {
     	return translation;
+    }
+    
+    /// @see #maxFraction()
+    public RayCastInput maxFraction(float maxFraction) {
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
+    }
+    
+    /// ```
+    /// The maximum fraction of the translation to consider, typically 1
+    /// ```
+    public float maxFraction() {
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -196,5 +196,5 @@ public final class RayCastInput
             segment -> new RayCastInput(segment)
         );
     }
-    
+
 }

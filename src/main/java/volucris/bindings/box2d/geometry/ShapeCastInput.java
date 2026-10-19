@@ -16,89 +16,63 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Low level shape cast input in generic form. This allows casting an arbitrary point
-/// cloud wrap with a radius. For example, a circle is a single point with a non-zero radius.
-/// A capsule is two points with a non-zero radius. A box is four points with a zero radius.
+/// Low level shape cast input in generic form. This allows casting an arbitrary point cloud wrapped
+/// with a radius. For example, a circle is a single point with a non-zero radius. A capsule is two
+/// points with a non-zero radius. A box is four points with a zero radius.
 /// ```
 public final class ShapeCastInput
 		implements Struct<ShapeCastInput> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAX_FRACTION_HANDLE;
-    public static final VarHandle CAN_ENCROACH_HANDLE;
+	public static final VarHandle MAX_FRACTION_HANDLE;
+	public static final VarHandle CAN_ENCROACH_HANDLE;
 
-    public static final long PROXY_BYTE_OFFSET;
-    public static final long TRANSLATION_BYTE_OFFSET;
-    public static final long MAX_FRACTION_BYTE_OFFSET;
-    public static final long CAN_ENCROACH_BYTE_OFFSET;
+	public static final long PROXY_BYTE_OFFSET;
+	public static final long TRANSLATION_BYTE_OFFSET;
+	public static final long MAX_FRACTION_BYTE_OFFSET;
+	public static final long CAN_ENCROACH_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeProxy proxy;
-    private final Vec2 translation;
+	private final ShapeProxy proxy;
+	private final Vec2 translation;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeProxy.LAYOUT.withName("proxy"),
-            Vec2.LAYOUT.withName("translation"),
-            JAVA_FLOAT.withName("maxFraction"),
-            JAVA_BOOLEAN.withName("canEncroach"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2ShapeCastInput").withByteAlignment(4);
-        
-        MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
-        CAN_ENCROACH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
-        
-        PROXY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxy"));
-        TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
-        MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
-        CAN_ENCROACH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeProxy.LAYOUT.withName("proxy"),
+		    Vec2.LAYOUT.withName("translation"),
+		    JAVA_FLOAT.withName("maxFraction"),
+		    JAVA_BOOLEAN.withName("canEncroach"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2ShapeCastInput").withByteAlignment(4);
+		
+		MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+		CAN_ENCROACH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
+		
+		PROXY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxy"));
+		TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
+		MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+		CAN_ENCROACH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
+		//@formatter:on
+	}
 
-    public ShapeCastInput() {
-        this(Arena.ofAuto());
-    }
-    
-    public ShapeCastInput(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public ShapeCastInput(MemorySegment segment) {
-        this.segment = segment;
-    
-        proxy = new ShapeProxy(segment.asSlice(PROXY_BYTE_OFFSET, ShapeProxy.LAYOUT));
-        translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public ShapeCastInput() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ShapeCastInput(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ShapeCastInput(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    proxy = new ShapeProxy(segment.asSlice(PROXY_BYTE_OFFSET, ShapeProxy.LAYOUT));
+	    translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
-    /// @see #maxFraction()
-    public ShapeCastInput maxFraction(float maxFraction) {
-    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-    	return this;
-    }
-    
-    /// ```
-    /// The maximum fraction of the translation to consider, typically 1
-    /// ```
-    public float maxFraction() {
-    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #canEncroach()
-    public ShapeCastInput canEncroach(boolean canEncroach) {
-    	CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
-    	return this;
-    }
-    
-    /// ```
-    /// Allow shape cast to encroach when initially touching. This only works if the radius is greater than zero.
-    /// ```
-    public boolean canEncroach() {
-    	return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #proxy()
     public ShapeCastInput proxy(Consumer<ShapeProxy> consumer) {
     	consumer.accept(proxy);
@@ -135,6 +109,33 @@ public final class ShapeCastInput
     /// ```
     public Vec2 translation() {
     	return translation;
+    }
+    
+    /// @see #maxFraction()
+    public ShapeCastInput maxFraction(float maxFraction) {
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
+    }
+    
+    /// ```
+    /// The maximum fraction of the translation to consider, typically 1
+    /// ```
+    public float maxFraction() {
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #canEncroach()
+    public ShapeCastInput canEncroach(boolean canEncroach) {
+    	CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
+    	return this;
+    }
+    
+    /// ```
+    /// Allow shape cast to encroach when initially touching. This only works if the radius is
+    /// greater than zero.
+    /// ```
+    public boolean canEncroach() {
+    	return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -188,5 +189,5 @@ public final class ShapeCastInput
             segment -> new ShapeCastInput(segment)
         );
     }
-    
+
 }

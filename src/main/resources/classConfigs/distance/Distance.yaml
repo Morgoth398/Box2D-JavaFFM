@@ -18,8 +18,6 @@ imports:
   - volucris.bindings.box2d.math.Transform
   - volucris.bindings.box2d.math.Rot
 static-imports:
-  - java.lang.foreign.ValueLayout.*
-  - volucris.bindings.core.FFMUtils.*
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:
@@ -38,11 +36,11 @@ constructors:
 struct:
   
 native-functions:
-  - name: b2SegmentDistance
-  - name: b2ShapeDistance
-  - name: b2ShapeCast
+  - name: b2ComputeSegmentDistance
+  - name: b2ComputeShapeDistance
+  - name: b2CastShape
   - name: b2MakeProxy
   - name: b2MakeOffsetProxy
   - name: b2GetSweepTransform
-  - name: b2TimeOfImpact
+  - name: b2ComputeTimeOfImpact
 native-function-pointers:

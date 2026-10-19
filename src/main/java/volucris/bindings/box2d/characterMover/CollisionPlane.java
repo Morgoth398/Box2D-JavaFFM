@@ -16,62 +16,81 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// These are collision planes that can be fed to b2SolvePlanes. Normally
-/// this is assembled by the user from plane results in b2PlaneResult
+/// These are collision planes that can be fed to b2SolvePlanes. Normally this is assembled by the
+/// user from plane results in b2PlaneResult.
 /// ```
 public final class CollisionPlane
 		implements Struct<CollisionPlane> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle PUSH_LIMIT_HANDLE;
-    public static final VarHandle PUSH_HANDLE;
-    public static final VarHandle CLIP_VELOCITY_HANDLE;
+	public static final VarHandle PUSH_LIMIT_HANDLE;
+	public static final VarHandle PUSH_HANDLE;
+	public static final VarHandle CLIP_VELOCITY_HANDLE;
 
-    public static final long PLANE_BYTE_OFFSET;
-    public static final long PUSH_LIMIT_BYTE_OFFSET;
-    public static final long PUSH_BYTE_OFFSET;
-    public static final long CLIP_VELOCITY_BYTE_OFFSET;
+	public static final long PLANE_BYTE_OFFSET;
+	public static final long PUSH_LIMIT_BYTE_OFFSET;
+	public static final long PUSH_BYTE_OFFSET;
+	public static final long CLIP_VELOCITY_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Plane plane;
+	private final Plane plane;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Plane.LAYOUT.withName("plane"),
-            JAVA_FLOAT.withName("pushLimit"),
-            JAVA_FLOAT.withName("push"),
-            JAVA_BOOLEAN.withName("clipVelocity"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2CollisionPlane").withByteAlignment(4);
-        
-        PUSH_LIMIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pushLimit"));
-        PUSH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("push"));
-        CLIP_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("clipVelocity"));
-        
-        PLANE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
-        PUSH_LIMIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pushLimit"));
-        PUSH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("push"));
-        CLIP_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("clipVelocity"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Plane.LAYOUT.withName("plane"),
+		    JAVA_FLOAT.withName("pushLimit"),
+		    JAVA_FLOAT.withName("push"),
+		    JAVA_BOOLEAN.withName("clipVelocity"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2CollisionPlane").withByteAlignment(4);
+		
+		PUSH_LIMIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pushLimit"));
+		PUSH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("push"));
+		CLIP_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("clipVelocity"));
+		
+		PLANE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
+		PUSH_LIMIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pushLimit"));
+		PUSH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("push"));
+		CLIP_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("clipVelocity"));
+		//@formatter:on
+	}
 
-    public CollisionPlane() {
-        this(Arena.ofAuto());
+	public CollisionPlane() {
+	    this(Arena.ofAuto());
+	}
+	
+	public CollisionPlane(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public CollisionPlane(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    plane = new Plane(segment.asSlice(PLANE_BYTE_OFFSET, Plane.LAYOUT));
+	}
+
+    /// @see #plane()
+    public CollisionPlane plane(Consumer<Plane> consumer) {
+    	consumer.accept(plane);
+    	return this;
     }
     
-    public CollisionPlane(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// @see #plane()
+    public CollisionPlane plane(Plane other) {
+    	plane.set(other);
+    	return this;
     }
     
-    public CollisionPlane(MemorySegment segment) {
-        this.segment = segment;
-    
-        plane = new Plane(segment.asSlice(PLANE_BYTE_OFFSET, Plane.LAYOUT));
+    /// ```
+    /// The collision plane between the mover and some shape.
+    /// ```
+    public Plane plane() {
+    	return plane;
     }
-
+    
     /// @see #pushLimit()
     public CollisionPlane pushLimit(float pushLimit) {
     	PUSH_LIMIT_HANDLE.set(segment, 0L, pushLimit);
@@ -79,8 +98,8 @@ public final class CollisionPlane
     }
     
     /// ```
-    /// Setting this to FLT_MAX makes the plane as rigid as possible. Lower values can
-    /// make the plane collision soft. Usually in meters.
+    /// Setting this to FLT_MAX makes the plane as rigid as possible. Lower values can make the
+    /// plane collision soft. Usually in meters.
     /// ```
     public float pushLimit() {
     	return (float) PUSH_LIMIT_HANDLE.get(segment, 0L);
@@ -106,29 +125,11 @@ public final class CollisionPlane
     }
     
     /// ```
-    /// Indicates if b2ClipVector should clip against this plane. Should be false for soft collision.
+    /// Indicates if b2ClipVector should clip against this plane. Should be false for soft
+    /// collision.
     /// ```
     public boolean clipVelocity() {
     	return (boolean) CLIP_VELOCITY_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #plane()
-    public CollisionPlane plane(Consumer<Plane> consumer) {
-    	consumer.accept(plane);
-    	return this;
-    }
-    
-    /// @see #plane()
-    public CollisionPlane plane(Plane other) {
-    	plane.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The collision plane between the mover and some shape
-    /// ```
-    public Plane plane() {
-    	return plane;
     }
     
     @Override
@@ -182,5 +183,5 @@ public final class CollisionPlane
             segment -> new CollisionPlane(segment)
         );
     }
-    
+
 }

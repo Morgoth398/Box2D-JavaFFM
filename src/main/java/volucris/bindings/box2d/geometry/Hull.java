@@ -25,58 +25,59 @@ import static volucris.bindings.core.FFMUtils.*;
 public final class Hull
 		implements Struct<Hull> {
 
-    private static final LazyConstant<MethodHandle> B2_COMPUTE_HULL;
-    private static final LazyConstant<MethodHandle> B2_VALIDATE_HULL;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_HULL;
+	private static final LazyConstant<MethodHandle> B2_VALIDATE_HULL;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS_HANDLE;
+	public static final VarHandle RADIUS_HANDLE;
 
-    public static final long CENTER_BYTE_OFFSET;
-    public static final long RADIUS_BYTE_OFFSET;
+	public static final long CENTER_BYTE_OFFSET;
+	public static final long RADIUS_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 center;
+	private final Vec2 center;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("center"),
-            JAVA_FLOAT.withName("radius")
-        ).withName("b2Circle").withByteAlignment(4);
-        
-        B2_COMPUTE_HULL = downcallHandle("b2ComputeHull", Hull.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_VALIDATE_HULL = downcallHandle("b2ValidateHull", JAVA_BOOLEAN, UNBOUNDED_ADDRESS);
-        
-        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        
-        CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
-        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("center"),
+		    JAVA_FLOAT.withName("radius")
+		).withName("b2Circle").withByteAlignment(4);
+		
+		B2_COMPUTE_HULL = downcallHandle("b2ComputeHull", Hull.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_VALIDATE_HULL = downcallHandle("b2ValidateHull", JAVA_BOOLEAN, UNBOUNDED_ADDRESS);
+		
+		RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+		
+		CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
+		RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+		//@formatter:on
+	}
 
-    public Hull() {
-        this(Arena.ofAuto());
-    }
-    
-    public Hull(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Hull(MemorySegment segment) {
-        this.segment = segment;
-    
-        center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public Hull() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Hull(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Hull(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
-    /// Compute the convex hull of a set of points. Returns an empty hull if it fails.
-    /// Some failure cases:
+    /// Compute the convex hull of a set of points. Returns an empty hull if it fails. Some failure
+    /// cases:
     /// - all points very close together
     /// - all points on a line
     /// - less than 3 points
     /// - more than B2_MAX_POLYGON_VERTICES points
+    /// 
     /// This welds close points and removes collinear points.
     /// @warning Do not modify a hull once it has been computed
     /// ```
@@ -119,6 +120,7 @@ public final class Hull
     /// This determines if a hull is valid. Checks for:
     /// - convexity
     /// - collinear points
+    /// 
     /// This is expensive and should not be called at runtime.
     /// ```
     public static boolean validateHull(
@@ -141,19 +143,6 @@ public final class Hull
     	);
     }
     
-    /// @see #radius()
-    public Hull radius(float radius) {
-    	RADIUS_HANDLE.set(segment, 0L, radius);
-    	return this;
-    }
-    
-    /// ```
-    /// The radius
-    /// ```
-    public float radius() {
-    	return (float) RADIUS_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #center()
     public Hull center(Consumer<Vec2> consumer) {
     	consumer.accept(center);
@@ -171,6 +160,19 @@ public final class Hull
     /// ```
     public Vec2 center() {
     	return center;
+    }
+    
+    /// @see #radius()
+    public Hull radius(float radius) {
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
+    }
+    
+    /// ```
+    /// The radius
+    /// ```
+    public float radius() {
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -224,5 +226,5 @@ public final class Hull
             segment -> new Hull(segment)
         );
     }
-    
+
 }

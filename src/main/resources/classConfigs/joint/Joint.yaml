@@ -16,6 +16,7 @@ imports:
   - volucris.bindings.box2d.body.BodyId
   - volucris.bindings.box2d.world.WorldId
   - volucris.bindings.box2d.math.Vec2
+  - volucris.bindings.box2d.math.Transform
 static-imports:
   - java.lang.foreign.ValueLayout.*
   - volucris.bindings.core.FFMUtils.*

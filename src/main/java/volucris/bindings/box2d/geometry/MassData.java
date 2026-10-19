@@ -21,49 +21,49 @@ import static java.lang.foreign.ValueLayout.*;
 public final class MassData
 		implements Struct<MassData> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MASS_HANDLE;
-    public static final VarHandle ROTATIONAL_INERTIA_HANDLE;
+	public static final VarHandle MASS_HANDLE;
+	public static final VarHandle ROTATIONAL_INERTIA_HANDLE;
 
-    public static final long MASS_BYTE_OFFSET;
-    public static final long CENTER_BYTE_OFFSET;
-    public static final long ROTATIONAL_INERTIA_BYTE_OFFSET;
+	public static final long MASS_BYTE_OFFSET;
+	public static final long CENTER_BYTE_OFFSET;
+	public static final long ROTATIONAL_INERTIA_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 center;
+	private final Vec2 center;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_FLOAT.withName("mass"),
-            Vec2.LAYOUT.withName("center"),
-            JAVA_FLOAT.withName("rotationalInertia")
-        ).withName("b2MassData").withByteAlignment(4);
-        
-        MASS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("mass"));
-        ROTATIONAL_INERTIA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rotationalInertia"));
-        
-        MASS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("mass"));
-        CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
-        ROTATIONAL_INERTIA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotationalInertia"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_FLOAT.withName("mass"),
+		    Vec2.LAYOUT.withName("center"),
+		    JAVA_FLOAT.withName("rotationalInertia")
+		).withName("b2MassData").withByteAlignment(4);
+		
+		MASS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("mass"));
+		ROTATIONAL_INERTIA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rotationalInertia"));
+		
+		MASS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("mass"));
+		CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
+		ROTATIONAL_INERTIA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotationalInertia"));
+		//@formatter:on
+	}
 
-    public MassData() {
-        this(Arena.ofAuto());
-    }
-    
-    public MassData(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public MassData(MemorySegment segment) {
-        this.segment = segment;
-    
-        center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public MassData() {
+	    this(Arena.ofAuto());
+	}
+	
+	public MassData(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public MassData(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// @see #mass()
     public MassData mass(float mass) {
@@ -76,19 +76,6 @@ public final class MassData
     /// ```
     public float mass() {
     	return (float) MASS_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #rotationalInertia()
-    public MassData rotationalInertia(float rotationalInertia) {
-    	ROTATIONAL_INERTIA_HANDLE.set(segment, 0L, rotationalInertia);
-    	return this;
-    }
-    
-    /// ```
-    /// The rotational inertia of the shape about the local origin.
-    /// ```
-    public float rotationalInertia() {
-    	return (float) ROTATIONAL_INERTIA_HANDLE.get(segment, 0L);
     }
     
     /// @see #center()
@@ -108,6 +95,19 @@ public final class MassData
     /// ```
     public Vec2 center() {
     	return center;
+    }
+    
+    /// @see #rotationalInertia()
+    public MassData rotationalInertia(float rotationalInertia) {
+    	ROTATIONAL_INERTIA_HANDLE.set(segment, 0L, rotationalInertia);
+    	return this;
+    }
+    
+    /// ```
+    /// The rotational inertia of the shape about the shape center.
+    /// ```
+    public float rotationalInertia() {
+    	return (float) ROTATIONAL_INERTIA_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -161,5 +161,5 @@ public final class MassData
             segment -> new MassData(segment)
         );
     }
-    
+
 }

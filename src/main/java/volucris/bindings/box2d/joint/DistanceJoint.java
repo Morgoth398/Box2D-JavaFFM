@@ -8,64 +8,71 @@ import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.world.WorldId;
+import volucris.bindings.core.NativeFloatArray;
 
 import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 public final class DistanceJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_DISTANCE_JOINT;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_LENGTH;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_LENGTH;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_ENABLE_SPRING;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_IS_SPRING_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_ENABLE_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_IS_LIMIT_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_LENGTH_RANGE;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_MIN_LENGTH;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_MAX_LENGTH;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_CURRENT_LENGTH;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_ENABLE_MOTOR;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_IS_MOTOR_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_MAX_MOTOR_FORCE;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_MAX_MOTOR_FORCE;
-    private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_MOTOR_FORCE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_DISTANCE_JOINT;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_REST_LENGTH;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_REST_LENGTH;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_ENABLE_SPRING;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_IS_SPRING_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_SPRING_FORCE_RANGE;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_SPRING_FORCE_RANGE;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_SPRING_FORCE;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_ENABLE_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_IS_LIMIT_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_LIMITS;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_LOWER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_UPPER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_CURRENT_LENGTH;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_ENABLE_MOTOR;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_IS_MOTOR_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_SET_MAX_MOTOR_FORCE;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_MAX_MOTOR_FORCE;
+	private static final LazyConstant<MethodHandle> B2_DISTANCE_JOINT_GET_CURRENT_MOTOR_FORCE;
 
-    static {
-        //@formatter:off
-        B2_CREATE_DISTANCE_JOINT = downcallHandle("b2CreateDistanceJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_DISTANCE_JOINT_SET_LENGTH = downcallHandleVoid("b2DistanceJoint_SetLength", JointId.LAYOUT, JAVA_FLOAT);
-        B2_DISTANCE_JOINT_GET_LENGTH = downcallHandle("b2DistanceJoint_GetLength", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_ENABLE_SPRING = downcallHandleVoid("b2DistanceJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_DISTANCE_JOINT_IS_SPRING_ENABLED = downcallHandle("b2DistanceJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2DistanceJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
-        B2_DISTANCE_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2DistanceJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
-        B2_DISTANCE_JOINT_GET_SPRING_HERTZ = downcallHandle("b2DistanceJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2DistanceJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2DistanceJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_DISTANCE_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2DistanceJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_SET_LENGTH_RANGE = downcallHandleVoid("b2DistanceJoint_SetLengthRange", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
-        B2_DISTANCE_JOINT_GET_MIN_LENGTH = downcallHandle("b2DistanceJoint_GetMinLength", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_GET_MAX_LENGTH = downcallHandle("b2DistanceJoint_GetMaxLength", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_GET_CURRENT_LENGTH = downcallHandle("b2DistanceJoint_GetCurrentLength", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2DistanceJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_DISTANCE_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2DistanceJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_SET_MOTOR_SPEED = downcallHandleVoid("b2DistanceJoint_SetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
-        B2_DISTANCE_JOINT_GET_MOTOR_SPEED = downcallHandle("b2DistanceJoint_GetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_SET_MAX_MOTOR_FORCE = downcallHandleVoid("b2DistanceJoint_SetMaxMotorForce", JointId.LAYOUT, JAVA_FLOAT);
-        B2_DISTANCE_JOINT_GET_MAX_MOTOR_FORCE = downcallHandle("b2DistanceJoint_GetMaxMotorForce", JAVA_FLOAT, JointId.LAYOUT);
-        B2_DISTANCE_JOINT_GET_MOTOR_FORCE = downcallHandle("b2DistanceJoint_GetMotorForce", JAVA_FLOAT, JointId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_DISTANCE_JOINT = downcallHandle("b2CreateDistanceJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_DISTANCE_JOINT_SET_REST_LENGTH = downcallHandleVoid("b2DistanceJoint_SetRestLength", JointId.LAYOUT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_GET_REST_LENGTH = downcallHandle("b2DistanceJoint_GetRestLength", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_ENABLE_SPRING = downcallHandleVoid("b2DistanceJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_DISTANCE_JOINT_IS_SPRING_ENABLED = downcallHandle("b2DistanceJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_SET_SPRING_FORCE_RANGE = downcallHandleVoid("b2DistanceJoint_SetSpringForceRange", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_GET_SPRING_FORCE_RANGE = downcallHandleVoid("b2DistanceJoint_GetSpringForceRange", JointId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_DISTANCE_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2DistanceJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2DistanceJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_GET_SPRING_HERTZ = downcallHandle("b2DistanceJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2DistanceJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_GET_SPRING_FORCE = downcallHandle("b2DistanceJoint_GetSpringForce", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2DistanceJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_DISTANCE_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2DistanceJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_SET_LIMITS = downcallHandleVoid("b2DistanceJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_GET_LOWER_LIMIT = downcallHandle("b2DistanceJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_GET_UPPER_LIMIT = downcallHandle("b2DistanceJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_GET_CURRENT_LENGTH = downcallHandle("b2DistanceJoint_GetCurrentLength", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2DistanceJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_DISTANCE_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2DistanceJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_SET_TARGET_MOTOR_SPEED = downcallHandleVoid("b2DistanceJoint_SetTargetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_GET_TARGET_MOTOR_SPEED = downcallHandle("b2DistanceJoint_GetTargetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_SET_MAX_MOTOR_FORCE = downcallHandleVoid("b2DistanceJoint_SetMaxMotorForce", JointId.LAYOUT, JAVA_FLOAT);
+		B2_DISTANCE_JOINT_GET_MAX_MOTOR_FORCE = downcallHandle("b2DistanceJoint_GetMaxMotorForce", JAVA_FLOAT, JointId.LAYOUT);
+		B2_DISTANCE_JOINT_GET_CURRENT_MOTOR_FORCE = downcallHandle("b2DistanceJoint_GetCurrentMotorForce", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private DistanceJoint() {
-    }
+	private DistanceJoint() {
+	}
 
     /// ```
     /// Create a distance joint
@@ -111,11 +118,11 @@ public final class DistanceJoint {
     /// @param jointId The id for a distance joint
     /// @param length The new distance joint length
     /// ```
-    public static void setLength(
+    public static void setRestLength(
     	MemorySegment jointId,
     	float length
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_SET_LENGTH.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_SET_REST_LENGTH.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -126,12 +133,12 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#setLength].
-    public static void setLength(
+    /// Typed method of [#setRestLength].
+    public static void setRestLength(
     	JointId jointId,
     	float length
     ) {
-    	setLength(
+    	setRestLength(
     		jointId.memorySegment(),
     		length
     	);
@@ -140,10 +147,10 @@ public final class DistanceJoint {
     /// ```
     /// Get the rest length of a distance joint
     /// ```
-    public static float getLength(
+    public static float getRestLength(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_GET_LENGTH.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_REST_LENGTH.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -153,11 +160,11 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#getLength].
-    public static float getLength(
+    /// Typed method of [#getRestLength].
+    public static float getRestLength(
     	JointId jointId
     ) {
-    	return getLength(
+    	return getRestLength(
     		jointId.memorySegment()
     	);
     }
@@ -213,6 +220,72 @@ public final class DistanceJoint {
     ) {
     	return isSpringEnabled(
     		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the force range for the spring.
+    /// ```
+    public static void setSpringForceRange(
+    	MemorySegment jointId,
+    	float lowerForce,
+    	float upperForce
+    ) {
+    	MethodHandle method = B2_DISTANCE_JOINT_SET_SPRING_FORCE_RANGE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			lowerForce,
+    			upperForce
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setSpringForceRange].
+    public static void setSpringForceRange(
+    	JointId jointId,
+    	float lowerForce,
+    	float upperForce
+    ) {
+    	setSpringForceRange(
+    		jointId.memorySegment(),
+    		lowerForce,
+    		upperForce
+    	);
+    }
+    
+    /// ```
+    /// Get the force range for the spring.
+    /// ```
+    public static void getSpringForceRange(
+    	MemorySegment jointId,
+    	MemorySegment lowerForce,
+    	MemorySegment upperForce
+    ) {
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_SPRING_FORCE_RANGE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			lowerForce,
+    			upperForce
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getSpringForceRange].
+    public static void getSpringForceRange(
+    	JointId jointId,
+    	NativeFloatArray lowerForce,
+    	NativeFloatArray upperForce
+    ) {
+    	getSpringForceRange(
+    		jointId.memorySegment(),
+    		lowerForce.memorySegment(),
+    		upperForce.memorySegment()
     	);
     }
     
@@ -325,8 +398,33 @@ public final class DistanceJoint {
     }
     
     /// ```
-    /// Enable joint limit. The limit only works if the joint spring is enabled. Otherwise the joint is rigid
-    /// and the limit has no effect.
+    /// Get the current spring force.
+    /// ```
+    public static float getSpringForce(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_SPRING_FORCE.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getSpringForce].
+    public static float getSpringForce(
+    	JointId jointId
+    ) {
+    	return getSpringForce(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Enable joint limit. The limit only works if the joint spring is enabled. Otherwise the joint is
+    /// rigid and the limit has no effect.
     /// ```
     public static void enableLimit(
     	MemorySegment jointId,
@@ -382,12 +480,12 @@ public final class DistanceJoint {
     /// ```
     /// Set the minimum and maximum length parameters of a distance joint
     /// ```
-    public static void setLengthRange(
+    public static void setLimits(
     	MemorySegment jointId,
     	float minLength,
     	float maxLength
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_SET_LENGTH_RANGE.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_SET_LIMITS.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -399,13 +497,13 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#setLengthRange].
-    public static void setLengthRange(
+    /// Typed method of [#setLimits].
+    public static void setLimits(
     	JointId jointId,
     	float minLength,
     	float maxLength
     ) {
-    	setLengthRange(
+    	setLimits(
     		jointId.memorySegment(),
     		minLength,
     		maxLength
@@ -415,10 +513,10 @@ public final class DistanceJoint {
     /// ```
     /// Get the distance joint minimum length
     /// ```
-    public static float getMinLength(
+    public static float getLowerLimit(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_GET_MIN_LENGTH.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_LOWER_LIMIT.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -428,11 +526,11 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#getMinLength].
-    public static float getMinLength(
+    /// Typed method of [#getLowerLimit].
+    public static float getLowerLimit(
     	JointId jointId
     ) {
-    	return getMinLength(
+    	return getLowerLimit(
     		jointId.memorySegment()
     	);
     }
@@ -440,10 +538,10 @@ public final class DistanceJoint {
     /// ```
     /// Get the distance joint maximum length
     /// ```
-    public static float getMaxLength(
+    public static float getUpperLimit(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_GET_MAX_LENGTH.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_UPPER_LIMIT.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -453,11 +551,11 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#getMaxLength].
-    public static float getMaxLength(
+    /// Typed method of [#getUpperLimit].
+    public static float getUpperLimit(
     	JointId jointId
     ) {
-    	return getMaxLength(
+    	return getUpperLimit(
     		jointId.memorySegment()
     	);
     }
@@ -544,11 +642,11 @@ public final class DistanceJoint {
     /// ```
     /// Set the distance joint motor speed, usually in meters per second
     /// ```
-    public static void setMotorSpeed(
+    public static void setTargetMotorSpeed(
     	MemorySegment jointId,
     	float motorSpeed
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_SET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_SET_TARGET_MOTOR_SPEED.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -559,12 +657,12 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#setMotorSpeed].
-    public static void setMotorSpeed(
+    /// Typed method of [#setTargetMotorSpeed].
+    public static void setTargetMotorSpeed(
     	JointId jointId,
     	float motorSpeed
     ) {
-    	setMotorSpeed(
+    	setTargetMotorSpeed(
     		jointId.memorySegment(),
     		motorSpeed
     	);
@@ -573,10 +671,10 @@ public final class DistanceJoint {
     /// ```
     /// Get the distance joint motor speed, usually in meters per second
     /// ```
-    public static float getMotorSpeed(
+    public static float getTargetMotorSpeed(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_GET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_TARGET_MOTOR_SPEED.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -586,11 +684,11 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#getMotorSpeed].
-    public static float getMotorSpeed(
+    /// Typed method of [#getTargetMotorSpeed].
+    public static float getTargetMotorSpeed(
     	JointId jointId
     ) {
-    	return getMotorSpeed(
+    	return getTargetMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -652,10 +750,10 @@ public final class DistanceJoint {
     /// ```
     /// Get the distance joint current motor force, usually in newtons
     /// ```
-    public static float getMotorForce(
+    public static float getCurrentMotorForce(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_DISTANCE_JOINT_GET_MOTOR_FORCE.get();
+    	MethodHandle method = B2_DISTANCE_JOINT_GET_CURRENT_MOTOR_FORCE.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -665,13 +763,13 @@ public final class DistanceJoint {
     	}
     }
     
-    /// Typed method of [#getMotorForce].
-    public static float getMotorForce(
+    /// Typed method of [#getCurrentMotorForce].
+    public static float getCurrentMotorForce(
     	JointId jointId
     ) {
-    	return getMotorForce(
+    	return getCurrentMotorForce(
     		jointId.memorySegment()
     	);
     }
-    
+
 }

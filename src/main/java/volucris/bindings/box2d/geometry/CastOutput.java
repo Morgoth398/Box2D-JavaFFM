@@ -16,66 +16,105 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Low level ray cast or shape-cast output data. Returns a zero fraction and normal in the case of initial overlap.
+/// Low level ray cast or shape cast output data. The hit point is in the local or relative frame of
+/// the input. Returns a zero fraction and normal in the case of initial overlap.
 /// ```
 public final class CastOutput
 		implements Struct<CastOutput> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRACTION_HANDLE;
-    public static final VarHandle ITERATIONS_HANDLE;
-    public static final VarHandle HIT_HANDLE;
+	public static final VarHandle FRACTION_HANDLE;
+	public static final VarHandle ITERATIONS_HANDLE;
+	public static final VarHandle HIT_HANDLE;
 
-    public static final long NORMAL_BYTE_OFFSET;
-    public static final long POINT_BYTE_OFFSET;
-    public static final long FRACTION_BYTE_OFFSET;
-    public static final long ITERATIONS_BYTE_OFFSET;
-    public static final long HIT_BYTE_OFFSET;
+	public static final long NORMAL_BYTE_OFFSET;
+	public static final long POINT_BYTE_OFFSET;
+	public static final long FRACTION_BYTE_OFFSET;
+	public static final long ITERATIONS_BYTE_OFFSET;
+	public static final long HIT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 normal;
-    private final Vec2 point;
+	private final Vec2 normal;
+	private final Vec2 point;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("normal"),
-            Vec2.LAYOUT.withName("point"),
-            JAVA_FLOAT.withName("fraction"),
-            JAVA_INT.withName("iterations"),
-            JAVA_BOOLEAN.withName("hit"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2CastOutput").withByteAlignment(4);
-        
-        FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
-        ITERATIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterations"));
-        HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
-        
-        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
-        ITERATIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
-        HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("normal"),
+		    Vec2.LAYOUT.withName("point"),
+		    JAVA_FLOAT.withName("fraction"),
+		    JAVA_INT.withName("iterations"),
+		    JAVA_BOOLEAN.withName("hit"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2CastOutput").withByteAlignment(4);
+		
+		FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
+		ITERATIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterations"));
+		HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
+		
+		NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+		POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+		FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
+		ITERATIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
+		HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
+		//@formatter:on
+	}
 
-    public CastOutput() {
-        this(Arena.ofAuto());
+	public CastOutput() {
+	    this(Arena.ofAuto());
+	}
+	
+	public CastOutput(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public CastOutput(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+	    point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+	}
+
+    /// @see #normal()
+    public CastOutput normal(Consumer<Vec2> consumer) {
+    	consumer.accept(normal);
+    	return this;
     }
     
-    public CastOutput(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// @see #normal()
+    public CastOutput normal(Vec2 other) {
+    	normal.set(other);
+    	return this;
     }
     
-    public CastOutput(MemorySegment segment) {
-        this.segment = segment;
-    
-        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+    /// ```
+    /// The surface normal at the hit point
+    /// ```
+    public Vec2 normal() {
+    	return normal;
     }
-
+    
+    /// @see #point()
+    public CastOutput point(Consumer<Vec2> consumer) {
+    	consumer.accept(point);
+    	return this;
+    }
+    
+    /// @see #point()
+    public CastOutput point(Vec2 other) {
+    	point.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// The surface hit point
+    /// ```
+    public Vec2 point() {
+    	return point;
+    }
+    
     /// @see #fraction()
     public CastOutput fraction(float fraction) {
     	FRACTION_HANDLE.set(segment, 0L, fraction);
@@ -113,44 +152,6 @@ public final class CastOutput
     /// ```
     public boolean hit() {
     	return (boolean) HIT_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #normal()
-    public CastOutput normal(Consumer<Vec2> consumer) {
-    	consumer.accept(normal);
-    	return this;
-    }
-    
-    /// @see #normal()
-    public CastOutput normal(Vec2 other) {
-    	normal.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The surface normal at the hit point
-    /// ```
-    public Vec2 normal() {
-    	return normal;
-    }
-    
-    /// @see #point()
-    public CastOutput point(Consumer<Vec2> consumer) {
-    	consumer.accept(point);
-    	return this;
-    }
-    
-    /// @see #point()
-    public CastOutput point(Vec2 other) {
-    	point.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The surface hit point
-    /// ```
-    public Vec2 point() {
-    	return point;
     }
     
     @Override
@@ -204,5 +205,5 @@ public final class CastOutput
             segment -> new CastOutput(segment)
         );
     }
-    
+
 }

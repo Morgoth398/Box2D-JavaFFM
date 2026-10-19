@@ -14,32 +14,32 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class WeldJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_WELD_JOINT;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_LINEAR_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_LINEAR_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_ANGULAR_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_ANGULAR_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_CREATE_WELD_JOINT;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_LINEAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_LINEAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_ANGULAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_ANGULAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO;
 
-    static {
-        //@formatter:off
-        B2_CREATE_WELD_JOINT = downcallHandle("b2CreateWeldJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_WELD_JOINT_SET_LINEAR_HERTZ = downcallHandleVoid("b2WeldJoint_SetLinearHertz", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WELD_JOINT_GET_LINEAR_HERTZ = downcallHandle("b2WeldJoint_GetLinearHertz", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO = downcallHandleVoid("b2WeldJoint_SetLinearDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO = downcallHandle("b2WeldJoint_GetLinearDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WELD_JOINT_SET_ANGULAR_HERTZ = downcallHandleVoid("b2WeldJoint_SetAngularHertz", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WELD_JOINT_GET_ANGULAR_HERTZ = downcallHandle("b2WeldJoint_GetAngularHertz", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO = downcallHandleVoid("b2WeldJoint_SetAngularDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO = downcallHandle("b2WeldJoint_GetAngularDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_WELD_JOINT = downcallHandle("b2CreateWeldJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_WELD_JOINT_SET_LINEAR_HERTZ = downcallHandleVoid("b2WeldJoint_SetLinearHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WELD_JOINT_GET_LINEAR_HERTZ = downcallHandle("b2WeldJoint_GetLinearHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WELD_JOINT_SET_LINEAR_DAMPING_RATIO = downcallHandleVoid("b2WeldJoint_SetLinearDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WELD_JOINT_GET_LINEAR_DAMPING_RATIO = downcallHandle("b2WeldJoint_GetLinearDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WELD_JOINT_SET_ANGULAR_HERTZ = downcallHandleVoid("b2WeldJoint_SetAngularHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WELD_JOINT_GET_ANGULAR_HERTZ = downcallHandle("b2WeldJoint_GetAngularHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WELD_JOINT_SET_ANGULAR_DAMPING_RATIO = downcallHandleVoid("b2WeldJoint_SetAngularDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WELD_JOINT_GET_ANGULAR_DAMPING_RATIO = downcallHandle("b2WeldJoint_GetAngularDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private WeldJoint() {
-    }
+	private WeldJoint() {
+	}
 
     /// ```
     /// Create a weld joint
@@ -295,5 +295,5 @@ public final class WeldJoint {
     		jointId.memorySegment()
     	);
     }
-    
+
 }

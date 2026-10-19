@@ -27,64 +27,103 @@ import static volucris.bindings.core.FFMUtils.*;
 public final class Circle
 		implements Struct<Circle> {
 
-    private static final LazyConstant<MethodHandle> B2_COMPUTE_CIRCLE_AABB;
-    private static final LazyConstant<MethodHandle> B2_POINT_IN_CIRCLE;
-    private static final LazyConstant<MethodHandle> B2_RAY_CAST_CIRCLE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_CAST_CIRCLE;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_CIRCLE_MASS;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_CIRCLE_BOUNDS;
+	private static final LazyConstant<MethodHandle> B2_POINT_IN_CIRCLE;
+	private static final LazyConstant<MethodHandle> B2_CAST_RAY_CIRCLE;
+	private static final LazyConstant<MethodHandle> B2_CAST_SHAPE_CIRCLE;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS_HANDLE;
+	public static final VarHandle RADIUS_HANDLE;
 
-    public static final long CENTER_BYTE_OFFSET;
-    public static final long RADIUS_BYTE_OFFSET;
+	public static final long CENTER_BYTE_OFFSET;
+	public static final long RADIUS_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 center;
+	private final Vec2 center;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("center"),
-            JAVA_FLOAT.withName("radius")
-        ).withName("b2Circle").withByteAlignment(4);
-        
-        B2_COMPUTE_CIRCLE_AABB = downcallHandle("b2ComputeCircleAABB", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
-        B2_POINT_IN_CIRCLE = downcallHandle("b2PointInCircle", JAVA_BOOLEAN, Vec2.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_RAY_CAST_CIRCLE = downcallHandle("b2RayCastCircle", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_SHAPE_CAST_CIRCLE = downcallHandle("b2ShapeCastCircle", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        
-        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        
-        CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
-        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("center"),
+		    JAVA_FLOAT.withName("radius")
+		).withName("b2Circle").withByteAlignment(4);
+		
+		B2_COMPUTE_CIRCLE_MASS = downcallHandle("b2ComputeCircleMass", MassData.LAYOUT, UNBOUNDED_ADDRESS, JAVA_FLOAT);
+		B2_COMPUTE_CIRCLE_BOUNDS = downcallHandle("b2ComputeCircleBounds", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
+		B2_POINT_IN_CIRCLE = downcallHandle("b2PointInCircle", JAVA_BOOLEAN, UNBOUNDED_ADDRESS, Vec2.LAYOUT);
+		B2_CAST_RAY_CIRCLE = downcallHandle("b2CastRayCircle", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CAST_SHAPE_CIRCLE = downcallHandle("b2CastShapeCircle", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		
+		RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+		
+		CENTER_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center"));
+		RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+		//@formatter:on
+	}
 
-    public Circle() {
-        this(Arena.ofAuto());
+	public Circle() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Circle(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Circle(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
+	}
+
+    /// ```
+    /// Compute mass properties of a circle
+    /// ```
+    public static MemorySegment computeCircleMass(
+    	SegmentAllocator allocator,
+    	MemorySegment shape,
+    	float density
+    ) {
+    	MethodHandle method = B2_COMPUTE_CIRCLE_MASS.get();
+    	try {
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
+    			shape,
+    			density
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
     }
     
-    public Circle(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// Typed method of [#computeCircleMass].
+    public final @Nullable MassData computeCircleMass(
+    	SegmentAllocator allocator,
+    	float density
+    ) {
+    	MemorySegment segment = computeCircleMass(
+    		allocator,
+    		this.segment,
+    		density
+    	);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MassData(segment);
     }
     
-    public Circle(MemorySegment segment) {
-        this.segment = segment;
-    
-        center = new Vec2(segment.asSlice(CENTER_BYTE_OFFSET, Vec2.LAYOUT));
-    }
-
     /// ```
     /// Compute the bounding box of a transformed circle
     /// ```
-    public static MemorySegment computeCircleAABB(
+    public static MemorySegment computeCircleBounds(
     	SegmentAllocator allocator,
     	MemorySegment shape,
     	MemorySegment transform
     ) {
-    	MethodHandle method = B2_COMPUTE_CIRCLE_AABB.get();
+    	MethodHandle method = B2_COMPUTE_CIRCLE_BOUNDS.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -96,12 +135,12 @@ public final class Circle
     	}
     }
     
-    /// Typed method of [#computeCircleAABB].
-    public final @Nullable AABB computeCircleAABB(
+    /// Typed method of [#computeCircleBounds].
+    public final @Nullable AABB computeCircleBounds(
     	SegmentAllocator allocator,
     	Transform transform
     ) {
-    	MemorySegment segment = computeCircleAABB(
+    	MemorySegment segment = computeCircleBounds(
     		allocator,
     		this.segment,
     		transform.memorySegment()
@@ -117,14 +156,14 @@ public final class Circle
     /// Test a point for overlap with a circle in local space
     /// ```
     public static boolean pointInCircle(
-    	MemorySegment point,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment point
     ) {
     	MethodHandle method = B2_POINT_IN_CIRCLE.get();
     	try {
     		return (boolean) method.invokeExact(
-    			point,
-    			shape
+    			shape,
+    			point
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
@@ -136,40 +175,40 @@ public final class Circle
     	Vec2 point
     ) {
     	return pointInCircle(
-    		point.memorySegment(),
-    		this.segment
+    		this.segment,
+    		point.memorySegment()
     	);
     }
     
     /// ```
-    /// Ray cast versus circle shape in local space. Initial overlap is treated as a miss.
+    /// Ray cast versus circle shape in local space.
     /// ```
-    public static MemorySegment rayCastCircle(
+    public static MemorySegment castRayCircle(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_RAY_CAST_CIRCLE.get();
+    	MethodHandle method = B2_CAST_RAY_CIRCLE.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#rayCastCircle].
-    public final @Nullable CastOutput rayCastCircle(
+    /// Typed method of [#castRayCircle].
+    public final @Nullable CastOutput castRayCircle(
     	SegmentAllocator allocator,
     	RayCastInput input
     ) {
-    	MemorySegment segment = rayCastCircle(
+    	MemorySegment segment = castRayCircle(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
@@ -179,53 +218,40 @@ public final class Circle
     }
     
     /// ```
-    /// Shape cast versus a circle. Initial overlap is treated as a miss.
+    /// Shape cast versus a circle.
     /// ```
-    public static MemorySegment shapeCastCircle(
+    public static MemorySegment castShapeCircle(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_SHAPE_CAST_CIRCLE.get();
+    	MethodHandle method = B2_CAST_SHAPE_CIRCLE.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#shapeCastCircle].
-    public final @Nullable CastOutput shapeCastCircle(
+    /// Typed method of [#castShapeCircle].
+    public final @Nullable CastOutput castShapeCircle(
     	SegmentAllocator allocator,
     	ShapeCastInput input
     ) {
-    	MemorySegment segment = shapeCastCircle(
+    	MemorySegment segment = castShapeCircle(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
     		return null;
     	
     	return new CastOutput(segment);
-    }
-    
-    /// @see #radius()
-    public Circle radius(float radius) {
-    	RADIUS_HANDLE.set(segment, 0L, radius);
-    	return this;
-    }
-    
-    /// ```
-    /// The radius
-    /// ```
-    public float radius() {
-    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     /// @see #center()
@@ -245,6 +271,19 @@ public final class Circle
     /// ```
     public Vec2 center() {
     	return center;
+    }
+    
+    /// @see #radius()
+    public Circle radius(float radius) {
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
+    }
+    
+    /// ```
+    /// The radius
+    /// ```
+    public float radius() {
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -298,5 +337,5 @@ public final class Circle
             segment -> new Circle(segment)
         );
     }
-    
+
 }

@@ -2,3 +2,9 @@ package-name: volucris.bindings.box2d.enums
 directory: src/main/java/volucris/bindings/box2d/enums
 generate-all: true
 configs:
+  - name: b2BodyType
+    name-mappings:
+      b2_staticBody: STATIC_BODY
+      b2_kinematicBody: KINEMATIC_BODY
+      b2_dynamicBody: DYNAMIC_BODY
+      b2_bodyTypeCount: BODY_TYPE_COUNT

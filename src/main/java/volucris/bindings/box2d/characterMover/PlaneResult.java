@@ -17,69 +17,57 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// These are the collision planes returned from b2World_CollideMover
+/// These are the collision planes returned from b2World_CollideMover. The plane and point are
+/// relative to the query origin, matching the mover capsule.
 /// ```
 public final class PlaneResult
 		implements Struct<PlaneResult> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle HIT_HANDLE;
+	public static final VarHandle HIT_HANDLE;
 
-    public static final long PLANE_BYTE_OFFSET;
-    public static final long POINT_BYTE_OFFSET;
-    public static final long HIT_BYTE_OFFSET;
+	public static final long PLANE_BYTE_OFFSET;
+	public static final long POINT_BYTE_OFFSET;
+	public static final long HIT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Plane plane;
-    private final Vec2 point;
+	private final Plane plane;
+	private final Vec2 point;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Plane.LAYOUT.withName("plane"),
-            Vec2.LAYOUT.withName("point"),
-            JAVA_BOOLEAN.withName("hit"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2PlaneResult").withByteAlignment(4);
-        
-        HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
-        
-        PLANE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
-        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Plane.LAYOUT.withName("plane"),
+		    Vec2.LAYOUT.withName("point"),
+		    JAVA_BOOLEAN.withName("hit"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2PlaneResult").withByteAlignment(4);
+		
+		HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
+		
+		PLANE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("plane"));
+		POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+		HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
+		//@formatter:on
+	}
 
-    public PlaneResult() {
-        this(Arena.ofAuto());
-    }
-    
-    public PlaneResult(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public PlaneResult(MemorySegment segment) {
-        this.segment = segment;
-    
-        plane = new Plane(segment.asSlice(PLANE_BYTE_OFFSET, Plane.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public PlaneResult() {
+	    this(Arena.ofAuto());
+	}
+	
+	public PlaneResult(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public PlaneResult(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    plane = new Plane(segment.asSlice(PLANE_BYTE_OFFSET, Plane.LAYOUT));
+	    point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
-    /// @see #hit()
-    public PlaneResult hit(boolean hit) {
-    	HIT_HANDLE.set(segment, 0L, hit);
-    	return this;
-    }
-    
-    /// ```
-    /// Did the collision register a hit? If not this plane should be ignored.
-    /// ```
-    public boolean hit() {
-    	return (boolean) HIT_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #plane()
     public PlaneResult plane(Consumer<Plane> consumer) {
     	consumer.accept(plane);
@@ -111,8 +99,24 @@ public final class PlaneResult
     	return this;
     }
     
+    /// ```
+    /// The collision point on the shape.
+    /// ```
     public Vec2 point() {
     	return point;
+    }
+    
+    /// @see #hit()
+    public PlaneResult hit(boolean hit) {
+    	HIT_HANDLE.set(segment, 0L, hit);
+    	return this;
+    }
+    
+    /// ```
+    /// Did the collision register a hit? If not this plane should be ignored.
+    /// ```
+    public boolean hit() {
+    	return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -166,5 +170,5 @@ public final class PlaneResult
             segment -> new PlaneResult(segment)
         );
     }
-    
+
 }

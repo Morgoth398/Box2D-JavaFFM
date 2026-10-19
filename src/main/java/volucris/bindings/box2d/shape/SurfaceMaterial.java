@@ -18,65 +18,67 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// Surface materials allow chain shapes to have per segment surface properties.
+/// The surface material groups together parameters related to the shape surface, which is the 2D
+/// boundary. Surface materials allow chain shapes to have per segment properties.
 /// @ingroup shape
 /// ```
 public final class SurfaceMaterial
 		implements Struct<SurfaceMaterial> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_SURFACE_MATERIAL;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_SURFACE_MATERIAL;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRICTION_HANDLE;
-    public static final VarHandle RESTITUTION_HANDLE;
-    public static final VarHandle ROLLING_RESISTANCE_HANDLE;
-    public static final VarHandle TANGENT_SPEED_HANDLE;
-    public static final VarHandle USER_MATERIAL_ID_HANDLE;
-    public static final VarHandle CUSTOM_COLOR_HANDLE;
+	public static final VarHandle FRICTION_HANDLE;
+	public static final VarHandle RESTITUTION_HANDLE;
+	public static final VarHandle ROLLING_RESISTANCE_HANDLE;
+	public static final VarHandle TANGENT_SPEED_HANDLE;
+	public static final VarHandle USER_MATERIAL_ID_HANDLE;
+	public static final VarHandle CUSTOM_COLOR_HANDLE;
 
-    public static final long FRICTION_BYTE_OFFSET;
-    public static final long RESTITUTION_BYTE_OFFSET;
-    public static final long ROLLING_RESISTANCE_BYTE_OFFSET;
-    public static final long TANGENT_SPEED_BYTE_OFFSET;
-    public static final long USER_MATERIAL_ID_BYTE_OFFSET;
-    public static final long CUSTOM_COLOR_BYTE_OFFSET;
+	public static final long FRICTION_BYTE_OFFSET;
+	public static final long RESTITUTION_BYTE_OFFSET;
+	public static final long ROLLING_RESISTANCE_BYTE_OFFSET;
+	public static final long TANGENT_SPEED_BYTE_OFFSET;
+	public static final long USER_MATERIAL_ID_BYTE_OFFSET;
+	public static final long CUSTOM_COLOR_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_FLOAT.withName("friction"),
-            JAVA_FLOAT.withName("restitution"),
-            JAVA_FLOAT.withName("rollingResistance"),
-            JAVA_FLOAT.withName("tangentSpeed"),
-            JAVA_INT.withName("userMaterialId"),
-            JAVA_INT.withName("customColor")
-        ).withName("b2SurfaceMaterial").withByteAlignment(4);
-        
-        B2_DEFAULT_SURFACE_MATERIAL = downcallHandle("b2DefaultSurfaceMaterial", SurfaceMaterial.LAYOUT);
-        
-        FRICTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("friction"));
-        RESTITUTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("restitution"));
-        ROLLING_RESISTANCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rollingResistance"));
-        TANGENT_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("tangentSpeed"));
-        USER_MATERIAL_ID_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userMaterialId"));
-        CUSTOM_COLOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("customColor"));
-        
-        FRICTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("friction"));
-        RESTITUTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitution"));
-        ROLLING_RESISTANCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingResistance"));
-        TANGENT_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentSpeed"));
-        USER_MATERIAL_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userMaterialId"));
-        CUSTOM_COLOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("customColor"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_FLOAT.withName("friction"),
+		    JAVA_FLOAT.withName("restitution"),
+		    JAVA_FLOAT.withName("rollingResistance"),
+		    JAVA_FLOAT.withName("tangentSpeed"),
+		    JAVA_LONG.withName("userMaterialId"),
+		    JAVA_INT.withName("customColor"),
+		    MemoryLayout.paddingLayout(4)
+		).withName("b2SurfaceMaterial").withByteAlignment(8);
+		
+		B2_DEFAULT_SURFACE_MATERIAL = downcallHandle("b2DefaultSurfaceMaterial", SurfaceMaterial.LAYOUT);
+		
+		FRICTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("friction"));
+		RESTITUTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("restitution"));
+		ROLLING_RESISTANCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rollingResistance"));
+		TANGENT_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("tangentSpeed"));
+		USER_MATERIAL_ID_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userMaterialId"));
+		CUSTOM_COLOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("customColor"));
+		
+		FRICTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("friction"));
+		RESTITUTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitution"));
+		ROLLING_RESISTANCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingResistance"));
+		TANGENT_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentSpeed"));
+		USER_MATERIAL_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userMaterialId"));
+		CUSTOM_COLOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("customColor"));
+		//@formatter:on
+	}
 
-    public SurfaceMaterial(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public SurfaceMaterial(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// ```
     /// Use this to initialize your surface material
@@ -163,7 +165,7 @@ public final class SurfaceMaterial
     }
     
     /// @see #userMaterialId()
-    public SurfaceMaterial userMaterialId(int userMaterialId) {
+    public SurfaceMaterial userMaterialId(long userMaterialId) {
     	USER_MATERIAL_ID_HANDLE.set(segment, 0L, userMaterialId);
     	return this;
     }
@@ -172,8 +174,8 @@ public final class SurfaceMaterial
     /// User material identifier. This is passed with query results and to friction and restitution
     /// combining functions. It is not used internally.
     /// ```
-    public int userMaterialId() {
-    	return (int) USER_MATERIAL_ID_HANDLE.get(segment, 0L);
+    public long userMaterialId() {
+    	return (long) USER_MATERIAL_ID_HANDLE.get(segment, 0L);
     }
     
     /// @see #customColor()
@@ -240,5 +242,5 @@ public final class SurfaceMaterial
             segment -> new SurfaceMaterial(segment)
         );
     }
-    
+
 }

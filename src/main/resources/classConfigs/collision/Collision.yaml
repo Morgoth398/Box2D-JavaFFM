@@ -19,8 +19,8 @@ imports:
   - volucris.bindings.box2d.geometry.Circle
   - volucris.bindings.box2d.geometry.Polygon
   - volucris.bindings.box2d.geometry.Segment
+  - volucris.bindings.box2d.geometry.ChainSegment
 static-imports:
-  - volucris.bindings.core.FFMUtils.*
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:

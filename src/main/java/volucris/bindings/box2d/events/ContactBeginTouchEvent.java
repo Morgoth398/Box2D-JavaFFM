@@ -8,7 +8,6 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.StructLayout;
 import java.util.function.Consumer;
-import volucris.bindings.box2d.collision.Manifold;
 import volucris.bindings.box2d.shape.ShapeId;
 import volucris.bindings.core.NativeStructArray;
 import volucris.bindings.core.Struct;
@@ -21,47 +20,47 @@ import static java.lang.foreign.ValueLayout.*;
 public final class ContactBeginTouchEvent
 		implements Struct<ContactBeginTouchEvent> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long SHAPE_ID_A_BYTE_OFFSET;
-    public static final long SHAPE_ID_B_BYTE_OFFSET;
-    public static final long MANIFOLD_BYTE_OFFSET;
+	public static final long SHAPE_ID_A_BYTE_OFFSET;
+	public static final long SHAPE_ID_B_BYTE_OFFSET;
+	public static final long CONTACT_ID_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeId shapeIdA;
-    private final ShapeId shapeIdB;
-    private final Manifold manifold;
+	private final ShapeId shapeIdA;
+	private final ShapeId shapeIdB;
+	private final ContactId contactId;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeId.LAYOUT.withName("shapeIdA"),
-            ShapeId.LAYOUT.withName("shapeIdB"),
-            Manifold.LAYOUT.withName("manifold")
-        ).withName("b2ContactBeginTouchEvent").withByteAlignment(4);
-        
-        SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
-        SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
-        MANIFOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("manifold"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeId.LAYOUT.withName("shapeIdA"),
+		    ShapeId.LAYOUT.withName("shapeIdB"),
+		    ContactId.LAYOUT.withName("contactId")
+		).withName("b2ContactBeginTouchEvent").withByteAlignment(4);
+		
+		SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
+		SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
+		CONTACT_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactId"));
+		//@formatter:on
+	}
 
-    public ContactBeginTouchEvent() {
-        this(Arena.ofAuto());
-    }
-    
-    public ContactBeginTouchEvent(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public ContactBeginTouchEvent(MemorySegment segment) {
-        this.segment = segment;
-    
-        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
-        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
-        manifold = new Manifold(segment.asSlice(MANIFOLD_BYTE_OFFSET, Manifold.LAYOUT));
-    }
+	public ContactBeginTouchEvent() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ContactBeginTouchEvent(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ContactBeginTouchEvent(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
+	    shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
+	    contactId = new ContactId(segment.asSlice(CONTACT_ID_BYTE_OFFSET, ContactId.LAYOUT));
+	}
 
     /// @see #shapeIdA()
     public ContactBeginTouchEvent shapeIdA(Consumer<ShapeId> consumer) {
@@ -101,24 +100,24 @@ public final class ContactBeginTouchEvent
     	return shapeIdB;
     }
     
-    /// @see #manifold()
-    public ContactBeginTouchEvent manifold(Consumer<Manifold> consumer) {
-    	consumer.accept(manifold);
+    /// @see #contactId()
+    public ContactBeginTouchEvent contactId(Consumer<ContactId> consumer) {
+    	consumer.accept(contactId);
     	return this;
     }
     
-    /// @see #manifold()
-    public ContactBeginTouchEvent manifold(Manifold other) {
-    	manifold.set(other);
+    /// @see #contactId()
+    public ContactBeginTouchEvent contactId(ContactId other) {
+    	contactId.set(other);
     	return this;
     }
     
     /// ```
-    /// The initial contact manifold. This is recorded before the solver is called,
-    /// so all the impulses will be zero.
+    /// The transient contact id. This contact may be destroyed automatically when the world is
+    /// modified or simulated. Use b2Contact_IsValid before using this id.
     /// ```
-    public Manifold manifold() {
-    	return manifold;
+    public ContactId contactId() {
+    	return contactId;
     }
     
     @Override
@@ -172,5 +171,5 @@ public final class ContactBeginTouchEvent
             segment -> new ContactBeginTouchEvent(segment)
         );
     }
-    
+
 }

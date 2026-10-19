@@ -24,52 +24,52 @@ import static volucris.bindings.core.FFMUtils.*;
 public final class Version
 		implements Struct<Version> {
 
-    private static final LazyConstant<MethodHandle> B2_GET_VERSION;
+	private static final LazyConstant<MethodHandle> B2_GET_VERSION;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAJOR_HANDLE;
-    public static final VarHandle MINOR_HANDLE;
-    public static final VarHandle REVISION_HANDLE;
+	public static final VarHandle MAJOR_HANDLE;
+	public static final VarHandle MINOR_HANDLE;
+	public static final VarHandle REVISION_HANDLE;
 
-    public static final long MAJOR_BYTE_OFFSET;
-    public static final long MINOR_BYTE_OFFSET;
-    public static final long REVISION_BYTE_OFFSET;
+	public static final long MAJOR_BYTE_OFFSET;
+	public static final long MINOR_BYTE_OFFSET;
+	public static final long REVISION_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_INT.withName("major"),
-            JAVA_INT.withName("minor"),
-            JAVA_INT.withName("revision")
-        ).withName("b2Version").withByteAlignment(4);
-        
-        B2_GET_VERSION = downcallHandle("b2GetVersion", Version.LAYOUT);
-        
-        MAJOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("major"));
-        MINOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("minor"));
-        REVISION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("revision"));
-        
-        MAJOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("major"));
-        MINOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("minor"));
-        REVISION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("revision"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_INT.withName("major"),
+		    JAVA_INT.withName("minor"),
+		    JAVA_INT.withName("revision")
+		).withName("b2Version").withByteAlignment(4);
+		
+		B2_GET_VERSION = downcallHandle("b2GetVersion", Version.LAYOUT);
+		
+		MAJOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("major"));
+		MINOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("minor"));
+		REVISION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("revision"));
+		
+		MAJOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("major"));
+		MINOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("minor"));
+		REVISION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("revision"));
+		//@formatter:on
+	}
 
-    public Version() {
-        this(Arena.ofAuto());
-    }
-    
-    public Version(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Version(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public Version() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Version(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Version(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// ```
     /// Get the current version of Box2D
@@ -191,5 +191,5 @@ public final class Version
             segment -> new Version(segment)
         );
     }
-    
+
 }

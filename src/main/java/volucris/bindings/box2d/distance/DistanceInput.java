@@ -17,79 +17,61 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Input for b2ShapeDistance
+/// Input for b2ComputeShapeDistance
 /// ```
 public final class DistanceInput
 		implements Struct<DistanceInput> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle USE_RADII_HANDLE;
+	public static final VarHandle USE_RADII_HANDLE;
 
-    public static final long PROXY_A_BYTE_OFFSET;
-    public static final long PROXY_B_BYTE_OFFSET;
-    public static final long TRANSFORM_A_BYTE_OFFSET;
-    public static final long TRANSFORM_B_BYTE_OFFSET;
-    public static final long USE_RADII_BYTE_OFFSET;
+	public static final long PROXY_A_BYTE_OFFSET;
+	public static final long PROXY_B_BYTE_OFFSET;
+	public static final long TRANSFORM_BYTE_OFFSET;
+	public static final long USE_RADII_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeProxy proxyA;
-    private final ShapeProxy proxyB;
-    private final Transform transformA;
-    private final Transform transformB;
+	private final ShapeProxy proxyA;
+	private final ShapeProxy proxyB;
+	private final Transform transform;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeProxy.LAYOUT.withName("proxyA"),
-            ShapeProxy.LAYOUT.withName("proxyB"),
-            Transform.LAYOUT.withName("transformA"),
-            Transform.LAYOUT.withName("transformB"),
-            JAVA_BOOLEAN.withName("useRadii"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2DistanceInput").withByteAlignment(4);
-        
-        USE_RADII_HANDLE = LAYOUT.varHandle(PathElement.groupElement("useRadii"));
-        
-        PROXY_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
-        PROXY_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
-        TRANSFORM_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformA"));
-        TRANSFORM_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformB"));
-        USE_RADII_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("useRadii"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeProxy.LAYOUT.withName("proxyA"),
+		    ShapeProxy.LAYOUT.withName("proxyB"),
+		    Transform.LAYOUT.withName("transform"),
+		    JAVA_BOOLEAN.withName("useRadii"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2DistanceInput").withByteAlignment(4);
+		
+		USE_RADII_HANDLE = LAYOUT.varHandle(PathElement.groupElement("useRadii"));
+		
+		PROXY_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
+		PROXY_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
+		TRANSFORM_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transform"));
+		USE_RADII_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("useRadii"));
+		//@formatter:on
+	}
 
-    public DistanceInput() {
-        this(Arena.ofAuto());
-    }
-    
-    public DistanceInput(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public DistanceInput(MemorySegment segment) {
-        this.segment = segment;
-    
-        proxyA = new ShapeProxy(segment.asSlice(PROXY_A_BYTE_OFFSET, ShapeProxy.LAYOUT));
-        proxyB = new ShapeProxy(segment.asSlice(PROXY_B_BYTE_OFFSET, ShapeProxy.LAYOUT));
-        transformA = new Transform(segment.asSlice(TRANSFORM_A_BYTE_OFFSET, Transform.LAYOUT));
-        transformB = new Transform(segment.asSlice(TRANSFORM_B_BYTE_OFFSET, Transform.LAYOUT));
-    }
+	public DistanceInput() {
+	    this(Arena.ofAuto());
+	}
+	
+	public DistanceInput(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public DistanceInput(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    proxyA = new ShapeProxy(segment.asSlice(PROXY_A_BYTE_OFFSET, ShapeProxy.LAYOUT));
+	    proxyB = new ShapeProxy(segment.asSlice(PROXY_B_BYTE_OFFSET, ShapeProxy.LAYOUT));
+	    transform = new Transform(segment.asSlice(TRANSFORM_BYTE_OFFSET, Transform.LAYOUT));
+	}
 
-    /// @see #useRadii()
-    public DistanceInput useRadii(boolean useRadii) {
-    	USE_RADII_HANDLE.set(segment, 0L, useRadii);
-    	return this;
-    }
-    
-    /// ```
-    /// Should the proxy radius be considered?
-    /// ```
-    public boolean useRadii() {
-    	return (boolean) USE_RADII_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #proxyA()
     public DistanceInput proxyA(Consumer<ShapeProxy> consumer) {
     	consumer.accept(proxyA);
@@ -128,42 +110,37 @@ public final class DistanceInput
     	return proxyB;
     }
     
-    /// @see #transformA()
-    public DistanceInput transformA(Consumer<Transform> consumer) {
-    	consumer.accept(transformA);
+    /// @see #transform()
+    public DistanceInput transform(Consumer<Transform> consumer) {
+    	consumer.accept(transform);
     	return this;
     }
     
-    /// @see #transformA()
-    public DistanceInput transformA(Transform other) {
-    	transformA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The world transform for shape A
-    /// ```
-    public Transform transformA() {
-    	return transformA;
-    }
-    
-    /// @see #transformB()
-    public DistanceInput transformB(Consumer<Transform> consumer) {
-    	consumer.accept(transformB);
-    	return this;
-    }
-    
-    /// @see #transformB()
-    public DistanceInput transformB(Transform other) {
-    	transformB.set(other);
+    /// @see #transform()
+    public DistanceInput transform(Transform other) {
+    	transform.set(other);
     	return this;
     }
     
     /// ```
-    /// The world transform for shape B
+    /// Transform of shape B in shape A's frame, the relative pose B in A (b2InvMulTransforms(
+    /// worldA, worldB )). The query is origin independent and runs in frame A.
     /// ```
-    public Transform transformB() {
-    	return transformB;
+    public Transform transform() {
+    	return transform;
+    }
+    
+    /// @see #useRadii()
+    public DistanceInput useRadii(boolean useRadii) {
+    	USE_RADII_HANDLE.set(segment, 0L, useRadii);
+    	return this;
+    }
+    
+    /// ```
+    /// Should the proxy radius be considered?
+    /// ```
+    public boolean useRadii() {
+    	return (boolean) USE_RADII_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -217,5 +194,5 @@ public final class DistanceInput
             segment -> new DistanceInput(segment)
         );
     }
-    
+
 }

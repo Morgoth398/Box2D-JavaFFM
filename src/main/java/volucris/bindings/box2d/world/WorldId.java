@@ -19,43 +19,43 @@ import static java.lang.foreign.ValueLayout.*;
 public final class WorldId
 		implements Struct<WorldId> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle INDEX1_HANDLE;
-    public static final VarHandle GENERATION_HANDLE;
+	public static final VarHandle INDEX1_HANDLE;
+	public static final VarHandle GENERATION_HANDLE;
 
-    public static final long INDEX1_BYTE_OFFSET;
-    public static final long GENERATION_BYTE_OFFSET;
+	public static final long INDEX1_BYTE_OFFSET;
+	public static final long GENERATION_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_SHORT.withName("index1"),
-            JAVA_SHORT.withName("generation")
-        ).withName("b2WorldId").withByteAlignment(2);
-        
-        INDEX1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("index1"));
-        GENERATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("generation"));
-        
-        INDEX1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("index1"));
-        GENERATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("generation"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_SHORT.withName("index1"),
+		    JAVA_SHORT.withName("generation")
+		).withName("b2WorldId").withByteAlignment(2);
+		
+		INDEX1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("index1"));
+		GENERATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("generation"));
+		
+		INDEX1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("index1"));
+		GENERATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("generation"));
+		//@formatter:on
+	}
 
-    public WorldId() {
-        this(Arena.ofAuto());
-    }
-    
-    public WorldId(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public WorldId(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public WorldId() {
+	    this(Arena.ofAuto());
+	}
+	
+	public WorldId(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public WorldId(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #index1()
     public WorldId index1(short index1) {
@@ -128,5 +128,5 @@ public final class WorldId
             segment -> new WorldId(segment)
         );
     }
-    
+
 }

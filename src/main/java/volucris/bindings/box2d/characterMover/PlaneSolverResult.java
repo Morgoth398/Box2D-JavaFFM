@@ -16,50 +16,69 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Result returned by b2SolvePlanes
+/// Result returned by b2SolvePlanes.
 /// ```
 public final class PlaneSolverResult
 		implements Struct<PlaneSolverResult> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle ITERATION_COUNT_HANDLE;
+	public static final VarHandle ITERATION_COUNT_HANDLE;
 
-    public static final long TRANSLATION_BYTE_OFFSET;
-    public static final long ITERATION_COUNT_BYTE_OFFSET;
+	public static final long DELTA_BYTE_OFFSET;
+	public static final long ITERATION_COUNT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 translation;
+	private final Vec2 delta;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("translation"),
-            JAVA_INT.withName("iterationCount")
-        ).withName("b2PlaneSolverResult").withByteAlignment(4);
-        
-        ITERATION_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterationCount"));
-        
-        TRANSLATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translation"));
-        ITERATION_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterationCount"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("delta"),
+		    JAVA_INT.withName("iterationCount")
+		).withName("b2PlaneSolverResult").withByteAlignment(4);
+		
+		ITERATION_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterationCount"));
+		
+		DELTA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("delta"));
+		ITERATION_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterationCount"));
+		//@formatter:on
+	}
 
-    public PlaneSolverResult() {
-        this(Arena.ofAuto());
+	public PlaneSolverResult() {
+	    this(Arena.ofAuto());
+	}
+	
+	public PlaneSolverResult(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public PlaneSolverResult(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    delta = new Vec2(segment.asSlice(DELTA_BYTE_OFFSET, Vec2.LAYOUT));
+	}
+
+    /// @see #delta()
+    public PlaneSolverResult delta(Consumer<Vec2> consumer) {
+    	consumer.accept(delta);
+    	return this;
     }
     
-    public PlaneSolverResult(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// @see #delta()
+    public PlaneSolverResult delta(Vec2 other) {
+    	delta.set(other);
+    	return this;
     }
     
-    public PlaneSolverResult(MemorySegment segment) {
-        this.segment = segment;
-    
-        translation = new Vec2(segment.asSlice(TRANSLATION_BYTE_OFFSET, Vec2.LAYOUT));
+    /// ```
+    /// The final relative translation.
+    /// ```
+    public Vec2 delta() {
+    	return delta;
     }
-
+    
     /// @see #iterationCount()
     public PlaneSolverResult iterationCount(int iterationCount) {
     	ITERATION_COUNT_HANDLE.set(segment, 0L, iterationCount);
@@ -71,25 +90,6 @@ public final class PlaneSolverResult
     /// ```
     public int iterationCount() {
     	return (int) ITERATION_COUNT_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #translation()
-    public PlaneSolverResult translation(Consumer<Vec2> consumer) {
-    	consumer.accept(translation);
-    	return this;
-    }
-    
-    /// @see #translation()
-    public PlaneSolverResult translation(Vec2 other) {
-    	translation.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The translation of the mover
-    /// ```
-    public Vec2 translation() {
-    	return translation;
     }
     
     @Override
@@ -143,5 +143,5 @@ public final class PlaneSolverResult
             segment -> new PlaneSolverResult(segment)
         );
     }
-    
+
 }

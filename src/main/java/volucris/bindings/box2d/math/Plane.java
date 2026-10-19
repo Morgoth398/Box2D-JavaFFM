@@ -20,55 +20,45 @@ import static java.lang.foreign.ValueLayout.*;
 public final class Plane
 		implements Struct<Plane> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle OFFSET_HANDLE;
+	public static final VarHandle OFFSET_HANDLE;
 
-    public static final long NORMAL_BYTE_OFFSET;
-    public static final long OFFSET_BYTE_OFFSET;
+	public static final long NORMAL_BYTE_OFFSET;
+	public static final long OFFSET_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 normal;
+	private final Vec2 normal;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("normal"),
-            JAVA_FLOAT.withName("offset")
-        ).withName("b2Plane").withByteAlignment(4);
-        
-        OFFSET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("offset"));
-        
-        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("offset"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("normal"),
+		    JAVA_FLOAT.withName("offset")
+		).withName("b2Plane").withByteAlignment(4);
+		
+		OFFSET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("offset"));
+		
+		NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+		OFFSET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("offset"));
+		//@formatter:on
+	}
 
-    public Plane() {
-        this(Arena.ofAuto());
-    }
-    
-    public Plane(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Plane(MemorySegment segment) {
-        this.segment = segment;
-    
-        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public Plane() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Plane(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Plane(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
-    /// @see #offset()
-    public Plane offset(float offset) {
-    	OFFSET_HANDLE.set(segment, 0L, offset);
-    	return this;
-    }
-    
-    public float offset() {
-    	return (float) OFFSET_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #normal()
     public Plane normal(Consumer<Vec2> consumer) {
     	consumer.accept(normal);
@@ -83,6 +73,16 @@ public final class Plane
     
     public Vec2 normal() {
     	return normal;
+    }
+    
+    /// @see #offset()
+    public Plane offset(float offset) {
+    	OFFSET_HANDLE.set(segment, 0L, offset);
+    	return this;
+    }
+    
+    public float offset() {
+    	return (float) OFFSET_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -136,5 +136,5 @@ public final class Plane
             segment -> new Plane(segment)
         );
     }
-    
+
 }

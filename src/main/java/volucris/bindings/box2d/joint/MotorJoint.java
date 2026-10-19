@@ -15,36 +15,56 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class MotorJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_MOTOR_JOINT;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_LINEAR_OFFSET;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_LINEAR_OFFSET;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_ANGULAR_OFFSET;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_ANGULAR_OFFSET;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_MAX_FORCE;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_MAX_FORCE;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_MAX_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_MAX_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_CORRECTION_FACTOR;
-    private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_CORRECTION_FACTOR;
+	private static final LazyConstant<MethodHandle> B2_CREATE_MOTOR_JOINT;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_LINEAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_LINEAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_ANGULAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_ANGULAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_MAX_VELOCITY_FORCE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_MAX_VELOCITY_FORCE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_MAX_VELOCITY_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_MAX_VELOCITY_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_LINEAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_LINEAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_LINEAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_LINEAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_ANGULAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_ANGULAR_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_ANGULAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_ANGULAR_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_MAX_SPRING_FORCE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_MAX_SPRING_FORCE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_SET_MAX_SPRING_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_MOTOR_JOINT_GET_MAX_SPRING_TORQUE;
 
-    static {
-        //@formatter:off
-        B2_CREATE_MOTOR_JOINT = downcallHandle("b2CreateMotorJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_MOTOR_JOINT_SET_LINEAR_OFFSET = downcallHandleVoid("b2MotorJoint_SetLinearOffset", JointId.LAYOUT, Vec2.LAYOUT);
-        B2_MOTOR_JOINT_GET_LINEAR_OFFSET = downcallHandle("b2MotorJoint_GetLinearOffset", Vec2.LAYOUT, JointId.LAYOUT);
-        B2_MOTOR_JOINT_SET_ANGULAR_OFFSET = downcallHandleVoid("b2MotorJoint_SetAngularOffset", JointId.LAYOUT, JAVA_FLOAT);
-        B2_MOTOR_JOINT_GET_ANGULAR_OFFSET = downcallHandle("b2MotorJoint_GetAngularOffset", JAVA_FLOAT, JointId.LAYOUT);
-        B2_MOTOR_JOINT_SET_MAX_FORCE = downcallHandleVoid("b2MotorJoint_SetMaxForce", JointId.LAYOUT, JAVA_FLOAT);
-        B2_MOTOR_JOINT_GET_MAX_FORCE = downcallHandle("b2MotorJoint_GetMaxForce", JAVA_FLOAT, JointId.LAYOUT);
-        B2_MOTOR_JOINT_SET_MAX_TORQUE = downcallHandleVoid("b2MotorJoint_SetMaxTorque", JointId.LAYOUT, JAVA_FLOAT);
-        B2_MOTOR_JOINT_GET_MAX_TORQUE = downcallHandle("b2MotorJoint_GetMaxTorque", JAVA_FLOAT, JointId.LAYOUT);
-        B2_MOTOR_JOINT_SET_CORRECTION_FACTOR = downcallHandleVoid("b2MotorJoint_SetCorrectionFactor", JointId.LAYOUT, JAVA_FLOAT);
-        B2_MOTOR_JOINT_GET_CORRECTION_FACTOR = downcallHandle("b2MotorJoint_GetCorrectionFactor", JAVA_FLOAT, JointId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_MOTOR_JOINT = downcallHandle("b2CreateMotorJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_MOTOR_JOINT_SET_LINEAR_VELOCITY = downcallHandleVoid("b2MotorJoint_SetLinearVelocity", JointId.LAYOUT, Vec2.LAYOUT);
+		B2_MOTOR_JOINT_GET_LINEAR_VELOCITY = downcallHandle("b2MotorJoint_GetLinearVelocity", Vec2.LAYOUT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_ANGULAR_VELOCITY = downcallHandleVoid("b2MotorJoint_SetAngularVelocity", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_ANGULAR_VELOCITY = downcallHandle("b2MotorJoint_GetAngularVelocity", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_MAX_VELOCITY_FORCE = downcallHandleVoid("b2MotorJoint_SetMaxVelocityForce", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_MAX_VELOCITY_FORCE = downcallHandle("b2MotorJoint_GetMaxVelocityForce", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_MAX_VELOCITY_TORQUE = downcallHandleVoid("b2MotorJoint_SetMaxVelocityTorque", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_MAX_VELOCITY_TORQUE = downcallHandle("b2MotorJoint_GetMaxVelocityTorque", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_LINEAR_HERTZ = downcallHandleVoid("b2MotorJoint_SetLinearHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_LINEAR_HERTZ = downcallHandle("b2MotorJoint_GetLinearHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_LINEAR_DAMPING_RATIO = downcallHandleVoid("b2MotorJoint_SetLinearDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_LINEAR_DAMPING_RATIO = downcallHandle("b2MotorJoint_GetLinearDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_ANGULAR_HERTZ = downcallHandleVoid("b2MotorJoint_SetAngularHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_ANGULAR_HERTZ = downcallHandle("b2MotorJoint_GetAngularHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_ANGULAR_DAMPING_RATIO = downcallHandleVoid("b2MotorJoint_SetAngularDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_ANGULAR_DAMPING_RATIO = downcallHandle("b2MotorJoint_GetAngularDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_MAX_SPRING_FORCE = downcallHandleVoid("b2MotorJoint_SetMaxSpringForce", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_MAX_SPRING_FORCE = downcallHandle("b2MotorJoint_GetMaxSpringForce", JAVA_FLOAT, JointId.LAYOUT);
+		B2_MOTOR_JOINT_SET_MAX_SPRING_TORQUE = downcallHandleVoid("b2MotorJoint_SetMaxSpringTorque", JointId.LAYOUT, JAVA_FLOAT);
+		B2_MOTOR_JOINT_GET_MAX_SPRING_TORQUE = downcallHandle("b2MotorJoint_GetMaxSpringTorque", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private MotorJoint() {
-    }
+	private MotorJoint() {
+	}
 
     /// ```
     /// Create a motor joint
@@ -86,42 +106,42 @@ public final class MotorJoint {
     }
     
     /// ```
-    /// Set the motor joint linear offset target
+    /// Set the desired relative linear velocity in meters per second
     /// ```
-    public static void setLinearOffset(
+    public static void setLinearVelocity(
     	MemorySegment jointId,
-    	MemorySegment linearOffset
+    	MemorySegment velocity
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_SET_LINEAR_OFFSET.get();
+    	MethodHandle method = B2_MOTOR_JOINT_SET_LINEAR_VELOCITY.get();
     	try {
     		 method.invokeExact(
     			jointId,
-    			linearOffset
+    			velocity
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#setLinearOffset].
-    public static void setLinearOffset(
+    /// Typed method of [#setLinearVelocity].
+    public static void setLinearVelocity(
     	JointId jointId,
-    	Vec2 linearOffset
+    	Vec2 velocity
     ) {
-    	setLinearOffset(
+    	setLinearVelocity(
     		jointId.memorySegment(),
-    		linearOffset.memorySegment()
+    		velocity.memorySegment()
     	);
     }
     
     /// ```
-    /// Get the motor joint linear offset target
+    /// Get the desired relative linear velocity in meters per second
     /// ```
-    public static MemorySegment getLinearOffset(
+    public static MemorySegment getLinearVelocity(
     	SegmentAllocator allocator,
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_GET_LINEAR_OFFSET.get();
+    	MethodHandle method = B2_MOTOR_JOINT_GET_LINEAR_VELOCITY.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -132,12 +152,12 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#getLinearOffset].
-    public static @Nullable Vec2 getLinearOffset(
+    /// Typed method of [#getLinearVelocity].
+    public static @Nullable Vec2 getLinearVelocity(
     	SegmentAllocator allocator,
     	JointId jointId
     ) {
-    	MemorySegment segment = getLinearOffset(
+    	MemorySegment segment = getLinearVelocity(
     		allocator,
     		jointId.memorySegment()
     	);
@@ -149,42 +169,41 @@ public final class MotorJoint {
     }
     
     /// ```
-    /// Set the motor joint angular offset target in radians. This angle will be unwound
-    /// so the motor will drive along the shortest arc.
+    /// Set the desired relative angular velocity in radians per second
     /// ```
-    public static void setAngularOffset(
+    public static void setAngularVelocity(
     	MemorySegment jointId,
-    	float angularOffset
+    	float velocity
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_SET_ANGULAR_OFFSET.get();
+    	MethodHandle method = B2_MOTOR_JOINT_SET_ANGULAR_VELOCITY.get();
     	try {
     		 method.invokeExact(
     			jointId,
-    			angularOffset
+    			velocity
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#setAngularOffset].
-    public static void setAngularOffset(
+    /// Typed method of [#setAngularVelocity].
+    public static void setAngularVelocity(
     	JointId jointId,
-    	float angularOffset
+    	float velocity
     ) {
-    	setAngularOffset(
+    	setAngularVelocity(
     		jointId.memorySegment(),
-    		angularOffset
+    		velocity
     	);
     }
     
     /// ```
-    /// Get the motor joint angular offset target in radians
+    /// Get the desired relative angular velocity in radians per second
     /// ```
-    public static float getAngularOffset(
+    public static float getAngularVelocity(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_OFFSET.get();
+    	MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_VELOCITY.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -194,11 +213,11 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#getAngularOffset].
-    public static float getAngularOffset(
+    /// Typed method of [#getAngularVelocity].
+    public static float getAngularVelocity(
     	JointId jointId
     ) {
-    	return getAngularOffset(
+    	return getAngularVelocity(
     		jointId.memorySegment()
     	);
     }
@@ -206,11 +225,11 @@ public final class MotorJoint {
     /// ```
     /// Set the motor joint maximum force, usually in newtons
     /// ```
-    public static void setMaxForce(
+    public static void setMaxVelocityForce(
     	MemorySegment jointId,
     	float maxForce
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_FORCE.get();
+    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_VELOCITY_FORCE.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -221,12 +240,12 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#setMaxForce].
-    public static void setMaxForce(
+    /// Typed method of [#setMaxVelocityForce].
+    public static void setMaxVelocityForce(
     	JointId jointId,
     	float maxForce
     ) {
-    	setMaxForce(
+    	setMaxVelocityForce(
     		jointId.memorySegment(),
     		maxForce
     	);
@@ -235,10 +254,10 @@ public final class MotorJoint {
     /// ```
     /// Get the motor joint maximum force, usually in newtons
     /// ```
-    public static float getMaxForce(
+    public static float getMaxVelocityForce(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_FORCE.get();
+    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_VELOCITY_FORCE.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -248,11 +267,11 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#getMaxForce].
-    public static float getMaxForce(
+    /// Typed method of [#getMaxVelocityForce].
+    public static float getMaxVelocityForce(
     	JointId jointId
     ) {
-    	return getMaxForce(
+    	return getMaxVelocityForce(
     		jointId.memorySegment()
     	);
     }
@@ -260,11 +279,11 @@ public final class MotorJoint {
     /// ```
     /// Set the motor joint maximum torque, usually in newton-meters
     /// ```
-    public static void setMaxTorque(
+    public static void setMaxVelocityTorque(
     	MemorySegment jointId,
     	float maxTorque
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_TORQUE.get();
+    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_VELOCITY_TORQUE.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -275,12 +294,12 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#setMaxTorque].
-    public static void setMaxTorque(
+    /// Typed method of [#setMaxVelocityTorque].
+    public static void setMaxVelocityTorque(
     	JointId jointId,
     	float maxTorque
     ) {
-    	setMaxTorque(
+    	setMaxVelocityTorque(
     		jointId.memorySegment(),
     		maxTorque
     	);
@@ -289,10 +308,10 @@ public final class MotorJoint {
     /// ```
     /// Get the motor joint maximum torque, usually in newton-meters
     /// ```
-    public static float getMaxTorque(
+    public static float getMaxVelocityTorque(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_TORQUE.get();
+    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_VELOCITY_TORQUE.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -302,51 +321,51 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#getMaxTorque].
-    public static float getMaxTorque(
+    /// Typed method of [#getMaxVelocityTorque].
+    public static float getMaxVelocityTorque(
     	JointId jointId
     ) {
-    	return getMaxTorque(
+    	return getMaxVelocityTorque(
     		jointId.memorySegment()
     	);
     }
     
     /// ```
-    /// Set the motor joint correction factor, usually in [0, 1]
+    /// Set the spring linear hertz stiffness
     /// ```
-    public static void setCorrectionFactor(
+    public static void setLinearHertz(
     	MemorySegment jointId,
-    	float correctionFactor
+    	float hertz
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_SET_CORRECTION_FACTOR.get();
+    	MethodHandle method = B2_MOTOR_JOINT_SET_LINEAR_HERTZ.get();
     	try {
     		 method.invokeExact(
     			jointId,
-    			correctionFactor
+    			hertz
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#setCorrectionFactor].
-    public static void setCorrectionFactor(
+    /// Typed method of [#setLinearHertz].
+    public static void setLinearHertz(
     	JointId jointId,
-    	float correctionFactor
+    	float hertz
     ) {
-    	setCorrectionFactor(
+    	setLinearHertz(
     		jointId.memorySegment(),
-    		correctionFactor
+    		hertz
     	);
     }
     
     /// ```
-    /// Get the motor joint correction factor, usually in [0, 1]
+    /// Get the spring linear hertz stiffness
     /// ```
-    public static float getCorrectionFactor(
+    public static float getLinearHertz(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_MOTOR_JOINT_GET_CORRECTION_FACTOR.get();
+    	MethodHandle method = B2_MOTOR_JOINT_GET_LINEAR_HERTZ.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -356,13 +375,283 @@ public final class MotorJoint {
     	}
     }
     
-    /// Typed method of [#getCorrectionFactor].
-    public static float getCorrectionFactor(
+    /// Typed method of [#getLinearHertz].
+    public static float getLinearHertz(
     	JointId jointId
     ) {
-    	return getCorrectionFactor(
+    	return getLinearHertz(
     		jointId.memorySegment()
     	);
     }
     
+    /// ```
+    /// Set the spring linear damping ratio. Use 1.0 for critical damping.
+    /// ```
+    public static void setLinearDampingRatio(
+    	MemorySegment jointId,
+    	float damping
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_SET_LINEAR_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			damping
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setLinearDampingRatio].
+    public static void setLinearDampingRatio(
+    	JointId jointId,
+    	float damping
+    ) {
+    	setLinearDampingRatio(
+    		jointId.memorySegment(),
+    		damping
+    	);
+    }
+    
+    /// ```
+    /// Get the spring linear damping ratio.
+    /// ```
+    public static float getLinearDampingRatio(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_GET_LINEAR_DAMPING_RATIO.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getLinearDampingRatio].
+    public static float getLinearDampingRatio(
+    	JointId jointId
+    ) {
+    	return getLinearDampingRatio(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the spring angular hertz stiffness
+    /// ```
+    public static void setAngularHertz(
+    	MemorySegment jointId,
+    	float hertz
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_SET_ANGULAR_HERTZ.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setAngularHertz].
+    public static void setAngularHertz(
+    	JointId jointId,
+    	float hertz
+    ) {
+    	setAngularHertz(
+    		jointId.memorySegment(),
+    		hertz
+    	);
+    }
+    
+    /// ```
+    /// Get the spring angular hertz stiffness
+    /// ```
+    public static float getAngularHertz(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_HERTZ.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getAngularHertz].
+    public static float getAngularHertz(
+    	JointId jointId
+    ) {
+    	return getAngularHertz(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the spring angular damping ratio. Use 1.0 for critical damping.
+    /// ```
+    public static void setAngularDampingRatio(
+    	MemorySegment jointId,
+    	float damping
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_SET_ANGULAR_DAMPING_RATIO.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			damping
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setAngularDampingRatio].
+    public static void setAngularDampingRatio(
+    	JointId jointId,
+    	float damping
+    ) {
+    	setAngularDampingRatio(
+    		jointId.memorySegment(),
+    		damping
+    	);
+    }
+    
+    /// ```
+    /// Get the spring angular damping ratio.
+    /// ```
+    public static float getAngularDampingRatio(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_GET_ANGULAR_DAMPING_RATIO.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getAngularDampingRatio].
+    public static float getAngularDampingRatio(
+    	JointId jointId
+    ) {
+    	return getAngularDampingRatio(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the maximum spring force in newtons.
+    /// ```
+    public static void setMaxSpringForce(
+    	MemorySegment jointId,
+    	float maxForce
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_SPRING_FORCE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			maxForce
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setMaxSpringForce].
+    public static void setMaxSpringForce(
+    	JointId jointId,
+    	float maxForce
+    ) {
+    	setMaxSpringForce(
+    		jointId.memorySegment(),
+    		maxForce
+    	);
+    }
+    
+    /// ```
+    /// Get the maximum spring force in newtons.
+    /// ```
+    public static float getMaxSpringForce(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_SPRING_FORCE.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getMaxSpringForce].
+    public static float getMaxSpringForce(
+    	JointId jointId
+    ) {
+    	return getMaxSpringForce(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the maximum spring torque in newtons * meters
+    /// ```
+    public static void setMaxSpringTorque(
+    	MemorySegment jointId,
+    	float maxTorque
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_SET_MAX_SPRING_TORQUE.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			maxTorque
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setMaxSpringTorque].
+    public static void setMaxSpringTorque(
+    	JointId jointId,
+    	float maxTorque
+    ) {
+    	setMaxSpringTorque(
+    		jointId.memorySegment(),
+    		maxTorque
+    	);
+    }
+    
+    /// ```
+    /// Get the maximum spring torque in newtons * meters
+    /// ```
+    public static float getMaxSpringTorque(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_MOTOR_JOINT_GET_MAX_SPRING_TORQUE.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getMaxSpringTorque].
+    public static float getMaxSpringTorque(
+    	JointId jointId
+    ) {
+    	return getMaxSpringTorque(
+    		jointId.memorySegment()
+    	);
+    }
+
 }

@@ -16,70 +16,127 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Output for b2ShapeDistance
+/// Output for b2ComputeShapeDistance
 /// ```
 public final class DistanceOutput
 		implements Struct<DistanceOutput> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle DISTANCE_HANDLE;
-    public static final VarHandle ITERATIONS_HANDLE;
-    public static final VarHandle SIMPLEX_COUNT_HANDLE;
+	public static final VarHandle DISTANCE_HANDLE;
+	public static final VarHandle ITERATIONS_HANDLE;
+	public static final VarHandle SIMPLEX_COUNT_HANDLE;
 
-    public static final long POINT_A_BYTE_OFFSET;
-    public static final long POINT_B_BYTE_OFFSET;
-    public static final long NORMAL_BYTE_OFFSET;
-    public static final long DISTANCE_BYTE_OFFSET;
-    public static final long ITERATIONS_BYTE_OFFSET;
-    public static final long SIMPLEX_COUNT_BYTE_OFFSET;
+	public static final long POINT_A_BYTE_OFFSET;
+	public static final long POINT_B_BYTE_OFFSET;
+	public static final long NORMAL_BYTE_OFFSET;
+	public static final long DISTANCE_BYTE_OFFSET;
+	public static final long ITERATIONS_BYTE_OFFSET;
+	public static final long SIMPLEX_COUNT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 pointA;
-    private final Vec2 pointB;
-    private final Vec2 normal;
+	private final Vec2 pointA;
+	private final Vec2 pointB;
+	private final Vec2 normal;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("pointA"),
-            Vec2.LAYOUT.withName("pointB"),
-            Vec2.LAYOUT.withName("normal"),
-            JAVA_FLOAT.withName("distance"),
-            JAVA_INT.withName("iterations"),
-            JAVA_INT.withName("simplexCount")
-        ).withName("b2DistanceOutput").withByteAlignment(4);
-        
-        DISTANCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("distance"));
-        ITERATIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterations"));
-        SIMPLEX_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("simplexCount"));
-        
-        POINT_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointA"));
-        POINT_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointB"));
-        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        DISTANCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distance"));
-        ITERATIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
-        SIMPLEX_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("simplexCount"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("pointA"),
+		    Vec2.LAYOUT.withName("pointB"),
+		    Vec2.LAYOUT.withName("normal"),
+		    JAVA_FLOAT.withName("distance"),
+		    JAVA_INT.withName("iterations"),
+		    JAVA_INT.withName("simplexCount")
+		).withName("b2DistanceOutput").withByteAlignment(4);
+		
+		DISTANCE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("distance"));
+		ITERATIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("iterations"));
+		SIMPLEX_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("simplexCount"));
+		
+		POINT_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointA"));
+		POINT_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointB"));
+		NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+		DISTANCE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distance"));
+		ITERATIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("iterations"));
+		SIMPLEX_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("simplexCount"));
+		//@formatter:on
+	}
 
-    public DistanceOutput() {
-        this(Arena.ofAuto());
+	public DistanceOutput() {
+	    this(Arena.ofAuto());
+	}
+	
+	public DistanceOutput(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public DistanceOutput(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    pointA = new Vec2(segment.asSlice(POINT_A_BYTE_OFFSET, Vec2.LAYOUT));
+	    pointB = new Vec2(segment.asSlice(POINT_B_BYTE_OFFSET, Vec2.LAYOUT));
+	    normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+	}
+
+    /// @see #pointA()
+    public DistanceOutput pointA(Consumer<Vec2> consumer) {
+    	consumer.accept(pointA);
+    	return this;
     }
     
-    public DistanceOutput(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// @see #pointA()
+    public DistanceOutput pointA(Vec2 other) {
+    	pointA.set(other);
+    	return this;
     }
     
-    public DistanceOutput(MemorySegment segment) {
-        this.segment = segment;
-    
-        pointA = new Vec2(segment.asSlice(POINT_A_BYTE_OFFSET, Vec2.LAYOUT));
-        pointB = new Vec2(segment.asSlice(POINT_B_BYTE_OFFSET, Vec2.LAYOUT));
-        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+    /// ```
+    /// Closest point on shapeA, in shape A's frame
+    /// ```
+    public Vec2 pointA() {
+    	return pointA;
     }
-
+    
+    /// @see #pointB()
+    public DistanceOutput pointB(Consumer<Vec2> consumer) {
+    	consumer.accept(pointB);
+    	return this;
+    }
+    
+    /// @see #pointB()
+    public DistanceOutput pointB(Vec2 other) {
+    	pointB.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// Closest point on shapeB, in shape A's frame
+    /// ```
+    public Vec2 pointB() {
+    	return pointB;
+    }
+    
+    /// @see #normal()
+    public DistanceOutput normal(Consumer<Vec2> consumer) {
+    	consumer.accept(normal);
+    	return this;
+    }
+    
+    /// @see #normal()
+    public DistanceOutput normal(Vec2 other) {
+    	normal.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// A to B normal in shape A's frame. Invalid if distance is zero.
+    /// ```
+    public Vec2 normal() {
+    	return normal;
+    }
+    
     /// @see #distance()
     public DistanceOutput distance(float distance) {
     	DISTANCE_HANDLE.set(segment, 0L, distance);
@@ -117,63 +174,6 @@ public final class DistanceOutput
     /// ```
     public int simplexCount() {
     	return (int) SIMPLEX_COUNT_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #pointA()
-    public DistanceOutput pointA(Consumer<Vec2> consumer) {
-    	consumer.accept(pointA);
-    	return this;
-    }
-    
-    /// @see #pointA()
-    public DistanceOutput pointA(Vec2 other) {
-    	pointA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Closest point on shapeA
-    /// ```
-    public Vec2 pointA() {
-    	return pointA;
-    }
-    
-    /// @see #pointB()
-    public DistanceOutput pointB(Consumer<Vec2> consumer) {
-    	consumer.accept(pointB);
-    	return this;
-    }
-    
-    /// @see #pointB()
-    public DistanceOutput pointB(Vec2 other) {
-    	pointB.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Closest point on shapeB
-    /// ```
-    public Vec2 pointB() {
-    	return pointB;
-    }
-    
-    /// @see #normal()
-    public DistanceOutput normal(Consumer<Vec2> consumer) {
-    	consumer.accept(normal);
-    	return this;
-    }
-    
-    /// @see #normal()
-    public DistanceOutput normal(Vec2 other) {
-    	normal.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Normal vector that points from A to B. Invalid if distance is zero.
-    /// ```
-    public Vec2 normal() {
-    	return normal;
     }
     
     @Override
@@ -227,5 +227,5 @@ public final class DistanceOutput
             segment -> new DistanceOutput(segment)
         );
     }
-    
+
 }

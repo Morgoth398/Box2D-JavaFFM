@@ -39,8 +39,8 @@ struct:
   
 native-functions:
   - name: b2ComputeCapsuleMass
-  - name: b2ComputeCapsuleAABB
   - name: b2PointInCapsule
-  - name: b2RayCastCapsule
-  - name: b2ShapeCastCapsule
+  - name: b2CastRayCapsule
+  - name: b2CastShapeCapsule
+  - name: b2ComputeCapsuleBounds
 native-function-pointers:

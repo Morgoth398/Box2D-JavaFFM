@@ -19,8 +19,8 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// This function receives clipped ray cast input for a proxy. The function
-/// returns the new ray fraction.
+/// This function receives clipped ray cast input for a proxy. The function returns the new ray
+/// fraction.
 /// - return a value of 0 to terminate the ray cast
 /// - return a value less than input->maxFraction to clip the ray
 /// - return a value of input->maxFraction to continue the ray cast without clipping

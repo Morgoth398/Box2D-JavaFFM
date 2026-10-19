@@ -19,42 +19,42 @@ import static java.lang.foreign.ValueLayout.*;
 public final class AABB
 		implements Struct<AABB> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long LOWER_BOUND_BYTE_OFFSET;
-    public static final long UPPER_BOUND_BYTE_OFFSET;
+	public static final long LOWER_BOUND_BYTE_OFFSET;
+	public static final long UPPER_BOUND_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 lowerBound;
-    private final Vec2 upperBound;
+	private final Vec2 lowerBound;
+	private final Vec2 upperBound;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("lowerBound"),
-            Vec2.LAYOUT.withName("upperBound")
-        ).withName("b2AABB").withByteAlignment(4);
-        
-        LOWER_BOUND_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("lowerBound"));
-        UPPER_BOUND_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("upperBound"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("lowerBound"),
+		    Vec2.LAYOUT.withName("upperBound")
+		).withName("b2AABB").withByteAlignment(4);
+		
+		LOWER_BOUND_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("lowerBound"));
+		UPPER_BOUND_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("upperBound"));
+		//@formatter:on
+	}
 
-    public AABB() {
-        this(Arena.ofAuto());
-    }
-    
-    public AABB(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public AABB(MemorySegment segment) {
-        this.segment = segment;
-    
-        lowerBound = new Vec2(segment.asSlice(LOWER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
-        upperBound = new Vec2(segment.asSlice(UPPER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public AABB() {
+	    this(Arena.ofAuto());
+	}
+	
+	public AABB(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public AABB(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    lowerBound = new Vec2(segment.asSlice(LOWER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
+	    upperBound = new Vec2(segment.asSlice(UPPER_BOUND_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// @see #lowerBound()
     public AABB lowerBound(Consumer<Vec2> consumer) {
@@ -139,5 +139,5 @@ public final class AABB
             segment -> new AABB(segment)
         );
     }
-    
+
 }

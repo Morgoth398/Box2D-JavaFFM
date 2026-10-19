@@ -25,150 +25,168 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class Body {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_BODY;
-    private static final LazyConstant<MethodHandle> B2_DESTROY_BODY;
-    private static final LazyConstant<MethodHandle> B2_BODY_IS_VALID;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_TYPE;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_TYPE;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_NAME;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_NAME;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_USER_DATA;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_USER_DATA;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_POSITION;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_ROTATION;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_TRANSFORM;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_TRANSFORM;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_POINT;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_POINT;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_VECTOR;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_VECTOR;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_LINEAR_VELOCITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_ANGULAR_VELOCITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_LINEAR_VELOCITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_ANGULAR_VELOCITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_TARGET_TRANSFORM;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_POINT_VELOCITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_POINT_VELOCITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_FORCE;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_FORCE_TO_CENTER;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_LINEAR_IMPULSE;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_LINEAR_IMPULSE_TO_CENTER;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_ANGULAR_IMPULSE;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_MASS;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_ROTATIONAL_INERTIA;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_CENTER_OF_MASS;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_CENTER_OF_MASS;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_MASS_DATA;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_MASS_DATA;
-    private static final LazyConstant<MethodHandle> B2_BODY_APPLY_MASS_FROM_SHAPES;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_LINEAR_DAMPING;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_LINEAR_DAMPING;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_ANGULAR_DAMPING;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_ANGULAR_DAMPING;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_GRAVITY_SCALE;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_GRAVITY_SCALE;
-    private static final LazyConstant<MethodHandle> B2_BODY_IS_AWAKE;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_AWAKE;
-    private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_SLEEP;
-    private static final LazyConstant<MethodHandle> B2_BODY_IS_SLEEP_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_SLEEP_THRESHOLD;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_SLEEP_THRESHOLD;
-    private static final LazyConstant<MethodHandle> B2_BODY_IS_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_BODY_DISABLE;
-    private static final LazyConstant<MethodHandle> B2_BODY_ENABLE;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_FIXED_ROTATION;
-    private static final LazyConstant<MethodHandle> B2_BODY_IS_FIXED_ROTATION;
-    private static final LazyConstant<MethodHandle> B2_BODY_SET_BULLET;
-    private static final LazyConstant<MethodHandle> B2_BODY_IS_BULLET;
-    private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_CONTACT_EVENTS;
-    private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_HIT_EVENTS;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_SHAPE_COUNT;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_SHAPES;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_JOINT_COUNT;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_JOINTS;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_CONTACT_CAPACITY;
-    private static final LazyConstant<MethodHandle> B2_BODY_GET_CONTACT_DATA;
-    private static final LazyConstant<MethodHandle> B2_BODY_COMPUTE_AABB;
+	private static final LazyConstant<MethodHandle> B2_CREATE_BODY;
+	private static final LazyConstant<MethodHandle> B2_DESTROY_BODY;
+	private static final LazyConstant<MethodHandle> B2_BODY_IS_VALID;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_TYPE;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_TYPE;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_NAME;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_NAME;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_USER_DATA;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_USER_DATA;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_POSITION;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_ROTATION;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_TRANSFORM;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_TRANSFORM;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_POINT;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_POINT;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_VECTOR;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_VECTOR;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_LINEAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_ANGULAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_LINEAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_ANGULAR_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_TARGET_TRANSFORM;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_POINT_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_POINT_VELOCITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_APPLY_FORCE;
+	private static final LazyConstant<MethodHandle> B2_BODY_APPLY_FORCE_TO_CENTER;
+	private static final LazyConstant<MethodHandle> B2_BODY_APPLY_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_BODY_CLEAR_FORCES;
+	private static final LazyConstant<MethodHandle> B2_BODY_APPLY_LINEAR_IMPULSE;
+	private static final LazyConstant<MethodHandle> B2_BODY_APPLY_LINEAR_IMPULSE_TO_CENTER;
+	private static final LazyConstant<MethodHandle> B2_BODY_APPLY_ANGULAR_IMPULSE;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_MASS;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_ROTATIONAL_INERTIA;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_LOCAL_CENTER;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD_CENTER;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_MASS_DATA;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_MASS_DATA;
+	private static final LazyConstant<MethodHandle> B2_BODY_UPDATE_MASS_FROM_SHAPES;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_LINEAR_DAMPING;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_LINEAR_DAMPING;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_ANGULAR_DAMPING;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_ANGULAR_DAMPING;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_GRAVITY_SCALE;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_GRAVITY_SCALE;
+	private static final LazyConstant<MethodHandle> B2_BODY_IS_AWAKE;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_AWAKE;
+	private static final LazyConstant<MethodHandle> B2_BODY_WAKE_TOUCHING;
+	private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_SLEEPING;
+	private static final LazyConstant<MethodHandle> B2_BODY_IS_SLEEPING_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_SLEEP_THRESHOLD;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_SLEEP_THRESHOLD;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_SAFETY_FACTOR;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_SAFETY_FACTOR;
+	private static final LazyConstant<MethodHandle> B2_BODY_IS_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_BODY_DISABLE;
+	private static final LazyConstant<MethodHandle> B2_BODY_ENABLE;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_MOTION_LOCKS;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_MOTION_LOCKS;
+	private static final LazyConstant<MethodHandle> B2_BODY_SET_BULLET;
+	private static final LazyConstant<MethodHandle> B2_BODY_IS_BULLET;
+	private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_CONTACT_RECYCLING;
+	private static final LazyConstant<MethodHandle> B2_BODY_IS_CONTACT_RECYCLING_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_CONTACT_EVENTS;
+	private static final LazyConstant<MethodHandle> B2_BODY_ENABLE_HIT_EVENTS;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_WORLD;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_SHAPE_COUNT;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_SHAPES;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_JOINT_COUNT;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_JOINTS;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_CONTACT_CAPACITY;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_CONTACT_DATA;
+	private static final LazyConstant<MethodHandle> B2_BODY_COMPUTE_BOUNDS;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_MIN_EXTENT;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_MAX_EXTENT;
+	private static final LazyConstant<MethodHandle> B2_BODY_GET_MAX_EXTENT_FROM_ORIGIN;
 
-    static {
-        //@formatter:off
-        B2_CREATE_BODY = downcallHandle("b2CreateBody", BodyId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_DESTROY_BODY = downcallHandleVoid("b2DestroyBody", BodyId.LAYOUT);
-        B2_BODY_IS_VALID = downcallHandle("b2Body_IsValid", JAVA_BOOLEAN, BodyId.LAYOUT);
-        B2_BODY_GET_TYPE = downcallHandle("b2Body_GetType", JAVA_INT, BodyId.LAYOUT);
-        B2_BODY_SET_TYPE = downcallHandleVoid("b2Body_SetType", BodyId.LAYOUT, JAVA_INT);
-        B2_BODY_SET_NAME = downcallHandleVoid("b2Body_SetName", BodyId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_BODY_GET_NAME = downcallHandle("b2Body_GetName", UNBOUNDED_ADDRESS, BodyId.LAYOUT);
-        B2_BODY_SET_USER_DATA = downcallHandleVoid("b2Body_SetUserData", BodyId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_BODY_GET_USER_DATA = downcallHandle("b2Body_GetUserData", UNBOUNDED_ADDRESS, BodyId.LAYOUT);
-        B2_BODY_GET_POSITION = downcallHandle("b2Body_GetPosition", Vec2.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_GET_ROTATION = downcallHandle("b2Body_GetRotation", Rot.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_GET_TRANSFORM = downcallHandle("b2Body_GetTransform", Transform.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_SET_TRANSFORM = downcallHandleVoid("b2Body_SetTransform", BodyId.LAYOUT, Vec2.LAYOUT, Rot.LAYOUT);
-        B2_BODY_GET_LOCAL_POINT = downcallHandle("b2Body_GetLocalPoint", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_GET_WORLD_POINT = downcallHandle("b2Body_GetWorldPoint", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_GET_LOCAL_VECTOR = downcallHandle("b2Body_GetLocalVector", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_GET_WORLD_VECTOR = downcallHandle("b2Body_GetWorldVector", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_GET_LINEAR_VELOCITY = downcallHandle("b2Body_GetLinearVelocity", Vec2.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_GET_ANGULAR_VELOCITY = downcallHandle("b2Body_GetAngularVelocity", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_SET_LINEAR_VELOCITY = downcallHandleVoid("b2Body_SetLinearVelocity", BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_SET_ANGULAR_VELOCITY = downcallHandleVoid("b2Body_SetAngularVelocity", BodyId.LAYOUT, JAVA_FLOAT);
-        B2_BODY_SET_TARGET_TRANSFORM = downcallHandleVoid("b2Body_SetTargetTransform", BodyId.LAYOUT, Transform.LAYOUT, JAVA_FLOAT);
-        B2_BODY_GET_LOCAL_POINT_VELOCITY = downcallHandle("b2Body_GetLocalPointVelocity", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_GET_WORLD_POINT_VELOCITY = downcallHandle("b2Body_GetWorldPointVelocity", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
-        B2_BODY_APPLY_FORCE = downcallHandleVoid("b2Body_ApplyForce", BodyId.LAYOUT, Vec2.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_APPLY_FORCE_TO_CENTER = downcallHandleVoid("b2Body_ApplyForceToCenter", BodyId.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_APPLY_TORQUE = downcallHandleVoid("b2Body_ApplyTorque", BodyId.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
-        B2_BODY_APPLY_LINEAR_IMPULSE = downcallHandleVoid("b2Body_ApplyLinearImpulse", BodyId.LAYOUT, Vec2.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_APPLY_LINEAR_IMPULSE_TO_CENTER = downcallHandleVoid("b2Body_ApplyLinearImpulseToCenter", BodyId.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_APPLY_ANGULAR_IMPULSE = downcallHandleVoid("b2Body_ApplyAngularImpulse", BodyId.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
-        B2_BODY_GET_MASS = downcallHandle("b2Body_GetMass", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_GET_ROTATIONAL_INERTIA = downcallHandle("b2Body_GetRotationalInertia", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_GET_LOCAL_CENTER_OF_MASS = downcallHandle("b2Body_GetLocalCenterOfMass", Vec2.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_GET_WORLD_CENTER_OF_MASS = downcallHandle("b2Body_GetWorldCenterOfMass", Vec2.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_SET_MASS_DATA = downcallHandleVoid("b2Body_SetMassData", BodyId.LAYOUT, MassData.LAYOUT);
-        B2_BODY_GET_MASS_DATA = downcallHandle("b2Body_GetMassData", MassData.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_APPLY_MASS_FROM_SHAPES = downcallHandleVoid("b2Body_ApplyMassFromShapes", BodyId.LAYOUT);
-        B2_BODY_SET_LINEAR_DAMPING = downcallHandleVoid("b2Body_SetLinearDamping", BodyId.LAYOUT, JAVA_FLOAT);
-        B2_BODY_GET_LINEAR_DAMPING = downcallHandle("b2Body_GetLinearDamping", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_SET_ANGULAR_DAMPING = downcallHandleVoid("b2Body_SetAngularDamping", BodyId.LAYOUT, JAVA_FLOAT);
-        B2_BODY_GET_ANGULAR_DAMPING = downcallHandle("b2Body_GetAngularDamping", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_SET_GRAVITY_SCALE = downcallHandleVoid("b2Body_SetGravityScale", BodyId.LAYOUT, JAVA_FLOAT);
-        B2_BODY_GET_GRAVITY_SCALE = downcallHandle("b2Body_GetGravityScale", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_IS_AWAKE = downcallHandle("b2Body_IsAwake", JAVA_BOOLEAN, BodyId.LAYOUT);
-        B2_BODY_SET_AWAKE = downcallHandleVoid("b2Body_SetAwake", BodyId.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_ENABLE_SLEEP = downcallHandleVoid("b2Body_EnableSleep", BodyId.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_IS_SLEEP_ENABLED = downcallHandle("b2Body_IsSleepEnabled", JAVA_BOOLEAN, BodyId.LAYOUT);
-        B2_BODY_SET_SLEEP_THRESHOLD = downcallHandleVoid("b2Body_SetSleepThreshold", BodyId.LAYOUT, JAVA_FLOAT);
-        B2_BODY_GET_SLEEP_THRESHOLD = downcallHandle("b2Body_GetSleepThreshold", JAVA_FLOAT, BodyId.LAYOUT);
-        B2_BODY_IS_ENABLED = downcallHandle("b2Body_IsEnabled", JAVA_BOOLEAN, BodyId.LAYOUT);
-        B2_BODY_DISABLE = downcallHandleVoid("b2Body_Disable", BodyId.LAYOUT);
-        B2_BODY_ENABLE = downcallHandleVoid("b2Body_Enable", BodyId.LAYOUT);
-        B2_BODY_SET_FIXED_ROTATION = downcallHandleVoid("b2Body_SetFixedRotation", BodyId.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_IS_FIXED_ROTATION = downcallHandle("b2Body_IsFixedRotation", JAVA_BOOLEAN, BodyId.LAYOUT);
-        B2_BODY_SET_BULLET = downcallHandleVoid("b2Body_SetBullet", BodyId.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_IS_BULLET = downcallHandle("b2Body_IsBullet", JAVA_BOOLEAN, BodyId.LAYOUT);
-        B2_BODY_ENABLE_CONTACT_EVENTS = downcallHandleVoid("b2Body_EnableContactEvents", BodyId.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_ENABLE_HIT_EVENTS = downcallHandleVoid("b2Body_EnableHitEvents", BodyId.LAYOUT, JAVA_BOOLEAN);
-        B2_BODY_GET_WORLD = downcallHandle("b2Body_GetWorld", WorldId.LAYOUT, BodyId.LAYOUT);
-        B2_BODY_GET_SHAPE_COUNT = downcallHandle("b2Body_GetShapeCount", JAVA_INT, BodyId.LAYOUT);
-        B2_BODY_GET_SHAPES = downcallHandle("b2Body_GetShapes", JAVA_INT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_BODY_GET_JOINT_COUNT = downcallHandle("b2Body_GetJointCount", JAVA_INT, BodyId.LAYOUT);
-        B2_BODY_GET_JOINTS = downcallHandle("b2Body_GetJoints", JAVA_INT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_BODY_GET_CONTACT_CAPACITY = downcallHandle("b2Body_GetContactCapacity", JAVA_INT, BodyId.LAYOUT);
-        B2_BODY_GET_CONTACT_DATA = downcallHandle("b2Body_GetContactData", JAVA_INT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_BODY_COMPUTE_AABB = downcallHandle("b2Body_ComputeAABB", AABB.LAYOUT, BodyId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_BODY = downcallHandle("b2CreateBody", BodyId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_DESTROY_BODY = downcallHandleVoid("b2DestroyBody", BodyId.LAYOUT);
+		B2_BODY_IS_VALID = downcallHandle("b2Body_IsValid", JAVA_BOOLEAN, BodyId.LAYOUT);
+		B2_BODY_GET_TYPE = downcallHandle("b2Body_GetType", JAVA_INT, BodyId.LAYOUT);
+		B2_BODY_SET_TYPE = downcallHandleVoid("b2Body_SetType", BodyId.LAYOUT, JAVA_INT);
+		B2_BODY_SET_NAME = downcallHandleVoid("b2Body_SetName", BodyId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_BODY_GET_NAME = downcallHandle("b2Body_GetName", UNBOUNDED_ADDRESS, BodyId.LAYOUT);
+		B2_BODY_SET_USER_DATA = downcallHandleVoid("b2Body_SetUserData", BodyId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_BODY_GET_USER_DATA = downcallHandle("b2Body_GetUserData", UNBOUNDED_ADDRESS, BodyId.LAYOUT);
+		B2_BODY_GET_POSITION = downcallHandle("b2Body_GetPosition", Vec2.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_GET_ROTATION = downcallHandle("b2Body_GetRotation", Rot.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_GET_TRANSFORM = downcallHandle("b2Body_GetTransform", Transform.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_SET_TRANSFORM = downcallHandleVoid("b2Body_SetTransform", BodyId.LAYOUT, Vec2.LAYOUT, Rot.LAYOUT);
+		B2_BODY_GET_LOCAL_POINT = downcallHandle("b2Body_GetLocalPoint", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_GET_WORLD_POINT = downcallHandle("b2Body_GetWorldPoint", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_GET_LOCAL_VECTOR = downcallHandle("b2Body_GetLocalVector", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_GET_WORLD_VECTOR = downcallHandle("b2Body_GetWorldVector", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_GET_LINEAR_VELOCITY = downcallHandle("b2Body_GetLinearVelocity", Vec2.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_GET_ANGULAR_VELOCITY = downcallHandle("b2Body_GetAngularVelocity", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_SET_LINEAR_VELOCITY = downcallHandleVoid("b2Body_SetLinearVelocity", BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_SET_ANGULAR_VELOCITY = downcallHandleVoid("b2Body_SetAngularVelocity", BodyId.LAYOUT, JAVA_FLOAT);
+		B2_BODY_SET_TARGET_TRANSFORM = downcallHandleVoid("b2Body_SetTargetTransform", BodyId.LAYOUT, Transform.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
+		B2_BODY_GET_LOCAL_POINT_VELOCITY = downcallHandle("b2Body_GetLocalPointVelocity", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_GET_WORLD_POINT_VELOCITY = downcallHandle("b2Body_GetWorldPointVelocity", Vec2.LAYOUT, BodyId.LAYOUT, Vec2.LAYOUT);
+		B2_BODY_APPLY_FORCE = downcallHandleVoid("b2Body_ApplyForce", BodyId.LAYOUT, Vec2.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_APPLY_FORCE_TO_CENTER = downcallHandleVoid("b2Body_ApplyForceToCenter", BodyId.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_APPLY_TORQUE = downcallHandleVoid("b2Body_ApplyTorque", BodyId.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
+		B2_BODY_CLEAR_FORCES = downcallHandleVoid("b2Body_ClearForces", BodyId.LAYOUT);
+		B2_BODY_APPLY_LINEAR_IMPULSE = downcallHandleVoid("b2Body_ApplyLinearImpulse", BodyId.LAYOUT, Vec2.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_APPLY_LINEAR_IMPULSE_TO_CENTER = downcallHandleVoid("b2Body_ApplyLinearImpulseToCenter", BodyId.LAYOUT, Vec2.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_APPLY_ANGULAR_IMPULSE = downcallHandleVoid("b2Body_ApplyAngularImpulse", BodyId.LAYOUT, JAVA_FLOAT, JAVA_BOOLEAN);
+		B2_BODY_GET_MASS = downcallHandle("b2Body_GetMass", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_GET_ROTATIONAL_INERTIA = downcallHandle("b2Body_GetRotationalInertia", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_GET_LOCAL_CENTER = downcallHandle("b2Body_GetLocalCenter", Vec2.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_GET_WORLD_CENTER = downcallHandle("b2Body_GetWorldCenter", Vec2.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_SET_MASS_DATA = downcallHandleVoid("b2Body_SetMassData", BodyId.LAYOUT, MassData.LAYOUT);
+		B2_BODY_GET_MASS_DATA = downcallHandle("b2Body_GetMassData", MassData.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_UPDATE_MASS_FROM_SHAPES = downcallHandleVoid("b2Body_UpdateMassFromShapes", BodyId.LAYOUT);
+		B2_BODY_SET_LINEAR_DAMPING = downcallHandleVoid("b2Body_SetLinearDamping", BodyId.LAYOUT, JAVA_FLOAT);
+		B2_BODY_GET_LINEAR_DAMPING = downcallHandle("b2Body_GetLinearDamping", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_SET_ANGULAR_DAMPING = downcallHandleVoid("b2Body_SetAngularDamping", BodyId.LAYOUT, JAVA_FLOAT);
+		B2_BODY_GET_ANGULAR_DAMPING = downcallHandle("b2Body_GetAngularDamping", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_SET_GRAVITY_SCALE = downcallHandleVoid("b2Body_SetGravityScale", BodyId.LAYOUT, JAVA_FLOAT);
+		B2_BODY_GET_GRAVITY_SCALE = downcallHandle("b2Body_GetGravityScale", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_IS_AWAKE = downcallHandle("b2Body_IsAwake", JAVA_BOOLEAN, BodyId.LAYOUT);
+		B2_BODY_SET_AWAKE = downcallHandleVoid("b2Body_SetAwake", BodyId.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_WAKE_TOUCHING = downcallHandleVoid("b2Body_WakeTouching", BodyId.LAYOUT);
+		B2_BODY_ENABLE_SLEEPING = downcallHandleVoid("b2Body_EnableSleeping", BodyId.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_IS_SLEEPING_ENABLED = downcallHandle("b2Body_IsSleepingEnabled", JAVA_BOOLEAN, BodyId.LAYOUT);
+		B2_BODY_SET_SLEEP_THRESHOLD = downcallHandleVoid("b2Body_SetSleepThreshold", BodyId.LAYOUT, JAVA_FLOAT);
+		B2_BODY_GET_SLEEP_THRESHOLD = downcallHandle("b2Body_GetSleepThreshold", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_SET_SAFETY_FACTOR = downcallHandleVoid("b2Body_SetSafetyFactor", BodyId.LAYOUT, JAVA_FLOAT);
+		B2_BODY_GET_SAFETY_FACTOR = downcallHandle("b2Body_GetSafetyFactor", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_IS_ENABLED = downcallHandle("b2Body_IsEnabled", JAVA_BOOLEAN, BodyId.LAYOUT);
+		B2_BODY_DISABLE = downcallHandleVoid("b2Body_Disable", BodyId.LAYOUT);
+		B2_BODY_ENABLE = downcallHandleVoid("b2Body_Enable", BodyId.LAYOUT);
+		B2_BODY_SET_MOTION_LOCKS = downcallHandleVoid("b2Body_SetMotionLocks", BodyId.LAYOUT, MotionLocks.LAYOUT);
+		B2_BODY_GET_MOTION_LOCKS = downcallHandle("b2Body_GetMotionLocks", MotionLocks.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_SET_BULLET = downcallHandleVoid("b2Body_SetBullet", BodyId.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_IS_BULLET = downcallHandle("b2Body_IsBullet", JAVA_BOOLEAN, BodyId.LAYOUT);
+		B2_BODY_ENABLE_CONTACT_RECYCLING = downcallHandleVoid("b2Body_EnableContactRecycling", BodyId.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_IS_CONTACT_RECYCLING_ENABLED = downcallHandle("b2Body_IsContactRecyclingEnabled", JAVA_BOOLEAN, BodyId.LAYOUT);
+		B2_BODY_ENABLE_CONTACT_EVENTS = downcallHandleVoid("b2Body_EnableContactEvents", BodyId.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_ENABLE_HIT_EVENTS = downcallHandleVoid("b2Body_EnableHitEvents", BodyId.LAYOUT, JAVA_BOOLEAN);
+		B2_BODY_GET_WORLD = downcallHandle("b2Body_GetWorld", WorldId.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_GET_SHAPE_COUNT = downcallHandle("b2Body_GetShapeCount", JAVA_INT, BodyId.LAYOUT);
+		B2_BODY_GET_SHAPES = downcallHandle("b2Body_GetShapes", JAVA_INT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_BODY_GET_JOINT_COUNT = downcallHandle("b2Body_GetJointCount", JAVA_INT, BodyId.LAYOUT);
+		B2_BODY_GET_JOINTS = downcallHandle("b2Body_GetJoints", JAVA_INT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_BODY_GET_CONTACT_CAPACITY = downcallHandle("b2Body_GetContactCapacity", JAVA_INT, BodyId.LAYOUT);
+		B2_BODY_GET_CONTACT_DATA = downcallHandle("b2Body_GetContactData", JAVA_INT, BodyId.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_BODY_COMPUTE_BOUNDS = downcallHandle("b2Body_ComputeBounds", AABB.LAYOUT, BodyId.LAYOUT);
+		B2_BODY_GET_MIN_EXTENT = downcallHandle("b2Body_GetMinExtent", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_GET_MAX_EXTENT = downcallHandle("b2Body_GetMaxExtent", JAVA_FLOAT, BodyId.LAYOUT);
+		B2_BODY_GET_MAX_EXTENT_FROM_ORIGIN = downcallHandle("b2Body_GetMaxExtentFromOrigin", JAVA_FLOAT, BodyId.LAYOUT);
+		//@formatter:on
+	}
 
-    private Body() {
-    }
+	private Body() {
+	}
 
     /// ```
-    /// Create a rigid body given a definition. No reference to the definition is retained. So you can create the definition
-    /// on the stack and pass it as a pointer.
+    /// Create a rigid body given a definition. No reference to the definition is retained. So you can
+    /// create the definition on the stack and pass it as a pointer.
     /// @code{.c}
     /// b2BodyDef bodyDef = b2DefaultBodyDef();
     /// b2BodyId myBodyId = b2CreateBody(myWorldId, &bodyDef);
@@ -211,8 +229,8 @@ public final class Body {
     }
     
     /// ```
-    /// Destroy a rigid body given an id. This destroys all shapes and joints attached to the body.
-    /// Do not keep references to the associated shapes and joints.
+    /// Destroy a rigid body given an id. This destroys all shapes and joints attached to the body. Do
+    /// not keep references to the associated shapes and joints.
     /// ```
     public static void destroyBody(
     	MemorySegment bodyId
@@ -237,7 +255,8 @@ public final class Body {
     }
     
     /// ```
-    /// Body identifier validation. Can be used to detect orphaned ids. Provides validation for up to 64K allocations.
+    /// Body identifier validation. A valid body exists in a world and is non-null. This can be used to
+    /// detect orphaned ids. Provides validation for up to 64K allocations.
     /// ```
     public static boolean isValid(
     	MemorySegment id
@@ -317,7 +336,7 @@ public final class Body {
     }
     
     /// ```
-    /// Set the body name. Up to 31 characters excluding 0 termination.
+    /// Set the body name. See B2_NAME_LENGTH.
     /// ```
     public static void setName(
     	MemorySegment bodyId,
@@ -348,7 +367,7 @@ public final class Body {
     }
     
     /// ```
-    /// Get the body name. May be null.
+    /// Get the body name.
     /// ```
     public static MemorySegment getName(
     	MemorySegment bodyId
@@ -540,8 +559,8 @@ public final class Body {
     
     /// ```
     /// Set the world transform of a body. This acts as a teleport and is fairly expensive.
-    /// @note Generally you should create a body with then intended transform.
-    /// @see b2BodyDef::position and b2BodyDef::angle
+    /// @note Generally you should create a body with the intended transform.
+    /// @see b2BodyDef::position and b2BodyDef::rotation
     /// ```
     public static void setTransform(
     	MemorySegment bodyId,
@@ -843,22 +862,27 @@ public final class Body {
     }
     
     /// ```
-    /// Set the velocity to reach the given transform after a given time step.
-    /// The result will be close but maybe not exact. This is meant for kinematic bodies.
-    /// The target is not applied if the velocity would be below the sleep threshold.
-    /// This will automatically wake the body if asleep.
+    /// Set the velocity to reach the given transform after a given time step. The result will be close
+    /// but may not be exact. This is meant for kinematic bodies. The target is not applied if the
+    /// velocity would be below the sleep threshold and the body is currently asleep.
+    /// @param bodyId The body id
+    /// @param target The target transform for the body
+    /// @param timeStep The time step of the next call to b2World_Step
+    /// @param wake Option to wake the body or not
     /// ```
     public static void setTargetTransform(
     	MemorySegment bodyId,
     	MemorySegment target,
-    	float timeStep
+    	float timeStep,
+    	boolean wake
     ) {
     	MethodHandle method = B2_BODY_SET_TARGET_TRANSFORM.get();
     	try {
     		 method.invokeExact(
     			bodyId,
     			target,
-    			timeStep
+    			timeStep,
+    			wake
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
@@ -869,12 +893,14 @@ public final class Body {
     public static void setTargetTransform(
     	BodyId bodyId,
     	Transform target,
-    	float timeStep
+    	float timeStep,
+    	boolean wake
     ) {
     	setTargetTransform(
     		bodyId.memorySegment(),
     		target.memorySegment(),
-    		timeStep
+    		timeStep,
+    		wake
     	);
     }
     
@@ -955,9 +981,9 @@ public final class Body {
     }
     
     /// ```
-    /// Apply a force at a world point. If the force is not applied at the center of mass,
-    /// it will generate a torque and affect the angular velocity. This optionally wakes up the body.
-    /// The force is ignored if the body is not awake.
+    /// Apply a force at a world point. If the force is not applied at the center of mass, it will
+    /// generate a torque and affect the angular velocity. This optionally wakes up the body. The force
+    /// is ignored if the body is not awake.
     /// @param bodyId The body id
     /// @param force The world force vector, usually in newtons (N)
     /// @param point The world position of the point of application
@@ -998,8 +1024,8 @@ public final class Body {
     }
     
     /// ```
-    /// Apply a force to the center of mass. This optionally wakes up the body.
-    /// The force is ignored if the body is not awake.
+    /// Apply a force to the center of mass. This optionally wakes up the body. The force is ignored if
+    /// the body is not awake.
     /// @param bodyId The body id
     /// @param force the world force vector, usually in newtons (N).
     /// @param wake also wake up the body
@@ -1035,8 +1061,8 @@ public final class Body {
     }
     
     /// ```
-    /// Apply a torque. This affects the angular velocity without affecting the linear velocity.
-    /// This optionally wakes the body. The torque is ignored if the body is not awake.
+    /// Apply a torque. This affects the angular velocity without affecting the linear velocity. This
+    /// optionally wakes the body. The torque is ignored if the body is not awake.
     /// @param bodyId The body id
     /// @param torque about the z-axis (out of the screen), usually in N*m.
     /// @param wake also wake up the body
@@ -1072,16 +1098,43 @@ public final class Body {
     }
     
     /// ```
-    /// Apply an impulse at a point. This immediately modifies the velocity.
-    /// It also modifies the angular velocity if the point of application
-    /// is not at the center of mass. This optionally wakes the body.
-    /// The impulse is ignored if the body is not awake.
+    /// Clear the force and torque on this body. Forces and torques are automatically cleared after each
+    /// world step. So this only needs to be called if the application wants to remove the effect of
+    /// previous calls to apply forces and torques before the world step is called.
+    /// @param bodyId The body id
+    /// ```
+    public static void clearForces(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_CLEAR_FORCES.get();
+    	try {
+    		 method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#clearForces].
+    public static void clearForces(
+    	BodyId bodyId
+    ) {
+    	clearForces(
+    		bodyId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Apply an impulse at a point. This immediately modifies the velocity. It also modifies the
+    /// angular velocity if the point of application is not at the center of mass. This optionally wakes
+    /// the body. The impulse is ignored if the body is not awake.
     /// @param bodyId The body id
     /// @param impulse the world impulse vector, usually in N*s or kg*m/s.
     /// @param point the world position of the point of application.
     /// @param wake also wake up the body
-    /// @warning This should be used for one-shot impulses. If you need a steady force,
-    /// use a force instead, which will work better with the sub-stepping solver.
+    /// @warning This should be used for one-shot impulses. If you need a steady force, use a force
+    /// instead, which will work better with the sub-stepping solver.
     /// ```
     public static void applyLinearImpulse(
     	MemorySegment bodyId,
@@ -1118,13 +1171,13 @@ public final class Body {
     }
     
     /// ```
-    /// Apply an impulse to the center of mass. This immediately modifies the velocity.
-    /// The impulse is ignored if the body is not awake. This optionally wakes the body.
+    /// Apply an impulse to the center of mass. This immediately modifies the velocity. The impulse is
+    /// ignored if the body is not awake. This optionally wakes the body.
     /// @param bodyId The body id
     /// @param impulse the world impulse vector, usually in N*s or kg*m/s.
     /// @param wake also wake up the body
-    /// @warning This should be used for one-shot impulses. If you need a steady force,
-    /// use a force instead, which will work better with the sub-stepping solver.
+    /// @warning This should be used for one-shot impulses. If you need a steady force, use a force
+    /// instead, which will work better with the sub-stepping solver.
     /// ```
     public static void applyLinearImpulseToCenter(
     	MemorySegment bodyId,
@@ -1157,13 +1210,13 @@ public final class Body {
     }
     
     /// ```
-    /// Apply an angular impulse. The impulse is ignored if the body is not awake.
-    /// This optionally wakes the body.
+    /// Apply an angular impulse. The impulse is ignored if the body is not awake. This optionally wakes
+    /// the body.
     /// @param bodyId The body id
     /// @param impulse the angular impulse, usually in units of kg*m*m/s
     /// @param wake also wake up the body
-    /// @warning This should be used for one-shot impulses. If you need a steady force,
-    /// use a force instead, which will work better with the sub-stepping solver.
+    /// @warning This should be used for one-shot impulses. If you need a steady torque, use a torque
+    /// instead, which will work better with the sub-stepping solver.
     /// ```
     public static void applyAngularImpulse(
     	MemorySegment bodyId,
@@ -1246,13 +1299,13 @@ public final class Body {
     }
     
     /// ```
-    /// Get the center of mass position of the body in local space
+    /// Get the center of mass position of the body in local space.
     /// ```
-    public static MemorySegment getLocalCenterOfMass(
+    public static MemorySegment getLocalCenter(
     	SegmentAllocator allocator,
     	MemorySegment bodyId
     ) {
-    	MethodHandle method = B2_BODY_GET_LOCAL_CENTER_OF_MASS.get();
+    	MethodHandle method = B2_BODY_GET_LOCAL_CENTER.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -1263,12 +1316,12 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#getLocalCenterOfMass].
-    public static @Nullable Vec2 getLocalCenterOfMass(
+    /// Typed method of [#getLocalCenter].
+    public static @Nullable Vec2 getLocalCenter(
     	SegmentAllocator allocator,
     	BodyId bodyId
     ) {
-    	MemorySegment segment = getLocalCenterOfMass(
+    	MemorySegment segment = getLocalCenter(
     		allocator,
     		bodyId.memorySegment()
     	);
@@ -1280,13 +1333,13 @@ public final class Body {
     }
     
     /// ```
-    /// Get the center of mass position of the body in world space
+    /// Get the center of mass position of the body in world space.
     /// ```
-    public static MemorySegment getWorldCenterOfMass(
+    public static MemorySegment getWorldCenter(
     	SegmentAllocator allocator,
     	MemorySegment bodyId
     ) {
-    	MethodHandle method = B2_BODY_GET_WORLD_CENTER_OF_MASS.get();
+    	MethodHandle method = B2_BODY_GET_WORLD_CENTER.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -1297,12 +1350,12 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#getWorldCenterOfMass].
-    public static @Nullable Vec2 getWorldCenterOfMass(
+    /// Typed method of [#getWorldCenter].
+    public static @Nullable Vec2 getWorldCenter(
     	SegmentAllocator allocator,
     	BodyId bodyId
     ) {
-    	MemorySegment segment = getWorldCenterOfMass(
+    	MemorySegment segment = getWorldCenter(
     		allocator,
     		bodyId.memorySegment()
     	);
@@ -1314,9 +1367,10 @@ public final class Body {
     }
     
     /// ```
-    /// Override the body's mass properties. Normally this is computed automatically using the
-    /// shape geometry and density. This information is lost if a shape is added or removed or if the
-    /// body type changes.
+    /// Override the body's mass properties. Normally this is computed automatically using the shape
+    /// geometry and density. This information is lost if a shape is added or removed or if the body
+    /// type changes. If motion locks are used to fix rotation then the rotational inertia value is
+    /// ignored and rotational inertia remains fixed at zero.
     /// ```
     public static void setMassData(
     	MemorySegment bodyId,
@@ -1379,17 +1433,15 @@ public final class Body {
     }
     
     /// ```
-    /// This update the mass properties to the sum of the mass properties of the shapes.
-    /// This normally does not need to be called unless you called SetMassData to override
-    /// the mass and you later want to reset the mass.
-    /// You may also use this when automatic mass computation has been disabled.
-    /// You should call this regardless of body type.
-    /// Note that sensor shapes may have mass.
+    /// This updates the mass properties to the sum of the mass properties of the shapes. This normally
+    /// does not need to be called unless you called b2Body_SetMassData to override the mass and you
+    /// later want to reset the mass. You may also use this when automatic mass computation has been
+    /// disabled. You should call this regardless of body type. Note that sensor shapes may have mass.
     /// ```
-    public static void applyMassFromShapes(
+    public static void updateMassFromShapes(
     	MemorySegment bodyId
     ) {
-    	MethodHandle method = B2_BODY_APPLY_MASS_FROM_SHAPES.get();
+    	MethodHandle method = B2_BODY_UPDATE_MASS_FROM_SHAPES.get();
     	try {
     		 method.invokeExact(
     			bodyId
@@ -1399,11 +1451,11 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#applyMassFromShapes].
-    public static void applyMassFromShapes(
+    /// Typed method of [#updateMassFromShapes].
+    public static void updateMassFromShapes(
     	BodyId bodyId
     ) {
-    	applyMassFromShapes(
+    	updateMassFromShapes(
     		bodyId.memorySegment()
     	);
     }
@@ -1598,8 +1650,8 @@ public final class Body {
     
     /// ```
     /// Wake a body from sleep. This wakes the entire island the body is touching.
-    /// @warning Putting a body to sleep will put the entire island of bodies touching this body to sleep,
-    /// which can be expensive and possibly unintuitive.
+    /// @warning Putting a body to sleep will put the entire island of bodies touching this body to
+    /// sleep, which can be expensive and possibly unintuitive.
     /// ```
     public static void setAwake(
     	MemorySegment bodyId,
@@ -1628,13 +1680,39 @@ public final class Body {
     }
     
     /// ```
-    /// Enable or disable sleeping for this body. If sleeping is disabled the body will wake.
+    /// Wake bodies touching this body. Works for static bodies.
     /// ```
-    public static void enableSleep(
+    public static void wakeTouching(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_WAKE_TOUCHING.get();
+    	try {
+    		 method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#wakeTouching].
+    public static void wakeTouching(
+    	BodyId bodyId
+    ) {
+    	wakeTouching(
+    		bodyId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Enable or disable sleeping for this body. If sleeping is disabled the body will wake (and the
+    /// entire island).
+    /// ```
+    public static void enableSleeping(
     	MemorySegment bodyId,
     	boolean enableSleep
     ) {
-    	MethodHandle method = B2_BODY_ENABLE_SLEEP.get();
+    	MethodHandle method = B2_BODY_ENABLE_SLEEPING.get();
     	try {
     		 method.invokeExact(
     			bodyId,
@@ -1645,12 +1723,12 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#enableSleep].
-    public static void enableSleep(
+    /// Typed method of [#enableSleeping].
+    public static void enableSleeping(
     	BodyId bodyId,
     	boolean enableSleep
     ) {
-    	enableSleep(
+    	enableSleeping(
     		bodyId.memorySegment(),
     		enableSleep
     	);
@@ -1659,10 +1737,10 @@ public final class Body {
     /// ```
     /// Returns true if sleeping is enabled for this body
     /// ```
-    public static boolean isSleepEnabled(
+    public static boolean isSleepingEnabled(
     	MemorySegment bodyId
     ) {
-    	MethodHandle method = B2_BODY_IS_SLEEP_ENABLED.get();
+    	MethodHandle method = B2_BODY_IS_SLEEPING_ENABLED.get();
     	try {
     		return (boolean) method.invokeExact(
     			bodyId
@@ -1672,11 +1750,11 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#isSleepEnabled].
-    public static boolean isSleepEnabled(
+    /// Typed method of [#isSleepingEnabled].
+    public static boolean isSleepingEnabled(
     	BodyId bodyId
     ) {
-    	return isSleepEnabled(
+    	return isSleepingEnabled(
     		bodyId.memorySegment()
     	);
     }
@@ -1731,6 +1809,61 @@ public final class Body {
     	BodyId bodyId
     ) {
     	return getSleepThreshold(
+    		bodyId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the continuous collision safety factor. Smaller is safer but can lead to hitching.
+    /// Recommended range [0.01, 0.5]. Non-dimensional.
+    /// ```
+    public static void setSafetyFactor(
+    	MemorySegment bodyId,
+    	float safetyFactor
+    ) {
+    	MethodHandle method = B2_BODY_SET_SAFETY_FACTOR.get();
+    	try {
+    		 method.invokeExact(
+    			bodyId,
+    			safetyFactor
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setSafetyFactor].
+    public static void setSafetyFactor(
+    	BodyId bodyId,
+    	float safetyFactor
+    ) {
+    	setSafetyFactor(
+    		bodyId.memorySegment(),
+    		safetyFactor
+    	);
+    }
+    
+    /// ```
+    /// Get the continuous collision safety factor. Non-dimensional.
+    /// ```
+    public static float getSafetyFactor(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_GET_SAFETY_FACTOR.get();
+    	try {
+    		return (float) method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getSafetyFactor].
+    public static float getSafetyFactor(
+    	BodyId bodyId
+    ) {
+    	return getSafetyFactor(
     		bodyId.memorySegment()
     	);
     }
@@ -1811,43 +1944,46 @@ public final class Body {
     }
     
     /// ```
-    /// Set this body to have fixed rotation. This causes the mass to be reset in all cases.
+    /// Set the motion locks on this body. This causes mass properties to be recomputed because fixed
+    /// rotation sets the rotational inertia to zero.
     /// ```
-    public static void setFixedRotation(
+    public static void setMotionLocks(
     	MemorySegment bodyId,
-    	boolean flag
+    	MemorySegment locks
     ) {
-    	MethodHandle method = B2_BODY_SET_FIXED_ROTATION.get();
+    	MethodHandle method = B2_BODY_SET_MOTION_LOCKS.get();
     	try {
     		 method.invokeExact(
     			bodyId,
-    			flag
+    			locks
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#setFixedRotation].
-    public static void setFixedRotation(
+    /// Typed method of [#setMotionLocks].
+    public static void setMotionLocks(
     	BodyId bodyId,
-    	boolean flag
+    	MotionLocks locks
     ) {
-    	setFixedRotation(
+    	setMotionLocks(
     		bodyId.memorySegment(),
-    		flag
+    		locks.memorySegment()
     	);
     }
     
     /// ```
-    /// Does this body have fixed rotation?
+    /// Get the motion locks for this body.
     /// ```
-    public static boolean isFixedRotation(
+    public static MemorySegment getMotionLocks(
+    	SegmentAllocator allocator,
     	MemorySegment bodyId
     ) {
-    	MethodHandle method = B2_BODY_IS_FIXED_ROTATION.get();
+    	MethodHandle method = B2_BODY_GET_MOTION_LOCKS.get();
     	try {
-    		return (boolean) method.invokeExact(
+    		return (MemorySegment) method.invokeExact(
+    			allocator,
     			bodyId
     		);
     	} catch (Throwable e) {
@@ -1855,18 +1991,25 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#isFixedRotation].
-    public static boolean isFixedRotation(
+    /// Typed method of [#getMotionLocks].
+    public static @Nullable MotionLocks getMotionLocks(
+    	SegmentAllocator allocator,
     	BodyId bodyId
     ) {
-    	return isFixedRotation(
+    	MemorySegment segment = getMotionLocks(
+    		allocator,
     		bodyId.memorySegment()
     	);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new MotionLocks(segment);
     }
     
     /// ```
-    /// Set this body to be a bullet. A bullet does continuous collision detection
-    /// against dynamic bodies (but not other bullets).
+    /// Set this body to be a bullet. A bullet does continuous collision detection against dynamic
+    /// and kinematic bodies (but not other bullets). This only works on dynamic bodies.
     /// ```
     public static void setBullet(
     	MemorySegment bodyId,
@@ -1915,6 +2058,65 @@ public final class Body {
     	BodyId bodyId
     ) {
     	return isBullet(
+    		bodyId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Enable or disable contact recycling for this body. Contact recycling is a performance
+    /// optimization that reuses contact manifolds when bodies move slightly. Disabling it can avoid
+    /// ghost collisions
+    /// on characters at the cost of higher per-step work. Existing contacts retain their prior setting;
+    /// only contacts created after this call see the new value.
+    /// @see b2BodyDef::enableContactRecycling
+    /// ```
+    public static void enableContactRecycling(
+    	MemorySegment bodyId,
+    	boolean flag
+    ) {
+    	MethodHandle method = B2_BODY_ENABLE_CONTACT_RECYCLING.get();
+    	try {
+    		 method.invokeExact(
+    			bodyId,
+    			flag
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#enableContactRecycling].
+    public static void enableContactRecycling(
+    	BodyId bodyId,
+    	boolean flag
+    ) {
+    	enableContactRecycling(
+    		bodyId.memorySegment(),
+    		flag
+    	);
+    }
+    
+    /// ```
+    /// Is contact recycling enabled on this body?
+    /// ```
+    public static boolean isContactRecyclingEnabled(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_IS_CONTACT_RECYCLING_ENABLED.get();
+    	try {
+    		return (boolean) method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#isContactRecyclingEnabled].
+    public static boolean isContactRecyclingEnabled(
+    	BodyId bodyId
+    ) {
+    	return isContactRecyclingEnabled(
     		bodyId.memorySegment()
     	);
     }
@@ -2194,14 +2396,15 @@ public final class Body {
     }
     
     /// ```
-    /// Get the current world AABB that contains all the attached shapes. Note that this may not encompass the body origin.
-    /// If there are no shapes attached then the returned AABB is empty and centered on the body origin.
+    /// Get the current world AABB that contains all the attached shapes. Note that this may not
+    /// encompass the body origin. If there are no shapes attached then the returned AABB is empty and
+    /// centered on the body origin.
     /// ```
-    public static MemorySegment computeAABB(
+    public static MemorySegment computeBounds(
     	SegmentAllocator allocator,
     	MemorySegment bodyId
     ) {
-    	MethodHandle method = B2_BODY_COMPUTE_AABB.get();
+    	MethodHandle method = B2_BODY_COMPUTE_BOUNDS.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -2212,12 +2415,12 @@ public final class Body {
     	}
     }
     
-    /// Typed method of [#computeAABB].
-    public static @Nullable AABB computeAABB(
+    /// Typed method of [#computeBounds].
+    public static @Nullable AABB computeBounds(
     	SegmentAllocator allocator,
     	BodyId bodyId
     ) {
-    	MemorySegment segment = computeAABB(
+    	MemorySegment segment = computeBounds(
     		allocator,
     		bodyId.memorySegment()
     	);
@@ -2228,4 +2431,79 @@ public final class Body {
     	return new AABB(segment);
     }
     
+    /// ```
+    /// The minimum distance from any point on the body shapes to the center of mass.
+    /// ```
+    public static float getMinExtent(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_GET_MIN_EXTENT.get();
+    	try {
+    		return (float) method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getMinExtent].
+    public static float getMinExtent(
+    	BodyId bodyId
+    ) {
+    	return getMinExtent(
+    		bodyId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// The maximum distance from any point on the body shapes to the center of mass.
+    /// ```
+    public static float getMaxExtent(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_GET_MAX_EXTENT.get();
+    	try {
+    		return (float) method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getMaxExtent].
+    public static float getMaxExtent(
+    	BodyId bodyId
+    ) {
+    	return getMaxExtent(
+    		bodyId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// The maximum distance from any point on the body shapes to the body origin. Conservative.
+    /// ```
+    public static float getMaxExtentFromOrigin(
+    	MemorySegment bodyId
+    ) {
+    	MethodHandle method = B2_BODY_GET_MAX_EXTENT_FROM_ORIGIN.get();
+    	try {
+    		return (float) method.invokeExact(
+    			bodyId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getMaxExtentFromOrigin].
+    public static float getMaxExtentFromOrigin(
+    	BodyId bodyId
+    ) {
+    	return getMaxExtentFromOrigin(
+    		bodyId.memorySegment()
+    	);
+    }
+
 }

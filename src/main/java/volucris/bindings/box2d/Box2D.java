@@ -1,30 +1,16 @@
 package volucris.bindings.box2d;
 
 import java.lang.foreign.Arena;
-import java.lang.invoke.MethodHandle;
 
 import org.jspecify.annotations.Nullable;
 
 import volucris.bindings.box2d.body.BodyId;
+import volucris.bindings.box2d.chain.ChainId;
 import volucris.bindings.box2d.joint.JointId;
-import volucris.bindings.box2d.shape.ChainId;
 import volucris.bindings.box2d.shape.ShapeId;
 import volucris.bindings.core.NativeLibraryLoader;
 
-import static java.lang.foreign.ValueLayout.*;
-import static volucris.bindings.core.FFMUtils.*;
-
 public class Box2D {
-
-	private static final LazyConstant<MethodHandle> B2_SET_ALLOCATOR;
-	private static final LazyConstant<MethodHandle> B2_GET_BYTE_COUNT;
-	private static final LazyConstant<MethodHandle> B2_SET_ASSERT_FCN;
-
-	static {
-		B2_SET_ALLOCATOR = downcallHandleVoid("b2SetAllocator", UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-		B2_GET_BYTE_COUNT = downcallHandle("b2GetByteCount", JAVA_INT);
-		B2_SET_ASSERT_FCN = downcallHandleVoid("b2SetAssertFcn", UNBOUNDED_ADDRESS);
-	}
 
 	private Box2D() {
 
@@ -36,42 +22,6 @@ public class Box2D {
 
 	public static void loadNativeLibrary(boolean debug) {
 		NativeLibraryLoader.loadLibrary("natives/box2d", "box2d", debug);
-	}
-
-	/**
-	 * This allows the user to override the allocation functions.
-	 */
-	public static void setAllocator(AllocFcn allocFcn, FreeFcn freeFcn) {
-		try {
-			MethodHandle method = B2_SET_ALLOCATOR.get();
-			method.invokeExact(allocFcn.memorySegment(), freeFcn.memorySegment());
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * Returns the total bytes allocated by Box2D
-	 */
-	public static int getByteCount() {
-		try {
-			MethodHandle method = B2_GET_BYTE_COUNT.get();
-			return (int) method.invokeExact();
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * Override the default assert callback.
-	 */
-	public static void setAssertFcn(AssertFcn assertFcn) {
-		try {
-			MethodHandle method = B2_SET_ASSERT_FCN.get();
-			method.invokeExact(assertFcn.memorySegment());
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	/**

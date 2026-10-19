@@ -14,49 +14,48 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// 2D vector
-/// This can be used to represent a point or free vector
+/// 2D vector This can be used to represent a point or free vector
 /// ```
 public final class Vec2
 		implements Struct<Vec2> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle X_HANDLE;
-    public static final VarHandle Y_HANDLE;
+	public static final VarHandle X_HANDLE;
+	public static final VarHandle Y_HANDLE;
 
-    public static final long X_BYTE_OFFSET;
-    public static final long Y_BYTE_OFFSET;
+	public static final long X_BYTE_OFFSET;
+	public static final long Y_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_FLOAT.withName("x"),
-            JAVA_FLOAT.withName("y")
-        ).withName("b2Vec2").withByteAlignment(4);
-        
-        X_HANDLE = LAYOUT.varHandle(PathElement.groupElement("x"));
-        Y_HANDLE = LAYOUT.varHandle(PathElement.groupElement("y"));
-        
-        X_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("x"));
-        Y_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("y"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_FLOAT.withName("x"),
+		    JAVA_FLOAT.withName("y")
+		).withName("b2Vec2").withByteAlignment(4);
+		
+		X_HANDLE = LAYOUT.varHandle(PathElement.groupElement("x"));
+		Y_HANDLE = LAYOUT.varHandle(PathElement.groupElement("y"));
+		
+		X_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("x"));
+		Y_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("y"));
+		//@formatter:on
+	}
 
-    public Vec2() {
-        this(Arena.ofAuto());
-    }
-    
-    public Vec2(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Vec2(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public Vec2() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Vec2(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Vec2(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #x()
     public Vec2 x(float x) {
@@ -135,5 +134,5 @@ public final class Vec2
             segment -> new Vec2(segment)
         );
     }
-    
+
 }

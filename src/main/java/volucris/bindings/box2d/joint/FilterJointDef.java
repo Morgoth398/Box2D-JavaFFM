@@ -12,7 +12,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
-import volucris.bindings.box2d.body.BodyId;
 import volucris.bindings.core.NativeStructArray;
 import volucris.bindings.core.Struct;
 
@@ -27,51 +26,41 @@ import static volucris.bindings.core.FFMUtils.*;
 public final class FilterJointDef
 		implements Struct<FilterJointDef> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_FILTER_JOINT_DEF;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_FILTER_JOINT_DEF;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle USER_DATA_HANDLE;
-    public static final VarHandle INTERNAL_VALUE_HANDLE;
+	public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long BODY_ID_A_BYTE_OFFSET;
-    public static final long BODY_ID_B_BYTE_OFFSET;
-    public static final long USER_DATA_BYTE_OFFSET;
-    public static final long INTERNAL_VALUE_BYTE_OFFSET;
+	public static final long BASE_BYTE_OFFSET;
+	public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final BodyId bodyIdA;
-    private final BodyId bodyIdB;
+	private final JointDef base;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            BodyId.LAYOUT.withName("bodyIdA"),
-            BodyId.LAYOUT.withName("bodyIdB"),
-            UNBOUNDED_ADDRESS.withName("userData"),
-            JAVA_INT.withName("internalValue"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2FilterJointDef").withByteAlignment(8);
-        
-        B2_DEFAULT_FILTER_JOINT_DEF = downcallHandle("b2DefaultFilterJointDef", FilterJointDef.LAYOUT);
-        
-        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
-        
-        BODY_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
-        BODY_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
-        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JointDef.LAYOUT.withName("base"),
+		    JAVA_INT.withName("internalValue"),
+		    MemoryLayout.paddingLayout(4)
+		).withName("b2FilterJointDef").withByteAlignment(8);
+		
+		B2_DEFAULT_FILTER_JOINT_DEF = downcallHandle("b2DefaultFilterJointDef", FilterJointDef.LAYOUT);
+		
+		INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+		
+		BASE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("base"));
+		INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+		//@formatter:on
+	}
 
-    public FilterJointDef(MemorySegment segment) {
-        this.segment = segment;
-    
-        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_BYTE_OFFSET, BodyId.LAYOUT));
-        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_BYTE_OFFSET, BodyId.LAYOUT));
-    }
+	public FilterJointDef(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    base = new JointDef(segment.asSlice(BASE_BYTE_OFFSET, JointDef.LAYOUT));
+	}
 
     /// ```
     /// Use this to initialize your joint definition
@@ -104,22 +93,23 @@ public final class FilterJointDef
     	return new FilterJointDef(segment);
     }
     
-    /// @see #userData()
-    public FilterJointDef userData(MemorySegment userData) {
-    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    /// @see #base()
+    public FilterJointDef base(Consumer<JointDef> consumer) {
+    	consumer.accept(base);
+    	return this;
+    }
+    
+    /// @see #base()
+    public FilterJointDef base(JointDef other) {
+    	base.set(other);
     	return this;
     }
     
     /// ```
-    /// User data pointer
+    /// Base joint definition
     /// ```
-    public @Nullable MemorySegment userData() {
-    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
-    
-    	if (segment.equals(MemorySegment.NULL))
-    		return null;
-    	
-    	return segment;
+    public JointDef base() {
+    	return base;
     }
     
     /// @see #internalValue()
@@ -133,44 +123,6 @@ public final class FilterJointDef
     /// ```
     public int internalValue() {
     	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #bodyIdA()
-    public FilterJointDef bodyIdA(Consumer<BodyId> consumer) {
-    	consumer.accept(bodyIdA);
-    	return this;
-    }
-    
-    /// @see #bodyIdA()
-    public FilterJointDef bodyIdA(BodyId other) {
-    	bodyIdA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The first attached body.
-    /// ```
-    public BodyId bodyIdA() {
-    	return bodyIdA;
-    }
-    
-    /// @see #bodyIdB()
-    public FilterJointDef bodyIdB(Consumer<BodyId> consumer) {
-    	consumer.accept(bodyIdB);
-    	return this;
-    }
-    
-    /// @see #bodyIdB()
-    public FilterJointDef bodyIdB(BodyId other) {
-    	bodyIdB.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The second attached body.
-    /// ```
-    public BodyId bodyIdB() {
-    	return bodyIdB;
     }
     
     @Override
@@ -224,5 +176,5 @@ public final class FilterJointDef
             segment -> new FilterJointDef(segment)
         );
     }
-    
+
 }

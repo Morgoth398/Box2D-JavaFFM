@@ -22,86 +22,59 @@ import static java.lang.foreign.ValueLayout.*;
 public final class Manifold
 		implements Struct<Manifold> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle ROLLING_IMPULSE_HANDLE;
-    public static final VarHandle POINT_COUNT_HANDLE;
+	public static final VarHandle ROLLING_IMPULSE_HANDLE;
+	public static final VarHandle POINT_COUNT_HANDLE;
 
-    public static final long NORMAL_BYTE_OFFSET;
-    public static final long ROLLING_IMPULSE_BYTE_OFFSET;
-    public static final long POINTS_BYTE_OFFSET;
-    public static final long POINT_COUNT_BYTE_OFFSET;
+	public static final long NORMAL_BYTE_OFFSET;
+	public static final long ROLLING_IMPULSE_BYTE_OFFSET;
+	public static final long POINTS_BYTE_OFFSET;
+	public static final long POINT_COUNT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 normal;
-    private final ManifoldPoint[] points;
+	private final Vec2 normal;
+	private final ManifoldPoint[] points;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("normal"),
-            JAVA_FLOAT.withName("rollingImpulse"),
-            MemoryLayout.sequenceLayout(2, ManifoldPoint.LAYOUT).withName("points"),
-            JAVA_INT.withName("pointCount")
-        ).withName("b2Manifold").withByteAlignment(4);
-        
-        ROLLING_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rollingImpulse"));
-        POINT_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pointCount"));
-        
-        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        ROLLING_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingImpulse"));
-        POINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
-        POINT_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointCount"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("normal"),
+		    JAVA_FLOAT.withName("rollingImpulse"),
+		    MemoryLayout.sequenceLayout(2, ManifoldPoint.LAYOUT).withName("points"),
+		    JAVA_INT.withName("pointCount")
+		).withName("b2Manifold").withByteAlignment(4);
+		
+		ROLLING_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("rollingImpulse"));
+		POINT_COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pointCount"));
+		
+		NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+		ROLLING_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rollingImpulse"));
+		POINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("points"));
+		POINT_COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pointCount"));
+		//@formatter:on
+	}
 
-    public Manifold() {
-        this(Arena.ofAuto());
-    }
-    
-    public Manifold(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Manifold(MemorySegment segment) {
-        this.segment = segment;
-    
-        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
-        points = new ManifoldPoint[2];
-        for (int i = 0; i < 2; i++) {
-            long offset = POINTS_BYTE_OFFSET + i * ManifoldPoint.LAYOUT.byteSize();
-            points[i] = new ManifoldPoint(segment.asSlice(offset, ManifoldPoint.LAYOUT));
-        }
-    
-    }
+	public Manifold() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Manifold(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Manifold(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+	    points = new ManifoldPoint[2];
+	    for (int i = 0; i < 2; i++) {
+	        long offset = POINTS_BYTE_OFFSET + i * ManifoldPoint.LAYOUT.byteSize();
+	        points[i] = new ManifoldPoint(segment.asSlice(offset, ManifoldPoint.LAYOUT));
+	    }
+	}
 
-    /// @see #rollingImpulse()
-    public Manifold rollingImpulse(float rollingImpulse) {
-    	ROLLING_IMPULSE_HANDLE.set(segment, 0L, rollingImpulse);
-    	return this;
-    }
-    
-    /// ```
-    /// Angular impulse applied for rolling resistance. N * m * s = kg * m^2 / s
-    /// ```
-    public float rollingImpulse() {
-    	return (float) ROLLING_IMPULSE_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #pointCount()
-    public Manifold pointCount(int pointCount) {
-    	POINT_COUNT_HANDLE.set(segment, 0L, pointCount);
-    	return this;
-    }
-    
-    /// ```
-    /// The number of contacts points, will be 0, 1, or 2
-    /// ```
-    public int pointCount() {
-    	return (int) POINT_COUNT_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #normal()
     public Manifold normal(Consumer<Vec2> consumer) {
     	consumer.accept(normal);
@@ -115,10 +88,23 @@ public final class Manifold
     }
     
     /// ```
-    /// The unit normal vector in world space, points from shape A to bodyB
+    /// The unit normal vector in world space, points from shape A to shape B.
     /// ```
     public Vec2 normal() {
     	return normal;
+    }
+    
+    /// @see #rollingImpulse()
+    public Manifold rollingImpulse(float rollingImpulse) {
+    	ROLLING_IMPULSE_HANDLE.set(segment, 0L, rollingImpulse);
+    	return this;
+    }
+    
+    /// ```
+    /// Angular impulse applied for rolling resistance. N * m * s = kg * m^2 / s
+    /// ```
+    public float rollingImpulse() {
+    	return (float) ROLLING_IMPULSE_HANDLE.get(segment, 0L);
     }
     
     /// @see #points(int)
@@ -134,10 +120,23 @@ public final class Manifold
     }
     
     /// ```
-    /// The manifold points, up to two are possible in 2D
+    /// The manifold points, up to two are possible in 2D.
     /// ```
     public ManifoldPoint points(int index) {
     	return points[index];
+    }
+    
+    /// @see #pointCount()
+    public Manifold pointCount(int pointCount) {
+    	POINT_COUNT_HANDLE.set(segment, 0L, pointCount);
+    	return this;
+    }
+    
+    /// ```
+    /// The number of contact points, will be 0, 1, or 2.
+    /// ```
+    public int pointCount() {
+    	return (int) POINT_COUNT_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -191,5 +190,5 @@ public final class Manifold
             segment -> new Manifold(segment)
         );
     }
-    
+
 }

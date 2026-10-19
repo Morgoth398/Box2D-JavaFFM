@@ -5,10 +5,10 @@ package volucris.bindings.box2d.enums;
 
 public final class TOIState {
 
-    public static final int TOI_STATE_UNKNOWN = 0;
-    public static final int TOI_STATE_FAILED = 1;
-    public static final int TOI_STATE_OVERLAPPED = 2;
-    public static final int TOI_STATE_HIT = 3;
-    public static final int TOI_STATE_SEPARATED = 4;
+    public static final int B2_TOI_STATE_UNKNOWN = 0;
+    public static final int B2_TOI_STATE_FAILED = 1;
+    public static final int B2_TOI_STATE_OVERLAPPED = 2;
+    public static final int B2_TOI_STATE_HIT = 3;
+    public static final int B2_TOI_STATE_SEPARATED = 4;
 
 }

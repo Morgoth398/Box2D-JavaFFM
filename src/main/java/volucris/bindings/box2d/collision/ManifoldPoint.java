@@ -16,95 +16,134 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// A manifold point is a contact point belonging to a contact manifold.
-/// It holds details related to the geometry and dynamics of the contact points.
-/// Box2D uses speculative collision so some contact points may be separated.
-/// You may use the totalNormalImpulse to determine if there was an interaction during
-/// the time step.
+/// A manifold point is a contact point belonging to a contact manifold. It holds details related to
+/// the geometry and dynamics of the contact points. Box2D uses speculative collision so some
+/// contact points may be separated. You may use the totalNormalImpulse to determine if there was an
+/// interaction during the time step.
 /// ```
 public final class ManifoldPoint
 		implements Struct<ManifoldPoint> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle SEPARATION_HANDLE;
-    public static final VarHandle NORMAL_IMPULSE_HANDLE;
-    public static final VarHandle TANGENT_IMPULSE_HANDLE;
-    public static final VarHandle TOTAL_NORMAL_IMPULSE_HANDLE;
-    public static final VarHandle NORMAL_VELOCITY_HANDLE;
-    public static final VarHandle ID_HANDLE;
-    public static final VarHandle PERSISTED_HANDLE;
+	public static final VarHandle SEPARATION_HANDLE;
+	public static final VarHandle NORMAL_IMPULSE_HANDLE;
+	public static final VarHandle TANGENT_IMPULSE_HANDLE;
+	public static final VarHandle TOTAL_NORMAL_IMPULSE_HANDLE;
+	public static final VarHandle NORMAL_VELOCITY_HANDLE;
+	public static final VarHandle BASE_SEPARATION_HANDLE;
+	public static final VarHandle ID_HANDLE;
+	public static final VarHandle PERSISTED_HANDLE;
 
-    public static final long POINT_BYTE_OFFSET;
-    public static final long ANCHOR_A_BYTE_OFFSET;
-    public static final long ANCHOR_B_BYTE_OFFSET;
-    public static final long SEPARATION_BYTE_OFFSET;
-    public static final long NORMAL_IMPULSE_BYTE_OFFSET;
-    public static final long TANGENT_IMPULSE_BYTE_OFFSET;
-    public static final long TOTAL_NORMAL_IMPULSE_BYTE_OFFSET;
-    public static final long NORMAL_VELOCITY_BYTE_OFFSET;
-    public static final long ID_BYTE_OFFSET;
-    public static final long PERSISTED_BYTE_OFFSET;
+	public static final long ANCHOR_A_BYTE_OFFSET;
+	public static final long ANCHOR_B_BYTE_OFFSET;
+	public static final long SEPARATION_BYTE_OFFSET;
+	public static final long NORMAL_IMPULSE_BYTE_OFFSET;
+	public static final long TANGENT_IMPULSE_BYTE_OFFSET;
+	public static final long TOTAL_NORMAL_IMPULSE_BYTE_OFFSET;
+	public static final long NORMAL_VELOCITY_BYTE_OFFSET;
+	public static final long BASE_SEPARATION_BYTE_OFFSET;
+	public static final long ID_BYTE_OFFSET;
+	public static final long PERSISTED_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 point;
-    private final Vec2 anchorA;
-    private final Vec2 anchorB;
+	private final Vec2 anchorA;
+	private final Vec2 anchorB;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("point"),
-            Vec2.LAYOUT.withName("anchorA"),
-            Vec2.LAYOUT.withName("anchorB"),
-            JAVA_FLOAT.withName("separation"),
-            JAVA_FLOAT.withName("normalImpulse"),
-            JAVA_FLOAT.withName("tangentImpulse"),
-            JAVA_FLOAT.withName("totalNormalImpulse"),
-            JAVA_FLOAT.withName("normalVelocity"),
-            JAVA_SHORT.withName("id"),
-            JAVA_BOOLEAN.withName("persisted"),
-            MemoryLayout.paddingLayout(1)
-        ).withName("b2ManifoldPoint").withByteAlignment(4);
-        
-        SEPARATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("separation"));
-        NORMAL_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("normalImpulse"));
-        TANGENT_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("tangentImpulse"));
-        TOTAL_NORMAL_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("totalNormalImpulse"));
-        NORMAL_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("normalVelocity"));
-        ID_HANDLE = LAYOUT.varHandle(PathElement.groupElement("id"));
-        PERSISTED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("persisted"));
-        
-        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        ANCHOR_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorA"));
-        ANCHOR_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorB"));
-        SEPARATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("separation"));
-        NORMAL_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalImpulse"));
-        TANGENT_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentImpulse"));
-        TOTAL_NORMAL_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("totalNormalImpulse"));
-        NORMAL_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalVelocity"));
-        ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("id"));
-        PERSISTED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("persisted"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("anchorA"),
+		    Vec2.LAYOUT.withName("anchorB"),
+		    JAVA_FLOAT.withName("separation"),
+		    JAVA_FLOAT.withName("normalImpulse"),
+		    JAVA_FLOAT.withName("tangentImpulse"),
+		    JAVA_FLOAT.withName("totalNormalImpulse"),
+		    JAVA_FLOAT.withName("normalVelocity"),
+		    JAVA_FLOAT.withName("baseSeparation"),
+		    JAVA_SHORT.withName("id"),
+		    JAVA_BOOLEAN.withName("persisted"),
+		    MemoryLayout.paddingLayout(1)
+		).withName("b2ManifoldPoint").withByteAlignment(4);
+		
+		SEPARATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("separation"));
+		NORMAL_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("normalImpulse"));
+		TANGENT_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("tangentImpulse"));
+		TOTAL_NORMAL_IMPULSE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("totalNormalImpulse"));
+		NORMAL_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("normalVelocity"));
+		BASE_SEPARATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("baseSeparation"));
+		ID_HANDLE = LAYOUT.varHandle(PathElement.groupElement("id"));
+		PERSISTED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("persisted"));
+		
+		ANCHOR_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorA"));
+		ANCHOR_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("anchorB"));
+		SEPARATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("separation"));
+		NORMAL_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalImpulse"));
+		TANGENT_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("tangentImpulse"));
+		TOTAL_NORMAL_IMPULSE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("totalNormalImpulse"));
+		NORMAL_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normalVelocity"));
+		BASE_SEPARATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("baseSeparation"));
+		ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("id"));
+		PERSISTED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("persisted"));
+		//@formatter:on
+	}
 
-    public ManifoldPoint() {
-        this(Arena.ofAuto());
+	public ManifoldPoint() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ManifoldPoint(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ManifoldPoint(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    anchorA = new Vec2(segment.asSlice(ANCHOR_A_BYTE_OFFSET, Vec2.LAYOUT));
+	    anchorB = new Vec2(segment.asSlice(ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
+	}
+
+    /// @see #anchorA()
+    public ManifoldPoint anchorA(Consumer<Vec2> consumer) {
+    	consumer.accept(anchorA);
+    	return this;
     }
     
-    public ManifoldPoint(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// @see #anchorA()
+    public ManifoldPoint anchorA(Vec2 other) {
+    	anchorA.set(other);
+    	return this;
     }
     
-    public ManifoldPoint(MemorySegment segment) {
-        this.segment = segment;
-    
-        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
-        anchorA = new Vec2(segment.asSlice(ANCHOR_A_BYTE_OFFSET, Vec2.LAYOUT));
-        anchorB = new Vec2(segment.asSlice(ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
+    /// ```
+    /// Location of the contact point relative to bodyA's center of mass in world space. This can be
+    /// converted to a world point using:
+    /// b2Pos worldPointA = b2OffsetPos(b2Body_GetWorldCenter(myBodyIdA), anchorA);
+    /// ```
+    public Vec2 anchorA() {
+    	return anchorA;
     }
-
+    
+    /// @see #anchorB()
+    public ManifoldPoint anchorB(Consumer<Vec2> consumer) {
+    	consumer.accept(anchorB);
+    	return this;
+    }
+    
+    /// @see #anchorB()
+    public ManifoldPoint anchorB(Vec2 other) {
+    	anchorB.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// Similar for body B.
+    /// ```
+    public Vec2 anchorB() {
+    	return anchorB;
+    }
+    
     /// @see #separation()
     public ManifoldPoint separation(float separation) {
     	SEPARATION_HANDLE.set(segment, 0L, separation);
@@ -151,8 +190,9 @@ public final class ManifoldPoint
     }
     
     /// ```
-    /// The total normal impulse applied across sub-stepping and restitution. This is important
-    /// to identify speculative contact points that had an interaction in the time step.
+    /// The total normal impulse applied across sub-stepping and restitution. This is important to
+    /// identify speculative contact points that had an interaction in the time step. This includes
+    /// the warm starting impulse, the sub-step delta impulse, and the restitution impulse.
     /// ```
     public float totalNormalImpulse() {
     	return (float) TOTAL_NORMAL_IMPULSE_HANDLE.get(segment, 0L);
@@ -165,11 +205,25 @@ public final class ManifoldPoint
     }
     
     /// ```
-    /// Relative normal velocity pre-solve. Used for hit events. If the normal impulse is
-    /// zero then there was no hit. Negative means shapes are approaching.
+    /// Relative normal velocity pre-solve. Negative when approaching. This is only computed if hit
+    /// events are enabled. It may be computed otherwise as a side effect of SIMD bundling, but that
+    /// is not guaranteed.
     /// ```
     public float normalVelocity() {
     	return (float) NORMAL_VELOCITY_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #baseSeparation()
+    public ManifoldPoint baseSeparation(float baseSeparation) {
+    	BASE_SEPARATION_HANDLE.set(segment, 0L, baseSeparation);
+    	return this;
+    }
+    
+    /// ```
+    /// Cached separation used for contact recycling
+    /// ```
+    public float baseSeparation() {
+    	return (float) BASE_SEPARATION_HANDLE.get(segment, 0L);
     }
     
     /// @see #id()
@@ -196,66 +250,6 @@ public final class ManifoldPoint
     /// ```
     public boolean persisted() {
     	return (boolean) PERSISTED_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #point()
-    public ManifoldPoint point(Consumer<Vec2> consumer) {
-    	consumer.accept(point);
-    	return this;
-    }
-    
-    /// @see #point()
-    public ManifoldPoint point(Vec2 other) {
-    	point.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Location of the contact point in world space. Subject to precision loss at large coordinates.
-    /// @note Should only be used for debugging.
-    /// ```
-    public Vec2 point() {
-    	return point;
-    }
-    
-    /// @see #anchorA()
-    public ManifoldPoint anchorA(Consumer<Vec2> consumer) {
-    	consumer.accept(anchorA);
-    	return this;
-    }
-    
-    /// @see #anchorA()
-    public ManifoldPoint anchorA(Vec2 other) {
-    	anchorA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Location of the contact point relative to shapeA's origin in world space
-    /// @note When used internally to the Box2D solver, this is relative to the body center of mass.
-    /// ```
-    public Vec2 anchorA() {
-    	return anchorA;
-    }
-    
-    /// @see #anchorB()
-    public ManifoldPoint anchorB(Consumer<Vec2> consumer) {
-    	consumer.accept(anchorB);
-    	return this;
-    }
-    
-    /// @see #anchorB()
-    public ManifoldPoint anchorB(Vec2 other) {
-    	anchorB.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// Location of the contact point relative to shapeB's origin in world space
-    /// @note When used internally to the Box2D solver, this is relative to the body center of mass.
-    /// ```
-    public Vec2 anchorB() {
-    	return anchorB;
     }
     
     @Override
@@ -309,5 +303,5 @@ public final class ManifoldPoint
             segment -> new ManifoldPoint(segment)
         );
     }
-    
+
 }

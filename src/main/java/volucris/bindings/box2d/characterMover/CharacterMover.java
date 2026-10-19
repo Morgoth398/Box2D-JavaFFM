@@ -15,22 +15,23 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class CharacterMover {
 
-    private static final LazyConstant<MethodHandle> B2_SOLVE_PLANES;
-    private static final LazyConstant<MethodHandle> B2_CLIP_VECTOR;
+	private static final LazyConstant<MethodHandle> B2_SOLVE_PLANES;
+	private static final LazyConstant<MethodHandle> B2_CLIP_VECTOR;
 
-    static {
-        //@formatter:off
-        B2_SOLVE_PLANES = downcallHandle("b2SolvePlanes", PlaneSolverResult.LAYOUT, Vec2.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        B2_CLIP_VECTOR = downcallHandle("b2ClipVector", Vec2.LAYOUT, Vec2.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_SOLVE_PLANES = downcallHandle("b2SolvePlanes", PlaneSolverResult.LAYOUT, Vec2.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		B2_CLIP_VECTOR = downcallHandle("b2ClipVector", Vec2.LAYOUT, Vec2.LAYOUT, UNBOUNDED_ADDRESS, JAVA_INT);
+		//@formatter:on
+	}
 
-    private CharacterMover() {
-    }
+	private CharacterMover() {
+	}
 
     /// ```
     /// Solves the position of a mover that satisfies the given collision planes.
-    /// @param targetDelta the desired movement from the position used to generate the collision planes
+    /// @param targetDelta the desired translation from the position used to generate the collision
+    /// planes
     /// @param planes the collision planes
     /// @param count the number of collision planes
     /// ```
@@ -74,8 +75,8 @@ public final class CharacterMover {
     }
     
     /// ```
-    /// Clips the velocity against the given collision planes. Planes with zero push or clipVelocity
-    /// set to false are skipped.
+    /// Clips the velocity against the given collision planes. Planes with zero push or clipVelocity set
+    /// to false are skipped.
     /// ```
     public static MemorySegment clipVector(
     	SegmentAllocator allocator,
@@ -115,5 +116,5 @@ public final class CharacterMover {
     	
     	return new Vec2(segment);
     }
-    
+
 }

@@ -14,11 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.jspecify.annotations.Nullable;
 
+import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
 /// Prototype for user free function
-/// @param mem the memory previously allocated through `b2AllocFcn`
+/// @param mem the memory previously allocated through `b2AllocCallbackFcn`
+/// @param size the allocation size in bytes
 /// ```
 public abstract class FreeFcn {
 
@@ -33,7 +35,8 @@ public abstract class FreeFcn {
         CACHE = new HashMap<>();
 
         DESCRIPTION = FunctionDescriptor.ofVoid(
-            UNBOUNDED_ADDRESS
+            UNBOUNDED_ADDRESS, 
+            JAVA_LONG
         );
 
         try {
@@ -54,7 +57,8 @@ public abstract class FreeFcn {
     }
 
     public void invoke(
-        MemorySegment mem
+        MemorySegment mem,
+        long size
     ) {
         throw new UnsupportedOperationException(
             "Override either the typed or raw callback method in FreeFcn."

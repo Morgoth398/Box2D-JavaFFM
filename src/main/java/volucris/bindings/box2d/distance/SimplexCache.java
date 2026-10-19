@@ -14,56 +14,55 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Used to warm start the GJK simplex. If you call this function multiple times with nearby
-/// transforms this might improve performance. Otherwise you can zero initialize this.
-/// The distance cache must be initialized to zero on the first call.
-/// Users should generally just zero initialize this structure for each call.
+/// Used to warm start the GJK simplex. If you call b2ComputeShapeDistance multiple times with
+/// nearby transforms this might improve performance. The distance cache must be initialized to zero
+/// on the first call.
 /// ```
 public final class SimplexCache
 		implements Struct<SimplexCache> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle COUNT_HANDLE;
-    public static final VarHandle INDEX_A_HANDLE;
-    public static final VarHandle INDEX_B_HANDLE;
+	public static final VarHandle COUNT_HANDLE;
+	public static final VarHandle INDEX_A_HANDLE;
+	public static final VarHandle INDEX_B_HANDLE;
 
-    public static final long COUNT_BYTE_OFFSET;
-    public static final long INDEX_A_BYTE_OFFSET;
-    public static final long INDEX_B_BYTE_OFFSET;
+	public static final long COUNT_BYTE_OFFSET;
+	public static final long INDEX_A_BYTE_OFFSET;
+	public static final long INDEX_B_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_SHORT.withName("count"),
-            MemoryLayout.sequenceLayout(3, JAVA_BYTE).withName("indexA"),
-            MemoryLayout.sequenceLayout(3, JAVA_BYTE).withName("indexB")
-        ).withName("b2SimplexCache").withByteAlignment(2);
-        
-        COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
-        INDEX_A_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexA"), PathElement.sequenceElement());
-        INDEX_B_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexB"), PathElement.sequenceElement());
-        
-        COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
-        INDEX_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexA"));
-        INDEX_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexB"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_SHORT.withName("count"),
+		    MemoryLayout.sequenceLayout(3, JAVA_BYTE).withName("indexA"),
+		    MemoryLayout.sequenceLayout(3, JAVA_BYTE).withName("indexB")
+		).withName("b2SimplexCache").withByteAlignment(2);
+		
+		COUNT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("count"));
+		INDEX_A_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexA"), PathElement.sequenceElement());
+		INDEX_B_HANDLE = LAYOUT.varHandle(PathElement.groupElement("indexB"), PathElement.sequenceElement());
+		
+		COUNT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("count"));
+		INDEX_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexA"));
+		INDEX_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("indexB"));
+		//@formatter:on
+	}
 
-    public SimplexCache() {
-        this(Arena.ofAuto());
-    }
-    
-    public SimplexCache(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public SimplexCache(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public SimplexCache() {
+	    this(Arena.ofAuto());
+	}
+	
+	public SimplexCache(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public SimplexCache(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #count()
     public SimplexCache count(short count) {
@@ -155,5 +154,5 @@ public final class SimplexCache
             segment -> new SimplexCache(segment)
         );
     }
-    
+
 }

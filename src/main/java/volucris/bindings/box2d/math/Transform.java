@@ -19,42 +19,42 @@ import static java.lang.foreign.ValueLayout.*;
 public final class Transform
 		implements Struct<Transform> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long P_BYTE_OFFSET;
-    public static final long Q_BYTE_OFFSET;
+	public static final long P_BYTE_OFFSET;
+	public static final long Q_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 p;
-    private final Rot q;
+	private final Vec2 p;
+	private final Rot q;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("p"),
-            Rot.LAYOUT.withName("q")
-        ).withName("b2Transform").withByteAlignment(4);
-        
-        P_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("p"));
-        Q_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("p"),
+		    Rot.LAYOUT.withName("q")
+		).withName("b2Transform").withByteAlignment(4);
+		
+		P_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("p"));
+		Q_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("q"));
+		//@formatter:on
+	}
 
-    public Transform() {
-        this(Arena.ofAuto());
-    }
-    
-    public Transform(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Transform(MemorySegment segment) {
-        this.segment = segment;
-    
-        p = new Vec2(segment.asSlice(P_BYTE_OFFSET, Vec2.LAYOUT));
-        q = new Rot(segment.asSlice(Q_BYTE_OFFSET, Rot.LAYOUT));
-    }
+	public Transform() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Transform(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Transform(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    p = new Vec2(segment.asSlice(P_BYTE_OFFSET, Vec2.LAYOUT));
+	    q = new Rot(segment.asSlice(Q_BYTE_OFFSET, Rot.LAYOUT));
+	}
 
     /// @see #p()
     public Transform p(Consumer<Vec2> consumer) {
@@ -139,5 +139,5 @@ public final class Transform
             segment -> new Transform(segment)
         );
     }
-    
+
 }

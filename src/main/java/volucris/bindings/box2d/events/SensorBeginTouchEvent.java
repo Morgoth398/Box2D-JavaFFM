@@ -20,42 +20,42 @@ import static java.lang.foreign.ValueLayout.*;
 public final class SensorBeginTouchEvent
 		implements Struct<SensorBeginTouchEvent> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final long SENSOR_SHAPE_ID_BYTE_OFFSET;
-    public static final long VISITOR_SHAPE_ID_BYTE_OFFSET;
+	public static final long SENSOR_SHAPE_ID_BYTE_OFFSET;
+	public static final long VISITOR_SHAPE_ID_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeId sensorShapeId;
-    private final ShapeId visitorShapeId;
+	private final ShapeId sensorShapeId;
+	private final ShapeId visitorShapeId;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeId.LAYOUT.withName("sensorShapeId"),
-            ShapeId.LAYOUT.withName("visitorShapeId")
-        ).withName("b2SensorBeginTouchEvent").withByteAlignment(4);
-        
-        SENSOR_SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensorShapeId"));
-        VISITOR_SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("visitorShapeId"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeId.LAYOUT.withName("sensorShapeId"),
+		    ShapeId.LAYOUT.withName("visitorShapeId")
+		).withName("b2SensorBeginTouchEvent").withByteAlignment(4);
+		
+		SENSOR_SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensorShapeId"));
+		VISITOR_SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("visitorShapeId"));
+		//@formatter:on
+	}
 
-    public SensorBeginTouchEvent() {
-        this(Arena.ofAuto());
-    }
-    
-    public SensorBeginTouchEvent(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public SensorBeginTouchEvent(MemorySegment segment) {
-        this.segment = segment;
-    
-        sensorShapeId = new ShapeId(segment.asSlice(SENSOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
-        visitorShapeId = new ShapeId(segment.asSlice(VISITOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
-    }
+	public SensorBeginTouchEvent() {
+	    this(Arena.ofAuto());
+	}
+	
+	public SensorBeginTouchEvent(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public SensorBeginTouchEvent(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    sensorShapeId = new ShapeId(segment.asSlice(SENSOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
+	    visitorShapeId = new ShapeId(segment.asSlice(VISITOR_SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
+	}
 
     /// @see #sensorShapeId()
     public SensorBeginTouchEvent sensorShapeId(Consumer<ShapeId> consumer) {
@@ -89,7 +89,7 @@ public final class SensorBeginTouchEvent
     }
     
     /// ```
-    /// The id of the dynamic shape that began touching the sensor shape
+    /// The id of the shape that began touching the sensor shape
     /// ```
     public ShapeId visitorShapeId() {
     	return visitorShapeId;
@@ -146,5 +146,5 @@ public final class SensorBeginTouchEvent
             segment -> new SensorBeginTouchEvent(segment)
         );
     }
-    
+
 }

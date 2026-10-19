@@ -22,131 +22,140 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// A body definition holds all the data needed to construct a rigid body.
-/// You can safely re-use body definitions. Shapes are added to a body after construction.
-/// Body definitions are temporary objects used to bundle creation parameters.
-/// Must be initialized using b2DefaultBodyDef().
+/// A body definition holds all the data needed to construct a rigid body. You can safely re-use
+/// body definitions. Shapes are added to a body after construction. Body definitions are temporary
+/// objects used to bundle creation parameters. Must be initialized using b2DefaultBodyDef().
 /// @ingroup body
 /// ```
 public final class BodyDef
 		implements Struct<BodyDef> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_BODY_DEF;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_BODY_DEF;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle TYPE_HANDLE;
-    public static final VarHandle ANGULAR_VELOCITY_HANDLE;
-    public static final VarHandle LINEAR_DAMPING_HANDLE;
-    public static final VarHandle ANGULAR_DAMPING_HANDLE;
-    public static final VarHandle GRAVITY_SCALE_HANDLE;
-    public static final VarHandle SLEEP_THRESHOLD_HANDLE;
-    public static final VarHandle NAME_HANDLE;
-    public static final VarHandle USER_DATA_HANDLE;
-    public static final VarHandle ENABLE_SLEEP_HANDLE;
-    public static final VarHandle IS_AWAKE_HANDLE;
-    public static final VarHandle FIXED_ROTATION_HANDLE;
-    public static final VarHandle IS_BULLET_HANDLE;
-    public static final VarHandle IS_ENABLED_HANDLE;
-    public static final VarHandle ALLOW_FAST_ROTATION_HANDLE;
-    public static final VarHandle INTERNAL_VALUE_HANDLE;
+	public static final VarHandle TYPE_HANDLE;
+	public static final VarHandle ANGULAR_VELOCITY_HANDLE;
+	public static final VarHandle LINEAR_DAMPING_HANDLE;
+	public static final VarHandle ANGULAR_DAMPING_HANDLE;
+	public static final VarHandle GRAVITY_SCALE_HANDLE;
+	public static final VarHandle SLEEP_THRESHOLD_HANDLE;
+	public static final VarHandle SAFETY_FACTOR_HANDLE;
+	public static final VarHandle NAME_HANDLE;
+	public static final VarHandle USER_DATA_HANDLE;
+	public static final VarHandle ENABLE_SLEEP_HANDLE;
+	public static final VarHandle IS_AWAKE_HANDLE;
+	public static final VarHandle IS_BULLET_HANDLE;
+	public static final VarHandle IS_ENABLED_HANDLE;
+	public static final VarHandle ALLOW_FAST_ROTATION_HANDLE;
+	public static final VarHandle ENABLE_CONTACT_RECYCLING_HANDLE;
+	public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long TYPE_BYTE_OFFSET;
-    public static final long POSITION_BYTE_OFFSET;
-    public static final long ROTATION_BYTE_OFFSET;
-    public static final long LINEAR_VELOCITY_BYTE_OFFSET;
-    public static final long ANGULAR_VELOCITY_BYTE_OFFSET;
-    public static final long LINEAR_DAMPING_BYTE_OFFSET;
-    public static final long ANGULAR_DAMPING_BYTE_OFFSET;
-    public static final long GRAVITY_SCALE_BYTE_OFFSET;
-    public static final long SLEEP_THRESHOLD_BYTE_OFFSET;
-    public static final long NAME_BYTE_OFFSET;
-    public static final long USER_DATA_BYTE_OFFSET;
-    public static final long ENABLE_SLEEP_BYTE_OFFSET;
-    public static final long IS_AWAKE_BYTE_OFFSET;
-    public static final long FIXED_ROTATION_BYTE_OFFSET;
-    public static final long IS_BULLET_BYTE_OFFSET;
-    public static final long IS_ENABLED_BYTE_OFFSET;
-    public static final long ALLOW_FAST_ROTATION_BYTE_OFFSET;
-    public static final long INTERNAL_VALUE_BYTE_OFFSET;
+	public static final long TYPE_BYTE_OFFSET;
+	public static final long POSITION_BYTE_OFFSET;
+	public static final long ROTATION_BYTE_OFFSET;
+	public static final long LINEAR_VELOCITY_BYTE_OFFSET;
+	public static final long ANGULAR_VELOCITY_BYTE_OFFSET;
+	public static final long LINEAR_DAMPING_BYTE_OFFSET;
+	public static final long ANGULAR_DAMPING_BYTE_OFFSET;
+	public static final long GRAVITY_SCALE_BYTE_OFFSET;
+	public static final long SLEEP_THRESHOLD_BYTE_OFFSET;
+	public static final long SAFETY_FACTOR_BYTE_OFFSET;
+	public static final long NAME_BYTE_OFFSET;
+	public static final long USER_DATA_BYTE_OFFSET;
+	public static final long MOTION_LOCKS_BYTE_OFFSET;
+	public static final long ENABLE_SLEEP_BYTE_OFFSET;
+	public static final long IS_AWAKE_BYTE_OFFSET;
+	public static final long IS_BULLET_BYTE_OFFSET;
+	public static final long IS_ENABLED_BYTE_OFFSET;
+	public static final long ALLOW_FAST_ROTATION_BYTE_OFFSET;
+	public static final long ENABLE_CONTACT_RECYCLING_BYTE_OFFSET;
+	public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 position;
-    private final Rot rotation;
-    private final Vec2 linearVelocity;
+	private final Vec2 position;
+	private final Rot rotation;
+	private final Vec2 linearVelocity;
+	private final MotionLocks motionLocks;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_INT.withName("type"),
-            Vec2.LAYOUT.withName("position"),
-            Rot.LAYOUT.withName("rotation"),
-            Vec2.LAYOUT.withName("linearVelocity"),
-            JAVA_FLOAT.withName("angularVelocity"),
-            JAVA_FLOAT.withName("linearDamping"),
-            JAVA_FLOAT.withName("angularDamping"),
-            JAVA_FLOAT.withName("gravityScale"),
-            JAVA_FLOAT.withName("sleepThreshold"),
-            UNBOUNDED_ADDRESS.withName("name"),
-            UNBOUNDED_ADDRESS.withName("userData"),
-            JAVA_BOOLEAN.withName("enableSleep"),
-            JAVA_BOOLEAN.withName("isAwake"),
-            JAVA_BOOLEAN.withName("fixedRotation"),
-            JAVA_BOOLEAN.withName("isBullet"),
-            JAVA_BOOLEAN.withName("isEnabled"),
-            JAVA_BOOLEAN.withName("allowFastRotation"),
-            MemoryLayout.paddingLayout(2),
-            JAVA_INT.withName("internalValue"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2BodyDef").withByteAlignment(8);
-        
-        B2_DEFAULT_BODY_DEF = downcallHandle("b2DefaultBodyDef", BodyDef.LAYOUT);
-        
-        TYPE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("type"));
-        ANGULAR_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularVelocity"));
-        LINEAR_DAMPING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearDamping"));
-        ANGULAR_DAMPING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularDamping"));
-        GRAVITY_SCALE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("gravityScale"));
-        SLEEP_THRESHOLD_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sleepThreshold"));
-        NAME_HANDLE = LAYOUT.varHandle(PathElement.groupElement("name"));
-        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        ENABLE_SLEEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableSleep"));
-        IS_AWAKE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isAwake"));
-        FIXED_ROTATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fixedRotation"));
-        IS_BULLET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isBullet"));
-        IS_ENABLED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isEnabled"));
-        ALLOW_FAST_ROTATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("allowFastRotation"));
-        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
-        
-        TYPE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("type"));
-        POSITION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
-        ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotation"));
-        LINEAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
-        ANGULAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularVelocity"));
-        LINEAR_DAMPING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDamping"));
-        ANGULAR_DAMPING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDamping"));
-        GRAVITY_SCALE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("gravityScale"));
-        SLEEP_THRESHOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sleepThreshold"));
-        NAME_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("name"));
-        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        ENABLE_SLEEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSleep"));
-        IS_AWAKE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isAwake"));
-        FIXED_ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fixedRotation"));
-        IS_BULLET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isBullet"));
-        IS_ENABLED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isEnabled"));
-        ALLOW_FAST_ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("allowFastRotation"));
-        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_INT.withName("type"),
+		    Vec2.LAYOUT.withName("position"),
+		    Rot.LAYOUT.withName("rotation"),
+		    Vec2.LAYOUT.withName("linearVelocity"),
+		    JAVA_FLOAT.withName("angularVelocity"),
+		    JAVA_FLOAT.withName("linearDamping"),
+		    JAVA_FLOAT.withName("angularDamping"),
+		    JAVA_FLOAT.withName("gravityScale"),
+		    JAVA_FLOAT.withName("sleepThreshold"),
+		    JAVA_FLOAT.withName("safetyFactor"),
+		    MemoryLayout.paddingLayout(4),
+		    UNBOUNDED_ADDRESS.withName("name"),
+		    UNBOUNDED_ADDRESS.withName("userData"),
+		    MotionLocks.LAYOUT.withName("motionLocks"),
+		    JAVA_BOOLEAN.withName("enableSleep"),
+		    JAVA_BOOLEAN.withName("isAwake"),
+		    JAVA_BOOLEAN.withName("isBullet"),
+		    JAVA_BOOLEAN.withName("isEnabled"),
+		    JAVA_BOOLEAN.withName("allowFastRotation"),
+		    JAVA_BOOLEAN.withName("enableContactRecycling"),
+		    MemoryLayout.paddingLayout(3),
+		    JAVA_INT.withName("internalValue")
+		).withName("b2BodyDef").withByteAlignment(8);
+		
+		B2_DEFAULT_BODY_DEF = downcallHandle("b2DefaultBodyDef", BodyDef.LAYOUT);
+		
+		TYPE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("type"));
+		ANGULAR_VELOCITY_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularVelocity"));
+		LINEAR_DAMPING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearDamping"));
+		ANGULAR_DAMPING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularDamping"));
+		GRAVITY_SCALE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("gravityScale"));
+		SLEEP_THRESHOLD_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sleepThreshold"));
+		SAFETY_FACTOR_HANDLE = LAYOUT.varHandle(PathElement.groupElement("safetyFactor"));
+		NAME_HANDLE = LAYOUT.varHandle(PathElement.groupElement("name"));
+		USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
+		ENABLE_SLEEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableSleep"));
+		IS_AWAKE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isAwake"));
+		IS_BULLET_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isBullet"));
+		IS_ENABLED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("isEnabled"));
+		ALLOW_FAST_ROTATION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("allowFastRotation"));
+		ENABLE_CONTACT_RECYCLING_HANDLE = LAYOUT.varHandle(PathElement.groupElement("enableContactRecycling"));
+		INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+		
+		TYPE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("type"));
+		POSITION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("position"));
+		ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("rotation"));
+		LINEAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearVelocity"));
+		ANGULAR_VELOCITY_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularVelocity"));
+		LINEAR_DAMPING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDamping"));
+		ANGULAR_DAMPING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDamping"));
+		GRAVITY_SCALE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("gravityScale"));
+		SLEEP_THRESHOLD_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sleepThreshold"));
+		SAFETY_FACTOR_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("safetyFactor"));
+		NAME_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("name"));
+		USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
+		MOTION_LOCKS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("motionLocks"));
+		ENABLE_SLEEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableSleep"));
+		IS_AWAKE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isAwake"));
+		IS_BULLET_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isBullet"));
+		IS_ENABLED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("isEnabled"));
+		ALLOW_FAST_ROTATION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("allowFastRotation"));
+		ENABLE_CONTACT_RECYCLING_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("enableContactRecycling"));
+		INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+		//@formatter:on
+	}
 
-    public BodyDef(MemorySegment segment) {
-        this.segment = segment;
-    
-        position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
-        rotation = new Rot(segment.asSlice(ROTATION_BYTE_OFFSET, Rot.LAYOUT));
-        linearVelocity = new Vec2(segment.asSlice(LINEAR_VELOCITY_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public BodyDef(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    position = new Vec2(segment.asSlice(POSITION_BYTE_OFFSET, Vec2.LAYOUT));
+	    rotation = new Rot(segment.asSlice(ROTATION_BYTE_OFFSET, Rot.LAYOUT));
+	    linearVelocity = new Vec2(segment.asSlice(LINEAR_VELOCITY_BYTE_OFFSET, Vec2.LAYOUT));
+	    motionLocks = new MotionLocks(segment.asSlice(MOTION_LOCKS_BYTE_OFFSET, MotionLocks.LAYOUT));
+	}
 
     /// ```
     /// Use this to initialize your body definition
@@ -192,209 +201,6 @@ public final class BodyDef
     	return (int) TYPE_HANDLE.get(segment, 0L);
     }
     
-    /// @see #angularVelocity()
-    public BodyDef angularVelocity(float angularVelocity) {
-    	ANGULAR_VELOCITY_HANDLE.set(segment, 0L, angularVelocity);
-    	return this;
-    }
-    
-    /// ```
-    /// The initial angular velocity of the body. Radians per second.
-    /// ```
-    public float angularVelocity() {
-    	return (float) ANGULAR_VELOCITY_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #linearDamping()
-    public BodyDef linearDamping(float linearDamping) {
-    	LINEAR_DAMPING_HANDLE.set(segment, 0L, linearDamping);
-    	return this;
-    }
-    
-    /// ```
-    /// Linear damping is used to reduce the linear velocity. The damping parameter
-    /// can be larger than 1 but the damping effect becomes sensitive to the
-    /// time step when the damping parameter is large.
-    /// Generally linear damping is undesirable because it makes objects move slowly
-    /// as if they are floating.
-    /// ```
-    public float linearDamping() {
-    	return (float) LINEAR_DAMPING_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #angularDamping()
-    public BodyDef angularDamping(float angularDamping) {
-    	ANGULAR_DAMPING_HANDLE.set(segment, 0L, angularDamping);
-    	return this;
-    }
-    
-    /// ```
-    /// Angular damping is used to reduce the angular velocity. The damping parameter
-    /// can be larger than 1.0f but the damping effect becomes sensitive to the
-    /// time step when the damping parameter is large.
-    /// Angular damping can be use slow down rotating bodies.
-    /// ```
-    public float angularDamping() {
-    	return (float) ANGULAR_DAMPING_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #gravityScale()
-    public BodyDef gravityScale(float gravityScale) {
-    	GRAVITY_SCALE_HANDLE.set(segment, 0L, gravityScale);
-    	return this;
-    }
-    
-    /// ```
-    /// Scale the gravity applied to this body. Non-dimensional.
-    /// ```
-    public float gravityScale() {
-    	return (float) GRAVITY_SCALE_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #sleepThreshold()
-    public BodyDef sleepThreshold(float sleepThreshold) {
-    	SLEEP_THRESHOLD_HANDLE.set(segment, 0L, sleepThreshold);
-    	return this;
-    }
-    
-    /// ```
-    /// Sleep speed threshold, default is 0.05 meters per second
-    /// ```
-    public float sleepThreshold() {
-    	return (float) SLEEP_THRESHOLD_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #name()
-    public BodyDef name(NativeByteArray name) {
-    	NAME_HANDLE.set(segment, 0L, name.memorySegment());
-    	return this;
-    }
-    
-    /// ```
-    /// Optional body name for debugging. Up to 31 characters (excluding null termination)
-    /// ```
-    public @Nullable NativeByteArray name() {
-    	MemorySegment segment = (MemorySegment) NAME_HANDLE.get(this.segment, 0L);
-    
-    	if (segment.equals(MemorySegment.NULL))
-    		return null;
-    	
-    	return new NativeByteArray(segment);
-    }
-    
-    /// @see #userData()
-    public BodyDef userData(MemorySegment userData) {
-    	USER_DATA_HANDLE.set(segment, 0L, userData);
-    	return this;
-    }
-    
-    /// ```
-    /// Use this to store application specific body data.
-    /// ```
-    public @Nullable MemorySegment userData() {
-    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
-    
-    	if (segment.equals(MemorySegment.NULL))
-    		return null;
-    	
-    	return segment;
-    }
-    
-    /// @see #enableSleep()
-    public BodyDef enableSleep(boolean enableSleep) {
-    	ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
-    	return this;
-    }
-    
-    /// ```
-    /// Set this flag to false if this body should never fall asleep.
-    /// ```
-    public boolean enableSleep() {
-    	return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #isAwake()
-    public BodyDef isAwake(boolean isAwake) {
-    	IS_AWAKE_HANDLE.set(segment, 0L, isAwake);
-    	return this;
-    }
-    
-    /// ```
-    /// Is this body initially awake or sleeping?
-    /// ```
-    public boolean isAwake() {
-    	return (boolean) IS_AWAKE_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #fixedRotation()
-    public BodyDef fixedRotation(boolean fixedRotation) {
-    	FIXED_ROTATION_HANDLE.set(segment, 0L, fixedRotation);
-    	return this;
-    }
-    
-    /// ```
-    /// Should this body be prevented from rotating? Useful for characters.
-    /// ```
-    public boolean fixedRotation() {
-    	return (boolean) FIXED_ROTATION_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #isBullet()
-    public BodyDef isBullet(boolean isBullet) {
-    	IS_BULLET_HANDLE.set(segment, 0L, isBullet);
-    	return this;
-    }
-    
-    /// ```
-    /// Treat this body as high speed object that performs continuous collision detection
-    /// against dynamic and kinematic bodies, but not other bullet bodies.
-    /// @warning Bullets should be used sparingly. They are not a solution for general dynamic-versus-dynamic
-    /// continuous collision. They may interfere with joint constraints.
-    /// ```
-    public boolean isBullet() {
-    	return (boolean) IS_BULLET_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #isEnabled()
-    public BodyDef isEnabled(boolean isEnabled) {
-    	IS_ENABLED_HANDLE.set(segment, 0L, isEnabled);
-    	return this;
-    }
-    
-    /// ```
-    /// Used to disable a body. A disabled body does not move or collide.
-    /// ```
-    public boolean isEnabled() {
-    	return (boolean) IS_ENABLED_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #allowFastRotation()
-    public BodyDef allowFastRotation(boolean allowFastRotation) {
-    	ALLOW_FAST_ROTATION_HANDLE.set(segment, 0L, allowFastRotation);
-    	return this;
-    }
-    
-    /// ```
-    /// This allows this body to bypass rotational speed limits. Should only be used
-    /// for circular objects, like wheels.
-    /// ```
-    public boolean allowFastRotation() {
-    	return (boolean) ALLOW_FAST_ROTATION_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #internalValue()
-    public BodyDef internalValue(int internalValue) {
-    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
-    	return this;
-    }
-    
-    /// ```
-    /// Used internally to detect a valid definition. DO NOT SET.
-    /// ```
-    public int internalValue() {
-    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #position()
     public BodyDef position(Consumer<Vec2> consumer) {
     	consumer.accept(position);
@@ -409,8 +215,8 @@ public final class BodyDef
     
     /// ```
     /// The initial world position of the body. Bodies should be created with the desired position.
-    /// @note Creating bodies at the origin and then moving them nearly doubles the cost of body creation, especially
-    /// if the body is moved after shapes have been added.
+    /// @note Creating bodies at the origin and then moving them nearly doubles the cost of body
+    /// creation, especially if the body is moved after shapes have been added.
     /// ```
     public Vec2 position() {
     	return position;
@@ -452,6 +258,257 @@ public final class BodyDef
     /// ```
     public Vec2 linearVelocity() {
     	return linearVelocity;
+    }
+    
+    /// @see #angularVelocity()
+    public BodyDef angularVelocity(float angularVelocity) {
+    	ANGULAR_VELOCITY_HANDLE.set(segment, 0L, angularVelocity);
+    	return this;
+    }
+    
+    /// ```
+    /// The initial angular velocity of the body. Radians per second.
+    /// ```
+    public float angularVelocity() {
+    	return (float) ANGULAR_VELOCITY_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #linearDamping()
+    public BodyDef linearDamping(float linearDamping) {
+    	LINEAR_DAMPING_HANDLE.set(segment, 0L, linearDamping);
+    	return this;
+    }
+    
+    /// ```
+    /// Linear damping is used to reduce the linear velocity. The damping parameter can be larger
+    /// than 1 but the damping effect becomes sensitive to the time step when the damping parameter
+    /// is large. Generally linear damping is undesirable because it makes objects move slowly as if
+    /// they are floating.
+    /// ```
+    public float linearDamping() {
+    	return (float) LINEAR_DAMPING_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #angularDamping()
+    public BodyDef angularDamping(float angularDamping) {
+    	ANGULAR_DAMPING_HANDLE.set(segment, 0L, angularDamping);
+    	return this;
+    }
+    
+    /// ```
+    /// Angular damping is used to reduce the angular velocity. The damping parameter can be larger
+    /// than 1.0f but the damping effect becomes sensitive to the time step when the damping
+    /// parameter is large. Angular damping can be used to slow down rotating bodies.
+    /// ```
+    public float angularDamping() {
+    	return (float) ANGULAR_DAMPING_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #gravityScale()
+    public BodyDef gravityScale(float gravityScale) {
+    	GRAVITY_SCALE_HANDLE.set(segment, 0L, gravityScale);
+    	return this;
+    }
+    
+    /// ```
+    /// Scale the gravity applied to this body. Non-dimensional.
+    /// ```
+    public float gravityScale() {
+    	return (float) GRAVITY_SCALE_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #sleepThreshold()
+    public BodyDef sleepThreshold(float sleepThreshold) {
+    	SLEEP_THRESHOLD_HANDLE.set(segment, 0L, sleepThreshold);
+    	return this;
+    }
+    
+    /// ```
+    /// Sleep speed threshold, default is 0.05 meters per second
+    /// ```
+    public float sleepThreshold() {
+    	return (float) SLEEP_THRESHOLD_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #safetyFactor()
+    public BodyDef safetyFactor(float safetyFactor) {
+    	SAFETY_FACTOR_HANDLE.set(segment, 0L, safetyFactor);
+    	return this;
+    }
+    
+    /// ```
+    /// Continuous collision safety factor. The solver only uses continuous collision if there is a
+    /// risk of tunneling. If the body is moving fast enough to risk tunneling then it is considered
+    /// a "fast body". This improves performance and prevents movement hitches. If a body moving N
+    /// meters risks tunneling, then the body will be considered fast if it moves more than a
+    /// safetyFactor times N meters over one full time step. Non-dimensional. Recommended range
+    /// [0.01, 0.5]. Default is 0.5 for high performance with low tunneling risk.
+    /// ```
+    public float safetyFactor() {
+    	return (float) SAFETY_FACTOR_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #name()
+    public BodyDef name(NativeByteArray name) {
+    	NAME_HANDLE.set(segment, 0L, name.memorySegment());
+    	return this;
+    }
+    
+    /// ```
+    /// Optional body name for debugging. Up to B2_NAME_LENGTH characters
+    /// ```
+    public @Nullable NativeByteArray name() {
+    	MemorySegment segment = (MemorySegment) NAME_HANDLE.get(this.segment, 0L);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return new NativeByteArray(segment);
+    }
+    
+    /// @see #userData()
+    public BodyDef userData(MemorySegment userData) {
+    	USER_DATA_HANDLE.set(segment, 0L, userData);
+    	return this;
+    }
+    
+    /// ```
+    /// Use this to store application specific body data.
+    /// ```
+    public @Nullable MemorySegment userData() {
+    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
+    
+    	if (segment.equals(MemorySegment.NULL))
+    		return null;
+    	
+    	return segment;
+    }
+    
+    /// @see #motionLocks()
+    public BodyDef motionLocks(Consumer<MotionLocks> consumer) {
+    	consumer.accept(motionLocks);
+    	return this;
+    }
+    
+    /// @see #motionLocks()
+    public BodyDef motionLocks(MotionLocks other) {
+    	motionLocks.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// Motion locks to restrict linear and angular movement. Caution: may lead to softer
+    /// constraints along the locked direction
+    /// ```
+    public MotionLocks motionLocks() {
+    	return motionLocks;
+    }
+    
+    /// @see #enableSleep()
+    public BodyDef enableSleep(boolean enableSleep) {
+    	ENABLE_SLEEP_HANDLE.set(segment, 0L, enableSleep);
+    	return this;
+    }
+    
+    /// ```
+    /// Set this flag to false if this body should never fall asleep.
+    /// ```
+    public boolean enableSleep() {
+    	return (boolean) ENABLE_SLEEP_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #isAwake()
+    public BodyDef isAwake(boolean isAwake) {
+    	IS_AWAKE_HANDLE.set(segment, 0L, isAwake);
+    	return this;
+    }
+    
+    /// ```
+    /// Is this body initially awake or sleeping?
+    /// ```
+    public boolean isAwake() {
+    	return (boolean) IS_AWAKE_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #isBullet()
+    public BodyDef isBullet(boolean isBullet) {
+    	IS_BULLET_HANDLE.set(segment, 0L, isBullet);
+    	return this;
+    }
+    
+    /// ```
+    /// Treat this dynamic body as a high speed object that performs continuous collision detection
+    /// against dynamic and kinematic bodies, but not other bullet bodies.
+    /// @warning Bullets should be used sparingly. They are not a solution for general
+    /// dynamic-versus-dynamic continuous collision. They do not guarantee accurate collision if
+    /// both bodies are fast moving because the bullet does a continuous check after all non-bullet
+    /// bodies have moved. You could get unlucky and have the bullet body end a time step very close
+    /// to a non-bullet body and the non-bullet body then moves over the bullet body. In continuous
+    /// collision, initial overlap is ignored to avoid freezing bodies in place. I do not recommend
+    /// using them for game projectiles if precise collision timing is needed. Instead consider
+    /// using a ray or shape cast. You can use a marching ray or shape cast for a projectile that
+    /// moves over time. If you want a fast moving projectile to collide with a fast moving target,
+    /// you need to consider the relative movement in your ray or shape cast. This is out of the
+    /// scope of Box2D. So what are good use cases for bullets? Pinball games or games with dynamic
+    /// containers that hold other objects. It should be a use case where it doesn't break the game
+    /// if there is a collision missed, but having them captured improves the quality of the game.
+    /// ```
+    public boolean isBullet() {
+    	return (boolean) IS_BULLET_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #isEnabled()
+    public BodyDef isEnabled(boolean isEnabled) {
+    	IS_ENABLED_HANDLE.set(segment, 0L, isEnabled);
+    	return this;
+    }
+    
+    /// ```
+    /// Used to disable a body. A disabled body does not move or collide.
+    /// ```
+    public boolean isEnabled() {
+    	return (boolean) IS_ENABLED_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #allowFastRotation()
+    public BodyDef allowFastRotation(boolean allowFastRotation) {
+    	ALLOW_FAST_ROTATION_HANDLE.set(segment, 0L, allowFastRotation);
+    	return this;
+    }
+    
+    /// ```
+    /// This allows this body to bypass rotational speed limits. Should only be used for circular
+    /// objects, like wheels.
+    /// ```
+    public boolean allowFastRotation() {
+    	return (boolean) ALLOW_FAST_ROTATION_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #enableContactRecycling()
+    public BodyDef enableContactRecycling(boolean enableContactRecycling) {
+    	ENABLE_CONTACT_RECYCLING_HANDLE.set(segment, 0L, enableContactRecycling);
+    	return this;
+    }
+    
+    /// ```
+    /// Enable contact recycling. True by default. Leaving this enabled improves performance but may
+    /// lead to ghost collisions that should be avoided on characters.
+    /// ```
+    public boolean enableContactRecycling() {
+    	return (boolean) ENABLE_CONTACT_RECYCLING_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #internalValue()
+    public BodyDef internalValue(int internalValue) {
+    	INTERNAL_VALUE_HANDLE.set(segment, 0L, internalValue);
+    	return this;
+    }
+    
+    /// ```
+    /// Used internally to detect a valid definition. DO NOT SET.
+    /// ```
+    public int internalValue() {
+    	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -505,5 +562,5 @@ public final class BodyDef
             segment -> new BodyDef(segment)
         );
     }
-    
+
 }

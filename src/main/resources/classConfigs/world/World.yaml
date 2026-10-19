@@ -15,6 +15,7 @@ imports:
   - volucris.bindings.box2d.events.BodyEvents
   - volucris.bindings.box2d.events.SensorEvents
   - volucris.bindings.box2d.events.ContactEvents
+  - volucris.bindings.box2d.events.JointEvents
   - volucris.bindings.box2d.dynamicTree.TreeStats
   - volucris.bindings.box2d.math.AABB
   - volucris.bindings.box2d.math.Vec2
@@ -22,9 +23,9 @@ imports:
   - volucris.bindings.box2d.Profile
   - volucris.bindings.box2d.geometry.ShapeProxy
   - volucris.bindings.box2d.geometry.Capsule
+  - volucris.bindings.box2d.world.debug.DebugDraw
+  - volucris.bindings.box2d.recording.Recording
 static-imports:
-  - java.lang.foreign.ValueLayout.*
-  - volucris.bindings.core.FFMUtils.*
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:
@@ -46,4 +47,5 @@ struct:
 native-functions:
   - name: b2CreateWorld
   - name: b2DestroyWorld
+  - name: b2CreateWorldFromSnapshot
 native-function-pointers:

@@ -8,116 +8,132 @@ callbacks:
     directory: src/main/java/volucris/bindings/box2d/dynamicTree
     imports:
       - volucris.bindings.box2d.geometry.RayCastInput
-  - name: b2TreeShapeCastCallbackFcn
+  - name: b2TreeBoxCastCallbackFcn
     package-name: volucris.bindings.box2d.dynamicTree
     directory: src/main/java/volucris/bindings/box2d/dynamicTree
     imports:
-      - volucris.bindings.box2d.geometry.ShapeCastInput
 
-  - name: b2TaskCallback
+  - name: b2TaskCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     add-typed-method: false
-  - name: b2EnqueueTaskCallback
+  - name: b2EnqueueTaskCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     add-typed-method: false
-  - name: b2FinishTaskCallback
+  - name: b2FinishTaskCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     add-typed-method: false
-  - name: b2FrictionCallback
+  - name: b2FrictionCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     add-typed-method: false
-  - name: b2RestitutionCallback
+  - name: b2RestitutionCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     add-typed-method: false
-  - name: b2CustomFilterFcn
+  - name: b2CustomFilterCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports:
       - volucris.bindings.box2d.shape.ShapeId
-  - name: b2PreSolveFcn
+  - name: b2PreSolveCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports:
       - volucris.bindings.box2d.shape.ShapeId
       - volucris.bindings.box2d.collision.Manifold
-  - name: b2OverlapResultFcn
+  - name: b2PreContinuousCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports:
       - volucris.bindings.box2d.shape.ShapeId
-  - name: b2CastResultFcn
+      - volucris.bindings.box2d.math.Vec2
+  - name: b2OverlapResultCallbackFcn
+    package-name: volucris.bindings.box2d.world
+    directory: src/main/java/volucris/bindings/box2d/world
+    imports:
+      - volucris.bindings.box2d.shape.ShapeId
+  - name: b2CastResultCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world
     imports: 
       - volucris.bindings.box2d.shape.ShapeId
       - volucris.bindings.box2d.math.Vec2
 
-  - name: b2AllocFcn
+  - name: b2AllocCallbackFcn
     package-name: volucris.bindings.box2d
     directory: src/main/java/volucris/bindings/box2d
     add-typed-method: false
-  - name: b2FreeFcn
+  - name: b2FreeCallbackFcn
     package-name: volucris.bindings.box2d
     directory: src/main/java/volucris/bindings/box2d
     add-typed-method: false
-  - name: b2AssertFcn
+  - name: b2AssertCallbackFcn
+    package-name: volucris.bindings.box2d
+    directory: src/main/java/volucris/bindings/box2d
+  - name: b2LogCallbackFcn
     package-name: volucris.bindings.box2d
     directory: src/main/java/volucris/bindings/box2d
 
   - name: b2DebugDraw_DrawPolygonFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports: 
       - volucris.bindings.box2d.math.Vec2
+      - volucris.bindings.box2d.math.Transform
   - name: b2DebugDraw_DrawSolidPolygonFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports:
       - volucris.bindings.box2d.math.Transform
       - volucris.bindings.box2d.math.Vec2
   - name: b2DebugDraw_DrawCircleFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports: 
       - volucris.bindings.box2d.math.Vec2
   - name: b2DebugDraw_DrawSolidCircleFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports:
       - volucris.bindings.box2d.math.Transform
+      - volucris.bindings.box2d.math.Vec2
   - name: b2DebugDraw_DrawSolidCapsuleFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports: 
       - volucris.bindings.box2d.math.Vec2
-  - name: b2DebugDraw_DrawSegmentFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+  - name: b2DebugDraw_DrawLineFcn
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports: 
       - volucris.bindings.box2d.math.Vec2
   - name: b2DebugDraw_DrawTransformFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports: 
       - volucris.bindings.box2d.math.Transform
   - name: b2DebugDraw_DrawPointFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports: 
       - volucris.bindings.box2d.math.Vec2
   - name: b2DebugDraw_DrawStringFcn
-    package-name: volucris.bindings.box2d.world
-    directory: src/main/java/volucris/bindings/box2d/world
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
     imports:
       - volucris.bindings.box2d.math.Vec2
     string-parameters:
       - s
-  - name: b2PlaneResultFcn
+  - name: b2DebugDraw_DrawBoundsFcn
+    package-name: volucris.bindings.box2d.world.debug
+    directory: src/main/java/volucris/bindings/box2d/world/debug
+    imports:
+      - volucris.bindings.box2d.math.AABB
+      
+  - name: b2PlaneResultCallbackFcn
     package-name: volucris.bindings.box2d.world
     directory: src/main/java/volucris/bindings/box2d/world  
     imports:

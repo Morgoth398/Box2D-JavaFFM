@@ -21,60 +21,98 @@ import static java.lang.foreign.ValueLayout.*;
 public final class SegmentDistanceResult
 		implements Struct<SegmentDistanceResult> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRACTION1_HANDLE;
-    public static final VarHandle FRACTION2_HANDLE;
-    public static final VarHandle DISTANCE_SQUARED_HANDLE;
+	public static final VarHandle FRACTION1_HANDLE;
+	public static final VarHandle FRACTION2_HANDLE;
+	public static final VarHandle DISTANCE_SQUARED_HANDLE;
 
-    public static final long CLOSEST1_BYTE_OFFSET;
-    public static final long CLOSEST2_BYTE_OFFSET;
-    public static final long FRACTION1_BYTE_OFFSET;
-    public static final long FRACTION2_BYTE_OFFSET;
-    public static final long DISTANCE_SQUARED_BYTE_OFFSET;
+	public static final long CLOSEST1_BYTE_OFFSET;
+	public static final long CLOSEST2_BYTE_OFFSET;
+	public static final long FRACTION1_BYTE_OFFSET;
+	public static final long FRACTION2_BYTE_OFFSET;
+	public static final long DISTANCE_SQUARED_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 closest1;
-    private final Vec2 closest2;
+	private final Vec2 closest1;
+	private final Vec2 closest2;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("closest1"),
-            Vec2.LAYOUT.withName("closest2"),
-            JAVA_FLOAT.withName("fraction1"),
-            JAVA_FLOAT.withName("fraction2"),
-            JAVA_FLOAT.withName("distanceSquared")
-        ).withName("b2SegmentDistanceResult").withByteAlignment(4);
-        
-        FRACTION1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction1"));
-        FRACTION2_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction2"));
-        DISTANCE_SQUARED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("distanceSquared"));
-        
-        CLOSEST1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest1"));
-        CLOSEST2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest2"));
-        FRACTION1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction1"));
-        FRACTION2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction2"));
-        DISTANCE_SQUARED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distanceSquared"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("closest1"),
+		    Vec2.LAYOUT.withName("closest2"),
+		    JAVA_FLOAT.withName("fraction1"),
+		    JAVA_FLOAT.withName("fraction2"),
+		    JAVA_FLOAT.withName("distanceSquared")
+		).withName("b2SegmentDistanceResult").withByteAlignment(4);
+		
+		FRACTION1_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction1"));
+		FRACTION2_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction2"));
+		DISTANCE_SQUARED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("distanceSquared"));
+		
+		CLOSEST1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest1"));
+		CLOSEST2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("closest2"));
+		FRACTION1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction1"));
+		FRACTION2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction2"));
+		DISTANCE_SQUARED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("distanceSquared"));
+		//@formatter:on
+	}
 
-    public SegmentDistanceResult() {
-        this(Arena.ofAuto());
+	public SegmentDistanceResult() {
+	    this(Arena.ofAuto());
+	}
+	
+	public SegmentDistanceResult(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public SegmentDistanceResult(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    closest1 = new Vec2(segment.asSlice(CLOSEST1_BYTE_OFFSET, Vec2.LAYOUT));
+	    closest2 = new Vec2(segment.asSlice(CLOSEST2_BYTE_OFFSET, Vec2.LAYOUT));
+	}
+
+    /// @see #closest1()
+    public SegmentDistanceResult closest1(Consumer<Vec2> consumer) {
+    	consumer.accept(closest1);
+    	return this;
     }
     
-    public SegmentDistanceResult(Arena arena) {
-        this(arena.allocate(LAYOUT));
+    /// @see #closest1()
+    public SegmentDistanceResult closest1(Vec2 other) {
+    	closest1.set(other);
+    	return this;
     }
     
-    public SegmentDistanceResult(MemorySegment segment) {
-        this.segment = segment;
-    
-        closest1 = new Vec2(segment.asSlice(CLOSEST1_BYTE_OFFSET, Vec2.LAYOUT));
-        closest2 = new Vec2(segment.asSlice(CLOSEST2_BYTE_OFFSET, Vec2.LAYOUT));
+    /// ```
+    /// The closest point on the first segment
+    /// ```
+    public Vec2 closest1() {
+    	return closest1;
     }
-
+    
+    /// @see #closest2()
+    public SegmentDistanceResult closest2(Consumer<Vec2> consumer) {
+    	consumer.accept(closest2);
+    	return this;
+    }
+    
+    /// @see #closest2()
+    public SegmentDistanceResult closest2(Vec2 other) {
+    	closest2.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// The closest point on the second segment
+    /// ```
+    public Vec2 closest2() {
+    	return closest2;
+    }
+    
     /// @see #fraction1()
     public SegmentDistanceResult fraction1(float fraction1) {
     	FRACTION1_HANDLE.set(segment, 0L, fraction1);
@@ -112,44 +150,6 @@ public final class SegmentDistanceResult
     /// ```
     public float distanceSquared() {
     	return (float) DISTANCE_SQUARED_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #closest1()
-    public SegmentDistanceResult closest1(Consumer<Vec2> consumer) {
-    	consumer.accept(closest1);
-    	return this;
-    }
-    
-    /// @see #closest1()
-    public SegmentDistanceResult closest1(Vec2 other) {
-    	closest1.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The closest point on the first segment
-    /// ```
-    public Vec2 closest1() {
-    	return closest1;
-    }
-    
-    /// @see #closest2()
-    public SegmentDistanceResult closest2(Consumer<Vec2> consumer) {
-    	consumer.accept(closest2);
-    	return this;
-    }
-    
-    /// @see #closest2()
-    public SegmentDistanceResult closest2(Vec2 other) {
-    	closest2.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The closest point on the second segment
-    /// ```
-    public Vec2 closest2() {
-    	return closest2;
     }
     
     @Override
@@ -203,5 +203,5 @@ public final class SegmentDistanceResult
             segment -> new SegmentDistanceResult(segment)
         );
     }
-    
+
 }

@@ -14,149 +14,154 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// @cond
 /// Profiling data. Times are in milliseconds.
+/// @ingroup world
 /// ```
 public final class Profile
 		implements Struct<Profile> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle STEP_HANDLE;
-    public static final VarHandle PAIRS_HANDLE;
-    public static final VarHandle COLLIDE_HANDLE;
-    public static final VarHandle SOLVE_HANDLE;
-    public static final VarHandle MERGE_ISLANDS_HANDLE;
-    public static final VarHandle PREPARE_STAGES_HANDLE;
-    public static final VarHandle SOLVE_CONSTRAINTS_HANDLE;
-    public static final VarHandle PREPARE_CONSTRAINTS_HANDLE;
-    public static final VarHandle INTEGRATE_VELOCITIES_HANDLE;
-    public static final VarHandle WARM_START_HANDLE;
-    public static final VarHandle SOLVE_IMPULSES_HANDLE;
-    public static final VarHandle INTEGRATE_POSITIONS_HANDLE;
-    public static final VarHandle RELAX_IMPULSES_HANDLE;
-    public static final VarHandle APPLY_RESTITUTION_HANDLE;
-    public static final VarHandle STORE_IMPULSES_HANDLE;
-    public static final VarHandle SPLIT_ISLANDS_HANDLE;
-    public static final VarHandle TRANSFORMS_HANDLE;
-    public static final VarHandle HIT_EVENTS_HANDLE;
-    public static final VarHandle REFIT_HANDLE;
-    public static final VarHandle BULLETS_HANDLE;
-    public static final VarHandle SLEEP_ISLANDS_HANDLE;
-    public static final VarHandle SENSORS_HANDLE;
+	public static final VarHandle STEP_HANDLE;
+	public static final VarHandle PAIRS_HANDLE;
+	public static final VarHandle COLLIDE_HANDLE;
+	public static final VarHandle SOLVE_HANDLE;
+	public static final VarHandle SOLVER_SETUP_HANDLE;
+	public static final VarHandle CONSTRAINTS_HANDLE;
+	public static final VarHandle PREPARE_CONSTRAINTS_HANDLE;
+	public static final VarHandle INTEGRATE_VELOCITIES_HANDLE;
+	public static final VarHandle WARM_START_HANDLE;
+	public static final VarHandle SOLVE_IMPULSES_HANDLE;
+	public static final VarHandle INTEGRATE_POSITIONS_HANDLE;
+	public static final VarHandle RELAX_IMPULSES_HANDLE;
+	public static final VarHandle RESTITUTION_HANDLE;
+	public static final VarHandle STORE_IMPULSES_HANDLE;
+	public static final VarHandle SPLIT_ISLANDS_HANDLE;
+	public static final VarHandle TRANSFORMS_HANDLE;
+	public static final VarHandle SENSOR_HITS_HANDLE;
+	public static final VarHandle JOINT_EVENTS_HANDLE;
+	public static final VarHandle HIT_EVENTS_HANDLE;
+	public static final VarHandle REFIT_HANDLE;
+	public static final VarHandle BULLETS_HANDLE;
+	public static final VarHandle SLEEP_ISLANDS_HANDLE;
+	public static final VarHandle SENSORS_HANDLE;
 
-    public static final long STEP_BYTE_OFFSET;
-    public static final long PAIRS_BYTE_OFFSET;
-    public static final long COLLIDE_BYTE_OFFSET;
-    public static final long SOLVE_BYTE_OFFSET;
-    public static final long MERGE_ISLANDS_BYTE_OFFSET;
-    public static final long PREPARE_STAGES_BYTE_OFFSET;
-    public static final long SOLVE_CONSTRAINTS_BYTE_OFFSET;
-    public static final long PREPARE_CONSTRAINTS_BYTE_OFFSET;
-    public static final long INTEGRATE_VELOCITIES_BYTE_OFFSET;
-    public static final long WARM_START_BYTE_OFFSET;
-    public static final long SOLVE_IMPULSES_BYTE_OFFSET;
-    public static final long INTEGRATE_POSITIONS_BYTE_OFFSET;
-    public static final long RELAX_IMPULSES_BYTE_OFFSET;
-    public static final long APPLY_RESTITUTION_BYTE_OFFSET;
-    public static final long STORE_IMPULSES_BYTE_OFFSET;
-    public static final long SPLIT_ISLANDS_BYTE_OFFSET;
-    public static final long TRANSFORMS_BYTE_OFFSET;
-    public static final long HIT_EVENTS_BYTE_OFFSET;
-    public static final long REFIT_BYTE_OFFSET;
-    public static final long BULLETS_BYTE_OFFSET;
-    public static final long SLEEP_ISLANDS_BYTE_OFFSET;
-    public static final long SENSORS_BYTE_OFFSET;
+	public static final long STEP_BYTE_OFFSET;
+	public static final long PAIRS_BYTE_OFFSET;
+	public static final long COLLIDE_BYTE_OFFSET;
+	public static final long SOLVE_BYTE_OFFSET;
+	public static final long SOLVER_SETUP_BYTE_OFFSET;
+	public static final long CONSTRAINTS_BYTE_OFFSET;
+	public static final long PREPARE_CONSTRAINTS_BYTE_OFFSET;
+	public static final long INTEGRATE_VELOCITIES_BYTE_OFFSET;
+	public static final long WARM_START_BYTE_OFFSET;
+	public static final long SOLVE_IMPULSES_BYTE_OFFSET;
+	public static final long INTEGRATE_POSITIONS_BYTE_OFFSET;
+	public static final long RELAX_IMPULSES_BYTE_OFFSET;
+	public static final long RESTITUTION_BYTE_OFFSET;
+	public static final long STORE_IMPULSES_BYTE_OFFSET;
+	public static final long SPLIT_ISLANDS_BYTE_OFFSET;
+	public static final long TRANSFORMS_BYTE_OFFSET;
+	public static final long SENSOR_HITS_BYTE_OFFSET;
+	public static final long JOINT_EVENTS_BYTE_OFFSET;
+	public static final long HIT_EVENTS_BYTE_OFFSET;
+	public static final long REFIT_BYTE_OFFSET;
+	public static final long BULLETS_BYTE_OFFSET;
+	public static final long SLEEP_ISLANDS_BYTE_OFFSET;
+	public static final long SENSORS_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_FLOAT.withName("step"),
-            JAVA_FLOAT.withName("pairs"),
-            JAVA_FLOAT.withName("collide"),
-            JAVA_FLOAT.withName("solve"),
-            JAVA_FLOAT.withName("mergeIslands"),
-            JAVA_FLOAT.withName("prepareStages"),
-            JAVA_FLOAT.withName("solveConstraints"),
-            JAVA_FLOAT.withName("prepareConstraints"),
-            JAVA_FLOAT.withName("integrateVelocities"),
-            JAVA_FLOAT.withName("warmStart"),
-            JAVA_FLOAT.withName("solveImpulses"),
-            JAVA_FLOAT.withName("integratePositions"),
-            JAVA_FLOAT.withName("relaxImpulses"),
-            JAVA_FLOAT.withName("applyRestitution"),
-            JAVA_FLOAT.withName("storeImpulses"),
-            JAVA_FLOAT.withName("splitIslands"),
-            JAVA_FLOAT.withName("transforms"),
-            JAVA_FLOAT.withName("hitEvents"),
-            JAVA_FLOAT.withName("refit"),
-            JAVA_FLOAT.withName("bullets"),
-            JAVA_FLOAT.withName("sleepIslands"),
-            JAVA_FLOAT.withName("sensors")
-        ).withName("b2Profile").withByteAlignment(4);
-        
-        STEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("step"));
-        PAIRS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pairs"));
-        COLLIDE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("collide"));
-        SOLVE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("solve"));
-        MERGE_ISLANDS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("mergeIslands"));
-        PREPARE_STAGES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("prepareStages"));
-        SOLVE_CONSTRAINTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("solveConstraints"));
-        PREPARE_CONSTRAINTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("prepareConstraints"));
-        INTEGRATE_VELOCITIES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("integrateVelocities"));
-        WARM_START_HANDLE = LAYOUT.varHandle(PathElement.groupElement("warmStart"));
-        SOLVE_IMPULSES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("solveImpulses"));
-        INTEGRATE_POSITIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("integratePositions"));
-        RELAX_IMPULSES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("relaxImpulses"));
-        APPLY_RESTITUTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("applyRestitution"));
-        STORE_IMPULSES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("storeImpulses"));
-        SPLIT_ISLANDS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("splitIslands"));
-        TRANSFORMS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("transforms"));
-        HIT_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hitEvents"));
-        REFIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("refit"));
-        BULLETS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("bullets"));
-        SLEEP_ISLANDS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sleepIslands"));
-        SENSORS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sensors"));
-        
-        STEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("step"));
-        PAIRS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pairs"));
-        COLLIDE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("collide"));
-        SOLVE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("solve"));
-        MERGE_ISLANDS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("mergeIslands"));
-        PREPARE_STAGES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("prepareStages"));
-        SOLVE_CONSTRAINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("solveConstraints"));
-        PREPARE_CONSTRAINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("prepareConstraints"));
-        INTEGRATE_VELOCITIES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("integrateVelocities"));
-        WARM_START_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("warmStart"));
-        SOLVE_IMPULSES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("solveImpulses"));
-        INTEGRATE_POSITIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("integratePositions"));
-        RELAX_IMPULSES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("relaxImpulses"));
-        APPLY_RESTITUTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("applyRestitution"));
-        STORE_IMPULSES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("storeImpulses"));
-        SPLIT_ISLANDS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("splitIslands"));
-        TRANSFORMS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transforms"));
-        HIT_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitEvents"));
-        REFIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("refit"));
-        BULLETS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bullets"));
-        SLEEP_ISLANDS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sleepIslands"));
-        SENSORS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensors"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_FLOAT.withName("step"),
+		    JAVA_FLOAT.withName("pairs"),
+		    JAVA_FLOAT.withName("collide"),
+		    JAVA_FLOAT.withName("solve"),
+		    JAVA_FLOAT.withName("solverSetup"),
+		    JAVA_FLOAT.withName("constraints"),
+		    JAVA_FLOAT.withName("prepareConstraints"),
+		    JAVA_FLOAT.withName("integrateVelocities"),
+		    JAVA_FLOAT.withName("warmStart"),
+		    JAVA_FLOAT.withName("solveImpulses"),
+		    JAVA_FLOAT.withName("integratePositions"),
+		    JAVA_FLOAT.withName("relaxImpulses"),
+		    JAVA_FLOAT.withName("restitution"),
+		    JAVA_FLOAT.withName("storeImpulses"),
+		    JAVA_FLOAT.withName("splitIslands"),
+		    JAVA_FLOAT.withName("transforms"),
+		    JAVA_FLOAT.withName("sensorHits"),
+		    JAVA_FLOAT.withName("jointEvents"),
+		    JAVA_FLOAT.withName("hitEvents"),
+		    JAVA_FLOAT.withName("refit"),
+		    JAVA_FLOAT.withName("bullets"),
+		    JAVA_FLOAT.withName("sleepIslands"),
+		    JAVA_FLOAT.withName("sensors")
+		).withName("b2Profile").withByteAlignment(4);
+		
+		STEP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("step"));
+		PAIRS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("pairs"));
+		COLLIDE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("collide"));
+		SOLVE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("solve"));
+		SOLVER_SETUP_HANDLE = LAYOUT.varHandle(PathElement.groupElement("solverSetup"));
+		CONSTRAINTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("constraints"));
+		PREPARE_CONSTRAINTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("prepareConstraints"));
+		INTEGRATE_VELOCITIES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("integrateVelocities"));
+		WARM_START_HANDLE = LAYOUT.varHandle(PathElement.groupElement("warmStart"));
+		SOLVE_IMPULSES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("solveImpulses"));
+		INTEGRATE_POSITIONS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("integratePositions"));
+		RELAX_IMPULSES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("relaxImpulses"));
+		RESTITUTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("restitution"));
+		STORE_IMPULSES_HANDLE = LAYOUT.varHandle(PathElement.groupElement("storeImpulses"));
+		SPLIT_ISLANDS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("splitIslands"));
+		TRANSFORMS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("transforms"));
+		SENSOR_HITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sensorHits"));
+		JOINT_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("jointEvents"));
+		HIT_EVENTS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hitEvents"));
+		REFIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("refit"));
+		BULLETS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("bullets"));
+		SLEEP_ISLANDS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sleepIslands"));
+		SENSORS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("sensors"));
+		
+		STEP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("step"));
+		PAIRS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("pairs"));
+		COLLIDE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("collide"));
+		SOLVE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("solve"));
+		SOLVER_SETUP_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("solverSetup"));
+		CONSTRAINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("constraints"));
+		PREPARE_CONSTRAINTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("prepareConstraints"));
+		INTEGRATE_VELOCITIES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("integrateVelocities"));
+		WARM_START_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("warmStart"));
+		SOLVE_IMPULSES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("solveImpulses"));
+		INTEGRATE_POSITIONS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("integratePositions"));
+		RELAX_IMPULSES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("relaxImpulses"));
+		RESTITUTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("restitution"));
+		STORE_IMPULSES_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("storeImpulses"));
+		SPLIT_ISLANDS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("splitIslands"));
+		TRANSFORMS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transforms"));
+		SENSOR_HITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensorHits"));
+		JOINT_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("jointEvents"));
+		HIT_EVENTS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hitEvents"));
+		REFIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("refit"));
+		BULLETS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bullets"));
+		SLEEP_ISLANDS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sleepIslands"));
+		SENSORS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("sensors"));
+		//@formatter:on
+	}
 
-    public Profile() {
-        this(Arena.ofAuto());
-    }
-    
-    public Profile(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Profile(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public Profile() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Profile(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Profile(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #step()
     public Profile step(float step) {
@@ -164,6 +169,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float step() {
     	return (float) STEP_HANDLE.get(segment, 0L);
     }
@@ -174,6 +181,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float pairs() {
     	return (float) PAIRS_HANDLE.get(segment, 0L);
     }
@@ -184,6 +193,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float collide() {
     	return (float) COLLIDE_HANDLE.get(segment, 0L);
     }
@@ -194,38 +205,34 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float solve() {
     	return (float) SOLVE_HANDLE.get(segment, 0L);
     }
     
-    /// @see #mergeIslands()
-    public Profile mergeIslands(float mergeIslands) {
-    	MERGE_ISLANDS_HANDLE.set(segment, 0L, mergeIslands);
+    /// @see #solverSetup()
+    public Profile solverSetup(float solverSetup) {
+    	SOLVER_SETUP_HANDLE.set(segment, 0L, solverSetup);
     	return this;
     }
     
-    public float mergeIslands() {
-    	return (float) MERGE_ISLANDS_HANDLE.get(segment, 0L);
+    /// ```
+    /// ```
+    public float solverSetup() {
+    	return (float) SOLVER_SETUP_HANDLE.get(segment, 0L);
     }
     
-    /// @see #prepareStages()
-    public Profile prepareStages(float prepareStages) {
-    	PREPARE_STAGES_HANDLE.set(segment, 0L, prepareStages);
+    /// @see #constraints()
+    public Profile constraints(float constraints) {
+    	CONSTRAINTS_HANDLE.set(segment, 0L, constraints);
     	return this;
     }
     
-    public float prepareStages() {
-    	return (float) PREPARE_STAGES_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #solveConstraints()
-    public Profile solveConstraints(float solveConstraints) {
-    	SOLVE_CONSTRAINTS_HANDLE.set(segment, 0L, solveConstraints);
-    	return this;
-    }
-    
-    public float solveConstraints() {
-    	return (float) SOLVE_CONSTRAINTS_HANDLE.get(segment, 0L);
+    /// ```
+    /// ```
+    public float constraints() {
+    	return (float) CONSTRAINTS_HANDLE.get(segment, 0L);
     }
     
     /// @see #prepareConstraints()
@@ -234,6 +241,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float prepareConstraints() {
     	return (float) PREPARE_CONSTRAINTS_HANDLE.get(segment, 0L);
     }
@@ -244,6 +253,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float integrateVelocities() {
     	return (float) INTEGRATE_VELOCITIES_HANDLE.get(segment, 0L);
     }
@@ -254,6 +265,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float warmStart() {
     	return (float) WARM_START_HANDLE.get(segment, 0L);
     }
@@ -264,6 +277,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float solveImpulses() {
     	return (float) SOLVE_IMPULSES_HANDLE.get(segment, 0L);
     }
@@ -274,6 +289,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float integratePositions() {
     	return (float) INTEGRATE_POSITIONS_HANDLE.get(segment, 0L);
     }
@@ -284,18 +301,22 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float relaxImpulses() {
     	return (float) RELAX_IMPULSES_HANDLE.get(segment, 0L);
     }
     
-    /// @see #applyRestitution()
-    public Profile applyRestitution(float applyRestitution) {
-    	APPLY_RESTITUTION_HANDLE.set(segment, 0L, applyRestitution);
+    /// @see #restitution()
+    public Profile restitution(float restitution) {
+    	RESTITUTION_HANDLE.set(segment, 0L, restitution);
     	return this;
     }
     
-    public float applyRestitution() {
-    	return (float) APPLY_RESTITUTION_HANDLE.get(segment, 0L);
+    /// ```
+    /// ```
+    public float restitution() {
+    	return (float) RESTITUTION_HANDLE.get(segment, 0L);
     }
     
     /// @see #storeImpulses()
@@ -304,6 +325,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float storeImpulses() {
     	return (float) STORE_IMPULSES_HANDLE.get(segment, 0L);
     }
@@ -314,6 +337,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float splitIslands() {
     	return (float) SPLIT_ISLANDS_HANDLE.get(segment, 0L);
     }
@@ -324,8 +349,34 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float transforms() {
     	return (float) TRANSFORMS_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #sensorHits()
+    public Profile sensorHits(float sensorHits) {
+    	SENSOR_HITS_HANDLE.set(segment, 0L, sensorHits);
+    	return this;
+    }
+    
+    /// ```
+    /// ```
+    public float sensorHits() {
+    	return (float) SENSOR_HITS_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #jointEvents()
+    public Profile jointEvents(float jointEvents) {
+    	JOINT_EVENTS_HANDLE.set(segment, 0L, jointEvents);
+    	return this;
+    }
+    
+    /// ```
+    /// ```
+    public float jointEvents() {
+    	return (float) JOINT_EVENTS_HANDLE.get(segment, 0L);
     }
     
     /// @see #hitEvents()
@@ -334,6 +385,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float hitEvents() {
     	return (float) HIT_EVENTS_HANDLE.get(segment, 0L);
     }
@@ -344,6 +397,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float refit() {
     	return (float) REFIT_HANDLE.get(segment, 0L);
     }
@@ -354,6 +409,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float bullets() {
     	return (float) BULLETS_HANDLE.get(segment, 0L);
     }
@@ -364,6 +421,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float sleepIslands() {
     	return (float) SLEEP_ISLANDS_HANDLE.get(segment, 0L);
     }
@@ -374,6 +433,8 @@ public final class Profile
     	return this;
     }
     
+    /// ```
+    /// ```
     public float sensors() {
     	return (float) SENSORS_HANDLE.get(segment, 0L);
     }
@@ -429,5 +490,5 @@ public final class Profile
             segment -> new Profile(segment)
         );
     }
-    
+
 }

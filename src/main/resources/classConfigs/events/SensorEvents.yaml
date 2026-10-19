@@ -32,6 +32,9 @@ excluded-function-name-postfixes:
 constructors:
 struct:
   name: b2SensorEvents
+  struct-arrays:
+    - beginEvents
+    - endEvents
   
 native-functions:
 native-function-pointers:

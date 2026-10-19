@@ -14,52 +14,52 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class WheelJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_WHEEL_JOINT;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_ENABLE_SPRING;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_IS_SPRING_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_ENABLE_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_IS_LIMIT_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_LOWER_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_UPPER_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_LIMITS;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_ENABLE_MOTOR;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_IS_MOTOR_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_MOTOR_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_WHEEL_JOINT;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_ENABLE_SPRING;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_IS_SPRING_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_ENABLE_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_IS_LIMIT_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_LOWER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_UPPER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_LIMITS;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_ENABLE_MOTOR;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_IS_MOTOR_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_WHEEL_JOINT_GET_CURRENT_MOTOR_TORQUE;
 
-    static {
-        //@formatter:off
-        B2_CREATE_WHEEL_JOINT = downcallHandle("b2CreateWheelJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_WHEEL_JOINT_ENABLE_SPRING = downcallHandleVoid("b2WheelJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_WHEEL_JOINT_IS_SPRING_ENABLED = downcallHandle("b2WheelJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_WHEEL_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2WheelJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WHEEL_JOINT_GET_SPRING_HERTZ = downcallHandle("b2WheelJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2WheelJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2WheelJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WHEEL_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2WheelJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_WHEEL_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2WheelJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_WHEEL_JOINT_GET_LOWER_LIMIT = downcallHandle("b2WheelJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WHEEL_JOINT_GET_UPPER_LIMIT = downcallHandle("b2WheelJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WHEEL_JOINT_SET_LIMITS = downcallHandleVoid("b2WheelJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
-        B2_WHEEL_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2WheelJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_WHEEL_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2WheelJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_WHEEL_JOINT_SET_MOTOR_SPEED = downcallHandleVoid("b2WheelJoint_SetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WHEEL_JOINT_GET_MOTOR_SPEED = downcallHandle("b2WheelJoint_GetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE = downcallHandleVoid("b2WheelJoint_SetMaxMotorTorque", JointId.LAYOUT, JAVA_FLOAT);
-        B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE = downcallHandle("b2WheelJoint_GetMaxMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
-        B2_WHEEL_JOINT_GET_MOTOR_TORQUE = downcallHandle("b2WheelJoint_GetMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_WHEEL_JOINT = downcallHandle("b2CreateWheelJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_WHEEL_JOINT_ENABLE_SPRING = downcallHandleVoid("b2WheelJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_WHEEL_JOINT_IS_SPRING_ENABLED = downcallHandle("b2WheelJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_WHEEL_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2WheelJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WHEEL_JOINT_GET_SPRING_HERTZ = downcallHandle("b2WheelJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WHEEL_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2WheelJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WHEEL_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2WheelJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WHEEL_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2WheelJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_WHEEL_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2WheelJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_WHEEL_JOINT_GET_LOWER_LIMIT = downcallHandle("b2WheelJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WHEEL_JOINT_GET_UPPER_LIMIT = downcallHandle("b2WheelJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WHEEL_JOINT_SET_LIMITS = downcallHandleVoid("b2WheelJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_WHEEL_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2WheelJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_WHEEL_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2WheelJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_WHEEL_JOINT_SET_TARGET_MOTOR_SPEED = downcallHandleVoid("b2WheelJoint_SetTargetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WHEEL_JOINT_GET_TARGET_MOTOR_SPEED = downcallHandle("b2WheelJoint_GetTargetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WHEEL_JOINT_SET_MAX_MOTOR_TORQUE = downcallHandleVoid("b2WheelJoint_SetMaxMotorTorque", JointId.LAYOUT, JAVA_FLOAT);
+		B2_WHEEL_JOINT_GET_MAX_MOTOR_TORQUE = downcallHandle("b2WheelJoint_GetMaxMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
+		B2_WHEEL_JOINT_GET_CURRENT_MOTOR_TORQUE = downcallHandle("b2WheelJoint_GetCurrentMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private WheelJoint() {
-    }
+	private WheelJoint() {
+	}
 
     /// ```
     /// Create a wheel joint
@@ -456,11 +456,11 @@ public final class WheelJoint {
     /// ```
     /// Set the wheel joint motor speed in radians per second
     /// ```
-    public static void wheelJoint_SetMotorSpeed(
+    public static void wheelJoint_SetTargetMotorSpeed(
     	MemorySegment jointId,
     	float motorSpeed
     ) {
-    	MethodHandle method = B2_WHEEL_JOINT_SET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_WHEEL_JOINT_SET_TARGET_MOTOR_SPEED.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -471,12 +471,12 @@ public final class WheelJoint {
     	}
     }
     
-    /// Typed method of [#wheelJoint_SetMotorSpeed].
-    public static void wheelJoint_SetMotorSpeed(
+    /// Typed method of [#wheelJoint_SetTargetMotorSpeed].
+    public static void wheelJoint_SetTargetMotorSpeed(
     	JointId jointId,
     	float motorSpeed
     ) {
-    	wheelJoint_SetMotorSpeed(
+    	wheelJoint_SetTargetMotorSpeed(
     		jointId.memorySegment(),
     		motorSpeed
     	);
@@ -485,10 +485,10 @@ public final class WheelJoint {
     /// ```
     /// Get the wheel joint motor speed in radians per second
     /// ```
-    public static float wheelJoint_GetMotorSpeed(
+    public static float wheelJoint_GetTargetMotorSpeed(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_WHEEL_JOINT_GET_TARGET_MOTOR_SPEED.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -498,11 +498,11 @@ public final class WheelJoint {
     	}
     }
     
-    /// Typed method of [#wheelJoint_GetMotorSpeed].
-    public static float wheelJoint_GetMotorSpeed(
+    /// Typed method of [#wheelJoint_GetTargetMotorSpeed].
+    public static float wheelJoint_GetTargetMotorSpeed(
     	JointId jointId
     ) {
-    	return wheelJoint_GetMotorSpeed(
+    	return wheelJoint_GetTargetMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -564,10 +564,10 @@ public final class WheelJoint {
     /// ```
     /// Get the wheel joint current motor torque, usually in newton-meters
     /// ```
-    public static float wheelJoint_GetMotorTorque(
+    public static float wheelJoint_GetCurrentMotorTorque(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_WHEEL_JOINT_GET_MOTOR_TORQUE.get();
+    	MethodHandle method = B2_WHEEL_JOINT_GET_CURRENT_MOTOR_TORQUE.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -577,13 +577,13 @@ public final class WheelJoint {
     	}
     }
     
-    /// Typed method of [#wheelJoint_GetMotorTorque].
-    public static float wheelJoint_GetMotorTorque(
+    /// Typed method of [#wheelJoint_GetCurrentMotorTorque].
+    public static float wheelJoint_GetCurrentMotorTorque(
     	JointId jointId
     ) {
-    	return wheelJoint_GetMotorTorque(
+    	return wheelJoint_GetCurrentMotorTorque(
     		jointId.memorySegment()
     	);
     }
-    
+
 }

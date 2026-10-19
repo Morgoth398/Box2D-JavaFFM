@@ -22,67 +22,66 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// A solid capsule can be viewed as two semicircles connected
-/// by a rectangle.
+/// A solid capsule can be viewed as two semicircles connected by a rectangle.
 /// ```
 public final class Capsule
 		implements Struct<Capsule> {
 
-    private static final LazyConstant<MethodHandle> B2_COMPUTE_CAPSULE_MASS;
-    private static final LazyConstant<MethodHandle> B2_COMPUTE_CAPSULE_AABB;
-    private static final LazyConstant<MethodHandle> B2_POINT_IN_CAPSULE;
-    private static final LazyConstant<MethodHandle> B2_RAY_CAST_CAPSULE;
-    private static final LazyConstant<MethodHandle> B2_SHAPE_CAST_CAPSULE;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_CAPSULE_MASS;
+	private static final LazyConstant<MethodHandle> B2_COMPUTE_CAPSULE_BOUNDS;
+	private static final LazyConstant<MethodHandle> B2_POINT_IN_CAPSULE;
+	private static final LazyConstant<MethodHandle> B2_CAST_RAY_CAPSULE;
+	private static final LazyConstant<MethodHandle> B2_CAST_SHAPE_CAPSULE;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle RADIUS_HANDLE;
+	public static final VarHandle RADIUS_HANDLE;
 
-    public static final long CENTER1_BYTE_OFFSET;
-    public static final long CENTER2_BYTE_OFFSET;
-    public static final long RADIUS_BYTE_OFFSET;
+	public static final long CENTER1_BYTE_OFFSET;
+	public static final long CENTER2_BYTE_OFFSET;
+	public static final long RADIUS_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final Vec2 center1;
-    private final Vec2 center2;
+	private final Vec2 center1;
+	private final Vec2 center2;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            Vec2.LAYOUT.withName("center1"),
-            Vec2.LAYOUT.withName("center2"),
-            JAVA_FLOAT.withName("radius")
-        ).withName("b2Capsule").withByteAlignment(4);
-        
-        B2_COMPUTE_CAPSULE_MASS = downcallHandle("b2ComputeCapsuleMass", MassData.LAYOUT, UNBOUNDED_ADDRESS, JAVA_FLOAT);
-        B2_COMPUTE_CAPSULE_AABB = downcallHandle("b2ComputeCapsuleAABB", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
-        B2_POINT_IN_CAPSULE = downcallHandle("b2PointInCapsule", JAVA_BOOLEAN, Vec2.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_RAY_CAST_CAPSULE = downcallHandle("b2RayCastCapsule", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_SHAPE_CAST_CAPSULE = downcallHandle("b2ShapeCastCapsule", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        
-        RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
-        
-        CENTER1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center1"));
-        CENTER2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center2"));
-        RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    Vec2.LAYOUT.withName("center1"),
+		    Vec2.LAYOUT.withName("center2"),
+		    JAVA_FLOAT.withName("radius")
+		).withName("b2Capsule").withByteAlignment(4);
+		
+		B2_COMPUTE_CAPSULE_MASS = downcallHandle("b2ComputeCapsuleMass", MassData.LAYOUT, UNBOUNDED_ADDRESS, JAVA_FLOAT);
+		B2_COMPUTE_CAPSULE_BOUNDS = downcallHandle("b2ComputeCapsuleBounds", AABB.LAYOUT, UNBOUNDED_ADDRESS, Transform.LAYOUT);
+		B2_POINT_IN_CAPSULE = downcallHandle("b2PointInCapsule", JAVA_BOOLEAN, UNBOUNDED_ADDRESS, Vec2.LAYOUT);
+		B2_CAST_RAY_CAPSULE = downcallHandle("b2CastRayCapsule", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_CAST_SHAPE_CAPSULE = downcallHandle("b2CastShapeCapsule", CastOutput.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		
+		RADIUS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("radius"));
+		
+		CENTER1_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center1"));
+		CENTER2_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("center2"));
+		RADIUS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("radius"));
+		//@formatter:on
+	}
 
-    public Capsule() {
-        this(Arena.ofAuto());
-    }
-    
-    public Capsule(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Capsule(MemorySegment segment) {
-        this.segment = segment;
-    
-        center1 = new Vec2(segment.asSlice(CENTER1_BYTE_OFFSET, Vec2.LAYOUT));
-        center2 = new Vec2(segment.asSlice(CENTER2_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public Capsule() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Capsule(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Capsule(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    center1 = new Vec2(segment.asSlice(CENTER1_BYTE_OFFSET, Vec2.LAYOUT));
+	    center2 = new Vec2(segment.asSlice(CENTER2_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
     /// ```
     /// Compute mass properties of a capsule
@@ -124,12 +123,12 @@ public final class Capsule
     /// ```
     /// Compute the bounding box of a transformed capsule
     /// ```
-    public static MemorySegment computeCapsuleAABB(
+    public static MemorySegment computeCapsuleBounds(
     	SegmentAllocator allocator,
     	MemorySegment shape,
     	MemorySegment transform
     ) {
-    	MethodHandle method = B2_COMPUTE_CAPSULE_AABB.get();
+    	MethodHandle method = B2_COMPUTE_CAPSULE_BOUNDS.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -141,12 +140,12 @@ public final class Capsule
     	}
     }
     
-    /// Typed method of [#computeCapsuleAABB].
-    public final @Nullable AABB computeCapsuleAABB(
+    /// Typed method of [#computeCapsuleBounds].
+    public final @Nullable AABB computeCapsuleBounds(
     	SegmentAllocator allocator,
     	Transform transform
     ) {
-    	MemorySegment segment = computeCapsuleAABB(
+    	MemorySegment segment = computeCapsuleBounds(
     		allocator,
     		this.segment,
     		transform.memorySegment()
@@ -162,14 +161,14 @@ public final class Capsule
     /// Test a point for overlap with a capsule in local space
     /// ```
     public static boolean pointInCapsule(
-    	MemorySegment point,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment point
     ) {
     	MethodHandle method = B2_POINT_IN_CAPSULE.get();
     	try {
     		return (boolean) method.invokeExact(
-    			point,
-    			shape
+    			shape,
+    			point
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
@@ -181,40 +180,40 @@ public final class Capsule
     	Vec2 point
     ) {
     	return pointInCapsule(
-    		point.memorySegment(),
-    		this.segment
+    		this.segment,
+    		point.memorySegment()
     	);
     }
     
     /// ```
-    /// Ray cast versus capsule shape in local space. Initial overlap is treated as a miss.
+    /// Ray cast versus capsule shape in local space.
     /// ```
-    public static MemorySegment rayCastCapsule(
+    public static MemorySegment castRayCapsule(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_RAY_CAST_CAPSULE.get();
+    	MethodHandle method = B2_CAST_RAY_CAPSULE.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#rayCastCapsule].
-    public final @Nullable CastOutput rayCastCapsule(
+    /// Typed method of [#castRayCapsule].
+    public final @Nullable CastOutput castRayCapsule(
     	SegmentAllocator allocator,
     	RayCastInput input
     ) {
-    	MemorySegment segment = rayCastCapsule(
+    	MemorySegment segment = castRayCapsule(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
@@ -224,53 +223,40 @@ public final class Capsule
     }
     
     /// ```
-    /// Shape cast versus a capsule. Initial overlap is treated as a miss.
+    /// Shape cast versus a capsule.
     /// ```
-    public static MemorySegment shapeCastCapsule(
+    public static MemorySegment castShapeCapsule(
     	SegmentAllocator allocator,
-    	MemorySegment input,
-    	MemorySegment shape
+    	MemorySegment shape,
+    	MemorySegment input
     ) {
-    	MethodHandle method = B2_SHAPE_CAST_CAPSULE.get();
+    	MethodHandle method = B2_CAST_SHAPE_CAPSULE.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
-    			input,
-    			shape
+    			shape,
+    			input
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#shapeCastCapsule].
-    public final @Nullable CastOutput shapeCastCapsule(
+    /// Typed method of [#castShapeCapsule].
+    public final @Nullable CastOutput castShapeCapsule(
     	SegmentAllocator allocator,
     	ShapeCastInput input
     ) {
-    	MemorySegment segment = shapeCastCapsule(
+    	MemorySegment segment = castShapeCapsule(
     		allocator,
-    		input.memorySegment(),
-    		this.segment
+    		this.segment,
+    		input.memorySegment()
     	);
     
     	if (segment.equals(MemorySegment.NULL))
     		return null;
     	
     	return new CastOutput(segment);
-    }
-    
-    /// @see #radius()
-    public Capsule radius(float radius) {
-    	RADIUS_HANDLE.set(segment, 0L, radius);
-    	return this;
-    }
-    
-    /// ```
-    /// The radius of the semicircles
-    /// ```
-    public float radius() {
-    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     /// @see #center1()
@@ -309,6 +295,19 @@ public final class Capsule
     /// ```
     public Vec2 center2() {
     	return center2;
+    }
+    
+    /// @see #radius()
+    public Capsule radius(float radius) {
+    	RADIUS_HANDLE.set(segment, 0L, radius);
+    	return this;
+    }
+    
+    /// ```
+    /// The radius of the semicircles
+    /// ```
+    public float radius() {
+    	return (float) RADIUS_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -362,5 +361,5 @@ public final class Capsule
             segment -> new Capsule(segment)
         );
     }
-    
+
 }

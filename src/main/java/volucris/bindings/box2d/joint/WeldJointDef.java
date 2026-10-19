@@ -12,8 +12,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
-import volucris.bindings.box2d.body.BodyId;
-import volucris.bindings.box2d.math.Vec2;
 import volucris.bindings.core.NativeStructArray;
 import volucris.bindings.core.Struct;
 
@@ -21,102 +19,69 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// Weld joint definition
-/// 
-/// A weld joint connect to bodies together rigidly. This constraint provides springs to mimic
-/// soft-body simulation.
+/// Weld joint definition Connects two bodies together rigidly. This constraint provides springs to
+/// mimic soft-body simulation.
 /// @note The approximate solver in Box2D cannot hold many bodies together rigidly
 /// @ingroup weld_joint
 /// ```
 public final class WeldJointDef
 		implements Struct<WeldJointDef> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_WELD_JOINT_DEF;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_WELD_JOINT_DEF;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle REFERENCE_ANGLE_HANDLE;
-    public static final VarHandle LINEAR_HERTZ_HANDLE;
-    public static final VarHandle ANGULAR_HERTZ_HANDLE;
-    public static final VarHandle LINEAR_DAMPING_RATIO_HANDLE;
-    public static final VarHandle ANGULAR_DAMPING_RATIO_HANDLE;
-    public static final VarHandle COLLIDE_CONNECTED_HANDLE;
-    public static final VarHandle USER_DATA_HANDLE;
-    public static final VarHandle INTERNAL_VALUE_HANDLE;
+	public static final VarHandle LINEAR_HERTZ_HANDLE;
+	public static final VarHandle ANGULAR_HERTZ_HANDLE;
+	public static final VarHandle LINEAR_DAMPING_RATIO_HANDLE;
+	public static final VarHandle ANGULAR_DAMPING_RATIO_HANDLE;
+	public static final VarHandle INTERNAL_VALUE_HANDLE;
 
-    public static final long BODY_ID_A_BYTE_OFFSET;
-    public static final long BODY_ID_B_BYTE_OFFSET;
-    public static final long LOCAL_ANCHOR_A_BYTE_OFFSET;
-    public static final long LOCAL_ANCHOR_B_BYTE_OFFSET;
-    public static final long REFERENCE_ANGLE_BYTE_OFFSET;
-    public static final long LINEAR_HERTZ_BYTE_OFFSET;
-    public static final long ANGULAR_HERTZ_BYTE_OFFSET;
-    public static final long LINEAR_DAMPING_RATIO_BYTE_OFFSET;
-    public static final long ANGULAR_DAMPING_RATIO_BYTE_OFFSET;
-    public static final long COLLIDE_CONNECTED_BYTE_OFFSET;
-    public static final long USER_DATA_BYTE_OFFSET;
-    public static final long INTERNAL_VALUE_BYTE_OFFSET;
+	public static final long BASE_BYTE_OFFSET;
+	public static final long LINEAR_HERTZ_BYTE_OFFSET;
+	public static final long ANGULAR_HERTZ_BYTE_OFFSET;
+	public static final long LINEAR_DAMPING_RATIO_BYTE_OFFSET;
+	public static final long ANGULAR_DAMPING_RATIO_BYTE_OFFSET;
+	public static final long INTERNAL_VALUE_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final BodyId bodyIdA;
-    private final BodyId bodyIdB;
-    private final Vec2 localAnchorA;
-    private final Vec2 localAnchorB;
+	private final JointDef base;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            BodyId.LAYOUT.withName("bodyIdA"),
-            BodyId.LAYOUT.withName("bodyIdB"),
-            Vec2.LAYOUT.withName("localAnchorA"),
-            Vec2.LAYOUT.withName("localAnchorB"),
-            JAVA_FLOAT.withName("referenceAngle"),
-            JAVA_FLOAT.withName("linearHertz"),
-            JAVA_FLOAT.withName("angularHertz"),
-            JAVA_FLOAT.withName("linearDampingRatio"),
-            JAVA_FLOAT.withName("angularDampingRatio"),
-            JAVA_BOOLEAN.withName("collideConnected"),
-            MemoryLayout.paddingLayout(3),
-            UNBOUNDED_ADDRESS.withName("userData"),
-            JAVA_INT.withName("internalValue"),
-            MemoryLayout.paddingLayout(4)
-        ).withName("b2WeldJointDef").withByteAlignment(8);
-        
-        B2_DEFAULT_WELD_JOINT_DEF = downcallHandle("b2DefaultWeldJointDef", WeldJointDef.LAYOUT);
-        
-        REFERENCE_ANGLE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("referenceAngle"));
-        LINEAR_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearHertz"));
-        ANGULAR_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularHertz"));
-        LINEAR_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearDampingRatio"));
-        ANGULAR_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularDampingRatio"));
-        COLLIDE_CONNECTED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("collideConnected"));
-        USER_DATA_HANDLE = LAYOUT.varHandle(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
-        
-        BODY_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdA"));
-        BODY_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("bodyIdB"));
-        LOCAL_ANCHOR_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("localAnchorA"));
-        LOCAL_ANCHOR_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("localAnchorB"));
-        REFERENCE_ANGLE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("referenceAngle"));
-        LINEAR_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearHertz"));
-        ANGULAR_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularHertz"));
-        LINEAR_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDampingRatio"));
-        ANGULAR_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDampingRatio"));
-        COLLIDE_CONNECTED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("collideConnected"));
-        USER_DATA_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("userData"));
-        INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JointDef.LAYOUT.withName("base"),
+		    JAVA_FLOAT.withName("linearHertz"),
+		    JAVA_FLOAT.withName("angularHertz"),
+		    JAVA_FLOAT.withName("linearDampingRatio"),
+		    JAVA_FLOAT.withName("angularDampingRatio"),
+		    JAVA_INT.withName("internalValue"),
+		    MemoryLayout.paddingLayout(4)
+		).withName("b2WeldJointDef").withByteAlignment(8);
+		
+		B2_DEFAULT_WELD_JOINT_DEF = downcallHandle("b2DefaultWeldJointDef", WeldJointDef.LAYOUT);
+		
+		LINEAR_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearHertz"));
+		ANGULAR_HERTZ_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularHertz"));
+		LINEAR_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("linearDampingRatio"));
+		ANGULAR_DAMPING_RATIO_HANDLE = LAYOUT.varHandle(PathElement.groupElement("angularDampingRatio"));
+		INTERNAL_VALUE_HANDLE = LAYOUT.varHandle(PathElement.groupElement("internalValue"));
+		
+		BASE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("base"));
+		LINEAR_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearHertz"));
+		ANGULAR_HERTZ_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularHertz"));
+		LINEAR_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("linearDampingRatio"));
+		ANGULAR_DAMPING_RATIO_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("angularDampingRatio"));
+		INTERNAL_VALUE_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("internalValue"));
+		//@formatter:on
+	}
 
-    public WeldJointDef(MemorySegment segment) {
-        this.segment = segment;
-    
-        bodyIdA = new BodyId(segment.asSlice(BODY_ID_A_BYTE_OFFSET, BodyId.LAYOUT));
-        bodyIdB = new BodyId(segment.asSlice(BODY_ID_B_BYTE_OFFSET, BodyId.LAYOUT));
-        localAnchorA = new Vec2(segment.asSlice(LOCAL_ANCHOR_A_BYTE_OFFSET, Vec2.LAYOUT));
-        localAnchorB = new Vec2(segment.asSlice(LOCAL_ANCHOR_B_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public WeldJointDef(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    base = new JointDef(segment.asSlice(BASE_BYTE_OFFSET, JointDef.LAYOUT));
+	}
 
     /// ```
     /// Use this to initialize your joint definition
@@ -149,18 +114,23 @@ public final class WeldJointDef
     	return new WeldJointDef(segment);
     }
     
-    /// @see #referenceAngle()
-    public WeldJointDef referenceAngle(float referenceAngle) {
-    	REFERENCE_ANGLE_HANDLE.set(segment, 0L, referenceAngle);
+    /// @see #base()
+    public WeldJointDef base(Consumer<JointDef> consumer) {
+    	consumer.accept(base);
+    	return this;
+    }
+    
+    /// @see #base()
+    public WeldJointDef base(JointDef other) {
+    	base.set(other);
     	return this;
     }
     
     /// ```
-    /// The bodyB angle minus bodyA angle in the reference state (radians)
-    /// todo maybe make this a b2Rot
+    /// Base joint definition
     /// ```
-    public float referenceAngle() {
-    	return (float) REFERENCE_ANGLE_HANDLE.get(segment, 0L);
+    public JointDef base() {
+    	return base;
     }
     
     /// @see #linearHertz()
@@ -209,41 +179,10 @@ public final class WeldJointDef
     }
     
     /// ```
-    /// Linear damping ratio, non-dimensional. Use 1 for critical damping.
+    /// Angular damping ratio, non-dimensional. Use 1 for critical damping.
     /// ```
     public float angularDampingRatio() {
     	return (float) ANGULAR_DAMPING_RATIO_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #collideConnected()
-    public WeldJointDef collideConnected(boolean collideConnected) {
-    	COLLIDE_CONNECTED_HANDLE.set(segment, 0L, collideConnected);
-    	return this;
-    }
-    
-    /// ```
-    /// Set this flag to true if the attached bodies should collide
-    /// ```
-    public boolean collideConnected() {
-    	return (boolean) COLLIDE_CONNECTED_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #userData()
-    public WeldJointDef userData(MemorySegment userData) {
-    	USER_DATA_HANDLE.set(segment, 0L, userData);
-    	return this;
-    }
-    
-    /// ```
-    /// User data pointer
-    /// ```
-    public @Nullable MemorySegment userData() {
-    	MemorySegment segment = (MemorySegment) USER_DATA_HANDLE.get(this.segment, 0L);
-    
-    	if (segment.equals(MemorySegment.NULL))
-    		return null;
-    	
-    	return segment;
     }
     
     /// @see #internalValue()
@@ -257,82 +196,6 @@ public final class WeldJointDef
     /// ```
     public int internalValue() {
     	return (int) INTERNAL_VALUE_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #bodyIdA()
-    public WeldJointDef bodyIdA(Consumer<BodyId> consumer) {
-    	consumer.accept(bodyIdA);
-    	return this;
-    }
-    
-    /// @see #bodyIdA()
-    public WeldJointDef bodyIdA(BodyId other) {
-    	bodyIdA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The first attached body
-    /// ```
-    public BodyId bodyIdA() {
-    	return bodyIdA;
-    }
-    
-    /// @see #bodyIdB()
-    public WeldJointDef bodyIdB(Consumer<BodyId> consumer) {
-    	consumer.accept(bodyIdB);
-    	return this;
-    }
-    
-    /// @see #bodyIdB()
-    public WeldJointDef bodyIdB(BodyId other) {
-    	bodyIdB.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The second attached body
-    /// ```
-    public BodyId bodyIdB() {
-    	return bodyIdB;
-    }
-    
-    /// @see #localAnchorA()
-    public WeldJointDef localAnchorA(Consumer<Vec2> consumer) {
-    	consumer.accept(localAnchorA);
-    	return this;
-    }
-    
-    /// @see #localAnchorA()
-    public WeldJointDef localAnchorA(Vec2 other) {
-    	localAnchorA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The local anchor point relative to bodyA's origin
-    /// ```
-    public Vec2 localAnchorA() {
-    	return localAnchorA;
-    }
-    
-    /// @see #localAnchorB()
-    public WeldJointDef localAnchorB(Consumer<Vec2> consumer) {
-    	consumer.accept(localAnchorB);
-    	return this;
-    }
-    
-    /// @see #localAnchorB()
-    public WeldJointDef localAnchorB(Vec2 other) {
-    	localAnchorB.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The local anchor point relative to bodyB's origin
-    /// ```
-    public Vec2 localAnchorB() {
-    	return localAnchorB;
     }
     
     @Override
@@ -386,5 +249,5 @@ public final class WeldJointDef
             segment -> new WeldJointDef(segment)
         );
     }
-    
+
 }

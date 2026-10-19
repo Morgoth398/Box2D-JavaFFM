@@ -24,11 +24,9 @@ imports:
   - volucris.bindings.box2d.geometry.Polygon
   - volucris.bindings.box2d.math.AABB
   - volucris.bindings.box2d.geometry.MassData
-  - volucris.bindings.box2d.geometry.RayCastInput
   - volucris.bindings.box2d.events.ContactData
+  - volucris.bindings.box2d.chain.ChainId
 static-imports:
-  - java.lang.foreign.ValueLayout.*
-  - volucris.bindings.core.FFMUtils.*
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:
@@ -50,6 +48,7 @@ struct:
 native-functions:
   - name: b2CreateCircleShape
   - name: b2CreateSegmentShape
+  - name: b2CreateChainSegmentShape
   - name: b2CreateCapsuleShape
   - name: b2CreatePolygonShape
   - name: b2DestroyShape

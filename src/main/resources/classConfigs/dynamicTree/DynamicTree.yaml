@@ -1,8 +1,8 @@
 class-description:
-  name: DynamicTree
+  name: DynamicTreeFunctions
   package-name: volucris.bindings.box2d.dynamicTree
   directory: src/main/java/volucris/bindings/box2d/dynamicTree
-  is-static: false
+  is-static: true
   static-native-methods: true
   parent:
   interfaces: []
@@ -13,10 +13,8 @@ class-description:
   instance-parameter:
 
 imports:
-  - volucris.bindings.box2d.math.Vec2
   - volucris.bindings.box2d.math.AABB
   - volucris.bindings.box2d.geometry.RayCastInput
-  - volucris.bindings.box2d.geometry.ShapeCastInput
 static-imports:
   - java.lang.foreign.ValueLayout.*
   - volucris.bindings.core.FFMUtils.*
@@ -37,9 +35,10 @@ excluded-function-name-postfixes:
 
 constructors:
 struct:
-  name: b2DynamicTree
-  no-access-fields:
-    - nodes
   
 native-functions:
+  - name: b2CreateDynamicTree
+  - name: b2DestroyDynamicTree
+  - name: b2CreateTreeProxy
+  - name: b2DestroyTreeProxy
 native-function-pointers:

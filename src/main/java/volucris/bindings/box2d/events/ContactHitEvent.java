@@ -17,79 +17,71 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// A hit touch event is generated when two shapes collide with a speed faster than the hit speed threshold.
-/// This may be reported for speculative contacts that have a confirmed impulse.
+/// A hit event is generated when two shapes collide with a speed faster than the hit event
+/// threshold. This may be reported for speculative contacts that have a confirmed impulse.
 /// ```
 public final class ContactHitEvent
 		implements Struct<ContactHitEvent> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle APPROACH_SPEED_HANDLE;
+	public static final VarHandle APPROACH_SPEED_HANDLE;
 
-    public static final long SHAPE_ID_A_BYTE_OFFSET;
-    public static final long SHAPE_ID_B_BYTE_OFFSET;
-    public static final long POINT_BYTE_OFFSET;
-    public static final long NORMAL_BYTE_OFFSET;
-    public static final long APPROACH_SPEED_BYTE_OFFSET;
+	public static final long SHAPE_ID_A_BYTE_OFFSET;
+	public static final long SHAPE_ID_B_BYTE_OFFSET;
+	public static final long CONTACT_ID_BYTE_OFFSET;
+	public static final long POINT_BYTE_OFFSET;
+	public static final long NORMAL_BYTE_OFFSET;
+	public static final long APPROACH_SPEED_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeId shapeIdA;
-    private final ShapeId shapeIdB;
-    private final Vec2 point;
-    private final Vec2 normal;
+	private final ShapeId shapeIdA;
+	private final ShapeId shapeIdB;
+	private final ContactId contactId;
+	private final Vec2 point;
+	private final Vec2 normal;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeId.LAYOUT.withName("shapeIdA"),
-            ShapeId.LAYOUT.withName("shapeIdB"),
-            Vec2.LAYOUT.withName("point"),
-            Vec2.LAYOUT.withName("normal"),
-            JAVA_FLOAT.withName("approachSpeed")
-        ).withName("b2ContactHitEvent").withByteAlignment(4);
-        
-        APPROACH_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("approachSpeed"));
-        
-        SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
-        SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
-        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        APPROACH_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("approachSpeed"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeId.LAYOUT.withName("shapeIdA"),
+		    ShapeId.LAYOUT.withName("shapeIdB"),
+		    ContactId.LAYOUT.withName("contactId"),
+		    Vec2.LAYOUT.withName("point"),
+		    Vec2.LAYOUT.withName("normal"),
+		    JAVA_FLOAT.withName("approachSpeed")
+		).withName("b2ContactHitEvent").withByteAlignment(4);
+		
+		APPROACH_SPEED_HANDLE = LAYOUT.varHandle(PathElement.groupElement("approachSpeed"));
+		
+		SHAPE_ID_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdA"));
+		SHAPE_ID_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeIdB"));
+		CONTACT_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("contactId"));
+		POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+		NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+		APPROACH_SPEED_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("approachSpeed"));
+		//@formatter:on
+	}
 
-    public ContactHitEvent() {
-        this(Arena.ofAuto());
-    }
-    
-    public ContactHitEvent(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public ContactHitEvent(MemorySegment segment) {
-        this.segment = segment;
-    
-        shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
-        shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
-        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public ContactHitEvent() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ContactHitEvent(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ContactHitEvent(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    shapeIdA = new ShapeId(segment.asSlice(SHAPE_ID_A_BYTE_OFFSET, ShapeId.LAYOUT));
+	    shapeIdB = new ShapeId(segment.asSlice(SHAPE_ID_B_BYTE_OFFSET, ShapeId.LAYOUT));
+	    contactId = new ContactId(segment.asSlice(CONTACT_ID_BYTE_OFFSET, ContactId.LAYOUT));
+	    point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+	    normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
-    /// @see #approachSpeed()
-    public ContactHitEvent approachSpeed(float approachSpeed) {
-    	APPROACH_SPEED_HANDLE.set(segment, 0L, approachSpeed);
-    	return this;
-    }
-    
-    /// ```
-    /// The speed the shapes are approaching. Always positive. Typically in meters per second.
-    /// ```
-    public float approachSpeed() {
-    	return (float) APPROACH_SPEED_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #shapeIdA()
     public ContactHitEvent shapeIdA(Consumer<ShapeId> consumer) {
     	consumer.accept(shapeIdA);
@@ -128,6 +120,27 @@ public final class ContactHitEvent
     	return shapeIdB;
     }
     
+    /// @see #contactId()
+    public ContactHitEvent contactId(Consumer<ContactId> consumer) {
+    	consumer.accept(contactId);
+    	return this;
+    }
+    
+    /// @see #contactId()
+    public ContactHitEvent contactId(ContactId other) {
+    	contactId.set(other);
+    	return this;
+    }
+    
+    /// ```
+    /// Id of the contact.
+    /// @warning this contact may have been destroyed
+    /// @see b2Contact_IsValid
+    /// ```
+    public ContactId contactId() {
+    	return contactId;
+    }
+    
     /// @see #point()
     public ContactHitEvent point(Consumer<Vec2> consumer) {
     	consumer.accept(point);
@@ -141,9 +154,10 @@ public final class ContactHitEvent
     }
     
     /// ```
-    /// Point where the shapes hit at the beginning of the time step.
-    /// This is a mid-point between the two surfaces. It could be at speculative
-    /// point where the two shapes were not touching at the beginning of the time step.
+    /// Point where the shapes hit. This is a mid-point between the two surfaces. It could be a
+    /// speculative point where the shapes were not touching at the beginning of the time step. The
+    /// point is reconstructed after the step, so when both bodies are moving it may trail the
+    /// impact by up to one step of motion.
     /// ```
     public Vec2 point() {
     	return point;
@@ -166,6 +180,19 @@ public final class ContactHitEvent
     /// ```
     public Vec2 normal() {
     	return normal;
+    }
+    
+    /// @see #approachSpeed()
+    public ContactHitEvent approachSpeed(float approachSpeed) {
+    	APPROACH_SPEED_HANDLE.set(segment, 0L, approachSpeed);
+    	return this;
+    }
+    
+    /// ```
+    /// The speed the shapes are approaching. Always positive. Typically in meters per second.
+    /// ```
+    public float approachSpeed() {
+    	return (float) APPROACH_SPEED_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -219,5 +246,5 @@ public final class ContactHitEvent
             segment -> new ContactHitEvent(segment)
         );
     }
-    
+
 }

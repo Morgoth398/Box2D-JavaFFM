@@ -14,49 +14,48 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// 2D rotation
-/// This is similar to using a complex number for rotation
+/// 2D rotation This is similar to using a complex number for rotation
 /// ```
 public final class Rot
 		implements Struct<Rot> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle C_HANDLE;
-    public static final VarHandle S_HANDLE;
+	public static final VarHandle C_HANDLE;
+	public static final VarHandle S_HANDLE;
 
-    public static final long C_BYTE_OFFSET;
-    public static final long S_BYTE_OFFSET;
+	public static final long C_BYTE_OFFSET;
+	public static final long S_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_FLOAT.withName("c"),
-            JAVA_FLOAT.withName("s")
-        ).withName("b2Rot").withByteAlignment(4);
-        
-        C_HANDLE = LAYOUT.varHandle(PathElement.groupElement("c"));
-        S_HANDLE = LAYOUT.varHandle(PathElement.groupElement("s"));
-        
-        C_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c"));
-        S_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("s"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_FLOAT.withName("c"),
+		    JAVA_FLOAT.withName("s")
+		).withName("b2Rot").withByteAlignment(4);
+		
+		C_HANDLE = LAYOUT.varHandle(PathElement.groupElement("c"));
+		S_HANDLE = LAYOUT.varHandle(PathElement.groupElement("s"));
+		
+		C_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("c"));
+		S_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("s"));
+		//@formatter:on
+	}
 
-    public Rot() {
-        this(Arena.ofAuto());
-    }
-    
-    public Rot(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public Rot(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public Rot() {
+	    this(Arena.ofAuto());
+	}
+	
+	public Rot(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public Rot(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// @see #c()
     public Rot c(float c) {
@@ -135,5 +134,5 @@ public final class Rot
             segment -> new Rot(segment)
         );
     }
-    
+
 }

@@ -35,4 +35,8 @@ struct:
   name: b2ContactData
   
 native-functions:
+  - name: b2Contact_GetData
+    is-static: true
+  - name: b2Contact_IsValid
+    is-static: true
 native-function-pointers:

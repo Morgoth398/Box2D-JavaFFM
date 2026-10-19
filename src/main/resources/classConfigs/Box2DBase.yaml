@@ -1,0 +1,59 @@
+class-description:
+  name: Box2DBase
+  package-name: volucris.bindings.box2d
+  directory: src/main/java/volucris/bindings/box2d
+  is-static: true
+  parent:
+  interfaces: []
+  is-sealed: false
+  permits: []
+  is-abstract: false
+  is-final: false
+  instance-parameter:
+
+imports:
+static-imports:
+
+macro-name-prefixes:
+excluded-macro-name-prefixes:
+macro-names:
+  - name: B2_MAX_WORKERS
+    type: int
+  - name: B2_MAX_TASKS
+    type: int
+  - name: B2_GRAPH_COLOR_COUNT
+    type: int
+  - name: B2_MAX_WORLDS
+    type: int
+  - name: B2_NAME_LENGTH
+    type: int
+  - name: B2_CONTACT_RECYCLE_COS_ANGLE
+    type: float
+  - name: B2_AABB_MARGIN_FRACTION
+    type: float
+  - name: B2_TIME_TO_SLEEP
+    type: float
+  - name: B2_MAX_RESTITUTION_ITERATIONS
+    type: int
+excluded-macro-names:
+
+symbol-prefixes:
+symbols:
+
+function-name-prefixes:
+excluded-function-name-prefixes:
+function-name-postfixes:
+excluded-function-name-postfixes:
+
+constructors:
+struct:
+  
+native-functions:
+  - name: b2SetAllocator
+  - name: b2GetByteCount
+  - name: b2SetAssertCallback
+  - name: b2SetLogCallback
+  - name: b2GetVersion
+  - name: b2IsDoublePrecision
+  - name: b2IsAVX2Available
+native-function-pointers:

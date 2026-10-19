@@ -36,7 +36,7 @@ public abstract class AllocFcn {
 
         DESCRIPTION = FunctionDescriptor.of(
             UNBOUNDED_ADDRESS, 
-            JAVA_INT, 
+            JAVA_LONG, 
             JAVA_INT
         );
 
@@ -58,7 +58,7 @@ public abstract class AllocFcn {
     }
 
     public MemorySegment invoke(
-        int size,
+        long size,
         int alignment
     ) {
         throw new UnsupportedOperationException(

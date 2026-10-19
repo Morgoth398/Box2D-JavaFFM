@@ -8,6 +8,7 @@ import java.lang.foreign.SegmentAllocator;
 import java.lang.invoke.MethodHandle;
 import org.jspecify.annotations.Nullable;
 import volucris.bindings.box2d.body.BodyId;
+import volucris.bindings.box2d.math.Transform;
 import volucris.bindings.box2d.math.Vec2;
 import volucris.bindings.box2d.world.WorldId;
 import volucris.bindings.core.NativeFloatArray;
@@ -17,67 +18,67 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class Joint {
 
-    private static final LazyConstant<MethodHandle> B2_DESTROY_JOINT;
-    private static final LazyConstant<MethodHandle> B2_JOINT_IS_VALID;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_TYPE;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_BODY_A;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_BODY_B;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_WORLD;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_LOCAL_ANCHOR_A;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_LOCAL_ANCHOR_A;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_LOCAL_ANCHOR_B;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_LOCAL_ANCHOR_B;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_REFERENCE_ANGLE;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_REFERENCE_ANGLE;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_LOCAL_AXIS_A;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_LOCAL_AXIS_A;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_COLLIDE_CONNECTED;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_COLLIDE_CONNECTED;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_USER_DATA;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_USER_DATA;
-    private static final LazyConstant<MethodHandle> B2_JOINT_WAKE_BODIES;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_CONSTRAINT_FORCE;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_CONSTRAINT_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_LINEAR_SEPARATION;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_ANGULAR_SEPARATION;
-    private static final LazyConstant<MethodHandle> B2_JOINT_GET_CONSTRAINT_TUNING;
-    private static final LazyConstant<MethodHandle> B2_JOINT_SET_CONSTRAINT_TUNING;
+	private static final LazyConstant<MethodHandle> B2_DESTROY_JOINT;
+	private static final LazyConstant<MethodHandle> B2_JOINT_IS_VALID;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_TYPE;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_BODY_A;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_BODY_B;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_WORLD;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_LOCAL_FRAME_A;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_LOCAL_FRAME_A;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_LOCAL_FRAME_B;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_LOCAL_FRAME_B;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_COLLIDE_CONNECTED;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_COLLIDE_CONNECTED;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_USER_DATA;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_USER_DATA;
+	private static final LazyConstant<MethodHandle> B2_JOINT_WAKE_BODIES;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_CONSTRAINT_FORCE;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_CONSTRAINT_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_LINEAR_SEPARATION;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_ANGULAR_SEPARATION;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_CONSTRAINT_TUNING;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_CONSTRAINT_TUNING;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_FORCE_THRESHOLD;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_FORCE_THRESHOLD;
+	private static final LazyConstant<MethodHandle> B2_JOINT_SET_TORQUE_THRESHOLD;
+	private static final LazyConstant<MethodHandle> B2_JOINT_GET_TORQUE_THRESHOLD;
 
-    static {
-        //@formatter:off
-        B2_DESTROY_JOINT = downcallHandleVoid("b2DestroyJoint", JointId.LAYOUT);
-        B2_JOINT_IS_VALID = downcallHandle("b2Joint_IsValid", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_JOINT_GET_TYPE = downcallHandle("b2Joint_GetType", JAVA_INT, JointId.LAYOUT);
-        B2_JOINT_GET_BODY_A = downcallHandle("b2Joint_GetBodyA", BodyId.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_GET_BODY_B = downcallHandle("b2Joint_GetBodyB", BodyId.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_GET_WORLD = downcallHandle("b2Joint_GetWorld", WorldId.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_SET_LOCAL_ANCHOR_A = downcallHandleVoid("b2Joint_SetLocalAnchorA", JointId.LAYOUT, Vec2.LAYOUT);
-        B2_JOINT_GET_LOCAL_ANCHOR_A = downcallHandle("b2Joint_GetLocalAnchorA", Vec2.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_SET_LOCAL_ANCHOR_B = downcallHandleVoid("b2Joint_SetLocalAnchorB", JointId.LAYOUT, Vec2.LAYOUT);
-        B2_JOINT_GET_LOCAL_ANCHOR_B = downcallHandle("b2Joint_GetLocalAnchorB", Vec2.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_GET_REFERENCE_ANGLE = downcallHandle("b2Joint_GetReferenceAngle", JAVA_FLOAT, JointId.LAYOUT);
-        B2_JOINT_SET_REFERENCE_ANGLE = downcallHandleVoid("b2Joint_SetReferenceAngle", JointId.LAYOUT, JAVA_FLOAT);
-        B2_JOINT_SET_LOCAL_AXIS_A = downcallHandleVoid("b2Joint_SetLocalAxisA", JointId.LAYOUT, Vec2.LAYOUT);
-        B2_JOINT_GET_LOCAL_AXIS_A = downcallHandle("b2Joint_GetLocalAxisA", Vec2.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_SET_COLLIDE_CONNECTED = downcallHandleVoid("b2Joint_SetCollideConnected", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_JOINT_GET_COLLIDE_CONNECTED = downcallHandle("b2Joint_GetCollideConnected", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_JOINT_SET_USER_DATA = downcallHandleVoid("b2Joint_SetUserData", JointId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_JOINT_GET_USER_DATA = downcallHandle("b2Joint_GetUserData", UNBOUNDED_ADDRESS, JointId.LAYOUT);
-        B2_JOINT_WAKE_BODIES = downcallHandleVoid("b2Joint_WakeBodies", JointId.LAYOUT);
-        B2_JOINT_GET_CONSTRAINT_FORCE = downcallHandle("b2Joint_GetConstraintForce", Vec2.LAYOUT, JointId.LAYOUT);
-        B2_JOINT_GET_CONSTRAINT_TORQUE = downcallHandle("b2Joint_GetConstraintTorque", JAVA_FLOAT, JointId.LAYOUT);
-        B2_JOINT_GET_LINEAR_SEPARATION = downcallHandle("b2Joint_GetLinearSeparation", JAVA_FLOAT, JointId.LAYOUT);
-        B2_JOINT_GET_ANGULAR_SEPARATION = downcallHandle("b2Joint_GetAngularSeparation", JAVA_FLOAT, JointId.LAYOUT);
-        B2_JOINT_GET_CONSTRAINT_TUNING = downcallHandleVoid("b2Joint_GetConstraintTuning", JointId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
-        B2_JOINT_SET_CONSTRAINT_TUNING = downcallHandleVoid("b2Joint_SetConstraintTuning", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_DESTROY_JOINT = downcallHandleVoid("b2DestroyJoint", JointId.LAYOUT);
+		B2_JOINT_IS_VALID = downcallHandle("b2Joint_IsValid", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_JOINT_GET_TYPE = downcallHandle("b2Joint_GetType", JAVA_INT, JointId.LAYOUT);
+		B2_JOINT_GET_BODY_A = downcallHandle("b2Joint_GetBodyA", BodyId.LAYOUT, JointId.LAYOUT);
+		B2_JOINT_GET_BODY_B = downcallHandle("b2Joint_GetBodyB", BodyId.LAYOUT, JointId.LAYOUT);
+		B2_JOINT_GET_WORLD = downcallHandle("b2Joint_GetWorld", WorldId.LAYOUT, JointId.LAYOUT);
+		B2_JOINT_SET_LOCAL_FRAME_A = downcallHandleVoid("b2Joint_SetLocalFrameA", JointId.LAYOUT, Transform.LAYOUT);
+		B2_JOINT_GET_LOCAL_FRAME_A = downcallHandle("b2Joint_GetLocalFrameA", Transform.LAYOUT, JointId.LAYOUT);
+		B2_JOINT_SET_LOCAL_FRAME_B = downcallHandleVoid("b2Joint_SetLocalFrameB", JointId.LAYOUT, Transform.LAYOUT);
+		B2_JOINT_GET_LOCAL_FRAME_B = downcallHandle("b2Joint_GetLocalFrameB", Transform.LAYOUT, JointId.LAYOUT);
+		B2_JOINT_SET_COLLIDE_CONNECTED = downcallHandleVoid("b2Joint_SetCollideConnected", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_JOINT_GET_COLLIDE_CONNECTED = downcallHandle("b2Joint_GetCollideConnected", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_JOINT_SET_USER_DATA = downcallHandleVoid("b2Joint_SetUserData", JointId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_JOINT_GET_USER_DATA = downcallHandle("b2Joint_GetUserData", UNBOUNDED_ADDRESS, JointId.LAYOUT);
+		B2_JOINT_WAKE_BODIES = downcallHandleVoid("b2Joint_WakeBodies", JointId.LAYOUT);
+		B2_JOINT_GET_CONSTRAINT_FORCE = downcallHandle("b2Joint_GetConstraintForce", Vec2.LAYOUT, JointId.LAYOUT);
+		B2_JOINT_GET_CONSTRAINT_TORQUE = downcallHandle("b2Joint_GetConstraintTorque", JAVA_FLOAT, JointId.LAYOUT);
+		B2_JOINT_GET_LINEAR_SEPARATION = downcallHandle("b2Joint_GetLinearSeparation", JAVA_FLOAT, JointId.LAYOUT);
+		B2_JOINT_GET_ANGULAR_SEPARATION = downcallHandle("b2Joint_GetAngularSeparation", JAVA_FLOAT, JointId.LAYOUT);
+		B2_JOINT_SET_CONSTRAINT_TUNING = downcallHandleVoid("b2Joint_SetConstraintTuning", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_JOINT_GET_CONSTRAINT_TUNING = downcallHandleVoid("b2Joint_GetConstraintTuning", JointId.LAYOUT, UNBOUNDED_ADDRESS, UNBOUNDED_ADDRESS);
+		B2_JOINT_SET_FORCE_THRESHOLD = downcallHandleVoid("b2Joint_SetForceThreshold", JointId.LAYOUT, JAVA_FLOAT);
+		B2_JOINT_GET_FORCE_THRESHOLD = downcallHandle("b2Joint_GetForceThreshold", JAVA_FLOAT, JointId.LAYOUT);
+		B2_JOINT_SET_TORQUE_THRESHOLD = downcallHandleVoid("b2Joint_SetTorqueThreshold", JointId.LAYOUT, JAVA_FLOAT);
+		B2_JOINT_GET_TORQUE_THRESHOLD = downcallHandle("b2Joint_GetTorqueThreshold", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private Joint() {
-    }
+	private Joint() {
+	}
 
     /// ```
-    /// Destroy a joint
+    /// Destroy a joint.
     /// ```
     public static void destroyJoint(
     	MemorySegment jointId
@@ -254,42 +255,42 @@ public final class Joint {
     }
     
     /// ```
-    /// Set the local anchor on bodyA
+    /// Set the local frame on bodyA
     /// ```
-    public static void setLocalAnchorA(
+    public static void setLocalFrameA(
     	MemorySegment jointId,
-    	MemorySegment localAnchor
+    	MemorySegment localFrame
     ) {
-    	MethodHandle method = B2_JOINT_SET_LOCAL_ANCHOR_A.get();
+    	MethodHandle method = B2_JOINT_SET_LOCAL_FRAME_A.get();
     	try {
     		 method.invokeExact(
     			jointId,
-    			localAnchor
+    			localFrame
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#setLocalAnchorA].
-    public static void setLocalAnchorA(
+    /// Typed method of [#setLocalFrameA].
+    public static void setLocalFrameA(
     	JointId jointId,
-    	Vec2 localAnchor
+    	Transform localFrame
     ) {
-    	setLocalAnchorA(
+    	setLocalFrameA(
     		jointId.memorySegment(),
-    		localAnchor.memorySegment()
+    		localFrame.memorySegment()
     	);
     }
     
     /// ```
-    /// Get the local anchor on bodyA
+    /// Get the local frame on bodyA
     /// ```
-    public static MemorySegment getLocalAnchorA(
+    public static MemorySegment getLocalFrameA(
     	SegmentAllocator allocator,
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_JOINT_GET_LOCAL_ANCHOR_A.get();
+    	MethodHandle method = B2_JOINT_GET_LOCAL_FRAME_A.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -300,12 +301,12 @@ public final class Joint {
     	}
     }
     
-    /// Typed method of [#getLocalAnchorA].
-    public static @Nullable Vec2 getLocalAnchorA(
+    /// Typed method of [#getLocalFrameA].
+    public static @Nullable Transform getLocalFrameA(
     	SegmentAllocator allocator,
     	JointId jointId
     ) {
-    	MemorySegment segment = getLocalAnchorA(
+    	MemorySegment segment = getLocalFrameA(
     		allocator,
     		jointId.memorySegment()
     	);
@@ -313,46 +314,46 @@ public final class Joint {
     	if (segment.equals(MemorySegment.NULL))
     		return null;
     	
-    	return new Vec2(segment);
+    	return new Transform(segment);
     }
     
     /// ```
-    /// Set the local anchor on bodyB
+    /// Set the local frame on bodyB
     /// ```
-    public static void setLocalAnchorB(
+    public static void setLocalFrameB(
     	MemorySegment jointId,
-    	MemorySegment localAnchor
+    	MemorySegment localFrame
     ) {
-    	MethodHandle method = B2_JOINT_SET_LOCAL_ANCHOR_B.get();
+    	MethodHandle method = B2_JOINT_SET_LOCAL_FRAME_B.get();
     	try {
     		 method.invokeExact(
     			jointId,
-    			localAnchor
+    			localFrame
     		);
     	} catch (Throwable e) {
     		throw new RuntimeException(e);
     	}
     }
     
-    /// Typed method of [#setLocalAnchorB].
-    public static void setLocalAnchorB(
+    /// Typed method of [#setLocalFrameB].
+    public static void setLocalFrameB(
     	JointId jointId,
-    	Vec2 localAnchor
+    	Transform localFrame
     ) {
-    	setLocalAnchorB(
+    	setLocalFrameB(
     		jointId.memorySegment(),
-    		localAnchor.memorySegment()
+    		localFrame.memorySegment()
     	);
     }
     
     /// ```
-    /// Get the local anchor on bodyB
+    /// Get the local frame on bodyB
     /// ```
-    public static MemorySegment getLocalAnchorB(
+    public static MemorySegment getLocalFrameB(
     	SegmentAllocator allocator,
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_JOINT_GET_LOCAL_ANCHOR_B.get();
+    	MethodHandle method = B2_JOINT_GET_LOCAL_FRAME_B.get();
     	try {
     		return (MemorySegment) method.invokeExact(
     			allocator,
@@ -363,12 +364,12 @@ public final class Joint {
     	}
     }
     
-    /// Typed method of [#getLocalAnchorB].
-    public static @Nullable Vec2 getLocalAnchorB(
+    /// Typed method of [#getLocalFrameB].
+    public static @Nullable Transform getLocalFrameB(
     	SegmentAllocator allocator,
     	JointId jointId
     ) {
-    	MemorySegment segment = getLocalAnchorB(
+    	MemorySegment segment = getLocalFrameB(
     		allocator,
     		jointId.memorySegment()
     	);
@@ -376,124 +377,7 @@ public final class Joint {
     	if (segment.equals(MemorySegment.NULL))
     		return null;
     	
-    	return new Vec2(segment);
-    }
-    
-    /// ```
-    /// Get the joint reference angle in radians (revolute, prismatic, and weld)
-    /// ```
-    public static float getReferenceAngle(
-    	MemorySegment jointId
-    ) {
-    	MethodHandle method = B2_JOINT_GET_REFERENCE_ANGLE.get();
-    	try {
-    		return (float) method.invokeExact(
-    			jointId
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#getReferenceAngle].
-    public static float getReferenceAngle(
-    	JointId jointId
-    ) {
-    	return getReferenceAngle(
-    		jointId.memorySegment()
-    	);
-    }
-    
-    /// ```
-    /// Set the joint reference angle in radians, must be in [-pi,pi]. (revolute, prismatic, and weld)
-    /// ```
-    public static void setReferenceAngle(
-    	MemorySegment jointId,
-    	float angleInRadians
-    ) {
-    	MethodHandle method = B2_JOINT_SET_REFERENCE_ANGLE.get();
-    	try {
-    		 method.invokeExact(
-    			jointId,
-    			angleInRadians
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#setReferenceAngle].
-    public static void setReferenceAngle(
-    	JointId jointId,
-    	float angleInRadians
-    ) {
-    	setReferenceAngle(
-    		jointId.memorySegment(),
-    		angleInRadians
-    	);
-    }
-    
-    /// ```
-    /// Set the local axis on bodyA (prismatic and wheel)
-    /// ```
-    public static void setLocalAxisA(
-    	MemorySegment jointId,
-    	MemorySegment localAxis
-    ) {
-    	MethodHandle method = B2_JOINT_SET_LOCAL_AXIS_A.get();
-    	try {
-    		 method.invokeExact(
-    			jointId,
-    			localAxis
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#setLocalAxisA].
-    public static void setLocalAxisA(
-    	JointId jointId,
-    	Vec2 localAxis
-    ) {
-    	setLocalAxisA(
-    		jointId.memorySegment(),
-    		localAxis.memorySegment()
-    	);
-    }
-    
-    /// ```
-    /// Get the local axis on bodyA (prismatic and wheel)
-    /// ```
-    public static MemorySegment getLocalAxisA(
-    	SegmentAllocator allocator,
-    	MemorySegment jointId
-    ) {
-    	MethodHandle method = B2_JOINT_GET_LOCAL_AXIS_A.get();
-    	try {
-    		return (MemorySegment) method.invokeExact(
-    			allocator,
-    			jointId
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#getLocalAxisA].
-    public static @Nullable Vec2 getLocalAxisA(
-    	SegmentAllocator allocator,
-    	JointId jointId
-    ) {
-    	MemorySegment segment = getLocalAxisA(
-    		allocator,
-    		jointId.memorySegment()
-    	);
-    
-    	if (segment.equals(MemorySegment.NULL))
-    		return null;
-    	
-    	return new Vec2(segment);
+    	return new Transform(segment);
     }
     
     /// ```
@@ -610,7 +494,7 @@ public final class Joint {
     }
     
     /// ```
-    /// Wake the bodies connect to this joint
+    /// Wake the bodies connected to this joint
     /// ```
     public static void wakeBodies(
     	MemorySegment jointId
@@ -694,7 +578,8 @@ public final class Joint {
     }
     
     /// ```
-    /// Get the current linear separation error for this joint. Does not consider admissible movement. Usually in meters.
+    /// Get the current linear separation error for this joint. Does not consider admissible movement.
+    /// Usually in meters.
     /// ```
     public static float getLinearSeparation(
     	MemorySegment jointId
@@ -719,7 +604,8 @@ public final class Joint {
     }
     
     /// ```
-    /// Get the current angular separation error for this joint. Does not consider admissible movement. Usually in meters.
+    /// Get the current angular separation error for this joint. Does not consider admissible movement.
+    /// Radians.
     /// ```
     public static float getAngularSeparation(
     	MemorySegment jointId
@@ -740,39 +626,6 @@ public final class Joint {
     ) {
     	return getAngularSeparation(
     		jointId.memorySegment()
-    	);
-    }
-    
-    /// ```
-    /// Get the joint constraint tuning. Advanced feature.
-    /// ```
-    public static void getConstraintTuning(
-    	MemorySegment jointId,
-    	MemorySegment hertz,
-    	MemorySegment dampingRatio
-    ) {
-    	MethodHandle method = B2_JOINT_GET_CONSTRAINT_TUNING.get();
-    	try {
-    		 method.invokeExact(
-    			jointId,
-    			hertz,
-    			dampingRatio
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#getConstraintTuning].
-    public static void getConstraintTuning(
-    	JointId jointId,
-    	NativeFloatArray hertz,
-    	NativeFloatArray dampingRatio
-    ) {
-    	getConstraintTuning(
-    		jointId.memorySegment(),
-    		hertz.memorySegment(),
-    		dampingRatio.memorySegment()
     	);
     }
     
@@ -812,4 +665,145 @@ public final class Joint {
     	);
     }
     
+    /// ```
+    /// Get the joint constraint tuning. Advanced feature.
+    /// ```
+    public static void getConstraintTuning(
+    	MemorySegment jointId,
+    	MemorySegment hertz,
+    	MemorySegment dampingRatio
+    ) {
+    	MethodHandle method = B2_JOINT_GET_CONSTRAINT_TUNING.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			hertz,
+    			dampingRatio
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getConstraintTuning].
+    public static void getConstraintTuning(
+    	JointId jointId,
+    	NativeFloatArray hertz,
+    	NativeFloatArray dampingRatio
+    ) {
+    	getConstraintTuning(
+    		jointId.memorySegment(),
+    		hertz.memorySegment(),
+    		dampingRatio.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the force threshold for joint events (Newtons)
+    /// ```
+    public static void setForceThreshold(
+    	MemorySegment jointId,
+    	float threshold
+    ) {
+    	MethodHandle method = B2_JOINT_SET_FORCE_THRESHOLD.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			threshold
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setForceThreshold].
+    public static void setForceThreshold(
+    	JointId jointId,
+    	float threshold
+    ) {
+    	setForceThreshold(
+    		jointId.memorySegment(),
+    		threshold
+    	);
+    }
+    
+    /// ```
+    /// Get the force threshold for joint events (Newtons)
+    /// ```
+    public static float getForceThreshold(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_JOINT_GET_FORCE_THRESHOLD.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getForceThreshold].
+    public static float getForceThreshold(
+    	JointId jointId
+    ) {
+    	return getForceThreshold(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Set the torque threshold for joint events (N-m)
+    /// ```
+    public static void setTorqueThreshold(
+    	MemorySegment jointId,
+    	float threshold
+    ) {
+    	MethodHandle method = B2_JOINT_SET_TORQUE_THRESHOLD.get();
+    	try {
+    		 method.invokeExact(
+    			jointId,
+    			threshold
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#setTorqueThreshold].
+    public static void setTorqueThreshold(
+    	JointId jointId,
+    	float threshold
+    ) {
+    	setTorqueThreshold(
+    		jointId.memorySegment(),
+    		threshold
+    	);
+    }
+    
+    /// ```
+    /// Get the torque threshold for joint events (N-m)
+    /// ```
+    public static float getTorqueThreshold(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_JOINT_GET_TORQUE_THRESHOLD.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getTorqueThreshold].
+    public static float getTorqueThreshold(
+    	JointId jointId
+    ) {
+    	return getTorqueThreshold(
+    		jointId.memorySegment()
+    	);
+    }
+
 }

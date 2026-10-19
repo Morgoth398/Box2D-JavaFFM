@@ -17,118 +17,78 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Result from b2World_RayCastClosest
-/// If there is initial overlap the fraction and normal will be zero while the point is an arbitrary point in the overlap region.
+/// Result from b2World_CastRayClosest If there is initial overlap the fraction and normal will be
+/// zero while the point is an arbitrary point in the overlap region.
 /// @ingroup world
 /// ```
 public final class RayResult
 		implements Struct<RayResult> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle FRACTION_HANDLE;
-    public static final VarHandle NODE_VISITS_HANDLE;
-    public static final VarHandle LEAF_VISITS_HANDLE;
-    public static final VarHandle HIT_HANDLE;
+	public static final VarHandle FRACTION_HANDLE;
+	public static final VarHandle NODE_VISITS_HANDLE;
+	public static final VarHandle LEAF_VISITS_HANDLE;
+	public static final VarHandle HIT_HANDLE;
 
-    public static final long SHAPE_ID_BYTE_OFFSET;
-    public static final long POINT_BYTE_OFFSET;
-    public static final long NORMAL_BYTE_OFFSET;
-    public static final long FRACTION_BYTE_OFFSET;
-    public static final long NODE_VISITS_BYTE_OFFSET;
-    public static final long LEAF_VISITS_BYTE_OFFSET;
-    public static final long HIT_BYTE_OFFSET;
+	public static final long SHAPE_ID_BYTE_OFFSET;
+	public static final long POINT_BYTE_OFFSET;
+	public static final long NORMAL_BYTE_OFFSET;
+	public static final long FRACTION_BYTE_OFFSET;
+	public static final long NODE_VISITS_BYTE_OFFSET;
+	public static final long LEAF_VISITS_BYTE_OFFSET;
+	public static final long HIT_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeId shapeId;
-    private final Vec2 point;
-    private final Vec2 normal;
+	private final ShapeId shapeId;
+	private final Vec2 point;
+	private final Vec2 normal;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeId.LAYOUT.withName("shapeId"),
-            Vec2.LAYOUT.withName("point"),
-            Vec2.LAYOUT.withName("normal"),
-            JAVA_FLOAT.withName("fraction"),
-            JAVA_INT.withName("nodeVisits"),
-            JAVA_INT.withName("leafVisits"),
-            JAVA_BOOLEAN.withName("hit"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2RayResult").withByteAlignment(4);
-        
-        FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
-        NODE_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
-        HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
-        
-        SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeId"));
-        POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
-        NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
-        FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
-        NODE_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
-        LEAF_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
-        HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeId.LAYOUT.withName("shapeId"),
+		    Vec2.LAYOUT.withName("point"),
+		    Vec2.LAYOUT.withName("normal"),
+		    JAVA_FLOAT.withName("fraction"),
+		    JAVA_INT.withName("nodeVisits"),
+		    JAVA_INT.withName("leafVisits"),
+		    JAVA_BOOLEAN.withName("hit"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2RayResult").withByteAlignment(4);
+		
+		FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("fraction"));
+		NODE_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("nodeVisits"));
+		LEAF_VISITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("leafVisits"));
+		HIT_HANDLE = LAYOUT.varHandle(PathElement.groupElement("hit"));
+		
+		SHAPE_ID_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("shapeId"));
+		POINT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("point"));
+		NORMAL_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("normal"));
+		FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("fraction"));
+		NODE_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("nodeVisits"));
+		LEAF_VISITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("leafVisits"));
+		HIT_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("hit"));
+		//@formatter:on
+	}
 
-    public RayResult() {
-        this(Arena.ofAuto());
-    }
-    
-    public RayResult(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public RayResult(MemorySegment segment) {
-        this.segment = segment;
-    
-        shapeId = new ShapeId(segment.asSlice(SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
-        point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
-        normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public RayResult() {
+	    this(Arena.ofAuto());
+	}
+	
+	public RayResult(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public RayResult(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    shapeId = new ShapeId(segment.asSlice(SHAPE_ID_BYTE_OFFSET, ShapeId.LAYOUT));
+	    point = new Vec2(segment.asSlice(POINT_BYTE_OFFSET, Vec2.LAYOUT));
+	    normal = new Vec2(segment.asSlice(NORMAL_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
-    /// @see #fraction()
-    public RayResult fraction(float fraction) {
-    	FRACTION_HANDLE.set(segment, 0L, fraction);
-    	return this;
-    }
-    
-    public float fraction() {
-    	return (float) FRACTION_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #nodeVisits()
-    public RayResult nodeVisits(int nodeVisits) {
-    	NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
-    	return this;
-    }
-    
-    public int nodeVisits() {
-    	return (int) NODE_VISITS_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #leafVisits()
-    public RayResult leafVisits(int leafVisits) {
-    	LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
-    	return this;
-    }
-    
-    public int leafVisits() {
-    	return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #hit()
-    public RayResult hit(boolean hit) {
-    	HIT_HANDLE.set(segment, 0L, hit);
-    	return this;
-    }
-    
-    public boolean hit() {
-    	return (boolean) HIT_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #shapeId()
     public RayResult shapeId(Consumer<ShapeId> consumer) {
     	consumer.accept(shapeId);
@@ -141,6 +101,9 @@ public final class RayResult
     	return this;
     }
     
+    /// ```
+    /// The shape hit.
+    /// ```
     public ShapeId shapeId() {
     	return shapeId;
     }
@@ -157,6 +120,9 @@ public final class RayResult
     	return this;
     }
     
+    /// ```
+    /// The point of contact, on the surface of the hit shape.
+    /// ```
     public Vec2 point() {
     	return point;
     }
@@ -173,8 +139,63 @@ public final class RayResult
     	return this;
     }
     
+    /// ```
+    /// The unit normal vector at the point of contact.
+    /// ```
     public Vec2 normal() {
     	return normal;
+    }
+    
+    /// @see #fraction()
+    public RayResult fraction(float fraction) {
+    	FRACTION_HANDLE.set(segment, 0L, fraction);
+    	return this;
+    }
+    
+    /// ```
+    /// The fraction of the input ray.
+    /// ```
+    public float fraction() {
+    	return (float) FRACTION_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #nodeVisits()
+    public RayResult nodeVisits(int nodeVisits) {
+    	NODE_VISITS_HANDLE.set(segment, 0L, nodeVisits);
+    	return this;
+    }
+    
+    /// ```
+    /// The number of BVH nodes visited. Diagnostic.
+    /// ```
+    public int nodeVisits() {
+    	return (int) NODE_VISITS_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #leafVisits()
+    public RayResult leafVisits(int leafVisits) {
+    	LEAF_VISITS_HANDLE.set(segment, 0L, leafVisits);
+    	return this;
+    }
+    
+    /// ```
+    /// The number of BVH leaves visited. Diagnostic.
+    /// ```
+    public int leafVisits() {
+    	return (int) LEAF_VISITS_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #hit()
+    public RayResult hit(boolean hit) {
+    	HIT_HANDLE.set(segment, 0L, hit);
+    	return this;
+    }
+    
+    /// ```
+    /// Did the ray hit? If false, all other data is invalid.
+    /// ```
+    public boolean hit() {
+    	return (boolean) HIT_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -228,5 +249,5 @@ public final class RayResult
             segment -> new RayResult(segment)
         );
     }
-    
+
 }

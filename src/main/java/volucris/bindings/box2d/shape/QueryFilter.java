@@ -18,47 +18,47 @@ import static java.lang.foreign.ValueLayout.*;
 import static volucris.bindings.core.FFMUtils.*;
 
 /// ```
-/// The query filter is used to filter collisions between queries and shapes. For example,
-/// you may want a ray-cast representing a projectile to hit players and the static environment
-/// but not debris.
+/// The query filter is used to filter collisions between queries and shapes. For example, you may
+/// want a ray-cast representing a projectile to hit players and the static environment but not
+/// debris.
 /// @ingroup shape
 /// ```
 public final class QueryFilter
 		implements Struct<QueryFilter> {
 
-    private static final LazyConstant<MethodHandle> B2_DEFAULT_QUERY_FILTER;
+	private static final LazyConstant<MethodHandle> B2_DEFAULT_QUERY_FILTER;
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle CATEGORY_BITS_HANDLE;
-    public static final VarHandle MASK_BITS_HANDLE;
+	public static final VarHandle CATEGORY_BITS_HANDLE;
+	public static final VarHandle MASK_BITS_HANDLE;
 
-    public static final long CATEGORY_BITS_BYTE_OFFSET;
-    public static final long MASK_BITS_BYTE_OFFSET;
+	public static final long CATEGORY_BITS_BYTE_OFFSET;
+	public static final long MASK_BITS_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            JAVA_LONG.withName("categoryBits"),
-            JAVA_LONG.withName("maskBits")
-        ).withName("b2QueryFilter").withByteAlignment(8);
-        
-        B2_DEFAULT_QUERY_FILTER = downcallHandle("b2DefaultQueryFilter", QueryFilter.LAYOUT);
-        
-        CATEGORY_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
-        MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
-        
-        CATEGORY_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
-        MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    JAVA_LONG.withName("categoryBits"),
+		    JAVA_LONG.withName("maskBits")
+		).withName("b2QueryFilter").withByteAlignment(8);
+		
+		B2_DEFAULT_QUERY_FILTER = downcallHandle("b2DefaultQueryFilter", QueryFilter.LAYOUT);
+		
+		CATEGORY_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("categoryBits"));
+		MASK_BITS_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maskBits"));
+		
+		CATEGORY_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("categoryBits"));
+		MASK_BITS_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maskBits"));
+		//@formatter:on
+	}
 
-    public QueryFilter(MemorySegment segment) {
-        this.segment = segment;
-    
-    }
+	public QueryFilter(MemorySegment segment) {
+	    this.segment = segment;
+	
+	}
 
     /// ```
     /// Use this to initialize your query filter
@@ -111,8 +111,8 @@ public final class QueryFilter
     }
     
     /// ```
-    /// The collision mask bits. This states the shape categories that this
-    /// query would accept for collision.
+    /// The collision mask bits. This states the shape categories that this query would accept for
+    /// collision.
     /// ```
     public long maskBits() {
     	return (long) MASK_BITS_HANDLE.get(segment, 0L);
@@ -169,5 +169,5 @@ public final class QueryFilter
             segment -> new QueryFilter(segment)
         );
     }
-    
+
 }

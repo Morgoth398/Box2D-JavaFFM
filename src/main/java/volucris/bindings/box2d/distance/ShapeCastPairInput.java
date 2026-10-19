@@ -18,102 +18,71 @@ import volucris.bindings.core.Struct;
 import static java.lang.foreign.ValueLayout.*;
 
 /// ```
-/// Input parameters for b2ShapeCast
+/// Input parameters for b2CastShape
 /// ```
 public final class ShapeCastPairInput
 		implements Struct<ShapeCastPairInput> {
 
-    public static final StructLayout LAYOUT;
+	public static final StructLayout LAYOUT;
 
-    public static final VarHandle MAX_FRACTION_HANDLE;
-    public static final VarHandle CAN_ENCROACH_HANDLE;
+	public static final VarHandle MAX_FRACTION_HANDLE;
+	public static final VarHandle CAN_ENCROACH_HANDLE;
 
-    public static final long PROXY_A_BYTE_OFFSET;
-    public static final long PROXY_B_BYTE_OFFSET;
-    public static final long TRANSFORM_A_BYTE_OFFSET;
-    public static final long TRANSFORM_B_BYTE_OFFSET;
-    public static final long TRANSLATION_B_BYTE_OFFSET;
-    public static final long MAX_FRACTION_BYTE_OFFSET;
-    public static final long CAN_ENCROACH_BYTE_OFFSET;
+	public static final long PROXY_A_BYTE_OFFSET;
+	public static final long PROXY_B_BYTE_OFFSET;
+	public static final long TRANSFORM_BYTE_OFFSET;
+	public static final long TRANSLATION_B_BYTE_OFFSET;
+	public static final long MAX_FRACTION_BYTE_OFFSET;
+	public static final long CAN_ENCROACH_BYTE_OFFSET;
 
-    private final MemorySegment segment;
+	private final MemorySegment segment;
 
-    private final ShapeProxy proxyA;
-    private final ShapeProxy proxyB;
-    private final Transform transformA;
-    private final Transform transformB;
-    private final Vec2 translationB;
+	private final ShapeProxy proxyA;
+	private final ShapeProxy proxyB;
+	private final Transform transform;
+	private final Vec2 translationB;
 
-    static {
-        //@formatter:off
-        LAYOUT = MemoryLayout.structLayout(
-            ShapeProxy.LAYOUT.withName("proxyA"),
-            ShapeProxy.LAYOUT.withName("proxyB"),
-            Transform.LAYOUT.withName("transformA"),
-            Transform.LAYOUT.withName("transformB"),
-            Vec2.LAYOUT.withName("translationB"),
-            JAVA_FLOAT.withName("maxFraction"),
-            JAVA_BOOLEAN.withName("canEncroach"),
-            MemoryLayout.paddingLayout(3)
-        ).withName("b2ShapeCastPairInput").withByteAlignment(4);
-        
-        MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
-        CAN_ENCROACH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
-        
-        PROXY_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
-        PROXY_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
-        TRANSFORM_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformA"));
-        TRANSFORM_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transformB"));
-        TRANSLATION_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translationB"));
-        MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
-        CAN_ENCROACH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		LAYOUT = MemoryLayout.structLayout(
+		    ShapeProxy.LAYOUT.withName("proxyA"),
+		    ShapeProxy.LAYOUT.withName("proxyB"),
+		    Transform.LAYOUT.withName("transform"),
+		    Vec2.LAYOUT.withName("translationB"),
+		    JAVA_FLOAT.withName("maxFraction"),
+		    JAVA_BOOLEAN.withName("canEncroach"),
+		    MemoryLayout.paddingLayout(3)
+		).withName("b2ShapeCastPairInput").withByteAlignment(4);
+		
+		MAX_FRACTION_HANDLE = LAYOUT.varHandle(PathElement.groupElement("maxFraction"));
+		CAN_ENCROACH_HANDLE = LAYOUT.varHandle(PathElement.groupElement("canEncroach"));
+		
+		PROXY_A_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyA"));
+		PROXY_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("proxyB"));
+		TRANSFORM_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("transform"));
+		TRANSLATION_B_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("translationB"));
+		MAX_FRACTION_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("maxFraction"));
+		CAN_ENCROACH_BYTE_OFFSET = LAYOUT.byteOffset(PathElement.groupElement("canEncroach"));
+		//@formatter:on
+	}
 
-    public ShapeCastPairInput() {
-        this(Arena.ofAuto());
-    }
-    
-    public ShapeCastPairInput(Arena arena) {
-        this(arena.allocate(LAYOUT));
-    }
-    
-    public ShapeCastPairInput(MemorySegment segment) {
-        this.segment = segment;
-    
-        proxyA = new ShapeProxy(segment.asSlice(PROXY_A_BYTE_OFFSET, ShapeProxy.LAYOUT));
-        proxyB = new ShapeProxy(segment.asSlice(PROXY_B_BYTE_OFFSET, ShapeProxy.LAYOUT));
-        transformA = new Transform(segment.asSlice(TRANSFORM_A_BYTE_OFFSET, Transform.LAYOUT));
-        transformB = new Transform(segment.asSlice(TRANSFORM_B_BYTE_OFFSET, Transform.LAYOUT));
-        translationB = new Vec2(segment.asSlice(TRANSLATION_B_BYTE_OFFSET, Vec2.LAYOUT));
-    }
+	public ShapeCastPairInput() {
+	    this(Arena.ofAuto());
+	}
+	
+	public ShapeCastPairInput(Arena arena) {
+	    this(arena.allocate(LAYOUT));
+	}
+	
+	public ShapeCastPairInput(MemorySegment segment) {
+	    this.segment = segment;
+	
+	    proxyA = new ShapeProxy(segment.asSlice(PROXY_A_BYTE_OFFSET, ShapeProxy.LAYOUT));
+	    proxyB = new ShapeProxy(segment.asSlice(PROXY_B_BYTE_OFFSET, ShapeProxy.LAYOUT));
+	    transform = new Transform(segment.asSlice(TRANSFORM_BYTE_OFFSET, Transform.LAYOUT));
+	    translationB = new Vec2(segment.asSlice(TRANSLATION_B_BYTE_OFFSET, Vec2.LAYOUT));
+	}
 
-    /// @see #maxFraction()
-    public ShapeCastPairInput maxFraction(float maxFraction) {
-    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
-    	return this;
-    }
-    
-    /// ```
-    /// The fraction of the translation to consider, typically 1
-    /// ```
-    public float maxFraction() {
-    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
-    }
-    
-    /// @see #canEncroach()
-    public ShapeCastPairInput canEncroach(boolean canEncroach) {
-    	CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
-    	return this;
-    }
-    
-    /// ```
-    /// Allows shapes with a radius to move slightly closer if already touching
-    /// ```
-    public boolean canEncroach() {
-    	return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
-    }
-    
     /// @see #proxyA()
     public ShapeCastPairInput proxyA(Consumer<ShapeProxy> consumer) {
     	consumer.accept(proxyA);
@@ -152,42 +121,23 @@ public final class ShapeCastPairInput
     	return proxyB;
     }
     
-    /// @see #transformA()
-    public ShapeCastPairInput transformA(Consumer<Transform> consumer) {
-    	consumer.accept(transformA);
+    /// @see #transform()
+    public ShapeCastPairInput transform(Consumer<Transform> consumer) {
+    	consumer.accept(transform);
     	return this;
     }
     
-    /// @see #transformA()
-    public ShapeCastPairInput transformA(Transform other) {
-    	transformA.set(other);
-    	return this;
-    }
-    
-    /// ```
-    /// The world transform for shape A
-    /// ```
-    public Transform transformA() {
-    	return transformA;
-    }
-    
-    /// @see #transformB()
-    public ShapeCastPairInput transformB(Consumer<Transform> consumer) {
-    	consumer.accept(transformB);
-    	return this;
-    }
-    
-    /// @see #transformB()
-    public ShapeCastPairInput transformB(Transform other) {
-    	transformB.set(other);
+    /// @see #transform()
+    public ShapeCastPairInput transform(Transform other) {
+    	transform.set(other);
     	return this;
     }
     
     /// ```
-    /// The world transform for shape B
+    /// Transform of shape B in shape A's frame, the relative pose B in A
     /// ```
-    public Transform transformB() {
-    	return transformB;
+    public Transform transform() {
+    	return transform;
     }
     
     /// @see #translationB()
@@ -203,10 +153,36 @@ public final class ShapeCastPairInput
     }
     
     /// ```
-    /// The translation of shape B
+    /// The translation of shape B, in A's frame
     /// ```
     public Vec2 translationB() {
     	return translationB;
+    }
+    
+    /// @see #maxFraction()
+    public ShapeCastPairInput maxFraction(float maxFraction) {
+    	MAX_FRACTION_HANDLE.set(segment, 0L, maxFraction);
+    	return this;
+    }
+    
+    /// ```
+    /// The fraction of the translation to consider, typically 1
+    /// ```
+    public float maxFraction() {
+    	return (float) MAX_FRACTION_HANDLE.get(segment, 0L);
+    }
+    
+    /// @see #canEncroach()
+    public ShapeCastPairInput canEncroach(boolean canEncroach) {
+    	CAN_ENCROACH_HANDLE.set(segment, 0L, canEncroach);
+    	return this;
+    }
+    
+    /// ```
+    /// Allows shapes with a radius to move slightly closer if already touching
+    /// ```
+    public boolean canEncroach() {
+    	return (boolean) CAN_ENCROACH_HANDLE.get(segment, 0L);
     }
     
     @Override
@@ -260,5 +236,5 @@ public final class ShapeCastPairInput
             segment -> new ShapeCastPairInput(segment)
         );
     }
-    
+
 }

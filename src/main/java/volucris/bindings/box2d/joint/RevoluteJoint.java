@@ -14,58 +14,60 @@ import static volucris.bindings.core.FFMUtils.*;
 
 public final class RevoluteJoint {
 
-    private static final LazyConstant<MethodHandle> B2_CREATE_REVOLUTE_JOINT;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_ENABLE_SPRING;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_IS_SPRING_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_SPRING_HERTZ;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_TARGET_ANGLE;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_TARGET_ANGLE;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_ANGLE;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_ENABLE_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_LOWER_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_UPPER_LIMIT;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_LIMITS;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_ENABLE_MOTOR;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_MOTOR_SPEED;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_MOTOR_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_MAX_MOTOR_TORQUE;
-    private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_CREATE_REVOLUTE_JOINT;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_ENABLE_SPRING;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_IS_SPRING_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_SPRING_HERTZ;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_TARGET_ANGLE;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_TARGET_ANGLE;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_ENABLE_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_LOWER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_UPPER_LIMIT;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_LIMITS;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_ENABLE_MOTOR;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_TARGET_MOTOR_SPEED;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_SET_MAX_MOTOR_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_CURRENT_ANGLE;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_CURRENT_SPEED;
+	private static final LazyConstant<MethodHandle> B2_REVOLUTE_JOINT_GET_CURRENT_MOTOR_TORQUE;
 
-    static {
-        //@formatter:off
-        B2_CREATE_REVOLUTE_JOINT = downcallHandle("b2CreateRevoluteJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
-        B2_REVOLUTE_JOINT_ENABLE_SPRING = downcallHandleVoid("b2RevoluteJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_REVOLUTE_JOINT_IS_SPRING_ENABLED = downcallHandle("b2RevoluteJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2RevoluteJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
-        B2_REVOLUTE_JOINT_GET_SPRING_HERTZ = downcallHandle("b2RevoluteJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2RevoluteJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
-        B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2RevoluteJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_SET_TARGET_ANGLE = downcallHandleVoid("b2RevoluteJoint_SetTargetAngle", JointId.LAYOUT, JAVA_FLOAT);
-        B2_REVOLUTE_JOINT_GET_TARGET_ANGLE = downcallHandle("b2RevoluteJoint_GetTargetAngle", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_GET_ANGLE = downcallHandle("b2RevoluteJoint_GetAngle", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2RevoluteJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2RevoluteJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_GET_LOWER_LIMIT = downcallHandle("b2RevoluteJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_GET_UPPER_LIMIT = downcallHandle("b2RevoluteJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_SET_LIMITS = downcallHandleVoid("b2RevoluteJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
-        B2_REVOLUTE_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2RevoluteJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
-        B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2RevoluteJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_SET_MOTOR_SPEED = downcallHandleVoid("b2RevoluteJoint_SetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
-        B2_REVOLUTE_JOINT_GET_MOTOR_SPEED = downcallHandle("b2RevoluteJoint_GetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_GET_MOTOR_TORQUE = downcallHandle("b2RevoluteJoint_GetMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
-        B2_REVOLUTE_JOINT_SET_MAX_MOTOR_TORQUE = downcallHandleVoid("b2RevoluteJoint_SetMaxMotorTorque", JointId.LAYOUT, JAVA_FLOAT);
-        B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE = downcallHandle("b2RevoluteJoint_GetMaxMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
-        //@formatter:on
-    }
+	static {
+		//@formatter:off
+		B2_CREATE_REVOLUTE_JOINT = downcallHandle("b2CreateRevoluteJoint", JointId.LAYOUT, WorldId.LAYOUT, UNBOUNDED_ADDRESS);
+		B2_REVOLUTE_JOINT_ENABLE_SPRING = downcallHandleVoid("b2RevoluteJoint_EnableSpring", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_REVOLUTE_JOINT_IS_SPRING_ENABLED = downcallHandle("b2RevoluteJoint_IsSpringEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_SET_SPRING_HERTZ = downcallHandleVoid("b2RevoluteJoint_SetSpringHertz", JointId.LAYOUT, JAVA_FLOAT);
+		B2_REVOLUTE_JOINT_GET_SPRING_HERTZ = downcallHandle("b2RevoluteJoint_GetSpringHertz", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_SET_SPRING_DAMPING_RATIO = downcallHandleVoid("b2RevoluteJoint_SetSpringDampingRatio", JointId.LAYOUT, JAVA_FLOAT);
+		B2_REVOLUTE_JOINT_GET_SPRING_DAMPING_RATIO = downcallHandle("b2RevoluteJoint_GetSpringDampingRatio", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_SET_TARGET_ANGLE = downcallHandleVoid("b2RevoluteJoint_SetTargetAngle", JointId.LAYOUT, JAVA_FLOAT);
+		B2_REVOLUTE_JOINT_GET_TARGET_ANGLE = downcallHandle("b2RevoluteJoint_GetTargetAngle", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_ENABLE_LIMIT = downcallHandleVoid("b2RevoluteJoint_EnableLimit", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_REVOLUTE_JOINT_IS_LIMIT_ENABLED = downcallHandle("b2RevoluteJoint_IsLimitEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_GET_LOWER_LIMIT = downcallHandle("b2RevoluteJoint_GetLowerLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_GET_UPPER_LIMIT = downcallHandle("b2RevoluteJoint_GetUpperLimit", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_SET_LIMITS = downcallHandleVoid("b2RevoluteJoint_SetLimits", JointId.LAYOUT, JAVA_FLOAT, JAVA_FLOAT);
+		B2_REVOLUTE_JOINT_ENABLE_MOTOR = downcallHandleVoid("b2RevoluteJoint_EnableMotor", JointId.LAYOUT, JAVA_BOOLEAN);
+		B2_REVOLUTE_JOINT_IS_MOTOR_ENABLED = downcallHandle("b2RevoluteJoint_IsMotorEnabled", JAVA_BOOLEAN, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_SET_TARGET_MOTOR_SPEED = downcallHandleVoid("b2RevoluteJoint_SetTargetMotorSpeed", JointId.LAYOUT, JAVA_FLOAT);
+		B2_REVOLUTE_JOINT_GET_TARGET_MOTOR_SPEED = downcallHandle("b2RevoluteJoint_GetTargetMotorSpeed", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_SET_MAX_MOTOR_TORQUE = downcallHandleVoid("b2RevoluteJoint_SetMaxMotorTorque", JointId.LAYOUT, JAVA_FLOAT);
+		B2_REVOLUTE_JOINT_GET_MAX_MOTOR_TORQUE = downcallHandle("b2RevoluteJoint_GetMaxMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_GET_CURRENT_ANGLE = downcallHandle("b2RevoluteJoint_GetCurrentAngle", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_GET_CURRENT_SPEED = downcallHandle("b2RevoluteJoint_GetCurrentSpeed", JAVA_FLOAT, JointId.LAYOUT);
+		B2_REVOLUTE_JOINT_GET_CURRENT_MOTOR_TORQUE = downcallHandle("b2RevoluteJoint_GetCurrentMotorTorque", JAVA_FLOAT, JointId.LAYOUT);
+		//@formatter:on
+	}
 
-    private RevoluteJoint() {
-    }
+	private RevoluteJoint() {
+	}
 
     /// ```
     /// Create a revolute joint
@@ -136,7 +138,7 @@ public final class RevoluteJoint {
     }
     
     /// ```
-    /// It the revolute angular spring enabled?
+    /// Is the revolute angular spring enabled?
     /// ```
     public static boolean isSpringEnabled(
     	MemorySegment jointId
@@ -323,32 +325,6 @@ public final class RevoluteJoint {
     }
     
     /// ```
-    /// Get the revolute joint current angle in radians relative to the reference angle
-    /// @see b2RevoluteJointDef::referenceAngle
-    /// ```
-    public static float getAngle(
-    	MemorySegment jointId
-    ) {
-    	MethodHandle method = B2_REVOLUTE_JOINT_GET_ANGLE.get();
-    	try {
-    		return (float) method.invokeExact(
-    			jointId
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#getAngle].
-    public static float getAngle(
-    	JointId jointId
-    ) {
-    	return getAngle(
-    		jointId.memorySegment()
-    	);
-    }
-    
-    /// ```
     /// Enable/disable the revolute joint limit
     /// ```
     public static void enableLimit(
@@ -453,8 +429,8 @@ public final class RevoluteJoint {
     }
     
     /// ```
-    /// Set the revolute joint limits in radians. It is expected that lower <= upper
-    /// and that -0.99 * B2_PI <= lower && upper <= -0.99 * B2_PI.
+    /// Set the revolute joint limits in radians. It is expected that lower <= upper and that -0.99 *
+    /// B2_PI <= lower && upper <= 0.99 * B2_PI.
     /// ```
     public static void setLimits(
     	MemorySegment jointId,
@@ -543,11 +519,11 @@ public final class RevoluteJoint {
     /// ```
     /// Set the revolute joint motor speed in radians per second
     /// ```
-    public static void setMotorSpeed(
+    public static void setTargetMotorSpeed(
     	MemorySegment jointId,
     	float motorSpeed
     ) {
-    	MethodHandle method = B2_REVOLUTE_JOINT_SET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_REVOLUTE_JOINT_SET_TARGET_MOTOR_SPEED.get();
     	try {
     		 method.invokeExact(
     			jointId,
@@ -558,12 +534,12 @@ public final class RevoluteJoint {
     	}
     }
     
-    /// Typed method of [#setMotorSpeed].
-    public static void setMotorSpeed(
+    /// Typed method of [#setTargetMotorSpeed].
+    public static void setTargetMotorSpeed(
     	JointId jointId,
     	float motorSpeed
     ) {
-    	setMotorSpeed(
+    	setTargetMotorSpeed(
     		jointId.memorySegment(),
     		motorSpeed
     	);
@@ -572,10 +548,10 @@ public final class RevoluteJoint {
     /// ```
     /// Get the revolute joint motor speed in radians per second
     /// ```
-    public static float getMotorSpeed(
+    public static float getTargetMotorSpeed(
     	MemorySegment jointId
     ) {
-    	MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_SPEED.get();
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_TARGET_MOTOR_SPEED.get();
     	try {
     		return (float) method.invokeExact(
     			jointId
@@ -585,36 +561,11 @@ public final class RevoluteJoint {
     	}
     }
     
-    /// Typed method of [#getMotorSpeed].
-    public static float getMotorSpeed(
+    /// Typed method of [#getTargetMotorSpeed].
+    public static float getTargetMotorSpeed(
     	JointId jointId
     ) {
-    	return getMotorSpeed(
-    		jointId.memorySegment()
-    	);
-    }
-    
-    /// ```
-    /// Get the revolute joint current motor torque, usually in newton-meters
-    /// ```
-    public static float getMotorTorque(
-    	MemorySegment jointId
-    ) {
-    	MethodHandle method = B2_REVOLUTE_JOINT_GET_MOTOR_TORQUE.get();
-    	try {
-    		return (float) method.invokeExact(
-    			jointId
-    		);
-    	} catch (Throwable e) {
-    		throw new RuntimeException(e);
-    	}
-    }
-    
-    /// Typed method of [#getMotorTorque].
-    public static float getMotorTorque(
-    	JointId jointId
-    ) {
-    	return getMotorTorque(
+    	return getTargetMotorSpeed(
     		jointId.memorySegment()
     	);
     }
@@ -673,4 +624,80 @@ public final class RevoluteJoint {
     	);
     }
     
+    /// ```
+    /// Get the revolute joint current angle in radians. This is the relative rotation of the joint
+    /// frames.
+    /// ```
+    public static float getCurrentAngle(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_CURRENT_ANGLE.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getCurrentAngle].
+    public static float getCurrentAngle(
+    	JointId jointId
+    ) {
+    	return getCurrentAngle(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Get the current revolute joint motor speed in radians per second
+    /// ```
+    public static float getCurrentSpeed(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_CURRENT_SPEED.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getCurrentSpeed].
+    public static float getCurrentSpeed(
+    	JointId jointId
+    ) {
+    	return getCurrentSpeed(
+    		jointId.memorySegment()
+    	);
+    }
+    
+    /// ```
+    /// Get the revolute joint current motor torque, usually in newton-meters
+    /// ```
+    public static float getCurrentMotorTorque(
+    	MemorySegment jointId
+    ) {
+    	MethodHandle method = B2_REVOLUTE_JOINT_GET_CURRENT_MOTOR_TORQUE.get();
+    	try {
+    		return (float) method.invokeExact(
+    			jointId
+    		);
+    	} catch (Throwable e) {
+    		throw new RuntimeException(e);
+    	}
+    }
+    
+    /// Typed method of [#getCurrentMotorTorque].
+    public static float getCurrentMotorTorque(
+    	JointId jointId
+    ) {
+    	return getCurrentMotorTorque(
+    		jointId.memorySegment()
+    	);
+    }
+
 }

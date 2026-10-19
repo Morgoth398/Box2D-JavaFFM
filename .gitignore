@@ -37,7 +37,7 @@ build/
 java/build/**
 
 src/main/java/test
-*.tiled-session
-prefs/
-savegames/
-island/
+
+/natives/
+*/natives/
+**/natives/clang/

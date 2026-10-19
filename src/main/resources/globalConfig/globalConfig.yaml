@@ -1,5 +1,7 @@
 naming:
   strip-prefixes:
+    - b2Recording_
+    - b2Replay_
     - b2DebugDraw_
     - b2World_
     - b2Shape_
@@ -19,3 +21,8 @@ naming:
     - b2_
     - b2
   strip-postfixes:
+  type-renames:
+    b2AllocCallbackFcn: AllocFcn
+    b2FreeCallbackFcn: FreeFcn
+    b2AssertCallbackFcn: AssertFcn
+    b2PlaneResultCallbackFcn: PlaneResultFcn

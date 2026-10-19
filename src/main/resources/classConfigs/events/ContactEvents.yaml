@@ -13,8 +13,6 @@ class-description:
 
 imports:
 static-imports:
-  - java.lang.foreign.ValueLayout.*
-  - volucris.bindings.core.FFMUtils.*
 
 macro-name-prefixes:
 excluded-macro-name-prefixes:
@@ -32,6 +30,10 @@ excluded-function-name-postfixes:
 constructors:
 struct:
   name: b2ContactEvents
+  struct-arrays:
+    - beginEvents
+    - endEvents
+    - hitEvents
   
 native-functions:
 native-function-pointers:
