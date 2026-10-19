@@ -16,7 +16,7 @@ jobs:
       - name: Get Latest CMake
         uses: lukka/get-cmake@latest
       - name: Configure CMake
-        run: cmake -S $SOURCE_DIRECTORY -B build ${{ CMAKE_CONFIGURE_OPTIONS }}
+        run: cmake -S $SOURCE_DIRECTORY -B build ${{ env.CMAKE_CONFIGURE_OPTIONS }}
       - name: Build CMake
         run: cmake --build build --config Release
       - name: Install CMake
@@ -39,7 +39,7 @@ jobs:
       - name: Get Latest CMake
         uses: lukka/get-cmake@latest
       - name: Configure CMake
-        run: cmake -S $SOURCE_DIRECTORY -B build ${{ CMAKE_CONFIGURE_OPTIONS }}
+        run: cmake -S $SOURCE_DIRECTORY -B build ${{ env.CMAKE_CONFIGURE_OPTIONS }}
       - name: Build CMake
         run: cmake --build build --config Release
       - name: Install CMake
@@ -62,7 +62,7 @@ jobs:
       - name: Get Latest CMake
         uses: lukka/get-cmake@latest
       - name: Configure CMake
-        run: cmake -S $SOURCE_DIRECTORY -B build ${{ CMAKE_CONFIGURE_OPTIONS }}
+        run: cmake -S $SOURCE_DIRECTORY -B build ${{ env.CMAKE_CONFIGURE_OPTIONS }}
       - name: Build CMake
         run: cmake --build build --config Release
       - name: Install CMake
@@ -85,7 +85,7 @@ jobs:
       - name: Get Latest CMake
         uses: lukka/get-cmake@latest
       - name: Configure CMake
-        run: cmake -S $SOURCE_DIRECTORY -B build ${{ CMAKE_CONFIGURE_OPTIONS }}
+        run: cmake -S $SOURCE_DIRECTORY -B build ${{ env.CMAKE_CONFIGURE_OPTIONS }}
       - name: Build CMake
         run: cmake --build build --config Release
       - name: Install CMake
@@ -108,7 +108,7 @@ jobs:
       - name: Get Latest CMake
         uses: lukka/get-cmake@latest
       - name: Configure CMake
-        run: cmake -S "${{ env.SOURCE_DIRECTORY }}" -B build ${{ CMAKE_CONFIGURE_OPTIONS }}
+        run: cmake -S "${{ env.SOURCE_DIRECTORY }}" -B build ${{ env.CMAKE_CONFIGURE_OPTIONS }}
       - name: Build CMake
         run: cmake --build build --config Release
       - name: Install CMake
