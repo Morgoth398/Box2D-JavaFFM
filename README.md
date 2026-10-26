@@ -5,7 +5,7 @@ This project provides Java bindings for  [Box2D](https://box2d.org/) using the J
 Windows, Linux and Mac are directly supported. All native libraries were build using the [Box2D_Build](/.github/workflows/Box2D_Build.yml) Workflow.
 
 # Building The Project
-1. Download [Java 26](https://www.oracle.com/de/java/technologies/downloads/)
+1. Download [Java 26](https://adoptium.net/de/temurin/releases?version=26&mode=filter&os=any&arch=any)
 2. Download the sources or clone the repo
 
 ### Using The Terminal
