@@ -4,6 +4,15 @@ This project provides Java bindings for  [Box2D](https://box2d.org/) using the J
 # Supported Platforms
 Windows, Linux and Mac are directly supported. All native libraries were build using the [Box2D_Build](/.github/workflows/Box2D_Build.yml) Workflow.
 
+# Including The Project
+```xml
+<dependency>
+	<groupId>io.github.morgoth398</groupId>
+	<artifactId>Box2D-JavaFFM</artifactId>
+	<version>3.2.0</version>
+</dependency>
+```
+
 # Building The Project
 1. Download [Java 26](https://adoptium.net/temurin/releases?version=26&mode=filter&os=any&arch=any)
 2. Download the sources or clone the repo
