@@ -1,4 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-src/main/resources/box2d*/** linguist-vendored=true
+**/nativeSources/** linguist-vendored=true
